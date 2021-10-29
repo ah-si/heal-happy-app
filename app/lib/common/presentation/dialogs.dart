@@ -1,13 +1,13 @@
-import 'package:app/common/errors.dart';
-import 'package:app/common/l10n/error_localizations.dart';
-import 'package:app/common/presentation/loading.dart';
-import 'package:app/common/presentation/modal_page_route.dart';
-import 'package:app/common/utils/constants.dart';
-import 'package:app/common/utils/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:heal_happy/common/errors.dart';
+import 'package:heal_happy/common/l10n/error_localizations.dart';
+import 'package:heal_happy/common/presentation/loading.dart';
+import 'package:heal_happy/common/presentation/modal_page_route.dart';
+import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 
 typedef DialogCallback = Function(BuildContext context);
 

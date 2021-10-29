@@ -1,9 +1,9 @@
-import 'package:app/auth/login_screen.dart';
-import 'package:app/auth/register_screen.dart';
-import 'package:app/home/home_screen.dart';
-import 'package:app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/auth/login_screen.dart';
+import 'package:heal_happy/auth/register_screen.dart';
+import 'package:heal_happy/home/home_screen.dart';
+import 'package:heal_happy/main.dart';
 
 GoRouter createRouter(userStore) => GoRouter(
       refreshListenable: userStore,

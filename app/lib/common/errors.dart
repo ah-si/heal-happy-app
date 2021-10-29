@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:app/common/l10n/error_localizations.dart';
-import 'package:app/common/utils/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:heal_happy/common/l10n/error_localizations.dart';
+import 'package:heal_happy/common/utils/constants.dart';
 
 FutureOr<dynamic> handleCaughtError(error, stackTrace) {
   throw handleError(error, stackTrace);

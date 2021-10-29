@@ -6,7 +6,7 @@ String? isRequired(value) {
 }
 
 String? isEmailValid(value) {
-  if (value == null || value.isEmpty) {
+  if (value == null || value.trim().isEmpty) {
     return 'Ce champ est requis';
   } else if (!RegExp(
   r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')

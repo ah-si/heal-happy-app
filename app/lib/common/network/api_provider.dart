@@ -1,7 +1,7 @@
-import 'package:app/common/utils/logging.dart';
-import 'package:app/common/utils/preferences_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:heal_happy/common/utils/logging.dart';
+import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:logging/logging.dart';
 

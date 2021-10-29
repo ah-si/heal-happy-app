@@ -13,6 +13,13 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 
+  int? _consultationTime;
+  int? get consultationTime => _consultationTime;
+  set consultationTime(value) {
+    _consultationTime = value;
+    notifyListeners();
+  }
+
   String? _firstName;
   String? get firstName => _firstName;
   set firstName(value) {

@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'dart:developer';
 
-import 'package:app/common/utils/constants.dart';
 import 'package:flutter/services.dart';
+import 'package:heal_happy/common/utils/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';

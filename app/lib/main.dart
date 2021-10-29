@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/auth/login_screen.dart';
-import 'package:app/common/l10n/common_localizations.dart';
-import 'package:app/common/l10n/error_localizations.dart';
-import 'package:app/common/router.dart';
-import 'package:app/common/utils/constants.dart';
-import 'package:app/common/utils/logging.dart';
-import 'package:app/common/utils/preferences_provider.dart';
-import 'package:app/home/home_screen.dart';
-import 'package:app/user/user_store.dart';
+import 'package:heal_happy/auth/login_screen.dart';
+import 'package:heal_happy/common/l10n/common_localizations.dart';
+import 'package:heal_happy/common/l10n/error_localizations.dart';
+import 'package:heal_happy/common/router.dart';
+import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/logging.dart';
+import 'package:heal_happy/common/utils/preferences_provider.dart';
+import 'package:heal_happy/home/home_screen.dart';
+import 'package:heal_happy/user/user_store.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

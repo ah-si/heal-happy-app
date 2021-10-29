@@ -1,12 +1,12 @@
-import 'package:app/auth/login_screen.dart';
-import 'package:app/auth/models/user_info.dart';
-import 'package:app/common/presentation/autocomplete_field.dart';
-import 'package:app/common/utils/constants.dart';
-import 'package:app/common/utils/extensions.dart';
-import 'package:app/common/utils/form_validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/auth/login_screen.dart';
+import 'package:heal_happy/auth/models/user_info.dart';
+import 'package:heal_happy/common/presentation/autocomplete_field.dart';
+import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
+import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -117,6 +117,7 @@ class _StepInfoPro extends HookConsumerWidget {
     final controllerExperiences = useTextEditingController(text: userInfo.experiences);
     final controllerDiploma = useTextEditingController(text: userInfo.diploma);
     final controllerSpe = useTextEditingController(text: userInfo.job == null ? '' : specialities[userInfo.job]);
+    final controllerConsultation = useTextEditingController(text: userInfo.consultationTime?.toString() ?? '');
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
     return Form(
@@ -126,7 +127,7 @@ class _StepInfoPro extends HookConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Merci de remplir vos informations professionel:',
+            'Merci de remplir vos informations professionelles:',
             style: context.textTheme.headline5,
           ),
           AutocompleteFormField<MapEntry<String, String>>(
@@ -155,18 +156,27 @@ class _StepInfoPro extends HookConsumerWidget {
             },
           ),
           TextFormField(
+            controller: controllerConsultation,
+            validator: isRequired,
+            keyboardType: const TextInputType.numberWithOptions(),
+            decoration: InputDecoration(label: Text('Durée d\'une consultation*:'), hintText: 'A spécifier en minute'),
+          ),
+          TextFormField(
             controller: controllerDescription,
             validator: isRequired,
+            keyboardType: TextInputType.multiline,
             decoration: InputDecoration(label: Text('Description*:')),
             maxLines: 4,
           ),
           TextFormField(
             controller: controllerExperiences,
+            keyboardType: TextInputType.multiline,
             decoration: InputDecoration(label: Text('Experiences:')),
             maxLines: 3,
           ),
           TextFormField(
             controller: controllerDiploma,
+            keyboardType: TextInputType.multiline,
             decoration: InputDecoration(label: Text('Diplomes:')),
             maxLines: 2,
           ),
@@ -340,23 +350,31 @@ class _StepPersonalInfo extends HookConsumerWidget {
           TextFormField(
             controller: controllerLastName,
             validator: isRequired,
+            keyboardType: TextInputType.name,
+            autofillHints: const [AutofillHints.familyName],
             onChanged: (value) => userInfo.lastName = value,
             decoration: InputDecoration(label: Text('Nom*:')),
           ),
           TextFormField(
             controller: controllerFirstName,
             validator: isRequired,
+            keyboardType: TextInputType.name,
+            autofillHints: const [AutofillHints.name, AutofillHints.givenName],
             onChanged: (value) => userInfo.firstName = value,
             decoration: InputDecoration(label: Text('Prénom*:')),
           ),
           TextFormField(
             controller: controllerMobile,
+            keyboardType: TextInputType.phone,
+            autofillHints: const [AutofillHints.telephoneNumber],
             onChanged: (value) => userInfo.mobile = value,
             decoration: InputDecoration(label: Text('Mobile:')),
           ),
           TextFormField(
             controller: controller,
             validator: isEmailValid,
+            keyboardType: TextInputType.emailAddress,
+            autofillHints: const [AutofillHints.email],
             onChanged: (value) => userInfo.email = value,
             decoration: InputDecoration(label: Text('Email*:')),
           ),
@@ -364,6 +382,8 @@ class _StepPersonalInfo extends HookConsumerWidget {
             controller: controllerPass,
             obscureText: true,
             validator: isPasswordValid,
+            autofillHints: const [AutofillHints.newPassword],
+            keyboardType: TextInputType.visiblePassword,
             onChanged: (value) => userInfo.password = value,
             decoration: InputDecoration(label: Text('Mot de passe*:')),
           ),
@@ -424,24 +444,28 @@ class _StepSocial extends HookConsumerWidget {
           'Si vous le souhaitez, vous pouvez renseigner vos liens sociaux:',
           style: context.textTheme.headline5,
         ),
-        Spacer(),
+        const Spacer(),
         TextFormField(
           controller: controllerWebsite,
+          keyboardType: TextInputType.url,
           decoration: InputDecoration(label: Text('Website:')),
         ),
         TextFormField(
           controller: controllerSocial1,
+          keyboardType: TextInputType.url,
           decoration: InputDecoration(label: Text('Réseau social 1:')),
         ),
         TextFormField(
           controller: controllerSocial2,
+          keyboardType: TextInputType.url,
           decoration: InputDecoration(label: Text('Réseau social 2:')),
         ),
         TextFormField(
           controller: controllerSocial3,
+          keyboardType: TextInputType.url,
           decoration: InputDecoration(label: Text('Réseau social 3:')),
         ),
-        Spacer(),
+        const Spacer(),
         Row(
           children: [
             Padding(
@@ -501,20 +525,28 @@ class _StepAddress extends HookConsumerWidget {
           const Spacer(),
           TextFormField(
             controller: controllerStreet,
+            keyboardType: TextInputType.streetAddress,
+            autofillHints: const [AutofillHints.streetAddressLine1],
             decoration: InputDecoration(label: Text('Rue:')),
           ),
           TextFormField(
             controller: controllerStreet2,
+            keyboardType: TextInputType.streetAddress,
+            autofillHints: const [AutofillHints.streetAddressLine2],
             decoration: InputDecoration(label: Text('Complément:')),
           ),
           TextFormField(
             controller: controllerCity,
             validator: isRequired,
+            keyboardType: TextInputType.streetAddress,
+            autofillHints: const [AutofillHints.addressCity],
             decoration: InputDecoration(label: Text('Ville*:')),
           ),
           TextFormField(
             controller: controllerZipCode,
             validator: isRequired,
+            keyboardType: const TextInputType.numberWithOptions(),
+            autofillHints: const [AutofillHints.postalCode],
             onChanged: (value) => userInfo.email = value,
             decoration: InputDecoration(label: Text('Code postale*:')),
           ),

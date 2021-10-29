@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:app/common/presentation/loading.dart';
-import 'package:app/common/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:heal_happy/common/presentation/loading.dart';
+import 'package:heal_happy/common/utils/constants.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 typedef AutocompleteDelegate<T> = Future<List<T>> Function(String query);

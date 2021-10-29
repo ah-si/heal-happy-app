@@ -1,10 +1,11 @@
-import 'package:app/auth/register_screen.dart';
-import 'package:app/common/utils/constants.dart';
-import 'package:app/home/home_screen.dart';
-import 'package:app/user/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/auth/register_screen.dart';
+import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/home/home_screen.dart';
+import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class LoginScreen extends HookConsumerWidget {
@@ -16,6 +17,7 @@ class LoginScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController(text: 'jimmy.aumard@gmail.com');
     final controllerPass = useTextEditingController();
+    final formKey = useMemoized(() => GlobalKey<FormState>());
     return DecoratedBox(
       decoration: const BoxDecoration(
         image: DecorationImage(image: AssetImage("assets/images/ahsi_bg.jpg"), fit: BoxFit.cover),
@@ -56,37 +58,55 @@ class LoginScreen extends HookConsumerWidget {
                             width: 1,
                           ),
                           borderRadius: const BorderRadius.all(Radius.circular(kSmallPadding))),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextField(
-                            controller: controller,
-                            decoration: InputDecoration(label: Text('Email*:')),
-                          ),
-                          TextField(
-                            controller: controllerPass,
-                            obscureText: true,
-                            decoration: InputDecoration(label: Text('Mot de passe*:')),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(kNormalPadding),
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                final store = ref.read(userStoreProvider);
-                                try {
-                                  await store.login(controller.text, controllerPass.text);
-                                  context.goNamed(HomeScreen.name);
-                                } catch (err, stack) {}
-                              },
-                              child: Text('Connexion'),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextFormField(
+                              controller: controller,
+                              validator: isEmailValid,
+                              keyboardType: TextInputType.emailAddress,
+                              autofillHints: const [AutofillHints.email],
+                              decoration: InputDecoration(label: Text('Email*:')),
                             ),
-                          ),
-                          TextButton(
+                            TextFormField(
+                              controller: controllerPass,
+                              obscureText: true,
+                              validator: isRequired,
+                              keyboardType: TextInputType.text,
+                              autofillHints: const [AutofillHints.password],
+                              decoration: InputDecoration(label: Text('Mot de passe*:')),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(kNormalPadding),
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (formKey.currentState!.validate()) {
+                                    final store = ref.read(userStoreProvider);
+                                    try {
+                                      await store.login(controller.text, controllerPass.text);
+                                      context.goNamed(HomeScreen.name);
+                                    } catch (err, stack) {}
+                                  }
+                                },
+                                child: Text('Connexion'),
+                              ),
+                            ),
+                            TextButton(
                               onPressed: () {
                                 context.goNamed(RegisterScreen.name);
                               },
-                              child: Text('Je n\'ai pas de compte, m\'inscrire'))
-                        ],
+                              child: Text('Je n\'ai pas de compte, m\'inscrire'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                context.goNamed(RegisterScreen.name);
+                              },
+                              child: Text('J\'ai oublié mon mot de passe'),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
