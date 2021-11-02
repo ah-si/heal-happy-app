@@ -11,13 +11,13 @@ import 'package:heal_happy/common/utils/extensions.dart';
 
 typedef DialogCallback = Function(BuildContext context);
 
-class LisaDialog extends StatelessWidget {
+class CustomDialog extends StatelessWidget {
   final Widget title;
   final Widget content;
   final List<DialogAction> actions;
   final BoxConstraints? constraints;
 
-  const LisaDialog({Key? key, this.constraints, required this.content, required this.title, this.actions = const []}) : super(key: key);
+  const CustomDialog({Key? key, this.constraints, required this.content, required this.title, this.actions = const []}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,8 @@ class LisaDialog extends StatelessWidget {
                     const CloseButton(),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: kNormalPadding),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: kNormalPadding),
                   child: Divider(height: 1),
                 ),
                 Padding(
@@ -165,12 +165,6 @@ Future<String?> showPrompt<T>(BuildContext context, String title,
 Future<void> showAlert<T>(BuildContext context, String title, WidgetBuilder content, {bool barrierDismissible = true}) {
   return showAppDialog(context, (_) => Text(title), content, barrierDismissible: barrierDismissible, actions: [
     DialogAction(
-      text: MaterialLocalizations.of(context).cancelButtonLabel,
-      callback: (context) {
-        Navigator.of(context).pop();
-      },
-    ),
-    DialogAction(
       isDefaultAction: true,
       text: MaterialLocalizations.of(context).okButtonLabel,
       callback: (context) {
@@ -223,7 +217,7 @@ Widget getAppDialog(
   bool forceAndroid = false,
   double? maxWidth = 500,
 }) {
-  return LisaDialog(
+  return CustomDialog(
     title: title(context),
     content: content(context),
     actions: actions,
@@ -288,13 +282,19 @@ Future<bool> showLoadingDialog(
                       useEffect(() {
                         until().then((_) {
                           WidgetsBinding.instance?.addPostFrameCallback((_) {
-                            Navigator.of(dialogContext).pop(true);
+                            if (dialogContext.isRelevant()) {
+                              Navigator.of(dialogContext).pop(true);
+                            }
                           });
                         }).catchError((err, stack) {
                           WidgetsBinding.instance?.addPostFrameCallback((_) {
-                            Navigator.of(dialogContext).pop(false);
+                            if (dialogContext.isRelevant()) {
+                              Navigator.of(dialogContext).pop(false);
+                            }
                             if (onError == null) {
-                              showErrorDialog(mainContext, err, stack);
+                              if (mainContext.isRelevant()) {
+                                showErrorDialog(mainContext, err, stack);
+                              }
                             } else {
                               onError(err, stack);
                             }

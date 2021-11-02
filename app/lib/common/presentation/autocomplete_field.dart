@@ -16,6 +16,7 @@ class AutocompleteFormField<T> extends StatelessWidget {
   final int characterThreshold;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
+  final int nbVisibleResults;
   final TextEditingController? controller;
   final Widget Function(BuildContext context, T entry) itemBuilder;
   final AutocompleteDelegate<T> delegate;
@@ -29,6 +30,7 @@ class AutocompleteFormField<T> extends StatelessWidget {
       this.maxLines = 1,
       this.autofocus = false,
       this.controller,
+        this.nbVisibleResults = 3,
       this.characterThreshold = 3,
       required this.onItemSelected,
       required this.itemBuilder,
@@ -44,6 +46,7 @@ class AutocompleteFormField<T> extends StatelessWidget {
       itemBuilder: itemBuilder,
       delegate: delegate,
       validator: validator,
+      nbVisibleResults: nbVisibleResults,
       maxLines: maxLines,
       autofocus: autofocus,
       decoration: decoration,
@@ -64,6 +67,7 @@ class AutocompleteField<T> extends StatelessWidget {
   final int maxLines;
   final int characterThreshold;
   final int? itemExtent;
+  final int nbVisibleResults;
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final Widget Function(BuildContext context, T entry) itemBuilder;
@@ -74,6 +78,7 @@ class AutocompleteField<T> extends StatelessWidget {
       {Key? key,
       this.itemExtent,
       this.keyboardType,
+      this.nbVisibleResults = 3,
       this.maxLines = 1,
       this.autofocus = false,
       this.characterThreshold = 3,
@@ -93,6 +98,7 @@ class AutocompleteField<T> extends StatelessWidget {
       delegate: delegate,
       characterThreshold: characterThreshold,
       maxLines: maxLines,
+      nbVisibleResults: nbVisibleResults,
       autofocus: autofocus,
       decoration: decoration,
       focusNode: focusNode,
@@ -140,6 +146,7 @@ class _RawAutocompleteField<T> extends StatefulWidget {
   final int maxLines;
   final int? itemExtent;
   final int characterThreshold;
+  final int nbVisibleResults;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final TextEditingController? controller;
@@ -151,6 +158,7 @@ class _RawAutocompleteField<T> extends StatefulWidget {
       {Key? key,
       this.isForm = false,
       this.itemExtent,
+      this.nbVisibleResults = 3,
       this.validator,
       this.keyboardType,
       this.maxLines = 1,
@@ -223,7 +231,7 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
           child: Material(
             elevation: 4.0,
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: (widget.itemExtent ?? size.height) * 3),
+              constraints: BoxConstraints(maxHeight: (widget.itemExtent ?? size.height) * widget.nbVisibleResults.toDouble()),
               child: StreamBuilder<List<T>>(
                 stream: _bloc.results,
                 builder: (context, snapshot) {

@@ -1,5 +1,7 @@
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/logging.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
@@ -7,9 +9,9 @@ import 'package:logging/logging.dart';
 
 final apiProvider = Provider<BackendApiProvider>((ref) {
   return BackendApiProvider.setup(
-    () => print('logout'),
+    () => BackendApiProvider().onLogout(),
     PreferencesProvider(),
-    baseUrl: 'http://localhost:3000',
+    baseUrl: HealHappySdk.basePath,
   );
 });
 
@@ -90,6 +92,7 @@ List<Interceptor> getInterceptors({
 class BackendApiProvider {
   static const authKey = 'Bearer';
   final HealHappySdk api;
+  late VoidCallback onLogout;
 
   factory BackendApiProvider() => _singleton;
 
@@ -124,6 +127,16 @@ class BackendApiProvider {
 
     if (token != null) {
       _singleton.setToken(token);
+    }
+
+    // when in debug mode we allow self signed certificates
+    if (!kIsProductionMode) {
+      (_singleton.api.dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (client) {
+        client.badCertificateCallback =
+            (cert, String host, int port) => true;
+        return client;
+      };
     }
     return _singleton;
   }

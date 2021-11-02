@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -16,7 +18,14 @@ class UserStore extends ChangeNotifier {
   final PreferencesProvider _preferencesProvider;
   User? user;
 
-  UserStore(this._apiProvider, this._preferencesProvider);
+  User get requiredUser => user!;
+
+  UserStore(this._apiProvider, this._preferencesProvider) {
+    _apiProvider.onLogout = () {
+      user = null;
+      notifyListeners();
+    };
+  }
 
   Future<void> init({bool silent = true}) async {
     try {
@@ -56,14 +65,17 @@ class UserStore extends ChangeNotifier {
     final token = results.data!.token;
     final refreshToken = results.data!.refreshToken;
     await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
-    await init();
+    await init(silent: false);
+    //notifyListeners();
+    print('login finished $user');
   }
 
-  Future<void> register(UserUpdate user) async {
-    final results = await _apiProvider.api.getAuthApi().register(userUpdate: user);
+  Future<void> register(User user) async {
+    final results = await _apiProvider.api.getAuthApi().register(user: user);
     final token = results.data!.token;
     final refreshToken = results.data!.refreshToken;
     await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
-    await init();
+    await init(silent: false);
+    //notifyListeners();
   }
 }

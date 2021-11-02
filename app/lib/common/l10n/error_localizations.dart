@@ -23,30 +23,33 @@ class ErrorLocalizations {
 
   String get dialogErrorTitle => Intl.message('Oops!', name: 'dialogErrorTitle', desc: 'The title of a dialog where something went wrong');
 
-  String get wrongEmailMessage => Intl.message('Email is not correct', name: 'wrongEmailMessage');
+  String get wrongEmailMessage => Intl.message('Email incorrect', name: 'wrongEmailMessage');
 
-  String get internalHint => Intl.message('There is nothing you can do, we\'ll try to fix this asap', name: 'internalHint');
-  String get internalMessage => Intl.message('An error as occured', name: 'internalMessage');
+  String get internalMessage => Intl.message('Erreur inconnue', name: 'internalMessage');
+  String get internalHint => Intl.message('Une erreur est survenue, nous nous excusons pour la gêne occasionnée et allons régler le problème au plus vite.', name: 'internalHint');
 
-  String get noNetworkHint => Intl.message('Try again later when you have better coverage', name: 'noNetworkHint');
-  String get noNetworkMessage => Intl.message('Device seems to be offline', name: 'noNetworkMessage');
+  String get noNetworkMessage => Intl.message('Pas de réseau', name: 'noNetworkMessage');
+  String get noNetworkHint => Intl.message('Merci de retenter quand vous aurez du réseau internet.', name: 'noNetworkHint');
 
   String get noAppForTheAction => Intl.message('No application available for this action',
       name: 'noAppForTheAction', desc: 'Displayed when no app can handle the wanted action (send sms, email, open web page...)');
   String get noAppForTheActionHint => Intl.message('Try to install an application who handle this kind of action',
       name: 'noAppForTheActionHint', desc: 'Displayed when no app can handle the wanted action (send sms, email, open web page...)');
 
-  String get fieldRequired => Intl.message('This field is required', name: 'fieldRequired', desc: 'When a field is required on a form');
-  String get fieldRequiredHint => Intl.message('Please fill this field', name: 'fieldRequiredHint', desc: 'When a field is required on a form');
+  String get fieldRequired => Intl.message('Ce champ est requis', name: 'fieldRequired', desc: 'When a field is required on a form');
+  String get fieldRequiredHint => Intl.message('Merci de remplir ce champ', name: 'fieldRequiredHint', desc: 'When a field is required on a form');
 
-  String get notLogged => Intl.message('Look like you\'re not logged', name: 'notLogged', desc: 'When a 401 occurred');
-  String get notLoggedHint => Intl.message('Please log in before doing this action', name: 'notLoggedHint', desc: 'When a 401 occurred');
+  String get notLogged => Intl.message('Vous n\êtes pas connecté', name: 'notLogged', desc: 'When a 401 occurred');
+  String get notLoggedHint => Intl.message('Merci de vous connecter pour réaliser cette action', name: 'notLoggedHint', desc: 'When a 401 occurred');
 
-  String get forbidden => Intl.message('Look like this action is forbidden', name: 'forbidden', desc: 'When a 403 occurred');
-  String get forbiddenHint => Intl.message('Please retry when log in with a user with different permissions', name: 'forbiddenHint', desc: 'When a 403 occurred');
+  String get forbidden => Intl.message('Cette action est interdite', name: 'forbidden', desc: 'When a 403 occurred');
+  String get forbiddenHint => Intl.message('Vous n\'avez pas la permission de réaliser cette action', name: 'forbiddenHint', desc: 'When a 403 occurred');
 
-  String get wrongCredentials => Intl.message('Login failed', name: 'wrongCredentials', desc: 'When login credentials are wrong');
-  String get wrongCredentialsHint => Intl.message('Please check your email and password and retry', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
+  String get wrongCredentials => Intl.message('Erreur de connexion', name: 'wrongCredentials', desc: 'When login credentials are wrong');
+  String get wrongCredentialsHint => Intl.message('Merci de vérifier votre email et mot de passe avec de retenter', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
+
+  String get meetingAlreadyExist => Intl.message('Reservation impossible', name: 'meetingAlreadyExist');
+  String get meetingAlreadyExistHint => Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consulation passé.', name: 'meetingAlreadyExistHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

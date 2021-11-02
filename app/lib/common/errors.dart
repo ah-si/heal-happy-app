@@ -56,6 +56,7 @@ class ErrorResult {
   static const internal = ErrorResult(_ErrorType.internal);
   static const noAppForActionError = ErrorResult(_ErrorType.noAppForActionError);
   static const fieldRequired = ErrorResult(_ErrorType.fieldRequired);
+  static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
 
   final _ErrorType _type;
 
@@ -82,6 +83,8 @@ class ErrorResult {
         return localizations.forbidden;
       case _ErrorType.wrongCredentials:
         return localizations.wrongCredentials;
+      case _ErrorType.meetingAlreadyExist:
+        return localizations.meetingAlreadyExist;
     }
   }
 
@@ -109,6 +112,8 @@ class ErrorResult {
         return localizations.forbiddenHint;
       case _ErrorType.wrongCredentials:
         return localizations.wrongCredentialsHint;
+      case _ErrorType.meetingAlreadyExist:
+        return localizations.meetingAlreadyExistHint;
     }
   }
 
@@ -132,5 +137,6 @@ enum _ErrorType {
   internal,
   wrongEmail,
   fieldRequired,
+  meetingAlreadyExist,
   noAppForActionError,
 }
