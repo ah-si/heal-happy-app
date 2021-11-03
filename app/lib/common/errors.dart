@@ -48,6 +48,7 @@ class ErrorResultException implements Exception {
 class ErrorResult {
   static const noNetwork = ErrorResult(_ErrorType.noNetwork);
   static const wrongEmail = ErrorResult(_ErrorType.wrongEmail);
+  static const emailAlreadyUsed = ErrorResult(_ErrorType.emailAlreadyUsed);
   static const notLogged = ErrorResult(_ErrorType.notLogged);
   static const forbidden = ErrorResult(_ErrorType.forbidden);
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
@@ -85,6 +86,8 @@ class ErrorResult {
         return localizations.wrongCredentials;
       case _ErrorType.meetingAlreadyExist:
         return localizations.meetingAlreadyExist;
+      case _ErrorType.emailAlreadyUsed:
+        return localizations.emailAlreadyUsed;
     }
   }
 
@@ -114,6 +117,8 @@ class ErrorResult {
         return localizations.wrongCredentialsHint;
       case _ErrorType.meetingAlreadyExist:
         return localizations.meetingAlreadyExistHint;
+      case _ErrorType.emailAlreadyUsed:
+        return localizations.emailAlreadyUsedHint;
     }
   }
 
@@ -136,6 +141,7 @@ enum _ErrorType {
   wrongCredentials,
   internal,
   wrongEmail,
+  emailAlreadyUsed,
   fieldRequired,
   meetingAlreadyExist,
   noAppForActionError,

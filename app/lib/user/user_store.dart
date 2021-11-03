@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -71,11 +72,23 @@ class UserStore extends ChangeNotifier {
   }
 
   Future<void> register(User user) async {
-    final results = await _apiProvider.api.getAuthApi().register(user: user);
-    final token = results.data!.token;
-    final refreshToken = results.data!.refreshToken;
-    await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
+    try {
+      final results = await _apiProvider.api.getAuthApi().register(user: user);
+      final token = results.data!.token;
+      final refreshToken = results.data!.refreshToken;
+      await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
+    } on DioError catch (ex) {
+      if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('users.email must be unique')) {
+        throw ErrorResultException(ErrorResult.wrongEmail);
+      }
+      rethrow;
+    }
     await init(silent: false);
-    //notifyListeners();
+  }
+
+  Future<void> save(User user) async {
+    final results = await _apiProvider.api.getUserApi().saveProfile(user: user);
+    user = results.data!;
+    notifyListeners();
   }
 }

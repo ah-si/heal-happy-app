@@ -1,18 +1,12 @@
 
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/network/api_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
-final patientStoreProvider = ChangeNotifierProvider((_) => PatientStore());
-
-class SearchResults {
-  final List<Healer> healers;
-  final ErrorResultException? error;
-
-  SearchResults(this.healers, {this.error});
-}
+final healerStoreProvider = ChangeNotifierProvider((_) => HealerStore());
 
 class PatientEventResults {
   final List<UserEvent> events;
@@ -22,38 +16,21 @@ class PatientEventResults {
 }
 
 enum HomeTabs {
-  home, search
+  home, profile
 }
 
-class PatientStore extends ChangeNotifier {
+class HealerStore extends ChangeNotifier {
   final UserApi _userApi;
-  SearchResults? searchResults;
   PatientEventResults? eventsResults;
   bool isLoading = false;
   HomeTabs _selectedTab = HomeTabs.home;
 
-  PatientStore({UserApi? userApi}): _userApi = BackendApiProvider().api.getUserApi();
+  HealerStore({UserApi? userApi}): _userApi = BackendApiProvider().api.getUserApi();
 
   HomeTabs get selectedTab => _selectedTab;
   set selectedTab(HomeTabs value) {
     if (_selectedTab != value) {
       _selectedTab = value;
-      notifyListeners();
-    }
-  }
-
-  Future<void> searchHealers(String job, String localization) async {
-    isLoading = true;
-    _selectedTab = HomeTabs.search;
-    notifyListeners();
-    try {
-      final results = await _userApi.searchHealers(job: job, localization: localization);
-      searchResults = SearchResults(results.data?.toList() ?? []);
-      isLoading = false;
-      notifyListeners();
-    } catch(error, stackTrace) {
-      searchResults = SearchResults([], error: handleError(error, stackTrace));
-      isLoading = false;
       notifyListeners();
     }
   }

@@ -4,19 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:intl/intl.dart';
 
-import 'messages/messages_all.dart';
-
 class ErrorLocalizations {
   final Locale locale;
 
   ErrorLocalizations(this.locale);
 
-  static Future<ErrorLocalizations> load(Locale locale) {
+  static Future<ErrorLocalizations> load(Locale locale) async {
     final name = locale.countryCode == null || locale.countryCode!.isEmpty ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
-    return initializeMessages(localeName).then((_) {
-      return ErrorLocalizations(locale);
-    });
+    return ErrorLocalizations(locale);
   }
 
   static ErrorLocalizations of(BuildContext context) => Localizations.of<ErrorLocalizations>(context, ErrorLocalizations)!;
@@ -50,6 +46,9 @@ class ErrorLocalizations {
 
   String get meetingAlreadyExist => Intl.message('Reservation impossible', name: 'meetingAlreadyExist');
   String get meetingAlreadyExistHint => Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consulation passé.', name: 'meetingAlreadyExistHint');
+
+  String get emailAlreadyUsed => Intl.message('Email déjà enregistré', name: 'emailAlreadyUsed');
+  String get emailAlreadyUsedHint => Intl.message('Cet email est déjà enregistré, merci de vous connecter avec vos informations ou renseigner un autre email', name: 'emailAlreadyUsedHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

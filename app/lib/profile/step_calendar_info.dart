@@ -1,9 +1,19 @@
-part of 'register_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:heal_happy/auth/models/user_info.dart';
+import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
+import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class _StepCalendarInfo extends HookConsumerWidget {
-  final VoidCallback onContinue;
+class StepCalendarInfoForm extends HookConsumerWidget {
+  final String saveButtonLabel;
+  final VoidCallback? onContinue;
+  final bool enableBackButton;
 
-  const _StepCalendarInfo({Key? key, required this.onContinue}) : super(key: key);
+  const StepCalendarInfoForm({Key? key, this.saveButtonLabel = 'Continuer', this.onContinue, this.enableBackButton = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -11,75 +21,71 @@ class _StepCalendarInfo extends HookConsumerWidget {
     final controllerConsultation = useTextEditingController(text: userInfo.consultationDuration?.toString() ?? '');
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
-    return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Merci de remplir vos heures de consultations:',
-              style: context.textTheme.headline5,
-            ),
-            const SizedBox(height: kNormalPadding),
-            TextFormField(
-              controller: controllerConsultation,
-              validator: isRequired,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              keyboardType: const TextInputType.numberWithOptions(),
-              decoration: InputDecoration(label: Text('Durée d\'une consultation*:'), hintText: 'A spécifier en minute'),
-            ),
-            const SizedBox(height: kSmallPadding),
-            Text('M. = Matin, AM. = Après midi', style: context.textTheme.caption),
-            _CalendarDaySetting(
-              label: 'Lundi',
-              settings: userInfo.calendarSettings.monday,
-              onChange: (value) {
-                userInfo.calendarSettings = userInfo.calendarSettings.copyWith(monday: value);
-              },
-            ),
-            _CalendarDaySetting(
-              label: 'Mardi',
-              settings: userInfo.calendarSettings.tuesday,
-              onChange: (value) {
-                userInfo.calendarSettings = userInfo.calendarSettings.copyWith(tuesday: value);
-              },
-            ),
-            _CalendarDaySetting(
-              label: 'Mercredi',
-              settings: userInfo.calendarSettings.wednesday,
-              onChange: (value) {
-                userInfo.calendarSettings = userInfo.calendarSettings.copyWith(wednesday: value);
-              },
-            ),
-            _CalendarDaySetting(
-              label: 'Jeudi',
-              settings: userInfo.calendarSettings.thursday,
-              onChange: (value) {
-                userInfo.calendarSettings = userInfo.calendarSettings.copyWith(thursday: value);
-              },
-            ),
-            _CalendarDaySetting(
-              label: 'Vendredi',
-              settings: userInfo.calendarSettings.friday,
-              onChange: (value) {
-                userInfo.calendarSettings = userInfo.calendarSettings.copyWith(friday: value);
-              },
-            ),
-            _CalendarDaySetting(
-              label: 'Samedi',
-              settings: userInfo.calendarSettings.saturday,
-              onChange: (value) {
-                userInfo.calendarSettings = userInfo.calendarSettings.copyWith(sunday: value);
-              },
-            ),
-            _CalendarDaySetting(
-              label: 'Dimanche',
-              settings: userInfo.calendarSettings.sunday,
-              onChange: (value) {},
-            ),
-            Row(
-              children: [
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            controller: controllerConsultation,
+            validator: isRequired,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: const TextInputType.numberWithOptions(),
+            decoration: InputDecoration(label: Text('Durée d\'une consultation*:'), hintText: 'A spécifier en minute'),
+          ),
+          const SizedBox(height: kSmallPadding),
+          Text('M. = Matin, AM. = Après midi', style: context.textTheme.caption),
+          _CalendarDaySetting(
+            label: 'Lundi',
+            settings: userInfo.calendarSettings.monday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(monday: value);
+            },
+          ),
+          _CalendarDaySetting(
+            label: 'Mardi',
+            settings: userInfo.calendarSettings.tuesday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(tuesday: value);
+            },
+          ),
+          _CalendarDaySetting(
+            label: 'Mercredi',
+            settings: userInfo.calendarSettings.wednesday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(wednesday: value);
+            },
+          ),
+          _CalendarDaySetting(
+            label: 'Jeudi',
+            settings: userInfo.calendarSettings.thursday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(thursday: value);
+            },
+          ),
+          _CalendarDaySetting(
+            label: 'Vendredi',
+            settings: userInfo.calendarSettings.friday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(friday: value);
+            },
+          ),
+          _CalendarDaySetting(
+            label: 'Samedi',
+            settings: userInfo.calendarSettings.saturday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(saturday: value);
+            },
+          ),
+          _CalendarDaySetting(
+            label: 'Dimanche',
+            settings: userInfo.calendarSettings.sunday,
+            onChange: (value) {
+              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(sunday: value);
+            },
+          ),
+          Row(
+            children: [
+              if (enableBackButton)
                 Padding(
                   padding: const EdgeInsets.all(kNormalPadding),
                   child: TextButton(
@@ -89,54 +95,80 @@ class _StepCalendarInfo extends HookConsumerWidget {
                     child: Text('Retour'),
                   ),
                 ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(kNormalPadding),
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.all(kNormalPadding),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
 
-                        showDayError(String day) {
-                          showAlert(context, 'Erreur', (context) => Padding(
+                      showDayError(String day) {
+                        showAlert(
+                          context,
+                          'Erreur',
+                          (context) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: kNormalPadding),
                             child: Text('Les horaires pour $day sont incorrect, merci de corriger.'),
-                          ));
-                        }
-
-                        if (!userInfo.calendarSettings.monday.isValid()) {
-                          showDayError('Lundi');
-                          return;
-                        } else if (!userInfo.calendarSettings.tuesday.isValid()) {
-                          showDayError('Mardi');
-                          return;
-                        } else if (!userInfo.calendarSettings.wednesday.isValid()) {
-                          showDayError('Mercredi');
-                          return;
-                        } else if (!userInfo.calendarSettings.thursday.isValid()) {
-                          showDayError('Jeudi');
-                          return;
-                        } else if (!userInfo.calendarSettings.friday.isValid()) {
-                          showDayError('Vendredi');
-                          return;
-                        } else if (!userInfo.calendarSettings.saturday.isValid()) {
-                          showDayError('Samedi');
-                          return;
-                        } else if (!userInfo.calendarSettings.sunday.isValid()) {
-                          showDayError('Dimanche');
-                          return;
-                        }
-                        onContinue();
+                          ),
+                        );
                       }
-                    },
-                    child: Text('Continuer'),
-                  ),
+
+                      if (!userInfo.calendarSettings.monday.isValid()) {
+                        showDayError('Lundi');
+                        return;
+                      } else if (!userInfo.calendarSettings.tuesday.isValid()) {
+                        showDayError('Mardi');
+                        return;
+                      } else if (!userInfo.calendarSettings.wednesday.isValid()) {
+                        showDayError('Mercredi');
+                        return;
+                      } else if (!userInfo.calendarSettings.thursday.isValid()) {
+                        showDayError('Jeudi');
+                        return;
+                      } else if (!userInfo.calendarSettings.friday.isValid()) {
+                        showDayError('Vendredi');
+                        return;
+                      } else if (!userInfo.calendarSettings.saturday.isValid()) {
+                        showDayError('Samedi');
+                        return;
+                      } else if (!userInfo.calendarSettings.sunday.isValid()) {
+                        showDayError('Dimanche');
+                        return;
+                      }
+                      onContinue?.call();
+                    }
+                  },
+                  child: Text(saveButtonLabel),
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class StepCalendarInfo extends HookConsumerWidget {
+  final VoidCallback onContinue;
+
+  const StepCalendarInfo({Key? key, required this.onContinue}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userInfo = ref.watch(userInfoProvider);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Merci de remplir vos heures de consultations:',
+          style: context.textTheme.headline5,
+        ),
+        const SizedBox(height: kNormalPadding),
+        StepCalendarInfoForm(onContinue: onContinue),
+      ],
     );
   }
 }
@@ -162,17 +194,17 @@ class _CalendarDaySetting extends HookConsumerWidget {
         if (amStartHour.value!.isAfter(amEndHour.value)) {
           amEndHour.value = null;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('L\'heure de début ne peut être après l\'heure de fin'),
+            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (amStartHour.value!.isAfter(pmStartHour.value)) {
           pmStartHour.value = null;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('L\'heure de début ne peut être après l\'heure de fin'),
+            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (amStartHour.value!.isAfter(pmEndHour.value)) {
           pmEndHour.value = null;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('L\'heure de début ne peut être après l\'heure de fin'),
+            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         }
       }
@@ -181,19 +213,19 @@ class _CalendarDaySetting extends HookConsumerWidget {
         pmEndHour.value = null;
       } else {
         if (pmStartHour.value!.isAfter(pmEndHour.value)) {
-          amEndHour.value = null;
+          pmEndHour.value = null;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('L\'heure de début ne peut être après l\'heure de fin'),
+            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (pmStartHour.value!.isBefore(amStartHour.value)) {
-          amStartHour.value = null;
+          pmStartHour.value = null;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('L\'heure de début ne peut être après l\'heure de fin'),
+            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (pmStartHour.value!.isBefore(amEndHour.value)) {
           pmStartHour.value = null;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('L\'heure de début ne peut être après l\'heure de fin'),
+            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         }
       }

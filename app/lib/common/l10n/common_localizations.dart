@@ -5,21 +5,17 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'messages/messages_all.dart';
-
 class CommonLocalizations {
   final Locale locale;
 
   CommonLocalizations(this.locale);
 
-  static Future<CommonLocalizations> load(Locale locale) {
+  static Future<CommonLocalizations> load(Locale locale) async {
     final name = locale.countryCode == null || locale.countryCode!.isEmpty ? locale.languageCode : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
-    return initializeMessages(localeName).then((_) async {
-      Intl.defaultLocale = localeName;
-      await initializeDateFormatting(Intl.defaultLocale);
-      return CommonLocalizations(locale);
-    });
+    Intl.defaultLocale = localeName;
+    await initializeDateFormatting(Intl.defaultLocale);
+    return CommonLocalizations(locale);
   }
 
   static CommonLocalizations of(BuildContext context) => Localizations.of<CommonLocalizations>(context, CommonLocalizations)!;

@@ -4,6 +4,10 @@ import 'package:heal_happy/common/router.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
+extension UserExtension on User {
+  String get name => '$firstName $lastName';
+}
+
 extension HealerExtension on Healer {
   String get address {
     String address = '';
@@ -56,8 +60,8 @@ extension StringCasingExtension on String {
 extension TimeOfDayExtension on TimeOfDay {
   bool isAfter(TimeOfDay? other) {
     if (other == null) return false;
-    if (hour > other.hour) {
-      return true;
+    if (hour < other.hour) {
+      return false;
     }
     return minute > other.minute;
   }

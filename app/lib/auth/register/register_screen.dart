@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/admin/home_screen.dart';
@@ -7,20 +6,17 @@ import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
-import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
-import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/healer/home_screen.dart';
 import 'package:heal_happy/patient/home_screen.dart';
+import 'package:heal_happy/profile/step_calendar_info.dart';
+import 'package:heal_happy/profile/step_personal_info.dart';
+import 'package:heal_happy/profile/step_pro_info.dart';
+import 'package:heal_happy/profile/step_social_info.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-part 'step_calendar_info.dart';
-part 'step_personal_info.dart';
-part 'step_pro_info.dart';
-part 'step_social_info.dart';
 
 final infoPersoStepValidationProvider = Provider((ref) {
   final info = ref.watch(userInfoProvider);
@@ -90,32 +86,7 @@ class RegisterScreen extends HookConsumerWidget {
                               final store = ref.read(userStoreProvider);
                               final userInfo = ref.read(userInfoProvider);
                               final success = await showLoadingDialog(context, (_) => Text('Inscription en cours...'), () async {
-                                await store.register(User((b) {
-                                  b.type = userInfo.type;
-                                  b.consultationDuration = userInfo.consultationDuration;
-                                  b.calendarSettings = userInfo.calendarSettings.toApiBuilder();
-
-                                  b.job = userInfo.job;
-                                  b.description = userInfo.description;
-                                  b.experiences = userInfo.experiences;
-                                  b.diploma = userInfo.diploma;
-
-                                  b.website = userInfo.website;
-                                  b.social1 = userInfo.social1;
-                                  b.social2 = userInfo.social2;
-                                  b.social3 = userInfo.social3;
-
-                                  b.email = userInfo.email;
-                                  b.firstName = userInfo.firstName;
-                                  b.lastName = userInfo.lastName;
-                                  b.password = userInfo.password;
-                                  b.mobile = userInfo.mobile;
-
-                                  b.street = userInfo.street;
-                                  b.street2 = userInfo.street2;
-                                  b.zipCode = userInfo.zipCode;
-                                  b.city = userInfo.city;
-                                }));
+                                await store.register(userInfo.toUser());
                               });
                               if (success) {
                                 switch (store.requiredUser.type) {
@@ -134,7 +105,7 @@ class RegisterScreen extends HookConsumerWidget {
 
                             switch (index) {
                               case 1:
-                                return _StepPersonalInfo(onContinue: () {
+                                return StepPersonalInfo(onContinue: () {
                                   if (userInfo.type == UserTypeEnum.patient) {
                                     register();
                                   } else {
@@ -142,13 +113,13 @@ class RegisterScreen extends HookConsumerWidget {
                                   }
                                 });
                               case 2:
-                                return _StepInfoPro(onContinue: next);
+                                return StepInfoPro(onContinue: next);
                               case 3:
-                                return _StepCalendarInfo(onContinue: next);
+                                return SingleChildScrollView(child: StepCalendarInfo(onContinue: next));
                               case 4:
-                                return _StepAddress(onContinue: next);
+                                return StepAddress(onContinue: next);
                               case 5:
-                                return _StepSocial(onContinue: register);
+                                return StepSocial(onContinue: register);
                             }
                             return _StepType(
                               onContinue: next,

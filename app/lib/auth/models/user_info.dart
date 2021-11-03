@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart' as backend;
 
 final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
 
@@ -12,12 +14,29 @@ class CalendarTimeOfDaySettings {
 
   CalendarTimeOfDaySettings({this.start, this.end, this.start2, this.end2});
 
+  factory CalendarTimeOfDaySettings.from(backend.CalendarDaySettings? settings) {
+    if (settings == null) {
+      return CalendarTimeOfDaySettings();
+    } else {
+      final start = settings.startHour == null ? null : TimeOfDay(hour: settings.startHour!, minute: settings.startMinute!);
+      final end = settings.endHour == null ? null : TimeOfDay(hour: settings.endHour!, minute: settings.endMinute!);
+      final start2 = settings.start2Hour == null ? null : TimeOfDay(hour: settings.start2Hour!, minute: settings.start2Minute!);
+      final end2 = settings.end2Hour == null ? null : TimeOfDay(hour: settings.end2Hour!, minute: settings.end2Minute!);
+      return CalendarTimeOfDaySettings(
+        start: start,
+        end: end,
+        start2: start2,
+        end2: end2,
+      );
+    }
+  }
+
   CalendarDaySettingsBuilder toApiBuilder() {
     CalendarDaySettingsBuilder builder = CalendarDaySettingsBuilder();
     builder.startHour = start?.hour;
     builder.startMinute = start?.minute;
-    builder.end2Hour = end?.hour;
-    builder.end2Minute = end?.minute;
+    builder.endHour = end?.hour;
+    builder.endMinute = end?.minute;
     builder.start2Hour = start2?.hour;
     builder.start2Minute = start2?.minute;
     builder.end2Hour = end2?.hour;
@@ -67,6 +86,19 @@ class CalendarSettings {
     return builder;
   }
 
+  factory CalendarSettings.from(backend.CalendarSettings settings) {
+    CalendarSettings calendarSettings = CalendarSettings(
+      monday: CalendarTimeOfDaySettings.from(settings.monday),
+      tuesday: CalendarTimeOfDaySettings.from(settings.tuesday),
+      wednesday: CalendarTimeOfDaySettings.from(settings.wednesday),
+      thursday: CalendarTimeOfDaySettings.from(settings.thursday),
+      friday: CalendarTimeOfDaySettings.from(settings.friday),
+      saturday: CalendarTimeOfDaySettings.from(settings.saturday),
+      sunday: CalendarTimeOfDaySettings.from(settings.sunday),
+    );
+    return calendarSettings;
+  }
+
   bool isValid() {
     return monday.isValid() && tuesday.isValid() && wednesday.isValid() && thursday.isValid() && friday.isValid() && saturday.isValid() && sunday.isValid();
   }
@@ -99,6 +131,64 @@ class UserInfo extends ChangeNotifier {
 
   set type(value) {
     _type = value;
+    notifyListeners();
+  }
+
+  toUser({User? existingUser}) {
+    builder(b) {
+      b.type = type;
+      b.lang = 'fr_FR';
+      b.consultationDuration = consultationDuration ?? 15;
+      b.calendarSettings = calendarSettings.toApiBuilder();
+
+      b.job = job;
+      b.description = description;
+      b.experiences = experiences;
+      b.diploma = diploma;
+
+      b.website = website;
+      b.social1 = social1;
+      b.social2 = social2;
+      b.social3 = social3;
+
+      b.email = email;
+      b.firstName = firstName;
+      b.lastName = lastName;
+      if (!password.isNullOrEmpty) {
+        b.password = password;
+      }
+      b.mobile = mobile;
+
+      b.street = street;
+      b.street2 = street2;
+      b.zipCode = zipCode ?? '';
+      b.city = city ?? '';
+    }
+
+    return existingUser?.rebuild(builder) ?? User(builder);
+  }
+
+  fromUser(User user) {
+    _type = user.type;
+    _isAddressVisible = user.isAddressPublic;
+    _firstName = user.firstName;
+    _lastName = user.lastName;
+    _email = user.email;
+    _mobile = user.mobile;
+    _calendarSettings = CalendarSettings.from(user.calendarSettings);
+    _consultationTime = user.consultationDuration;
+    _website = user.website;
+    _social1 = user.social1;
+    _social2 = user.social2;
+    _social3 = user.social3;
+    _description = user.description;
+    _experiences = user.experiences;
+    _diploma = user.diploma;
+    _street = user.street;
+    _street2 = user.street2;
+    _zipCode = user.zipCode;
+    _city = user.city;
+    _job = user.job;
     notifyListeners();
   }
 
