@@ -142,7 +142,7 @@ class UserInfo extends ChangeNotifier {
       b.calendarSettings = calendarSettings.toApiBuilder();
 
       b.job = job;
-      b.description = description;
+      b.description = description ?? '';
       b.experiences = experiences;
       b.diploma = diploma;
 

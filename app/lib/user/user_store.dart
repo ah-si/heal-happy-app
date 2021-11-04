@@ -55,20 +55,27 @@ class UserStore extends ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    final results = await _apiProvider.api.getAuthApi().login(
-      loginRequest: LoginRequest(
-        (b) {
-          b.password = password;
-          b.email = email;
-        },
-      ),
-    );
-    final token = results.data!.token;
-    final refreshToken = results.data!.refreshToken;
-    await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
-    await init(silent: false);
-    //notifyListeners();
-    print('login finished $user');
+    try {
+      final results = await _apiProvider.api.getAuthApi().login(
+        loginRequest: LoginRequest(
+              (b) {
+            b.password = password;
+            b.email = email;
+          },
+        ),
+      );
+
+      final token = results.data!.token;
+      final refreshToken = results.data!.refreshToken;
+      await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
+      await _preferencesProvider.prefs.setString(PreferencesProvider.keyEmail, email);
+      await init(silent: false);
+    } on DioError catch(ex) {
+      if (ex.response?.statusCode == 401) {
+        throw ErrorResultException(ErrorResult.wrongCredentials);
+      }
+      rethrow;
+    }
   }
 
   Future<void> register(User user) async {
@@ -79,7 +86,7 @@ class UserStore extends ChangeNotifier {
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
     } on DioError catch (ex) {
       if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('users.email must be unique')) {
-        throw ErrorResultException(ErrorResult.wrongEmail);
+        throw ErrorResultException(ErrorResult.emailAlreadyUsed);
       }
       rethrow;
     }

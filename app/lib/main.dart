@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/auth/login_screen.dart';
+import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
 import 'package:heal_happy/common/l10n/error_localizations.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -39,7 +40,12 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
-void main() async {
+void main() {
+  app();
+}
+
+void app({Config? config}) async {
+  config ??= Config();
   WidgetsFlutterBinding.ensureInitialized();
 
   initLogger();

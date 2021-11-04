@@ -21,7 +21,7 @@ class StepPersonalInfo extends HookConsumerWidget {
     final controllerMobile = useTextEditingController(text: userInfo.mobile);
     final controllerLastName = useTextEditingController(text: userInfo.lastName);
     final controllerFirstName = useTextEditingController(text: userInfo.firstName);
-    final controller = useTextEditingController(text: userInfo.email ?? 'jimmy.aumard@gmail.com');
+    final controller = useTextEditingController(text: userInfo.email);
     final controllerPass = useTextEditingController(text: userInfo.password);
     final formKey = useMemoized(() => GlobalKey<FormState>());
     return Form(

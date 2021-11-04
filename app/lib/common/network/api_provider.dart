@@ -1,5 +1,6 @@
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/logging.dart';
@@ -130,7 +131,7 @@ class BackendApiProvider {
     }
 
     // when in debug mode we allow self signed certificates
-    if (!kIsProductionMode) {
+    if (!kIsProductionMode && !kIsWeb) {
       (_singleton.api.dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (client) {
         client.badCertificateCallback =

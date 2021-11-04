@@ -42,7 +42,7 @@ class ErrorLocalizations {
   String get forbiddenHint => Intl.message('Vous n\'avez pas la permission de réaliser cette action', name: 'forbiddenHint', desc: 'When a 403 occurred');
 
   String get wrongCredentials => Intl.message('Erreur de connexion', name: 'wrongCredentials', desc: 'When login credentials are wrong');
-  String get wrongCredentialsHint => Intl.message('Merci de vérifier votre email et mot de passe avec de retenter', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
+  String get wrongCredentialsHint => Intl.message('Merci de vérifier votre email et mot de passe avant de retenter', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
 
   String get meetingAlreadyExist => Intl.message('Reservation impossible', name: 'meetingAlreadyExist');
   String get meetingAlreadyExistHint => Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consulation passé.', name: 'meetingAlreadyExistHint');

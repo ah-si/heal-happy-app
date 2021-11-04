@@ -7,6 +7,7 @@ import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,7 +18,7 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useTextEditingController(text: 'jimmy.aumard@gmail.com');
+    final controller = useTextEditingController(text: PreferencesProvider().prefs.getString(PreferencesProvider.keyEmail) ?? '');
     final controllerPass = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
     return BgContainer(
@@ -105,12 +106,13 @@ class LoginScreen extends HookConsumerWidget {
                               },
                               child: Text('Je n\'ai pas de compte, m\'inscrire'),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                context.goNamed(RegisterScreen.name);
-                              },
-                              child: Text('J\'ai oublié mon mot de passe'),
-                            ),
+                            if (false)
+                              TextButton(
+                                onPressed: () {
+                                  context.goNamed(RegisterScreen.name);
+                                },
+                                child: Text('J\'ai oublié mon mot de passe'),
+                              ),
                           ],
                         ),
                       ),

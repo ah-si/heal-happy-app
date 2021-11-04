@@ -4,9 +4,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final preferenceProvider = Provider((ref) => PreferencesProvider());
 
 class PreferencesProvider {
-  static const keyExternalUrl = 'externalUrl';
   static const keyLastRoute = 'lastRoute';
   static const keyToken = 'token';
+  static const keyEmail = 'email';
   static const keyLastSeen = 'lastSeen';
   static const keyRefreshToken = 'refreshToken';
   static PreferencesProvider? _singleton;

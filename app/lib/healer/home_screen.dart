@@ -296,35 +296,61 @@ class _HealerProfile extends HookConsumerWidget {
         content: Text('Information enregistré avec succès'),
       ));
     }
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(kNormalPadding),
         child: Column(
           children: [
-            StepCalendarInfoForm(
-              enableBackButton: false,
-              saveButtonLabel: 'Enregistrer',
-              onContinue: save,
+            ExpansionTile(
+              title: Text('Calendrier'),
+              children: [
+                StepCalendarInfoForm(
+                  enableBackButton: false,
+                  saveButtonLabel: 'Enregistrer',
+                  onContinue: save,
+                ),
+              ],
             ),
-            StepPersonalInfo(
-              headless: true,
-              onContinue: save,
-              saveButtonLabel: 'Enregistrer',
+            ExpansionTile(
+              title: Text('Information personnelles'),
+              children: [
+                StepPersonalInfo(
+                  headless: true,
+                  onContinue: save,
+                  saveButtonLabel: 'Enregistrer',
+                ),
+              ],
             ),
-            StepInfoPro(
-              headless: true,
-              onContinue: save,
-              saveButtonLabel: 'Enregistrer',
+            ExpansionTile(
+              title: Text('Information professionelles'),
+              children: [
+                StepInfoPro(
+                  headless: true,
+                  onContinue: save,
+                  saveButtonLabel: 'Enregistrer',
+                ),
+              ],
             ),
-            StepAddress(
-              headless: true,
-              onContinue: save,
-              saveButtonLabel: 'Enregistrer',
+            ExpansionTile(
+              title: Text('Addresse'),
+              children: [
+                StepAddress(
+                  headless: true,
+                  onContinue: save,
+                  saveButtonLabel: 'Enregistrer',
+                ),
+              ],
             ),
-            StepSocial(
-              headless: true,
-              onContinue: save,
-              saveButtonLabel: 'Enregistrer',
+            ExpansionTile(
+              title: Text('Information social'),
+              children: [
+                StepSocial(
+                  headless: true,
+                  onContinue: save,
+                  saveButtonLabel: 'Enregistrer',
+                ),
+              ],
             ),
           ],
         ),

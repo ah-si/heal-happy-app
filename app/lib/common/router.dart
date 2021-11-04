@@ -36,11 +36,8 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
           SplashScreen.name,
         ].contains(state.name ?? state.location);
 
-        print('redirect ${userStore.user} ${state.location} $loggedIn $currentScreenAllowAnonymous');
-
         // the user is not logged in and not headed to /login, they need to login
         if (!loggedIn && !currentScreenAllowAnonymous) {
-          print('GO LOGIN');
           return state.namedLocation(LoginScreen.name);
         }
 
@@ -117,7 +114,6 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
         ),
       ],
       errorPageBuilder: (BuildContext context, GoRouterState state) {
-        print('ERROR ${state.name} ${state.location}');
         return CustomTransitionPage<void>(
           key: state.pageKey,
           transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
