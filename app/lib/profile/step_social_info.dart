@@ -35,22 +35,22 @@ class StepSocial extends HookConsumerWidget {
             TextFormField(
               controller: controllerWebsite,
               keyboardType: TextInputType.url,
-              decoration: InputDecoration(label: Text('Website:')),
+              decoration: const InputDecoration(label: Text('Website:')),
             ),
             TextFormField(
               controller: controllerSocial1,
               keyboardType: TextInputType.url,
-              decoration: InputDecoration(label: Text('Réseau social 1:')),
+              decoration: const InputDecoration(label: Text('Réseau social 1:')),
             ),
             TextFormField(
               controller: controllerSocial2,
               keyboardType: TextInputType.url,
-              decoration: InputDecoration(label: Text('Réseau social 2:')),
+              decoration: const InputDecoration(label: Text('Réseau social 2:')),
             ),
             TextFormField(
               controller: controllerSocial3,
               keyboardType: TextInputType.url,
-              decoration: InputDecoration(label: Text('Réseau social 3:')),
+              decoration: const InputDecoration(label: Text('Réseau social 3:')),
             ),
           ],
         ),
@@ -64,7 +64,7 @@ class StepSocial extends HookConsumerWidget {
                   onPressed: () async {
                     Navigator.of(context).maybePop();
                   },
-                  child: Text('Retour'),
+                  child: const Text('Retour'),
                 ),
               ),
             const Spacer(),

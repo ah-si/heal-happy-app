@@ -135,7 +135,10 @@ class UserInfo extends ChangeNotifier {
   }
 
   toUser({User? existingUser}) {
-    builder(b) {
+    builder(UserBuilder b) {
+      b.isVerified = false;
+      b.isActivated = false;
+      b.type = type;
       b.type = type;
       b.lang = 'fr_FR';
       b.consultationDuration = consultationDuration ?? 15;

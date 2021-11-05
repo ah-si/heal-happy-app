@@ -10,8 +10,6 @@ class ErrorLocalizations {
   ErrorLocalizations(this.locale);
 
   static Future<ErrorLocalizations> load(Locale locale) async {
-    final name = locale.countryCode == null || locale.countryCode!.isEmpty ? locale.languageCode : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
     return ErrorLocalizations(locale);
   }
 
@@ -35,7 +33,7 @@ class ErrorLocalizations {
   String get fieldRequired => Intl.message('Ce champ est requis', name: 'fieldRequired', desc: 'When a field is required on a form');
   String get fieldRequiredHint => Intl.message('Merci de remplir ce champ', name: 'fieldRequiredHint', desc: 'When a field is required on a form');
 
-  String get notLogged => Intl.message('Vous n\êtes pas connecté', name: 'notLogged', desc: 'When a 401 occurred');
+  String get notLogged => Intl.message('Vous nêtes pas connecté', name: 'notLogged', desc: 'When a 401 occurred');
   String get notLoggedHint => Intl.message('Merci de vous connecter pour réaliser cette action', name: 'notLoggedHint', desc: 'When a 401 occurred');
 
   String get forbidden => Intl.message('Cette action est interdite', name: 'forbidden', desc: 'When a 403 occurred');

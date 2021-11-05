@@ -119,7 +119,7 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
           transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          child: Text('404 page not found'),
+          child: const Text('404 page not found'),
         );
       },
     );

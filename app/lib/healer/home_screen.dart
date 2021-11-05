@@ -25,6 +25,7 @@ class HealerHomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userStore = ref.watch(userStoreProvider);
     final store = ref.watch(healerStoreProvider);
 
     return BgContainer(
@@ -97,10 +98,32 @@ class HealerHomeScreen extends HookConsumerWidget {
                     ),
                   ],
                 ),
+                if (!(userStore.user?.isActivated ?? true))
+                  ColoredBox(
+                    color: context.theme.errorColor.withOpacity(0.8),
+                    child: const Padding(
+                      padding: EdgeInsets.all(kSmallPadding),
+                      child: Text(
+                        'Vous n\'avez pas encore validé votre email, merci de cliquez sur le lien que nous vous avons envoyé.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                if (!(userStore.user?.isVerified ?? true))
+                  ColoredBox(
+                    color: context.theme.errorColor.withOpacity(0.8),
+                    child: const Padding(
+                      padding: EdgeInsets.all(kSmallPadding),
+                      child: Text(
+                        'Votre compte est en attente de validation. Une fois vérifié, les patients pourrons prendre rendez vous.',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
-                    child: store.selectedTab == HomeTabs.home ? _HealerEvents() : _HealerProfile(),
+                    child: store.selectedTab == HomeTabs.home ? const _HealerEvents() : _HealerProfile(),
                   ),
                 ),
               ],
@@ -141,8 +164,8 @@ class _HealerEvents extends HookConsumerWidget {
     }
 
     if (store.eventsResults!.events.isEmpty) {
-      return Center(
-        child: const Text(
+      return const Center(
+        child: Text(
           'Vous n\'avez aucune consultation planifié pour le moment.',
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
@@ -192,7 +215,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(event.patient.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
                             child: InkWell(
@@ -253,7 +276,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                     final success =
                         await showConfirm(context, 'Annuler la consultation?', 'Êtes vous sur de vouloir annuler la consulation avec ${event.patient.name}?');
                     if (success) {
-                      final cancelled = await showLoadingDialog(context, (_) => Text('Annulation en cours'), () async {
+                      final cancelled = await showLoadingDialog(context, (_) => const Text('Annulation en cours'), () async {
                         await ref.read(healerStoreProvider).cancelEvent(event.id);
                       });
                       if (cancelled) {
@@ -262,13 +285,13 @@ class _HealerEventDetails extends HookConsumerWidget {
                       }
                     }
                   },
-                  child: Text('Annuler'),
+                  child: const Text('Annuler'),
                 ),
                 TextButton(
                   onPressed: () {
                     launch(event.link);
                   },
-                  child: Text('Rejoindre la visio'),
+                  child: const Text('Rejoindre la visio'),
                 ),
               ],
             )
@@ -292,7 +315,7 @@ class _HealerProfile extends HookConsumerWidget {
     save() {
       final info = ref.read(userInfoProvider);
       userStore.save(info.toUser(existingUser: userStore.user));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Information enregistré avec succès'),
       ));
     }
@@ -303,7 +326,7 @@ class _HealerProfile extends HookConsumerWidget {
         child: Column(
           children: [
             ExpansionTile(
-              title: Text('Calendrier'),
+              title: const Text('Calendrier'),
               children: [
                 StepCalendarInfoForm(
                   enableBackButton: false,
@@ -313,7 +336,7 @@ class _HealerProfile extends HookConsumerWidget {
               ],
             ),
             ExpansionTile(
-              title: Text('Information personnelles'),
+              title: const Text('Information personnelles'),
               children: [
                 StepPersonalInfo(
                   headless: true,
@@ -323,7 +346,7 @@ class _HealerProfile extends HookConsumerWidget {
               ],
             ),
             ExpansionTile(
-              title: Text('Information professionelles'),
+              title: const Text('Information professionelles'),
               children: [
                 StepInfoPro(
                   headless: true,
@@ -333,7 +356,7 @@ class _HealerProfile extends HookConsumerWidget {
               ],
             ),
             ExpansionTile(
-              title: Text('Addresse'),
+              title: const Text('Addresse'),
               children: [
                 StepAddress(
                   headless: true,
@@ -343,7 +366,7 @@ class _HealerProfile extends HookConsumerWidget {
               ],
             ),
             ExpansionTile(
-              title: Text('Information social'),
+              title: const Text('Information social'),
               children: [
                 StepSocial(
                   headless: true,

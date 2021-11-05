@@ -39,7 +39,7 @@ class UserStore extends ChangeNotifier {
       final results = await _apiProvider.api.getUserApi().getProfile();
       user = results.data;
       notifyListeners();
-    } catch (ex, stack) {
+    } catch (ex) {
       if (!silent) {
         rethrow;
       }
@@ -68,6 +68,9 @@ class UserStore extends ChangeNotifier {
       final token = results.data!.token;
       final refreshToken = results.data!.refreshToken;
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
+      if (!kIsWeb) {
+        await _preferencesProvider.prefs.setString(PreferencesProvider.keyRefreshToken, refreshToken);
+      }
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyEmail, email);
       await init(silent: false);
     } on DioError catch(ex) {
@@ -83,6 +86,9 @@ class UserStore extends ChangeNotifier {
       final results = await _apiProvider.api.getAuthApi().register(user: user);
       final token = results.data!.token;
       final refreshToken = results.data!.refreshToken;
+      if (!kIsWeb) {
+        await _preferencesProvider.prefs.setString(PreferencesProvider.keyRefreshToken, refreshToken);
+      }
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
     } on DioError catch (ex) {
       if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('users.email must be unique')) {

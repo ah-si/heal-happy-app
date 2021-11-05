@@ -22,6 +22,7 @@ class PatientHomeScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userStore = ref.watch(userStoreProvider);
     final store = ref.watch(patientStoreProvider);
     return BgContainer(
       child: Center(
@@ -34,68 +35,18 @@ class PatientHomeScreen extends HookConsumerWidget {
               children: [
                 const _SearchBar(),
                 const SizedBox(height: kNormalPadding),
-                Row(
-                  children: [
-                    InkWell(
-                      splashColor: context.primaryColor,
-                      child: ColoredBox(
-                        color: Colors.white.withOpacity(store.selectedTab == HomeTabs.home ?0.8:0.6),
-                        child: Padding(
-                          padding: const EdgeInsets.all(kSmallPadding),
-                          child: Text(
-                            'Accueil',
-                            style: TextStyle(
-                              color: store.selectedTab == HomeTabs.home ? context.primaryColor : Colors.black,
-                              fontWeight: store.selectedTab == HomeTabs.home ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
+                const _MenuBar(),
+                if (!(userStore.user?.isActivated ?? true))
+                  ColoredBox(
+                    color: context.theme.errorColor.withOpacity(0.8),
+                    child: const Padding(
+                      padding: EdgeInsets.all(kSmallPadding),
+                      child: Text(
+                        'Vous n\'avez pas encore validé votre email, merci de cliquez sur le lien que nous vous avons envoyé.',
+                        style: TextStyle(color: Colors.white),
                       ),
-                      onTap: () {
-                        store.selectedTab = HomeTabs.home;
-                      },
                     ),
-                    const SizedBox(width: 2),
-                    if (store.searchResults != null)
-                      InkWell(
-                        splashColor: context.primaryColor,
-                        child: ColoredBox(
-                          color: Colors.white.withOpacity(store.selectedTab == HomeTabs.search ? 0.8:0.6),
-                          child: Padding(
-                            padding: const EdgeInsets.all(kSmallPadding),
-                            child: Text(
-                              'Recherche',
-                              style: TextStyle(
-                                color: store.selectedTab == HomeTabs.search ? context.primaryColor : Colors.black,
-                                fontWeight: store.selectedTab == HomeTabs.search ? FontWeight.bold : FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ),
-                        onTap: () {
-                          store.selectedTab = HomeTabs.search;
-                        },
-                      ),
-                    const Spacer(),
-                    InkWell(
-                      splashColor: context.primaryColor,
-                      child: ColoredBox(
-                        color: Colors.white.withOpacity(0.8),
-                        child: const Padding(
-                          padding: EdgeInsets.all(kSmallPadding),
-                          child: Text('Déconnexion'),
-                        ),
-                      ),
-                      onTap: () async {
-                        final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
-                        if (success) {
-                          final store = ref.read(userStoreProvider);
-                          store.logout();
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                  ),
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
@@ -155,6 +106,79 @@ class PatientHomeScreen extends HookConsumerWidget {
   }
 }
 
+class _MenuBar extends HookConsumerWidget {
+  const _MenuBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.watch(patientStoreProvider);
+    return Row(
+      children: [
+        InkWell(
+          splashColor: context.primaryColor,
+          child: ColoredBox(
+            color: Colors.white.withOpacity(store.selectedTab == HomeTabs.home ? 0.8 : 0.6),
+            child: Padding(
+              padding: const EdgeInsets.all(kSmallPadding),
+              child: Text(
+                'Accueil',
+                style: TextStyle(
+                  color: store.selectedTab == HomeTabs.home ? context.primaryColor : Colors.black,
+                  fontWeight: store.selectedTab == HomeTabs.home ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            store.selectedTab = HomeTabs.home;
+          },
+        ),
+        const SizedBox(width: 2),
+        if (store.searchResults != null)
+          InkWell(
+            splashColor: context.primaryColor,
+            child: ColoredBox(
+              color: Colors.white.withOpacity(store.selectedTab == HomeTabs.search ? 0.8 : 0.6),
+              child: Padding(
+                padding: const EdgeInsets.all(kSmallPadding),
+                child: Text(
+                  'Recherche',
+                  style: TextStyle(
+                    color: store.selectedTab == HomeTabs.search ? context.primaryColor : Colors.black,
+                    fontWeight: store.selectedTab == HomeTabs.search ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+              ),
+            ),
+            onTap: () {
+              store.selectedTab = HomeTabs.search;
+            },
+          ),
+        const Spacer(),
+        InkWell(
+          splashColor: context.primaryColor,
+          child: ColoredBox(
+            color: Colors.white.withOpacity(0.8),
+            child: const Padding(
+              padding: EdgeInsets.all(kSmallPadding),
+              child: Text('Déconnexion'),
+            ),
+          ),
+          onTap: () async {
+            final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
+            if (success) {
+              final store = ref.read(userStoreProvider);
+              store.logout();
+            }
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class _HealerListItem extends StatelessWidget {
   final Healer healer;
 
@@ -180,7 +204,7 @@ class _HealerListItem extends StatelessWidget {
               if (false)
                 ElevatedButton(
                   onPressed: () {},
-                  child: Text('En savoir plus'),
+                  child: const Text('En savoir plus'),
                 ),
             ],
           ),
@@ -256,7 +280,7 @@ class _HealerAvailability extends HookConsumerWidget {
                                               final controller = TextEditingController();
                                               showAppDialog(
                                                   context,
-                                                  (_) => Text('Prendre rendez vous'),
+                                                  (_) => const Text('Prendre rendez vous'),
                                                   (context) => Column(
                                                         crossAxisAlignment: CrossAxisAlignment.stretch,
                                                         children: [
@@ -264,7 +288,7 @@ class _HealerAvailability extends HookConsumerWidget {
                                                           TextField(
                                                             controller: controller,
                                                             maxLines: 3,
-                                                            decoration: InputDecoration(
+                                                            decoration: const InputDecoration(
                                                               label: Text('Message pour le soignant:'),
                                                             ),
                                                           ),
@@ -281,13 +305,13 @@ class _HealerAvailability extends HookConsumerWidget {
                                                       text: MaterialLocalizations.of(context).okButtonLabel,
                                                       callback: (BuildContext context) async {
                                                         final userStore = ref.read(userStoreProvider);
-                                                        final success = await showLoadingDialog(context, (_) => Text('Création du rendez-vous'), () async {
+                                                        final success = await showLoadingDialog(context, (_) => const Text('Création du rendez-vous'), () async {
                                                           await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
                                                         });
                                                         if (success) {
                                                           Navigator.of(context).pop();
                                                           showAlert(
-                                                              context, 'Rendez-vous validé!', (_) => Text('Vous allez recevoir un email de confirmation.'));
+                                                              context, 'Rendez-vous validé!', (_) => const Text('Vous allez recevoir un email de confirmation.'));
                                                         }
                                                       },
                                                     ),
@@ -400,8 +424,8 @@ class _PatientEventDetails extends HookConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(event.healer.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                              Text(event.healer.address, style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text(event.healer.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                              Text(event.healer.address, style: const TextStyle(fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -418,7 +442,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                     final success =
                         await showConfirm(context, 'Annuler la consultation?', 'Êtes vous sur de vouloir annuler la consulation avec ${event.healer.name}?');
                     if (success) {
-                      final cancelled = await showLoadingDialog(context, (_) => Text('Annulation en cours'), () async {
+                      final cancelled = await showLoadingDialog(context, (_) => const Text('Annulation en cours'), () async {
                         await ref.read(patientStoreProvider).cancelEvent(event.id);
                       });
                       if (cancelled) {
@@ -426,13 +450,13 @@ class _PatientEventDetails extends HookConsumerWidget {
                       }
                     }
                   },
-                  child: Text('Annuler'),
+                  child: const Text('Annuler'),
                 ),
                 TextButton(
                   onPressed: () {
                     launch(event.link);
                   },
-                  child: Text('Rejoindre la visio'),
+                  child: const Text('Rejoindre la visio'),
                 ),
               ],
             )
@@ -470,7 +494,7 @@ class _SearchBar extends HookConsumerWidget {
                 Expanded(
                   child: Center(
                     child: JobSearchFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Recherche de spécialité*:',
                         border: InputBorder.none,
                       ),
@@ -496,7 +520,7 @@ class _SearchBar extends HookConsumerWidget {
                   flex: 3,
                   child: Center(
                     child: TextFormField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Localisation*:',
                         border: InputBorder.none,
                       ),
@@ -515,9 +539,9 @@ class _SearchBar extends HookConsumerWidget {
                           ref.read(patientStoreProvider).searchHealers(jobChoice.value!.key, controllerLocalization.text);
                         }
                       },
-                      child: Center(
+                      child: const Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(kNormalPadding),
+                          padding: EdgeInsets.all(kNormalPadding),
                           child: Text(
                             'Rechercher',
                             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

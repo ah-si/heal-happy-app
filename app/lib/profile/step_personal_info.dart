@@ -46,7 +46,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                 keyboardType: TextInputType.name,
                 autofillHints: const [AutofillHints.familyName],
                 onChanged: (value) => userInfo.lastName = value,
-                decoration: InputDecoration(label: Text('Nom*:')),
+                decoration: const InputDecoration(label: Text('Nom*:')),
               ),
               TextFormField(
                 controller: controllerFirstName,
@@ -54,7 +54,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                 keyboardType: TextInputType.name,
                 autofillHints: const [AutofillHints.name, AutofillHints.givenName],
                 onChanged: (value) => userInfo.firstName = value,
-                decoration: InputDecoration(label: Text('Prénom*:')),
+                decoration: const InputDecoration(label: Text('Prénom*:')),
               ),
               TextFormField(
                 controller: controllerMobile,
@@ -63,7 +63,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                 onChanged: (value) => userInfo.mobile = value,
                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[+0-9]'))],
                 maxLength: 12,
-                decoration: InputDecoration(label: Text('Mobile:'), counter: SizedBox()),
+                decoration: const InputDecoration(label: Text('Mobile:'), counter: SizedBox()),
               ),
               TextFormField(
                 controller: controller,
@@ -71,7 +71,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: const [AutofillHints.email],
                 onChanged: (value) => userInfo.email = value,
-                decoration: InputDecoration(label: Text('Email*:')),
+                decoration: const InputDecoration(label: Text('Email*:')),
               ),
               if (!headless)
                 TextFormField(
@@ -81,7 +81,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                   autofillHints: const [AutofillHints.newPassword],
                   keyboardType: TextInputType.visiblePassword,
                   onChanged: (value) => userInfo.password = value,
-                  decoration: InputDecoration(label: Text('Mot de passe*:')),
+                  decoration: const InputDecoration(label: Text('Mot de passe*:')),
                 ),
             ],
           ),
@@ -95,7 +95,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                     onPressed: () async {
                       Navigator.of(context).maybePop();
                     },
-                    child: Text('Retour'),
+                    child: const Text('Retour'),
                   ),
                 ),
               const Spacer(),

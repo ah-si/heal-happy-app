@@ -71,7 +71,7 @@ class LoginScreen extends HookConsumerWidget {
                               validator: isEmailValid,
                               keyboardType: TextInputType.emailAddress,
                               autofillHints: const [AutofillHints.email],
-                              decoration: InputDecoration(label: Text('Email*:')),
+                              decoration: const InputDecoration(label: Text('Email*:')),
                             ),
                             TextFormField(
                               controller: controllerPass,
@@ -79,7 +79,7 @@ class LoginScreen extends HookConsumerWidget {
                               validator: isRequired,
                               keyboardType: TextInputType.text,
                               autofillHints: const [AutofillHints.password],
-                              decoration: InputDecoration(label: Text('Mot de passe*:')),
+                              decoration: const InputDecoration(label: Text('Mot de passe*:')),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(kNormalPadding),
@@ -89,7 +89,7 @@ class LoginScreen extends HookConsumerWidget {
                                     final store = ref.read(userStoreProvider);
                                     final success = await showLoadingDialog(
                                       context,
-                                      (context) => Text('Connexion en cours...'),
+                                      (context) => const Text('Connexion en cours...'),
                                       () => store.login(controller.text, controllerPass.text),
                                     );
                                     if (success) {
@@ -97,21 +97,21 @@ class LoginScreen extends HookConsumerWidget {
                                     }
                                   }
                                 },
-                                child: Text('Connexion'),
+                                child: const Text('Connexion'),
                               ),
                             ),
                             TextButton(
                               onPressed: () {
                                 context.goNamed(RegisterScreen.name);
                               },
-                              child: Text('Je n\'ai pas de compte, m\'inscrire'),
+                              child: const Text('Je n\'ai pas de compte, m\'inscrire'),
                             ),
                             if (false)
                               TextButton(
                                 onPressed: () {
                                   context.goNamed(RegisterScreen.name);
                                 },
-                                child: Text('J\'ai oublié mon mot de passe'),
+                                child: const Text('J\'ai oublié mon mot de passe'),
                               ),
                           ],
                         ),

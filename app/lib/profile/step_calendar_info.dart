@@ -30,7 +30,7 @@ class StepCalendarInfoForm extends HookConsumerWidget {
             validator: isRequired,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(),
-            decoration: InputDecoration(label: Text('Durée d\'une consultation*:'), hintText: 'A spécifier en minute'),
+            decoration: const InputDecoration(label: Text('Durée d\'une consultation*:'), hintText: 'A spécifier en minute'),
           ),
           const SizedBox(height: kSmallPadding),
           Text('M. = Matin, AM. = Après midi', style: context.textTheme.caption),
@@ -92,7 +92,7 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                     onPressed: () async {
                       Navigator.of(context).maybePop();
                     },
-                    child: Text('Retour'),
+                    child: const Text('Retour'),
                   ),
                 ),
               const Spacer(),
@@ -150,15 +150,13 @@ class StepCalendarInfoForm extends HookConsumerWidget {
   }
 }
 
-class StepCalendarInfo extends HookConsumerWidget {
+class StepCalendarInfo extends StatelessWidget {
   final VoidCallback onContinue;
 
   const StepCalendarInfo({Key? key, required this.onContinue}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final userInfo = ref.watch(userInfoProvider);
-
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -193,17 +191,17 @@ class _CalendarDaySetting extends HookConsumerWidget {
       } else {
         if (amStartHour.value!.isAfter(amEndHour.value)) {
           amEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (amStartHour.value!.isAfter(pmStartHour.value)) {
           pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (amStartHour.value!.isAfter(pmEndHour.value)) {
           pmEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         }
@@ -214,17 +212,17 @@ class _CalendarDaySetting extends HookConsumerWidget {
       } else {
         if (pmStartHour.value!.isAfter(pmEndHour.value)) {
           pmEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (pmStartHour.value!.isBefore(amStartHour.value)) {
           pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         } else if (pmStartHour.value!.isBefore(amEndHour.value)) {
           pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
           ));
         }

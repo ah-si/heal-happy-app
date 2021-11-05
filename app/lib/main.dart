@@ -17,6 +17,7 @@ import 'package:heal_happy/common/utils/logging.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 MaterialColor createMaterialColor(Color color) {
   final strengths = <double>[.05];
@@ -49,12 +50,17 @@ void app({Config? config}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   initLogger();
-  //initializeDateFormatting(kSupportedLanguages.first.toString());
+
   await PreferencesProvider().setup();
   if (kIsWeb) {
     GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
   }
-  runApp(const MyApp());
+  await SentryFlutter.init(
+        (options) {
+      options.dsn = 'https://55cc8e96b7a7494aa3648c2f16654931@o1060733.ingest.sentry.io/6050521';
+    },
+    appRunner: () => runApp(const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {

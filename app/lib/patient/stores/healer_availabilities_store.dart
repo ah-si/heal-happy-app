@@ -31,7 +31,6 @@ class AvailabilitiesResults {
 
 class AvailabilitiesStore extends ChangeNotifier {
   final UserApi _userApi;
-  final _dateFormat = DateFormat('yyyy-MM-dd');
   final _hourFormat = DateFormat('HH:mm');
   final _uiFormat = DateFormat('EEEE\ndd MMM');
   AvailabilitiesResults? availabilities;

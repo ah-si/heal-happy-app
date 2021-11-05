@@ -1,5 +1,5 @@
 
-import 'package:heal_happy_sdk/heal_happy_sdk.dart';
+
 
 class Config {
   static Config? _singleton;
@@ -7,7 +7,7 @@ class Config {
 
   final String baseUrl;
 
-  factory Config({String baseUrl = HealHappySdk.basePath}) => _singleton ?? Config._instance(baseUrl: baseUrl);
+  factory Config({String baseUrl = '/'}) => _singleton ?? Config._instance(baseUrl: baseUrl);
 
-  const Config._instance({this.baseUrl = HealHappySdk.basePath});
+  const Config._instance({this.baseUrl = '/'});
 }

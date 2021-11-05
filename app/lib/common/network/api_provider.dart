@@ -27,34 +27,32 @@ class LogoutInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     //backend tell us our token is not good anymore, let's logout in that case
     if (err.response?.statusCode == 401 && !err.requestOptions.uri.path.contains('/auth/')) {
-      /*
-      try {
-        final result = await _authApi().refreshToken(
-            refreshTokenRequest: (RefreshTokenRequestBuilder()
-              ..refreshToken = await _preferenceProvider.securePrefs.read(
-                key: PreferencesProvider.keyRefreshToken,
-              ))
-                .build());
-        final token = result.data!.token;
-        await _preferenceProvider.securePrefs.write(key: PreferencesProvider.keyToken, value: token);
-        BackendApiProvider().setToken(token);
-        err.requestOptions.headers["Authorization"] = 'Token $token';
-        //create request with new access token
-        final opts = Options(method: err.requestOptions.method, headers: err.requestOptions.headers);
-        final response = await BackendApiProvider().api.dio.request(
-          err.requestOptions.path,
-          options: opts,
-          data: err.requestOptions.data,
-          queryParameters: err.requestOptions.queryParameters,
-        );
+      if (!kIsWeb) {
+        try {
+          final result = await _authApi().refreshToken(
+              refreshTokenRequest: (RefreshTokenRequestBuilder()
+                ..refreshToken =  _preferenceProvider.prefs.getString(
+                  PreferencesProvider.keyRefreshToken,
+                ))
+                  .build());
+          final token = result.data!.token;
+          await _preferenceProvider.prefs.setString(PreferencesProvider.keyToken, token);
+          BackendApiProvider().setToken(token);
+          err.requestOptions.headers["Authorization"] = 'Bearer $token';
+          //create request with new access token
+          final opts = Options(method: err.requestOptions.method, headers: err.requestOptions.headers);
+          final response = await BackendApiProvider().api.dio.request(
+            err.requestOptions.path,
+            options: opts,
+            data: err.requestOptions.data,
+            queryParameters: err.requestOptions.queryParameters,
+          );
 
-        return handler.resolve(response);
-
-      } catch (err) {
-        _logout(true);
+          return handler.resolve(response);
+        } catch (err) {
+          onLogout();
+        }
       }
-
-       */
       onLogout();
     } else if (err.response?.statusCode == 401) {
       onLogout();

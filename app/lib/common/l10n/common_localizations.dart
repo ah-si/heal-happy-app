@@ -22,7 +22,6 @@ class CommonLocalizations {
 
   String get appTitle => Intl.message('Soignez Heureux', name: 'appTitle', desc: 'Action bar title on main screen.');
 
-
 }
 
 class CommonLocalizationsDelegate extends LocalizationsDelegate<CommonLocalizations> {

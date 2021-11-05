@@ -85,7 +85,7 @@ class RegisterScreen extends HookConsumerWidget {
                             register() async {
                               final store = ref.read(userStoreProvider);
                               final userInfo = ref.read(userInfoProvider);
-                              final success = await showLoadingDialog(context, (_) => Text('Inscription en cours...'), () async {
+                              final success = await showLoadingDialog(context, (_) => const Text('Inscription en cours...'), () async {
                                 await store.register(userInfo.toUser());
                               });
                               if (success) {
@@ -239,7 +239,7 @@ class _StepType extends HookConsumerWidget {
             onPressed: () {
               context.goNamed(LoginScreen.name);
             },
-            child: Text('J\'ai déjà un compte, me connecter'),
+            child: const Text('J\'ai déjà un compte, me connecter'),
           ),
         ),
         const Spacer(),
