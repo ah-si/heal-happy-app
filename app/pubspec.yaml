@@ -17,9 +17,11 @@ dependencies:
     sdk: flutter
   url_launcher: ^6.0.12
   dio:
-  intl:
-  shared_preferences:
-  go_router:
+  intl: ^0.17.0
+  pubspec_parse: ^1.0.0
+  stream_transform: ^2.0.0
+  shared_preferences: ^2.0.8
+  go_router: ^2.2.0
   heal_happy_sdk:
     path: '../api'
   flutter_riverpod: ^1.0.0-dev.11
@@ -31,11 +33,16 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  sentry_dart_plugin: ^1.0.0-beta.1
   flutter_test:
     sdk: flutter
-  build_runner: ^2.0.0
 
   flutter_lints: ^1.0.0
+
+sentry:
+  project: app
+  org: ah-si
+  auth_token: 8990b4c7cf704adc8abf3f75044397c612e5fcadc6ad4dc78db7f903b4a3d61f
 
 flutter:
 

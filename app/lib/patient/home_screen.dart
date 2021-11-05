@@ -305,13 +305,14 @@ class _HealerAvailability extends HookConsumerWidget {
                                                       text: MaterialLocalizations.of(context).okButtonLabel,
                                                       callback: (BuildContext context) async {
                                                         final userStore = ref.read(userStoreProvider);
-                                                        final success = await showLoadingDialog(context, (_) => const Text('Création du rendez-vous'), () async {
+                                                        final success =
+                                                            await showLoadingDialog(context, (_) => const Text('Création du rendez-vous'), () async {
                                                           await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
                                                         });
                                                         if (success) {
                                                           Navigator.of(context).pop();
-                                                          showAlert(
-                                                              context, 'Rendez-vous validé!', (_) => const Text('Vous allez recevoir un email de confirmation.'));
+                                                          showAlert(context, 'Rendez-vous validé!',
+                                                              (_) => const Text('Vous allez recevoir un email de confirmation.'));
                                                         }
                                                       },
                                                     ),
@@ -476,6 +477,12 @@ class _SearchBar extends HookConsumerWidget {
     final controllerJob = useTextEditingController();
     final controllerLocalization = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
+    submitForm() {
+      if (formKey.currentState!.validate()) {
+        ref.read(patientStoreProvider).searchHealers(jobChoice.value!.key, controllerLocalization.text);
+      }
+    }
+
     return ColoredBox(
       color: Colors.white.withOpacity(.85),
       child: Padding(
@@ -525,6 +532,7 @@ class _SearchBar extends HookConsumerWidget {
                         border: InputBorder.none,
                       ),
                       controller: controllerLocalization,
+                      onFieldSubmitted: (_) => submitForm(),
                       validator: isRequired,
                     ),
                   ),
@@ -534,11 +542,7 @@ class _SearchBar extends HookConsumerWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          ref.read(patientStoreProvider).searchHealers(jobChoice.value!.key, controllerLocalization.text);
-                        }
-                      },
+                      onTap: submitForm,
                       child: const Center(
                         child: Padding(
                           padding: EdgeInsets.all(kNormalPadding),

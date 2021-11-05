@@ -2,6 +2,7 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/logging.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
@@ -12,7 +13,7 @@ final apiProvider = Provider<BackendApiProvider>((ref) {
   return BackendApiProvider.setup(
     () => BackendApiProvider().onLogout(),
     PreferencesProvider(),
-    baseUrl: HealHappySdk.basePath,
+    baseUrl: Config().baseUrl,
   );
 });
 

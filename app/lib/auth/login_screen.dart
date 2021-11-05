@@ -21,6 +21,19 @@ class LoginScreen extends HookConsumerWidget {
     final controller = useTextEditingController(text: PreferencesProvider().prefs.getString(PreferencesProvider.keyEmail) ?? '');
     final controllerPass = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
+    submitForm() async {
+      if (formKey.currentState!.validate()) {
+        final store = ref.read(userStoreProvider);
+        final success = await showLoadingDialog(
+          context,
+              (context) => const Text('Connexion en cours...'),
+              () => store.login(controller.text, controllerPass.text),
+        );
+        if (success) {
+          context.goToHome();
+        }
+      }
+    }
     return BgContainer(
       child: Center(
         child: SingleChildScrollView(
@@ -79,24 +92,13 @@ class LoginScreen extends HookConsumerWidget {
                               validator: isRequired,
                               keyboardType: TextInputType.text,
                               autofillHints: const [AutofillHints.password],
+                              onFieldSubmitted: (_) => submitForm(),
                               decoration: const InputDecoration(label: Text('Mot de passe*:')),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(kNormalPadding),
                               child: ElevatedButton(
-                                onPressed: () async {
-                                  if (formKey.currentState!.validate()) {
-                                    final store = ref.read(userStoreProvider);
-                                    final success = await showLoadingDialog(
-                                      context,
-                                      (context) => const Text('Connexion en cours...'),
-                                      () => store.login(controller.text, controllerPass.text),
-                                    );
-                                    if (success) {
-                                      context.goToHome();
-                                    }
-                                  }
-                                },
+                                onPressed: submitForm,
                                 child: const Text('Connexion'),
                               ),
                             ),
