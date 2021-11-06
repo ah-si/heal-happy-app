@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/network/api_provider.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
@@ -17,6 +18,7 @@ final userStoreProvider = ChangeNotifierProvider<UserStore>((ref) {
 class UserStore extends ChangeNotifier {
   final BackendApiProvider _apiProvider;
   final PreferencesProvider _preferencesProvider;
+  bool loginPending = false;
   User? user;
 
   User get requiredUser => user!;
@@ -30,16 +32,20 @@ class UserStore extends ChangeNotifier {
 
   Future<void> init({bool silent = true}) async {
     try {
+      loginPending = true;
       final token = _preferencesProvider.prefs.getString(PreferencesProvider.keyToken);
-      if (token == null) {
+      if (token.isNullOrEmpty) {
         throw ErrorResultException(ErrorResult.notLogged);
       }
 
-      _apiProvider.setToken(token);
+      _apiProvider.setToken(token!);
       final results = await _apiProvider.api.getUserApi().getProfile();
       user = results.data;
+      loginPending = false;
       notifyListeners();
     } catch (ex) {
+      loginPending = false;
+      notifyListeners();
       if (!silent) {
         rethrow;
       }

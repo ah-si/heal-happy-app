@@ -6,16 +6,22 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 extension UserExtension on User {
   String get name => '$firstName $lastName';
+
+  String get adminAddress {
+    String address = '';
+    address = street.isNullOrEmpty ? '' : '$street\n';
+    address += street2.isNullOrEmpty ? '' : '$street2\n';
+    address += '$zipCode $city';
+    return address;
+  }
 }
 
 extension HealerExtension on Healer {
   String get address {
     String address = '';
     if (isAddressPublic) {
-      address = street ?? '';
-      if (street2 != null && street2!.isNotEmpty) {
-        address += street2!;
-      }
+      address = street.isNullOrEmpty ? '' : '$street\n';
+      address += street2.isNullOrEmpty ? '' : '$street2\n';
     }
     address += '$zipCode $city';
     return address;
@@ -41,7 +47,7 @@ extension ContextExtension on BuildContext {
     try {
       navigator;
       return true;
-    } catch(_) {
+    } catch (_) {
       return false;
     }
   }

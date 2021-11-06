@@ -4,6 +4,7 @@ import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
+import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
@@ -116,56 +117,25 @@ class _MenuBar extends HookConsumerWidget {
     final store = ref.watch(patientStoreProvider);
     return Row(
       children: [
-        InkWell(
-          splashColor: context.primaryColor,
-          child: ColoredBox(
-            color: Colors.white.withOpacity(store.selectedTab == HomeTabs.home ? 0.8 : 0.6),
-            child: Padding(
-              padding: const EdgeInsets.all(kSmallPadding),
-              child: Text(
-                'Accueil',
-                style: TextStyle(
-                  color: store.selectedTab == HomeTabs.home ? context.primaryColor : Colors.black,
-                  fontWeight: store.selectedTab == HomeTabs.home ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-            ),
-          ),
+        MenuItem(
+          label: 'Accueil',
           onTap: () {
             store.selectedTab = HomeTabs.home;
           },
+          selected: store.selectedTab == HomeTabs.home,
         ),
         const SizedBox(width: 2),
         if (store.searchResults != null)
-          InkWell(
-            splashColor: context.primaryColor,
-            child: ColoredBox(
-              color: Colors.white.withOpacity(store.selectedTab == HomeTabs.search ? 0.8 : 0.6),
-              child: Padding(
-                padding: const EdgeInsets.all(kSmallPadding),
-                child: Text(
-                  'Recherche',
-                  style: TextStyle(
-                    color: store.selectedTab == HomeTabs.search ? context.primaryColor : Colors.black,
-                    fontWeight: store.selectedTab == HomeTabs.search ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-              ),
-            ),
+          MenuItem(
+            label: 'Recherche',
             onTap: () {
               store.selectedTab = HomeTabs.search;
             },
+            selected: store.selectedTab == HomeTabs.search,
           ),
         const Spacer(),
-        InkWell(
-          splashColor: context.primaryColor,
-          child: ColoredBox(
-            color: Colors.white.withOpacity(0.8),
-            child: const Padding(
-              padding: EdgeInsets.all(kSmallPadding),
-              child: Text('Déconnexion'),
-            ),
-          ),
+        MenuItem(
+          label: 'Déconnexion',
           onTap: () async {
             final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
             if (success) {
@@ -173,6 +143,7 @@ class _MenuBar extends HookConsumerWidget {
               store.logout();
             }
           },
+          selected: true,
         ),
       ],
     );

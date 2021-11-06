@@ -5,6 +5,7 @@ import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
+import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/healer/stores/healer_store.dart';
@@ -39,55 +40,24 @@ class HealerHomeScreen extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
-                    InkWell(
-                      splashColor: context.primaryColor,
-                      child: ColoredBox(
-                        color: Colors.white.withOpacity(store.selectedTab == HomeTabs.home ? 0.8 : 0.6),
-                        child: Padding(
-                          padding: const EdgeInsets.all(kSmallPadding),
-                          child: Text(
-                            'Accueil',
-                            style: TextStyle(
-                              color: store.selectedTab == HomeTabs.home ? context.primaryColor : Colors.black,
-                              fontWeight: store.selectedTab == HomeTabs.home ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ),
+                    MenuItem(
+                      label: 'Accueil',
                       onTap: () {
                         store.selectedTab = HomeTabs.home;
                       },
+                      selected: store.selectedTab == HomeTabs.home,
                     ),
                     const SizedBox(width: 2),
-                    InkWell(
-                      splashColor: context.primaryColor,
-                      child: ColoredBox(
-                        color: Colors.white.withOpacity(store.selectedTab == HomeTabs.profile ? 0.8 : 0.6),
-                        child: Padding(
-                          padding: const EdgeInsets.all(kSmallPadding),
-                          child: Text(
-                            'Profile',
-                            style: TextStyle(
-                              color: store.selectedTab == HomeTabs.profile ? context.primaryColor : Colors.black,
-                              fontWeight: store.selectedTab == HomeTabs.profile ? FontWeight.bold : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ),
+                    MenuItem(
+                      label: 'Profile',
                       onTap: () {
                         store.selectedTab = HomeTabs.profile;
                       },
+                      selected: store.selectedTab == HomeTabs.profile,
                     ),
                     const Spacer(),
-                    InkWell(
-                      splashColor: context.primaryColor,
-                      child: ColoredBox(
-                        color: Colors.white.withOpacity(0.8),
-                        child: const Padding(
-                          padding: EdgeInsets.all(kSmallPadding),
-                          child: Text('Déconnexion'),
-                        ),
-                      ),
+                    MenuItem(
+                      label: 'Déconnexion',
                       onTap: () async {
                         final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
                         if (success) {
@@ -95,6 +65,7 @@ class HealerHomeScreen extends HookConsumerWidget {
                           store.logout();
                         }
                       },
+                      selected: true,
                     ),
                   ],
                 ),

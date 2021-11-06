@@ -26,6 +26,10 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
       refreshListenable: userStore,
       // redirect to the login page if the user is not logged in
       redirect: (state) {
+        if (userStore.loginPending) {
+          //login still ongoing so let's wait
+          return null;
+        }
         final loggedIn = userStore.user != null;
         final currentScreenAllowAnonymous = [
           '/',
