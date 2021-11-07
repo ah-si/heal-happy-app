@@ -113,36 +113,50 @@ Future<bool> showConfirm(BuildContext context, String title, String content, {bo
       false);
 }
 
-Future<String?> showPrompt<T>(BuildContext context, String title,
-    {TextEditingController? controller, String? initialValue, bool barrierDismissible = true, String? hint}) {
+Future<String?> showPrompt<T>(
+  BuildContext context,
+  String title, {
+  TextEditingController? controller,
+  String? initialValue,
+  String? description,
+  bool barrierDismissible = true,
+  String? hint,
+}) {
   controller ??= TextEditingController(text: initialValue ?? '');
   return showAppDialog(
     context,
     (_) => Text(title),
     (_) => Material(
-        color: Colors.transparent,
-        child: HookBuilder(
-          builder: (context) {
-            final fieldController = useMemoized(() => controller!, [controller]);
+      color: Colors.transparent,
+      child: HookBuilder(
+        builder: (context) {
+          final fieldController = useMemoized(() => controller!, [controller]);
 
-            useEffect(() {
-              return fieldController.dispose;
-            }, [fieldController]);
+          useEffect(() {
+            return fieldController.dispose;
+          }, [fieldController]);
 
-            return TextField(
-              autofocus: true,
-              controller: fieldController,
-              onSubmitted: (_) {
-                Navigator.of(context).pop(fieldController.text);
-              },
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.transparent,
-                hintText: hint,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (description != null) Text(description),
+              TextField(
+                autofocus: true,
+                controller: fieldController,
+                onSubmitted: (_) {
+                  Navigator.of(context).pop(fieldController.text);
+                },
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.transparent,
+                  hintText: hint,
+                ),
               ),
-            );
-          },
-        )),
+            ],
+          );
+        },
+      ),
+    ),
     barrierDismissible: barrierDismissible,
     actions: [
       DialogAction(
@@ -186,7 +200,7 @@ Color _getColorForAction(BuildContext context, DialogAction action) {
   if (!action.isDefaultAction && defaultTargetPlatform == TargetPlatform.iOS) {
     return context.primaryColor;
   } else if (!action.isDefaultAction) {
-    return context.accentColor;
+    return Colors.black;
   }
 
   return Theme.of(context).primaryColor;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/admin/home_screen.dart';
+import 'package:heal_happy/auth/change_password.dart';
 import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/register/register_screen.dart';
+import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/healer/home_screen.dart';
 import 'package:heal_happy/main.dart';
 import 'package:heal_happy/patient/home_screen.dart';
@@ -30,19 +32,33 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
           //login still ongoing so let's wait
           return null;
         }
+        final currentRoute = state.name ?? state.location;
         final loggedIn = userStore.user != null;
         final currentScreenAllowAnonymous = [
           '/',
           RegisterScreen.name,
           LoginScreen.name,
+          ChangePasswordScreen.name,
           '/${LoginScreen.name}',
+          '/${ChangePasswordScreen.name}',
           '/${RegisterScreen.name}',
           SplashScreen.name,
-        ].contains(state.name ?? state.location);
+        ].contains(currentRoute);
 
         // the user is not logged in and not headed to /login, they need to login
-        if (!loggedIn && !currentScreenAllowAnonymous) {
+        if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == '/')) {
           return state.namedLocation(LoginScreen.name);
+        }
+
+        if (loggedIn && currentRoute == '/') {
+          switch(userStore.requiredUser.type) {
+            case UserTypeEnum.admin:
+              return state.namedLocation(AdminHomeScreen.name);
+            case UserTypeEnum.healer:
+              return state.namedLocation(HealerHomeScreen.name);
+            case UserTypeEnum.patient:
+              return state.namedLocation(PatientHomeScreen.name);
+          }
         }
 
         // no need to redirect at all
@@ -70,6 +86,17 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
               return FadeTransition(opacity: animation, child: child);
             },
             child: const LoginScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/${ChangePasswordScreen.name}',
+          name: ChangePasswordScreen.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: ChangePasswordScreen(state.queryParams['token'] ?? ''),
           ),
         ),
         GoRoute(
@@ -123,7 +150,7 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
           transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          child: const Text('404 page not found'),
+          child: const BgContainer(child: Center(child: Text('404 page not found'))),
         );
       },
     );

@@ -64,7 +64,7 @@ class UserStore extends ChangeNotifier {
     try {
       final results = await _apiProvider.api.getAuthApi().login(
         loginRequest: LoginRequest(
-              (b) {
+          (b) {
             b.password = password;
             b.email = email;
           },
@@ -79,12 +79,33 @@ class UserStore extends ChangeNotifier {
       }
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyEmail, email);
       await init(silent: false);
-    } on DioError catch(ex) {
+    } on DioError catch (ex) {
       if (ex.response?.statusCode == 401) {
         throw ErrorResultException(ErrorResult.wrongCredentials);
       }
       rethrow;
     }
+  }
+
+  Future<void> changePassword(String password, String token) async {
+    await _apiProvider.api.getAuthApi().resetPassword(
+      resetPassword: ResetPassword(
+            (b) {
+          b.password = password;
+          b.token = token;
+        },
+      ),
+    );
+  }
+
+  Future<void> askResetPassword(String email) async {
+    await _apiProvider.api.getAuthApi().askResetPassword(
+      askResetPassword: AskResetPassword(
+            (b) {
+          b.email = email;
+        },
+      ),
+    );
   }
 
   Future<void> register(User user) async {

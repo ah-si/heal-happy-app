@@ -10,8 +10,8 @@ final kSupportedLanguages = [
   const Locale('fr', 'FR'), // French
 ];
 
-const kPrimaryColor = Color(0xFF4f8e41);
-const kAccentColor = Color(0xFF284670);
+const kPrimaryColor = Color(0xFF2a3a5e);
+const kAccentColor = Color(0xFF4f8e41);
 
 const double kSmallPadding = 8.0;
 const double kMediumPadding = 12.0;

@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_happy/auth/register/register_screen.dart';
+import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/utils/constants.dart';
-import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
-import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LoginScreen extends HookConsumerWidget {
-  static const name = 'login';
+class ChangePasswordScreen extends HookConsumerWidget {
+  static const String name = 'change_password';
+  final String token;
 
-  const LoginScreen({Key? key}) : super(key: key);
+  const ChangePasswordScreen(this.token, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = useTextEditingController(text: PreferencesProvider().prefs.getString(PreferencesProvider.keyEmail) ?? '');
     final controllerPass = useTextEditingController();
+    final controllerConfirm = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() async {
       if (formKey.currentState!.validate()) {
         final store = ref.read(userStoreProvider);
         final success = await showLoadingDialog(
           context,
-          (context) => const Text('Connexion en cours...'),
-          () => store.login(controller.text, controllerPass.text),
+          (context) => const Text('Envoi en cours...'),
+          () => store.changePassword(controllerPass.text, token),
         );
         if (success) {
-          context.goToHome();
+          context.goNamed(LoginScreen.name);
         }
       }
     }
@@ -81,46 +80,35 @@ class LoginScreen extends HookConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             TextFormField(
-                              controller: controller,
-                              validator: isEmailValid,
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: const [AutofillHints.email],
-                              decoration: const InputDecoration(label: Text('Email*:')),
+                              controller: controllerPass,
+                              obscureText: true,
+                              validator: isRequired,
+                              keyboardType: TextInputType.text,
+                              autofillHints: const [AutofillHints.newPassword],
+                              onFieldSubmitted: (_) => submitForm(),
+                              decoration: const InputDecoration(label: Text('Mot de passe*:')),
                             ),
                             TextFormField(
-                              controller: controllerPass,
+                              controller: controllerConfirm,
                               obscureText: true,
                               validator: isRequired,
                               keyboardType: TextInputType.text,
                               autofillHints: const [AutofillHints.password],
                               onFieldSubmitted: (_) => submitForm(),
-                              decoration: const InputDecoration(label: Text('Mot de passe*:')),
+                              decoration: const InputDecoration(label: Text('Confirmation mot de passe*:')),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(kNormalPadding),
                               child: ElevatedButton(
                                 onPressed: submitForm,
-                                child: const Text('Connexion'),
+                                child: const Text('Envoyer'),
                               ),
                             ),
                             TextButton(
                               onPressed: () {
-                                context.goNamed(RegisterScreen.name);
+                                context.goNamed(LoginScreen.name);
                               },
-                              child: const Text('Je n\'ai pas de compte, m\'inscrire'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                final email = await showPrompt(context, 'Mot de passe oublié', description: 'Renseignez votre email:', initialValue: controller.text);
-                                if (!email.isNullOrEmpty) {
-                                  final store = ref.read(userStoreProvider);
-                                  final success = await showLoadingDialog(context, (_) => const Text('Envoi en cours...'), () => store.askResetPassword(email!));
-                                  if (success) {
-                                    showAlert(context, 'Mot de passe oublié', (_) => const Text('Une email vous a été envoyé afin de changer votre mot de passe.'));
-                                  }
-                                }
-                              },
-                              child: const Text('J\'ai oublié mon mot de passe'),
+                              child: const Text('Revenir au login'),
                             ),
                           ],
                         ),

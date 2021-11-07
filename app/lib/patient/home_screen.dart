@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/presentation/donate.dart';
 import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
@@ -51,50 +52,79 @@ class PatientHomeScreen extends HookConsumerWidget {
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 400),
-                      child: store.selectedTab == HomeTabs.home
-                          ? const _PlannedConsultations()
-                          : HookConsumer(
-                              builder: (context, ref, child) {
-                                final store = ref.watch(patientStoreProvider);
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 400),
+                            child: store.selectedTab == HomeTabs.home
+                                ? const _PlannedConsultations()
+                                : HookConsumer(
+                                    builder: (context, ref, child) {
+                                      final store = ref.watch(patientStoreProvider);
 
-                                if (store.searchResults == null || store.isLoading) {
-                                  return const Loading();
-                                }
+                                      if (store.searchResults == null || store.isLoading) {
+                                        return const Loading();
+                                      }
 
-                                if (store.searchResults?.error != null) {
-                                  return Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(kNormalPadding),
-                                      child: Text(
-                                        store.searchResults!.error!.cause.twoLiner(context),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: context.theme.errorColor),
-                                      ),
-                                    ),
-                                  );
-                                }
+                                      if (store.searchResults?.error != null) {
+                                        return Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(kNormalPadding),
+                                            child: Text(
+                                              store.searchResults!.error!.cause.twoLiner(context),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(color: context.theme.errorColor),
+                                            ),
+                                          ),
+                                        );
+                                      }
 
-                                if (store.searchResults!.healers.isEmpty) {
-                                  return const Center(
-                                    child: Text(
-                                      'Il n\'y a aucun résultat pour votre recherche',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                                    ),
-                                  );
-                                }
+                                      if (store.searchResults!.healers.isEmpty) {
+                                        return const Center(
+                                          child: Text(
+                                            'Il n\'y a aucun résultat pour votre recherche',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                                          ),
+                                        );
+                                      }
 
-                                return ListView.separated(
-                                  itemBuilder: (context, index) {
-                                    return _HealerListItem(healer: store.searchResults!.healers[index]);
-                                  },
-                                  separatorBuilder: (context, index) => const Divider(height: 1),
-                                  itemCount: store.searchResults?.healers.length ?? 0,
+                                      return ListView.separated(
+                                        itemBuilder: (context, index) {
+                                          return _HealerListItem(healer: store.searchResults!.healers[index]);
+                                        },
+                                        separatorBuilder: (context, index) => const Divider(height: 1),
+                                        itemCount: store.searchResults?.healers.length ?? 0,
+                                      );
+                                    },
+                                  ),
+                          ),
+                        ),
+                        ColoredBox(
+                          color: context.primaryColor,
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                showAlert(
+                                  context,
+                                  'Faire un don',
+                                  (_) => const Donate(),
                                 );
                               },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: kNormalPadding, vertical: kSmallPadding),
+                                child: Text(
+                                  'Nous fonctionnons uniquement grace aux dons, cliquez ici pour nous soutenir.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
                             ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

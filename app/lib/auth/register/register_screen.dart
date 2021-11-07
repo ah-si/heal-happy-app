@@ -73,7 +73,7 @@ class RegisterScreen extends HookConsumerWidget {
                               ),
                             ],
                             border: Border.all(
-                              color: kAccentColor,
+                              color: kPrimaryColor,
                               width: 1,
                             ),
                             borderRadius: const BorderRadius.all(Radius.circular(kSmallPadding))),
