@@ -30,7 +30,7 @@ class StepInfoPro extends HookConsumerWidget {
         children: [
           if (!headless)
             Text(
-              'Merci de remplir vos informations professionelles:',
+              context.l10n.proInfoIntro,
               style: context.textTheme.headline5,
             ),
           Column(
@@ -39,12 +39,12 @@ class StepInfoPro extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               JobSearchFormField(
-                decoration: const InputDecoration(label: Text('Spécialité*:')),
+                decoration: InputDecoration(label: Text(context.l10n.speField)),
                 controller: controllerSpe,
                 validator: (value) {
-                  final result = isRequired(value);
+                  final result = isRequired(value, context);
                   if (result == null && userInfo.job == null) {
-                    return isRequired(null); //force required message
+                    return isRequired(null, context); //force required message
                   }
                   return result;
                 },
@@ -54,21 +54,21 @@ class StepInfoPro extends HookConsumerWidget {
               ),
               TextFormField(
                 controller: controllerDescription,
-                validator: isRequired,
+                validator: (value) => isRequired(value, context),
                 keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(label: Text('Description*:')),
+                decoration: InputDecoration(label: Text(context.l10n.descriptionField)),
                 maxLines: 3,
               ),
               TextFormField(
                 controller: controllerExperiences,
                 keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(label: Text('Experiences:')),
+                decoration: InputDecoration(label: Text(context.l10n.expField)),
                 maxLines: 3,
               ),
               TextFormField(
                 controller: controllerDiploma,
                 keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(label: Text('Diplomes:')),
+                decoration: InputDecoration(label: Text(context.l10n.diplomaField)),
                 maxLines: 2,
               ),
             ],
@@ -83,7 +83,7 @@ class StepInfoPro extends HookConsumerWidget {
                     onPressed: () async {
                       Navigator.of(context).maybePop();
                     },
-                    child: const Text('Retour'),
+                    child: Text(MaterialLocalizations.of(context).backButtonTooltip),
                   ),
                 ),
               const Spacer(),
@@ -98,7 +98,7 @@ class StepInfoPro extends HookConsumerWidget {
                       onContinue?.call();
                     }
                   },
-                  child: Text(saveButtonLabel ?? 'Continuer'),
+                  child: Text(saveButtonLabel ?? context.l10n.continueButton),
                 ),
               ),
             ],
@@ -132,10 +132,10 @@ class StepAddress extends HookConsumerWidget {
         children: [
           if (!headless)
             Text(
-              'Merci de remplir votre adresse:',
+              context.l10n.addressIntro,
               style: context.textTheme.headline5,
             ),
-          if (!headless) const Text('Elle sera utilisée afin que les patients proche de vous puissent vous trouver'),
+          if (!headless) Text(context.l10n.addressDescription),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -147,8 +147,8 @@ class StepAddress extends HookConsumerWidget {
                   isAddressValid.value = value!;
                 },
                 contentPadding: EdgeInsets.zero,
-                title: const Text(
-                  'Afficher mon adresse publiquement sur mon profile soignant',
+                title: Text(
+                  context.l10n.showAddress,
                   textAlign: TextAlign.left,
                 ),
               ),
@@ -156,28 +156,28 @@ class StepAddress extends HookConsumerWidget {
                 controller: controllerStreet,
                 keyboardType: TextInputType.streetAddress,
                 autofillHints: const [AutofillHints.streetAddressLine1],
-                decoration: const InputDecoration(label: Text('Rue:')),
+                decoration: InputDecoration(label: Text(context.l10n.streetField)),
               ),
               TextFormField(
                 controller: controllerStreet2,
                 keyboardType: TextInputType.streetAddress,
                 autofillHints: const [AutofillHints.streetAddressLine2],
-                decoration: const InputDecoration(label: Text('Complément:')),
+                decoration: InputDecoration(label: Text(context.l10n.street2Field)),
               ),
               TextFormField(
                 controller: controllerCity,
-                validator: isRequired,
+                validator: (value) => isRequired(value, context),
                 keyboardType: TextInputType.streetAddress,
                 autofillHints: const [AutofillHints.addressCity],
-                decoration: const InputDecoration(label: Text('Ville*:')),
+                decoration: InputDecoration(label: Text(context.l10n.cityField)),
               ),
               TextFormField(
                 controller: controllerZipCode,
-                validator: isRequired,
+                validator: (value) => isRequired(value, context),
                 keyboardType: const TextInputType.numberWithOptions(),
                 autofillHints: const [AutofillHints.postalCode],
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: const InputDecoration(label: Text('Code postal*:')),
+                decoration: InputDecoration(label: Text(context.l10n.zipField)),
               ),
             ],
           ),
@@ -191,7 +191,7 @@ class StepAddress extends HookConsumerWidget {
                     onPressed: () async {
                       Navigator.of(context).maybePop();
                     },
-                    child: const Text('Retour'),
+                    child: Text(MaterialLocalizations.of(context).backButtonTooltip),
                   ),
                 ),
               const Spacer(),
@@ -208,7 +208,7 @@ class StepAddress extends HookConsumerWidget {
                       onContinue?.call();
                     }
                   },
-                  child: Text(saveButtonLabel ?? 'Continuer'),
+                  child: Text(saveButtonLabel ?? context.l10n.continueButton),
                 ),
               ),
             ],

@@ -41,11 +41,11 @@ class PatientHomeScreen extends HookConsumerWidget {
                 if (!(userStore.user?.isActivated ?? true))
                   ColoredBox(
                     color: context.theme.errorColor.withOpacity(0.8),
-                    child: const Padding(
-                      padding: EdgeInsets.all(kSmallPadding),
+                    child: Padding(
+                      padding: const EdgeInsets.all(kSmallPadding),
                       child: Text(
-                        'Vous n\'avez pas encore validé votre email, merci de cliquez sur le lien que nous vous avons envoyé.',
-                        style: TextStyle(color: Colors.white),
+                        context.l10n.accountNotVerified,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
@@ -82,11 +82,11 @@ class PatientHomeScreen extends HookConsumerWidget {
                                       }
 
                                       if (store.searchResults!.healers.isEmpty) {
-                                        return const Center(
+                                        return Center(
                                           child: Text(
-                                            'Il n\'y a aucun résultat pour votre recherche',
+                                            context.l10n.noSearchResults,
                                             textAlign: TextAlign.center,
-                                            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                                            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                                           ),
                                         );
                                       }
@@ -110,15 +110,15 @@ class PatientHomeScreen extends HookConsumerWidget {
                               onTap: () {
                                 showAlert(
                                   context,
-                                  'Faire un don',
+                                  context.l10n.donate,
                                   (_) => const Donate(),
                                 );
                               },
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: kNormalPadding, vertical: kSmallPadding),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: kNormalPadding, vertical: kSmallPadding),
                                 child: Text(
-                                  'Nous fonctionnons uniquement grace aux dons, cliquez ici pour nous soutenir.',
-                                  style: TextStyle(color: Colors.white),
+                                  context.l10n.donateDescription,
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -148,7 +148,7 @@ class _MenuBar extends HookConsumerWidget {
     return Row(
       children: [
         MenuItem(
-          label: 'Accueil',
+          label: context.l10n.home,
           onTap: () {
             store.selectedTab = HomeTabs.home;
           },
@@ -157,7 +157,7 @@ class _MenuBar extends HookConsumerWidget {
         const SizedBox(width: 2),
         if (store.searchResults != null)
           MenuItem(
-            label: 'Recherche',
+            label: context.l10n.search,
             onTap: () {
               store.selectedTab = HomeTabs.search;
             },
@@ -165,9 +165,9 @@ class _MenuBar extends HookConsumerWidget {
           ),
         const Spacer(),
         MenuItem(
-          label: 'Déconnexion',
+          label: context.l10n.disconnect,
           onTap: () async {
-            final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
+            final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
             if (success) {
               final store = ref.read(userStoreProvider);
               store.logout();
@@ -281,16 +281,16 @@ class _HealerAvailability extends HookConsumerWidget {
                                               final controller = TextEditingController();
                                               showAppDialog(
                                                   context,
-                                                  (_) => const Text('Prendre rendez vous'),
+                                                  (_) => Text(context.l10n.takeRdv),
                                                   (context) => Column(
                                                         crossAxisAlignment: CrossAxisAlignment.stretch,
                                                         children: [
-                                                          Text('Voulez prendre rendez vous avec ${healer.name} à ${slot.label}?'),
+                                                          Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
                                                           TextField(
                                                             controller: controller,
                                                             maxLines: 3,
-                                                            decoration: const InputDecoration(
-                                                              label: Text('Message pour le soignant:'),
+                                                            decoration: InputDecoration(
+                                                              label: Text(context.l10n.messageForHealer),
                                                             ),
                                                           ),
                                                         ],
@@ -306,14 +306,12 @@ class _HealerAvailability extends HookConsumerWidget {
                                                       text: MaterialLocalizations.of(context).okButtonLabel,
                                                       callback: (BuildContext context) async {
                                                         final userStore = ref.read(userStoreProvider);
-                                                        final success =
-                                                            await showLoadingDialog(context, (_) => const Text('Création du rendez-vous'), () async {
+                                                        final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
                                                           await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
                                                         });
                                                         if (success) {
                                                           Navigator.of(context).pop();
-                                                          showAlert(context, 'Rendez-vous validé!',
-                                                              (_) => const Text('Vous allez recevoir un email de confirmation.'));
+                                                          showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
                                                         }
                                                       },
                                                     ),
@@ -337,7 +335,9 @@ class _HealerAvailability extends HookConsumerWidget {
     }
 
     return DecoratedBox(
-      decoration: const BoxDecoration(color: Colors.white, boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(2, 2), spreadRadius: .5, blurRadius: 8)]),
+      decoration: const BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(color: Colors.grey, offset: Offset(2, 2), spreadRadius: .5, blurRadius: 8),
+      ]),
       child: child,
     );
   }
@@ -373,9 +373,9 @@ class _PlannedConsultations extends HookConsumerWidget {
     }
 
     if (store.eventsResults!.events.isEmpty) {
-      return const Text(
-        'Vous n\'avez aucune consultation planifié pour le moment.',
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+      return Text(
+        context.l10n.noConsultation,
+        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       );
     }
@@ -385,7 +385,7 @@ class _PlannedConsultations extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Vos consultations planifiées:', style: context.textTheme.subtitle1),
+          Text(context.l10n.plannedConsultation, style: context.textTheme.subtitle1),
           Wrap(
             children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
           ),
@@ -417,7 +417,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                   children: [
                     Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
                     const SizedBox(height: kSmallPadding),
-                    const Text('Votre soignant:'),
+                    Text(context.l10n.yourHealer),
                     Row(
                       children: [
                         const Icon(Icons.healing, size: 50),
@@ -442,23 +442,23 @@ class _PatientEventDetails extends HookConsumerWidget {
                 TextButton(
                   onPressed: () async {
                     final success =
-                        await showConfirm(context, 'Annuler la consultation?', 'Êtes vous sur de vouloir annuler la consulation avec ${event.healer.name}?');
+                        await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.healer.name));
                     if (success) {
-                      final cancelled = await showLoadingDialog(context, (_) => const Text('Annulation en cours'), () async {
+                      final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
                         await ref.read(patientStoreProvider).cancelEvent(event.id);
                       });
                       if (cancelled) {
-                        showAlert(context, 'Annulation', (_) => Text('Votre consultation avec ${event.healer.name} a été annulée.'));
+                        showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
                       }
                     }
                   },
-                  child: const Text('Annuler'),
+                  child: Text(context.l10n.cancelButton),
                 ),
                 TextButton(
                   onPressed: () {
                     launch(event.link);
                   },
-                  child: const Text('Rejoindre la visio'),
+                  child: Text(context.l10n.joinVisioButton),
                 ),
               ],
             )
@@ -502,16 +502,16 @@ class _SearchBar extends HookConsumerWidget {
                 Expanded(
                   child: Center(
                     child: JobSearchFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Recherche de spécialité*:',
+                      decoration: InputDecoration(
+                        hintText: context.l10n.specialityField,
                         border: InputBorder.none,
                       ),
                       nbVisibleResults: 10,
                       controller: controllerJob,
                       validator: (value) {
-                        final result = isRequired(value);
+                        final result = isRequired(value, context);
                         if (result == null && jobChoice.value == null) {
-                          return isRequired(null); //force required message
+                          return isRequired(null, context); //force required message
                         }
                         return result;
                       },
@@ -528,13 +528,12 @@ class _SearchBar extends HookConsumerWidget {
                   flex: 3,
                   child: Center(
                     child: TextFormField(
-                      decoration: const InputDecoration(
-                        hintText: 'Localisation*:',
+                      decoration: InputDecoration(
+                        hintText: context.l10n.localizationField,
                         border: InputBorder.none,
                       ),
                       controller: controllerLocalization,
                       onFieldSubmitted: (_) => submitForm(),
-                      validator: isRequired,
                     ),
                   ),
                 ),
@@ -544,12 +543,12 @@ class _SearchBar extends HookConsumerWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: submitForm,
-                      child: const Center(
+                      child: Center(
                         child: Padding(
-                          padding: EdgeInsets.all(kNormalPadding),
+                          padding: const EdgeInsets.all(kNormalPadding),
                           child: Text(
-                            'Rechercher',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            context.l10n.searchButton,
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),

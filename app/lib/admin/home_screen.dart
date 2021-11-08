@@ -33,7 +33,7 @@ class AdminHomeScreen extends HookConsumerWidget {
                 Row(
                   children: [
                     MenuItem(
-                      label: 'Accueil',
+                      label: context.l10n.home,
                       onTap: () {
                         store.selectedTab = HomeTabs.home;
                       },
@@ -42,9 +42,9 @@ class AdminHomeScreen extends HookConsumerWidget {
                     const SizedBox(width: 2),
                     const Spacer(),
                     MenuItem(
-                      label: 'Déconnexion',
+                      label: context.l10n.disconnect,
                       onTap: () async {
-                        final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
+                        final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
                         if (success) {
                           final store = ref.read(userStoreProvider);
                           store.logout();
@@ -97,10 +97,10 @@ class _HealerToVerify extends HookConsumerWidget {
     }
 
     if (store.searchResults!.healers.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Vous n\'avez aucun soignant a valider pour le moment.',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          context.l10n.emptyHealer,
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       );
@@ -111,9 +111,9 @@ class _HealerToVerify extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Voici la liste des soignants en attente de validation:',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Text(
+            context.l10n.pendingHealer,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Expanded(
             child: ListView.separated(
@@ -161,7 +161,7 @@ class _HealerItem extends HookConsumerWidget {
                   },
                   onLongPress: () {
                     Clipboard.setData(ClipboardData(text: healer.email));
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Email copié dans le presse-papiers')));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +180,7 @@ class _HealerItem extends HookConsumerWidget {
                     },
                     onLongPress: () {
                       Clipboard.setData(ClipboardData(text: healer.mobile));
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Téléphone copié dans le presse-papiers')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.phoneCopied)));
                     },
                     child: Row(
                       children: [
@@ -197,25 +197,24 @@ class _HealerItem extends HookConsumerWidget {
             children: [
               TextButton(
                 onPressed: () async {
-                  final success = await showConfirm(context, 'Supprimer ${healer.name}?',
-                      'Êtes vous sur de vouloir supprimer ce soignant?\nCette action ne peut être annulée et le soignant devra se réinscrire.');
+                  final success = await showConfirm(context, context.l10n.delete(healer.name), context.l10n.deleteHealerConfirm);
                   if (success) {
                     final store = ref.read(adminStoreProvider);
-                    showLoadingDialog(context, (_) => const Text('Suppression en cours...'), () => store.deleteHealer(healer));
+                    showLoadingDialog(context, (_) => Text(context.l10n.deleting), () => store.deleteHealer(healer));
                   }
                 },
-                child: const Text('Supprimer'),
+                child: Text(context.l10n.deleteButton),
               ),
               TextButton(
                 onPressed: () async {
-                  final success = await showConfirm(context, 'Accepter ${healer.name}?',
-                      'En acceptant le soignant il sera visible dans la recherche et les patients pourrons prendre rendez-vous avec lui.\nVoulez vous continuer?');
+                  final success = await showConfirm(context, context.l10n.accept(healer.name),
+                      context.l10n.acceptConfirm);
                   if (success) {
                     final store = ref.read(adminStoreProvider);
-                    showLoadingDialog(context, (_) => const Text('Acceptation en cours...'), () => store.validateHealer(healer));
+                    showLoadingDialog(context, (_) => Text(context.l10n.accepting), () => store.validateHealer(healer));
                   }
                 },
-                child: const Text('Accepter'),
+                child: Text(context.l10n.acceptButton),
               ),
             ],
           ),

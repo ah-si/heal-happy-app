@@ -203,7 +203,7 @@ class _StepType extends HookConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(kNormalPadding),
             child: Text(
-              'Vous êtes:',
+              context.l10n.youAre,
               style: context.textTheme.headline5,
             ),
           ),
@@ -218,7 +218,7 @@ class _StepType extends HookConsumerWidget {
                 userInfo.type = UserTypeEnum.patient;
                 onContinue();
               },
-              label: 'Patient',
+              label: context.l10n.patient,
               icon: Icons.person,
               color: userInfo.type == UserTypeEnum.patient ? context.primaryColor : Colors.grey.withOpacity(0.5),
             ),
@@ -227,7 +227,7 @@ class _StepType extends HookConsumerWidget {
                 userInfo.type = UserTypeEnum.healer;
                 onContinue();
               },
-              label: 'Soignant',
+              label: context.l10n.healer,
               color: userInfo.type == UserTypeEnum.healer ? context.primaryColor : Colors.grey.withOpacity(0.5),
               icon: Icons.healing,
             ),
@@ -239,7 +239,7 @@ class _StepType extends HookConsumerWidget {
             onPressed: () {
               context.goNamed(LoginScreen.name);
             },
-            child: const Text('J\'ai déjà un compte, me connecter'),
+            child: Text(context.l10n.alreadyHaveAccount),
           ),
         ),
         const Spacer(),

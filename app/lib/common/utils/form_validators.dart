@@ -1,26 +1,29 @@
-String? isRequired(value) {
+import 'package:flutter/cupertino.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
+
+String? isRequired(value, BuildContext context) {
   if (value == null || value.isEmpty) {
-    return 'Ce champ est requis';
+    return context.el10n.fieldRequired;
   }
   return null;
 }
 
-String? isEmailValid(value) {
+String? isEmailValid(value, BuildContext context) {
   if (value == null || value.trim().isEmpty) {
-    return 'Ce champ est requis';
+    return context.el10n.fieldRequired;
   } else if (!RegExp(
   r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
   .hasMatch(value)) {
-    return 'Cet email est invalide';
+    return context.el10n.wrongEmailMessage;
   }
   return null;
 }
 
-String? isPasswordValid(value) {
+String? isPasswordValid(value, BuildContext context) {
   if (value == null || value.isEmpty) {
-    return 'Ce champ est requis';
+    return context.el10n.fieldRequired;
   } else if (value.length < 6) {
-    return 'Le mot de passe doit faire 6 caractères minimum';
+    return context.el10n.wrongPasswordMessage;
   }
   return null;
 }

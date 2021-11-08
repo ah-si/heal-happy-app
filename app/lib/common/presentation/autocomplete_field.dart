@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 typedef AutocompleteDelegate<T> = Future<List<T>> Function(String query);
@@ -247,9 +248,9 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
                       child: Padding(
                         padding: const EdgeInsets.all(kNormalPadding),
                         child: Row(
-                          children: const [
-                            Expanded(child: Text('Aucun résultat')),
-                            Icon(Icons.close, color: Colors.grey),
+                          children: [
+                            Expanded(child: Text(context.l10n.noResults)),
+                            const Icon(Icons.close, color: Colors.grey),
                           ],
                         ),
                       ),

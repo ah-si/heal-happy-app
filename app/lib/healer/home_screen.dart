@@ -41,7 +41,7 @@ class HealerHomeScreen extends HookConsumerWidget {
                 Row(
                   children: [
                     MenuItem(
-                      label: 'Accueil',
+                      label: context.l10n.home,
                       onTap: () {
                         store.selectedTab = HomeTabs.home;
                       },
@@ -49,7 +49,7 @@ class HealerHomeScreen extends HookConsumerWidget {
                     ),
                     const SizedBox(width: 2),
                     MenuItem(
-                      label: 'Profile',
+                      label: context.l10n.profile,
                       onTap: () {
                         store.selectedTab = HomeTabs.profile;
                       },
@@ -57,9 +57,9 @@ class HealerHomeScreen extends HookConsumerWidget {
                     ),
                     const Spacer(),
                     MenuItem(
-                      label: 'Déconnexion',
+                      label: context.l10n.disconnect,
                       onTap: () async {
-                        final success = await showConfirm(context, 'Déconnexion', 'Voulez-vous vous déconnecter?');
+                        final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
                         if (success) {
                           final store = ref.read(userStoreProvider);
                           store.logout();
@@ -72,22 +72,22 @@ class HealerHomeScreen extends HookConsumerWidget {
                 if (!(userStore.user?.isActivated ?? true))
                   ColoredBox(
                     color: context.theme.errorColor.withOpacity(0.8),
-                    child: const Padding(
-                      padding: EdgeInsets.all(kSmallPadding),
+                    child: Padding(
+                      padding: const EdgeInsets.all(kSmallPadding),
                       child: Text(
-                        'Vous n\'avez pas encore validé votre email, merci de cliquez sur le lien que nous vous avons envoyé.',
-                        style: TextStyle(color: Colors.white),
+                        context.l10n.accountNotVerified,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                 if (!(userStore.user?.isVerified ?? true))
                   ColoredBox(
                     color: context.theme.errorColor.withOpacity(0.8),
-                    child: const Padding(
-                      padding: EdgeInsets.all(kSmallPadding),
+                    child: Padding(
+                      padding: const EdgeInsets.all(kSmallPadding),
                       child: Text(
-                        'Votre compte est en attente de validation. Une fois vérifié, les patients pourrons prendre rendez vous.',
-                        style: TextStyle(color: Colors.white),
+                        context.l10n.accountPending,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
@@ -135,10 +135,10 @@ class _HealerEvents extends HookConsumerWidget {
     }
 
     if (store.eventsResults!.events.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
-          'Vous n\'avez aucune consultation planifié pour le moment.',
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          context.l10n.noEvents,
+          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           textAlign: TextAlign.center,
         ),
       );
@@ -149,7 +149,7 @@ class _HealerEvents extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Vos consultations planifiées:', style: context.textTheme.subtitle1),
+          Text(context.l10n.plannedConsultations, style: context.textTheme.subtitle1),
           Wrap(
             children: store.eventsResults!.events.map((e) => _HealerEventDetails(event: e)).toList(growable: false),
           ),
@@ -182,7 +182,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                     children: [
                       Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
                       const SizedBox(height: kSmallPadding),
-                      Text('Votre patient:', style: context.textTheme.subtitle2),
+                      Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -195,7 +195,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                               },
                               onLongPress: () {
                                 Clipboard.setData(ClipboardData(text: event.patient.email));
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Email copié dans le presse-papiers')));
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
                               },
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -215,7 +215,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                               },
                               onLongPress: () {
                                 Clipboard.setData(ClipboardData(text: event.patient.mobile));
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Téléphone copié dans le presse-papiers')));
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Téléphone'))));
                               },
                               child: Row(
                                 children: [
@@ -228,7 +228,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: kSmallPadding),
-                      if (!event.description.isNullOrEmpty) Text('Message du patient:', style: context.textTheme.subtitle2),
+                      if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
                       if (!event.description.isNullOrEmpty)
                         Text(
                           event.description! * 30,
@@ -244,25 +244,23 @@ class _HealerEventDetails extends HookConsumerWidget {
               children: [
                 TextButton(
                   onPressed: () async {
-                    final success =
-                        await showConfirm(context, 'Annuler la consultation?', 'Êtes vous sur de vouloir annuler la consulation avec ${event.patient.name}?');
+                    final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.patient.name));
                     if (success) {
-                      final cancelled = await showLoadingDialog(context, (_) => const Text('Annulation en cours'), () async {
+                      final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
                         await ref.read(healerStoreProvider).cancelEvent(event.id);
                       });
                       if (cancelled) {
-                        showAlert(context, 'Annulation',
-                            (_) => Text('Votre consultation avec ${event.patient.name} a été annulée, un email lui a été envoyé pour l\'avertir.'));
+                        showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
                       }
                     }
                   },
-                  child: const Text('Annuler'),
+                  child: Text(context.l10n.cancelButton),
                 ),
                 TextButton(
                   onPressed: () {
                     launch(event.link);
                   },
-                  child: const Text('Rejoindre la visio'),
+                  child: Text(context.l10n.joinVisioButton),
                 ),
               ],
             )
@@ -286,8 +284,8 @@ class _HealerProfile extends HookConsumerWidget {
     save() {
       final info = ref.read(userInfoProvider);
       userStore.save(info.toUser(existingUser: userStore.user));
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Information enregistré avec succès'),
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(context.l10n.infoSaved),
       ));
     }
 
@@ -297,52 +295,52 @@ class _HealerProfile extends HookConsumerWidget {
         child: Column(
           children: [
             ExpansionTile(
-              title: const Text('Calendrier'),
+              title: Text(context.l10n.calendar),
               children: [
                 StepCalendarInfoForm(
                   enableBackButton: false,
-                  saveButtonLabel: 'Enregistrer',
+                  saveButtonLabel: context.l10n.saveButton,
                   onContinue: save,
                 ),
               ],
             ),
             ExpansionTile(
-              title: const Text('Information personnelles'),
+              title: Text(context.l10n.personalInfo),
               children: [
                 StepPersonalInfo(
                   headless: true,
                   onContinue: save,
-                  saveButtonLabel: 'Enregistrer',
+                  saveButtonLabel: context.l10n.saveButton,
                 ),
               ],
             ),
             ExpansionTile(
-              title: const Text('Information professionelles'),
+              title: Text(context.l10n.proInfo),
               children: [
                 StepInfoPro(
                   headless: true,
                   onContinue: save,
-                  saveButtonLabel: 'Enregistrer',
+                  saveButtonLabel: context.l10n.saveButton,
                 ),
               ],
             ),
             ExpansionTile(
-              title: const Text('Addresse'),
+              title: Text(context.l10n.address),
               children: [
                 StepAddress(
                   headless: true,
                   onContinue: save,
-                  saveButtonLabel: 'Enregistrer',
+                  saveButtonLabel: context.l10n.saveButton,
                 ),
               ],
             ),
             ExpansionTile(
-              title: const Text('Information social'),
+              title: Text(context.l10n.socialInfo),
               children: [
                 StepSocial(
                   headless: true,
                   onContinue: save,
-                  saveButtonLabel: 'Enregistrer',
+                  saveButtonLabel: context.l10n.saveButton,
                 ),
               ],
             ),

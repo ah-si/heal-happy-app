@@ -8,9 +8,11 @@ final adminStoreProvider = ChangeNotifierProvider((_) => AdminStore());
 
 class SearchResults {
   final List<User> healers;
+  final int totalPages;
+  final int currentPage;
   final ErrorResultException? error;
 
-  SearchResults(this.healers, {this.error});
+  SearchResults(this.healers, this.currentPage, this.totalPages, {this.error});
 }
 
 enum HomeTabs { home }
@@ -38,12 +40,13 @@ class AdminStore extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      final results = await _adminApi.getPendingHealer();
-      searchResults = SearchResults(results.data?.toList() ?? []);
+      final pageToLoad = (searchResults?.currentPage ?? -1) + 1;
+      final results = await _adminApi.getPendingHealer(page: pageToLoad);
+      searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
       isLoading = false;
       notifyListeners();
     } catch (error, stackTrace) {
-      searchResults = SearchResults([], error: handleError(error, stackTrace));
+      searchResults = SearchResults([], 0, 0, error: handleError(error, stackTrace));
       isLoading = false;
       notifyListeners();
     }
@@ -51,13 +54,13 @@ class AdminStore extends ChangeNotifier {
 
   Future<void> validateHealer(User healer) async {
     await _adminApi.verifyUser(id: healer.id!);
-    searchResults = SearchResults(searchResults!.healers..remove(healer));
+    searchResults = SearchResults(searchResults!.healers..remove(healer), searchResults!.totalPages, searchResults!.currentPage);
     notifyListeners();
   }
 
   Future<void> deleteHealer(User healer) async {
     await _adminApi.deleteUser(id: healer.id!);
-    searchResults = SearchResults(searchResults!.healers..remove(healer));
+    searchResults = SearchResults(searchResults!.healers..remove(healer), searchResults!.totalPages, searchResults!.currentPage);
     notifyListeners();
   }
 }

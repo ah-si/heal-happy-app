@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 
 class Loading extends StatelessWidget {
   const Loading({Key? key}) : super(key: key);
@@ -10,10 +11,10 @@ class Loading extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
-        children: const [
-          CircularProgressIndicator.adaptive(),
-          SizedBox(height: kNormalPadding),
-          Text('Chargement en cours...', style: TextStyle(fontWeight: FontWeight.bold)),
+        children: [
+          const CircularProgressIndicator.adaptive(),
+          const SizedBox(height: kNormalPadding),
+          Text(context.l10n.loading, style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );

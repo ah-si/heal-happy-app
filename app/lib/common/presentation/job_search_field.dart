@@ -11,7 +11,14 @@ class JobSearchFormField extends StatelessWidget {
   final Function(MapEntry<String, String> selected) onItemSelected;
   final String? Function(String? value)? validator;
 
-  const JobSearchFormField({Key? key, this.validator, required this.decoration, required this.controller, required this.onItemSelected, this.nbVisibleResults = 3}) : super(key: key);
+  const JobSearchFormField({
+    Key? key,
+    this.validator,
+    required this.decoration,
+    required this.controller,
+    required this.onItemSelected,
+    this.nbVisibleResults = 3,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,7 @@ class JobSearchFormField extends StatelessWidget {
         }
         return specialities.entries.where((element) => element.value.toLowerCase().contains(query.toLowerCase())).toList(growable: false);
       },
-      validator: validator ?? isRequired,
+      validator: validator ?? (value) => isRequired(value, context),
       itemBuilder: (BuildContext context, MapEntry<String, String> entry) {
         return ListTile(title: Text(entry.value));
       },

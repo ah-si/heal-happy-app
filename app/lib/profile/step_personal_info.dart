@@ -32,7 +32,7 @@ class StepPersonalInfo extends HookConsumerWidget {
         children: [
           if (!headless)
             Text(
-              'Merci de remplir vos informations personnelles:',
+              context.l10n.personalInfoIntro,
               style: context.textTheme.headline5,
             ),
           Column(
@@ -42,19 +42,19 @@ class StepPersonalInfo extends HookConsumerWidget {
             children: [
               TextFormField(
                 controller: controllerLastName,
-                validator: isRequired,
+                validator: (value) => isRequired(value, context),
                 keyboardType: TextInputType.name,
                 autofillHints: const [AutofillHints.familyName],
                 onChanged: (value) => userInfo.lastName = value,
-                decoration: const InputDecoration(label: Text('Nom*:')),
+                decoration: InputDecoration(label: Text(context.l10n.nameField)),
               ),
               TextFormField(
                 controller: controllerFirstName,
-                validator: isRequired,
+                validator: (value) => isRequired(value, context),
                 keyboardType: TextInputType.name,
                 autofillHints: const [AutofillHints.name, AutofillHints.givenName],
                 onChanged: (value) => userInfo.firstName = value,
-                decoration: const InputDecoration(label: Text('Prénom*:')),
+                decoration: InputDecoration(label: Text(context.l10n.firstNameField)),
               ),
               TextFormField(
                 controller: controllerMobile,
@@ -63,25 +63,25 @@ class StepPersonalInfo extends HookConsumerWidget {
                 onChanged: (value) => userInfo.mobile = value,
                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[+0-9]'))],
                 maxLength: 12,
-                decoration: const InputDecoration(label: Text('Mobile:'), counter: SizedBox()),
+                decoration: InputDecoration(label: Text(context.l10n.phoneField), counter: const SizedBox()),
               ),
               TextFormField(
                 controller: controller,
-                validator: isEmailValid,
+                validator: (value) => isEmailValid(value, context),
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: const [AutofillHints.email],
                 onChanged: (value) => userInfo.email = value,
-                decoration: const InputDecoration(label: Text('Email*:')),
+                decoration: InputDecoration(label: Text(context.l10n.emailField)),
               ),
               if (!headless)
                 TextFormField(
                   controller: controllerPass,
                   obscureText: true,
-                  validator: isPasswordValid,
+                  validator: (value) => isPasswordValid(value, context),
                   autofillHints: const [AutofillHints.newPassword],
                   keyboardType: TextInputType.visiblePassword,
                   onChanged: (value) => userInfo.password = value,
-                  decoration: const InputDecoration(label: Text('Mot de passe*:')),
+                  decoration: InputDecoration(label: Text(context.l10n.passwordField)),
                 ),
             ],
           ),
@@ -95,7 +95,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                     onPressed: () async {
                       Navigator.of(context).maybePop();
                     },
-                    child: const Text('Retour'),
+                    child: Text(MaterialLocalizations.of(context).backButtonTooltip),
                   ),
                 ),
               const Spacer(),
@@ -112,7 +112,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                       onContinue?.call();
                     }
                   },
-                  child: Text(saveButtonLabel ?? (userInfo.type == UserTypeEnum.patient ? 'Envoyer' : 'Continuer')),
+                  child: Text(saveButtonLabel ?? (userInfo.type == UserTypeEnum.patient ? context.l10n.sendButton : context.l10n.continueButton)),
                 ),
               ),
             ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 
 class Donate extends StatelessWidget {
   const Donate({Key? key}) : super(key: key);
@@ -11,43 +12,43 @@ class Donate extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text('Voici les informations pour faire vos dons par virement bancaire: '),
+          Text(context.l10n.donateIntro),
           const SizedBox(height: kSmallPadding),
           SelectableText(
-            'Nom : ONG AH-SI',
+            'Nom: ONG AH-SI',
             style: const TextStyle(fontWeight: FontWeight.bold),
             onTap: () {
               Clipboard.setData(const ClipboardData(text: 'ONG AH-SI'));
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Nom copié dans le presse-papiers')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text( context.l10n.itemCopied('Nom'))));
             },
           ),
           SelectableText(
-            'Banque : BCV, Banque Cantonale Vaudoise',
+            'Banque: BCV, Banque Cantonale Vaudoise',
             style: const TextStyle(fontWeight: FontWeight.bold),
             onTap: () {
               Clipboard.setData(const ClipboardData(text: 'BCV, Banque Cantonale Vaudoise'));
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Banque copié dans le presse-papiers')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Banque'))));
             },
           ),
           SelectableText(
-            'IBAN : CH50 0076 7000 Z552 7783 3',
+            'IBAN: CH50 0076 7000 Z552 7783 3',
             style: const TextStyle(fontWeight: FontWeight.bold),
             onTap: () {
               Clipboard.setData(const ClipboardData(text: 'CH5000767000Z55277833'));
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('IBAN copié dans le presse-papiers')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('IBAN'))));
             },
           ),
           SelectableText(
-            'SWIFT/BIC : BCVLCH2LXXX',
+            'SWIFT/BIC: BCVLCH2LXXX',
             style: const TextStyle(fontWeight: FontWeight.bold),
             onTap: () {
               Clipboard.setData(const ClipboardData(text: 'BCVLCH2LXXX'));
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('SWIFT/BIC copié dans le presse-papiers')));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('SWIFT/BIC'))));
             },
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: kSmallPadding),
-            child: Text('Si vous faîtes un don, merci de préciser votre destination de don dans le champ information :'),
+           Padding(
+            padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+            child: Text(context.l10n.donateInstructions),
           ),
           const Text('''
 1. SOIGNEZ HEUREUX, Téléconsultation par internet

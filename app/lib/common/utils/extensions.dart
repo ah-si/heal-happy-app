@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/common/l10n/common_localizations.dart';
+import 'package:heal_happy/common/l10n/error_localizations.dart';
 import 'package:heal_happy/common/router.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
@@ -32,6 +34,10 @@ extension HealerExtension on Healer {
 
 extension ContextExtension on BuildContext {
   NavigatorState get navigator => Navigator.of(this);
+
+  CommonLocalizations get l10n => CommonLocalizations.of(this);
+
+  ErrorLocalizations get el10n => ErrorLocalizations.of(this);
 
   ThemeData get theme => Theme.of(this);
 

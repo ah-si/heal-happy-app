@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -9,9 +8,11 @@ final patientStoreProvider = ChangeNotifierProvider((_) => PatientStore());
 
 class SearchResults {
   final List<Healer> healers;
+  final int totalPages;
+  final int currentPage;
   final ErrorResultException? error;
 
-  SearchResults(this.healers, {this.error});
+  SearchResults(this.healers, this.currentPage, this.totalPages, {this.error});
 }
 
 class PatientEventResults {
@@ -21,9 +22,7 @@ class PatientEventResults {
   PatientEventResults(this.events, {this.error});
 }
 
-enum HomeTabs {
-  home, search
-}
+enum HomeTabs { home, search }
 
 class PatientStore extends ChangeNotifier {
   final UserApi _userApi;
@@ -32,9 +31,10 @@ class PatientStore extends ChangeNotifier {
   bool isLoading = false;
   HomeTabs _selectedTab = HomeTabs.home;
 
-  PatientStore({UserApi? userApi}): _userApi = BackendApiProvider().api.getUserApi();
+  PatientStore({UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi();
 
   HomeTabs get selectedTab => _selectedTab;
+
   set selectedTab(HomeTabs value) {
     if (_selectedTab != value) {
       _selectedTab = value;
@@ -47,19 +47,20 @@ class PatientStore extends ChangeNotifier {
     _selectedTab = HomeTabs.search;
     notifyListeners();
     try {
-      final results = await _userApi.searchHealers(job: job, localization: localization);
-      searchResults = SearchResults(results.data?.toList() ?? []);
+      final pageToLoad = (searchResults?.currentPage ?? -1) + 1;
+      final results = await _userApi.searchHealers(job: job, localization: localization, page: pageToLoad);
+      searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
       isLoading = false;
       notifyListeners();
-    } catch(error, stackTrace) {
-      searchResults = SearchResults([], error: handleError(error, stackTrace));
+    } catch (error, stackTrace) {
+      searchResults = SearchResults([], 0, 0, error: handleError(error, stackTrace));
       isLoading = false;
       notifyListeners();
     }
   }
 
   Future<void> cancelEvent(String eventId) async {
-    await _userApi.deleteEvent(eventId:eventId);
+    await _userApi.deleteEvent(eventId: eventId);
     loadEvents();
   }
 
@@ -70,7 +71,7 @@ class PatientStore extends ChangeNotifier {
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       eventsResults = PatientEventResults([], error: handleError(error, stackTrace));
       isLoading = false;
       notifyListeners();

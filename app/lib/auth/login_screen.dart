@@ -26,7 +26,7 @@ class LoginScreen extends HookConsumerWidget {
         final store = ref.read(userStoreProvider);
         final success = await showLoadingDialog(
           context,
-          (context) => const Text('Connexion en cours...'),
+          (context) => Text(context.l10n.login),
           () => store.login(controller.text, controllerPass.text),
         );
         if (success) {
@@ -82,45 +82,45 @@ class LoginScreen extends HookConsumerWidget {
                           children: [
                             TextFormField(
                               controller: controller,
-                              validator: isEmailValid,
+                              validator: (value) => isEmailValid(value, context),
                               keyboardType: TextInputType.emailAddress,
                               autofillHints: const [AutofillHints.email],
-                              decoration: const InputDecoration(label: Text('Email*:')),
+                              decoration: InputDecoration(label: Text(context.l10n.emailField)),
                             ),
                             TextFormField(
                               controller: controllerPass,
                               obscureText: true,
-                              validator: isRequired,
+                              validator: (value) => isRequired(value, context),
                               keyboardType: TextInputType.text,
                               autofillHints: const [AutofillHints.password],
                               onFieldSubmitted: (_) => submitForm(),
-                              decoration: const InputDecoration(label: Text('Mot de passe*:')),
+                              decoration: InputDecoration(label: Text(context.l10n.passwordField)),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(kNormalPadding),
                               child: ElevatedButton(
                                 onPressed: submitForm,
-                                child: const Text('Connexion'),
+                                child: Text(context.l10n.loginButton),
                               ),
                             ),
                             TextButton(
                               onPressed: () {
                                 context.goNamed(RegisterScreen.name);
                               },
-                              child: const Text('Je n\'ai pas de compte, m\'inscrire'),
+                              child: Text(context.l10n.noAccount),
                             ),
                             TextButton(
                               onPressed: () async {
-                                final email = await showPrompt(context, 'Mot de passe oublié', description: 'Renseignez votre email:', initialValue: controller.text);
+                                final email = await showPrompt(context, context.l10n.passwordForgotten, description: context.l10n.needEmail, initialValue: controller.text);
                                 if (!email.isNullOrEmpty) {
                                   final store = ref.read(userStoreProvider);
-                                  final success = await showLoadingDialog(context, (_) => const Text('Envoi en cours...'), () => store.askResetPassword(email!));
+                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => store.askResetPassword(email!));
                                   if (success) {
-                                    showAlert(context, 'Mot de passe oublié', (_) => const Text('Une email vous a été envoyé afin de changer votre mot de passe.'));
+                                    showAlert(context, context.l10n.passwordForgotten, (_) => Text(context.l10n.passwordForgottenEmailSent));
                                   }
                                 }
                               },
-                              child: const Text('J\'ai oublié mon mot de passe'),
+                              child: Text(context.l10n.passwordForgottenButton),
                             ),
                           ],
                         ),

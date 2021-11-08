@@ -5,6 +5,7 @@ import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,7 +26,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
         final store = ref.read(userStoreProvider);
         final success = await showLoadingDialog(
           context,
-          (context) => const Text('Envoi en cours...'),
+          (context) => Text(context.l10n.sending),
           () => store.changePassword(controllerPass.text, token),
         );
         if (success) {
@@ -82,33 +83,39 @@ class ChangePasswordScreen extends HookConsumerWidget {
                             TextFormField(
                               controller: controllerPass,
                               obscureText: true,
-                              validator: isRequired,
+                              validator: (value) => isRequired(value, context),
                               keyboardType: TextInputType.text,
                               autofillHints: const [AutofillHints.newPassword],
                               onFieldSubmitted: (_) => submitForm(),
-                              decoration: const InputDecoration(label: Text('Mot de passe*:')),
+                              decoration: InputDecoration(label: Text(context.l10n.passwordField)),
                             ),
                             TextFormField(
                               controller: controllerConfirm,
                               obscureText: true,
-                              validator: isRequired,
+                              validator: (value) {
+                                final result = isRequired(value, context);
+                                if (result == null && controllerConfirm.text != controllerPass.text) {
+                                  return context.l10n.passwordMismatch;
+                                }
+                                return result;
+                              },
                               keyboardType: TextInputType.text,
                               autofillHints: const [AutofillHints.password],
                               onFieldSubmitted: (_) => submitForm(),
-                              decoration: const InputDecoration(label: Text('Confirmation mot de passe*:')),
+                              decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(kNormalPadding),
                               child: ElevatedButton(
                                 onPressed: submitForm,
-                                child: const Text('Envoyer'),
+                                child: Text(context.l10n.sendButton),
                               ),
                             ),
                             TextButton(
                               onPressed: () {
                                 context.goNamed(LoginScreen.name);
                               },
-                              child: const Text('Revenir au login'),
+                              child: Text(context.l10n.backToLogin),
                             ),
                           ],
                         ),

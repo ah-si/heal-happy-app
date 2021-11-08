@@ -24,7 +24,7 @@ class StepSocial extends HookConsumerWidget {
       children: [
         if (!headless)
           Text(
-            'Si vous le souhaitez, vous pouvez renseigner vos liens sociaux:',
+            context.l10n.socialIntro,
             style: context.textTheme.headline5,
           ),
         Column(
@@ -35,22 +35,22 @@ class StepSocial extends HookConsumerWidget {
             TextFormField(
               controller: controllerWebsite,
               keyboardType: TextInputType.url,
-              decoration: const InputDecoration(label: Text('Website:')),
+              decoration: InputDecoration(label: Text(context.l10n.websiteField)),
             ),
             TextFormField(
               controller: controllerSocial1,
               keyboardType: TextInputType.url,
-              decoration: const InputDecoration(label: Text('Réseau social 1:')),
+              decoration: InputDecoration(label: Text(context.l10n.social1Field)),
             ),
             TextFormField(
               controller: controllerSocial2,
               keyboardType: TextInputType.url,
-              decoration: const InputDecoration(label: Text('Réseau social 2:')),
+              decoration: InputDecoration(label: Text(context.l10n.social2Field)),
             ),
             TextFormField(
               controller: controllerSocial3,
               keyboardType: TextInputType.url,
-              decoration: const InputDecoration(label: Text('Réseau social 3:')),
+              decoration: InputDecoration(label: Text(context.l10n.social3Field)),
             ),
           ],
         ),
@@ -64,7 +64,7 @@ class StepSocial extends HookConsumerWidget {
                   onPressed: () async {
                     Navigator.of(context).maybePop();
                   },
-                  child: const Text('Retour'),
+                  child: Text(MaterialLocalizations.of(context).backButtonTooltip),
                 ),
               ),
             const Spacer(),
@@ -78,7 +78,7 @@ class StepSocial extends HookConsumerWidget {
                   userInfo.social3 = controllerSocial3.text;
                   onContinue?.call();
                 },
-                child: Text(saveButtonLabel ?? 'Envoyer'),
+                child: Text(saveButtonLabel ?? context.l10n.sendButton),
               ),
             ),
           ],

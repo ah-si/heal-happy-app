@@ -9,11 +9,11 @@ import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StepCalendarInfoForm extends HookConsumerWidget {
-  final String saveButtonLabel;
+  final String? saveButtonLabel;
   final VoidCallback? onContinue;
   final bool enableBackButton;
 
-  const StepCalendarInfoForm({Key? key, this.saveButtonLabel = 'Continuer', this.onContinue, this.enableBackButton = true}) : super(key: key);
+  const StepCalendarInfoForm({Key? key, this.saveButtonLabel, this.onContinue, this.enableBackButton = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,13 +27,13 @@ class StepCalendarInfoForm extends HookConsumerWidget {
         children: [
           TextFormField(
             controller: controllerConsultation,
-            validator: isRequired,
+            validator: (value) => isRequired(value, context),
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(),
-            decoration: const InputDecoration(label: Text('Durée d\'une consultation*:'), hintText: 'A spécifier en minute'),
+            decoration: InputDecoration(label: Text(context.l10n.consultationDurationField), hintText: context.l10n.consultationDurationHint),
           ),
           const SizedBox(height: kSmallPadding),
-          Text('M. = Matin, AM. = Après midi', style: context.textTheme.caption),
+          Text(context.l10n.calendarLegend, style: context.textTheme.caption),
           _CalendarDaySetting(
             label: 'Lundi',
             settings: userInfo.calendarSettings.monday,
@@ -92,7 +92,7 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                     onPressed: () async {
                       Navigator.of(context).maybePop();
                     },
-                    child: const Text('Retour'),
+                    child: Text(MaterialLocalizations.of(context).backButtonTooltip),
                   ),
                 ),
               const Spacer(),
@@ -106,10 +106,10 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                       showDayError(String day) {
                         showAlert(
                           context,
-                          'Erreur',
+                          context.el10n.dialogErrorTitle,
                           (context) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: kNormalPadding),
-                            child: Text('Les horaires pour $day sont incorrect, merci de corriger.'),
+                            child: Text(context.l10n.calendarDayError(day)),
                           ),
                         );
                       }
@@ -139,7 +139,7 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                       onContinue?.call();
                     }
                   },
-                  child: Text(saveButtonLabel),
+                  child: Text(saveButtonLabel ?? context.l10n.continueButton),
                 ),
               ),
             ],
@@ -161,7 +161,7 @@ class StepCalendarInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
-          'Merci de remplir vos heures de consultations:',
+          context.l10n.calendarIntro,
           style: context.textTheme.headline5,
         ),
         const SizedBox(height: kNormalPadding),
@@ -191,18 +191,18 @@ class _CalendarDaySetting extends HookConsumerWidget {
       } else {
         if (amStartHour.value!.isAfter(amEndHour.value)) {
           amEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dayHourError),
           ));
         } else if (amStartHour.value!.isAfter(pmStartHour.value)) {
           pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dayHourError),
           ));
         } else if (amStartHour.value!.isAfter(pmEndHour.value)) {
           pmEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dayHourError),
           ));
         }
       }
@@ -212,23 +212,28 @@ class _CalendarDaySetting extends HookConsumerWidget {
       } else {
         if (pmStartHour.value!.isAfter(pmEndHour.value)) {
           pmEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dayHourError),
           ));
         } else if (pmStartHour.value!.isBefore(amStartHour.value)) {
           pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dayHourError),
           ));
         } else if (pmStartHour.value!.isBefore(amEndHour.value)) {
           pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('L\'heure de début ne peut être avant l\'heure de fin'),
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(context.l10n.dayHourError),
           ));
         }
       }
 
-      onChange(CalendarTimeOfDaySettings(start: amStartHour.value, end: amEndHour.value, start2: pmStartHour.value, end2: pmEndHour.value));
+      onChange(CalendarTimeOfDaySettings(
+        start: amStartHour.value,
+        end: amEndHour.value,
+        start2: pmStartHour.value,
+        end2: pmEndHour.value,
+      ));
     }
 
     return Padding(
@@ -303,7 +308,13 @@ class _TimePickerField extends HookWidget {
   final TimeOfDay? value;
   final Function(TimeOfDay?) onHourChange;
 
-  const _TimePickerField({Key? key, this.value, required this.onHourChange, required this.label, this.disabled = false}) : super(key: key);
+  const _TimePickerField({
+    Key? key,
+    this.value,
+    required this.onHourChange,
+    required this.label,
+    this.disabled = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -325,7 +336,7 @@ class _TimePickerField extends HookWidget {
       final result = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
-        cancelText: 'Effacer',
+        cancelText: context.l10n.eraseButton,
         helpText: MaterialLocalizations.of(context).timePickerDialHelpText + '\n$label',
       );
       onHourChange(result);

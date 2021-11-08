@@ -118,7 +118,7 @@ class UserStore extends ChangeNotifier {
       }
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
     } on DioError catch (ex) {
-      if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('users.email must be unique')) {
+      if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('email must be unique')) {
         throw ErrorResultException(ErrorResult.emailAlreadyUsed);
       }
       rethrow;
