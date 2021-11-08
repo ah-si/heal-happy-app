@@ -18,6 +18,7 @@ final userStoreProvider = ChangeNotifierProvider<UserStore>((ref) {
 class UserStore extends ChangeNotifier {
   final BackendApiProvider _apiProvider;
   final PreferencesProvider _preferencesProvider;
+  Map<String, String> specialities = {};
   bool loginPending = false;
   User? user;
 
@@ -28,6 +29,14 @@ class UserStore extends ChangeNotifier {
       user = null;
       notifyListeners();
     };
+  }
+
+  Future<Map<String, String>> getSpecialities() async {
+    if (specialities.isEmpty) {
+      final spe = await _apiProvider.api.getUserApi().getSpecialities();
+      specialities = spe.data!.toMap();
+    }
+    return specialities;
   }
 
   Future<void> init({bool silent = true}) async {
@@ -90,7 +99,7 @@ class UserStore extends ChangeNotifier {
   Future<void> changePassword(String password, String token) async {
     await _apiProvider.api.getAuthApi().resetPassword(
       resetPassword: ResetPassword(
-            (b) {
+        (b) {
           b.password = password;
           b.token = token;
         },
@@ -101,7 +110,7 @@ class UserStore extends ChangeNotifier {
   Future<void> askResetPassword(String email) async {
     await _apiProvider.api.getAuthApi().askResetPassword(
       askResetPassword: AskResetPassword(
-            (b) {
+        (b) {
           b.email = email;
         },
       ),

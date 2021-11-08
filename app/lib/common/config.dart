@@ -2,8 +2,12 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 String _getBaseUrl() {
   final baseUri = Uri.base;
-  //baseUri.port > 5000 mean we Run flutter app in IDE, not included in server side so use URL server
-  if (baseUri.scheme.contains('file') || baseUri.port > 5000) {
+  //baseUri.port > 5000 mean we Run flutter app in IDE, not included in server side so use URL server, use http to avoid self signed cert issues
+  if (baseUri.port > 5000) {
+    return 'http://localhost:3000';
+  }
+  // if not on web use normal URL
+  if (baseUri.scheme.contains('file')) {
     return HealHappySdk.basePath;
   }
   return baseUri.scheme + '://' + baseUri.host + ':' + baseUri.port.toString();

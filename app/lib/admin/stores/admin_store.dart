@@ -24,7 +24,7 @@ class AdminStore extends ChangeNotifier {
   HomeTabs _selectedTab = HomeTabs.home;
 
   AdminStore({AdminApi? adminApi}) : _adminApi = BackendApiProvider().api.getAdminApi() {
-    searchHealers();
+    searchHealers(0);
   }
 
   HomeTabs get selectedTab => _selectedTab;
@@ -36,11 +36,11 @@ class AdminStore extends ChangeNotifier {
     }
   }
 
-  Future<void> searchHealers() async {
+  Future<void> searchHealers(int page) async {
     isLoading = true;
     notifyListeners();
     try {
-      final pageToLoad = (searchResults?.currentPage ?? -1) + 1;
+      final pageToLoad = page;
       final results = await _adminApi.getPendingHealer(page: pageToLoad);
       searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
       isLoading = false;

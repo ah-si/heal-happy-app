@@ -6,6 +6,7 @@ import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StepInfoPro extends HookConsumerWidget {
@@ -17,11 +18,12 @@ class StepInfoPro extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.read(userStoreProvider);
     final userInfo = ref.read(userInfoProvider);
     final controllerDescription = useTextEditingController(text: userInfo.description);
     final controllerExperiences = useTextEditingController(text: userInfo.experiences);
     final controllerDiploma = useTextEditingController(text: userInfo.diploma);
-    final controllerSpe = useTextEditingController(text: userInfo.job == null ? '' : specialities[userInfo.job]);
+    final controllerSpe = useTextEditingController(text: userInfo.job == null ? '' : (store.specialities[userInfo.job] ?? ''));
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
     return Form(
@@ -50,6 +52,9 @@ class StepInfoPro extends HookConsumerWidget {
                 },
                 onItemSelected: (MapEntry<String, String> selected) {
                   userInfo.job = selected.key;
+                },
+                loadData: () {
+                  return ref.read(userStoreProvider).getSpecialities();
                 },
               ),
               TextFormField(

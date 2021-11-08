@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/presentation/autocomplete_field.dart';
-import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 
 class JobSearchFormField extends StatelessWidget {
   final InputDecoration decoration;
   final TextEditingController controller;
   final int nbVisibleResults;
+  final Future<Map<String, String>> Function() loadData;
   final Function(MapEntry<String, String> selected) onItemSelected;
   final String? Function(String? value)? validator;
 
@@ -15,6 +15,7 @@ class JobSearchFormField extends StatelessWidget {
     Key? key,
     this.validator,
     required this.decoration,
+    required this.loadData,
     required this.controller,
     required this.onItemSelected,
     this.nbVisibleResults = 3,
@@ -28,6 +29,7 @@ class JobSearchFormField extends StatelessWidget {
       nbVisibleResults: nbVisibleResults,
       controller: controller,
       delegate: (String query) async {
+        final specialities = await loadData();
         if (query.isEmpty) {
           return specialities.entries.toList(growable: false);
         }

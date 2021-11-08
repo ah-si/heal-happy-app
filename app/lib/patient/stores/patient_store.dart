@@ -28,7 +28,10 @@ class PatientStore extends ChangeNotifier {
   final UserApi _userApi;
   SearchResults? searchResults;
   PatientEventResults? eventsResults;
+  Map<String, String> specialities = {};
   bool isLoading = false;
+  late String _lastJobSearch;
+  late String _lastLocalizationSearch;
   HomeTabs _selectedTab = HomeTabs.home;
 
   PatientStore({UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi();
@@ -42,15 +45,29 @@ class PatientStore extends ChangeNotifier {
     }
   }
 
-  Future<void> searchHealers(String job, String localization) async {
+  Future<Map<String, String>> getSpecialities() async {
+    if (specialities.isEmpty) {
+      final spe = await _userApi.getSpecialities(onlyExisting: true);
+      specialities = spe.data!.toMap();
+    }
+    return specialities;
+  }
+
+  Future<void> loadHealersPage(int page) async {
+    return searchHealers(_lastJobSearch, _lastLocalizationSearch, page);
+  }
+
+  Future<void> searchHealers(String job, String localization, int page) async {
     isLoading = true;
     _selectedTab = HomeTabs.search;
     notifyListeners();
     try {
-      final pageToLoad = (searchResults?.currentPage ?? -1) + 1;
+      final pageToLoad = page;
       final results = await _userApi.searchHealers(job: job, localization: localization, page: pageToLoad);
       searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
       isLoading = false;
+      _lastJobSearch = job;
+      _lastLocalizationSearch = localization;
       notifyListeners();
     } catch (error, stackTrace) {
       searchResults = SearchResults([], 0, 0, error: handleError(error, stackTrace));

@@ -5,6 +5,7 @@ import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
+import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/user/user_store.dart';
@@ -126,6 +127,13 @@ class _HealerToVerify extends HookConsumerWidget {
               itemCount: store.searchResults!.healers.length,
             ),
           ),
+          Pagination(
+            total: store.searchResults!.totalPages,
+            current: store.searchResults!.currentPage,
+            onPageSelected: (int selectedPage) {
+              store.searchHealers(selectedPage);
+            },
+          ),
         ],
       ),
     );
@@ -139,6 +147,7 @@ class _HealerItem extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.read(userStoreProvider);
     return Card(
       margin: const EdgeInsets.symmetric(vertical: kNormalPadding),
       child: Column(
@@ -150,7 +159,7 @@ class _HealerItem extends HookConsumerWidget {
               children: [
                 Text(healer.name, style: context.textTheme.subtitle1),
                 Text(
-                  specialities[healer.job] ?? healer.job!,
+                  store.specialities[healer.job] ?? healer.job!,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: kSmallPadding),

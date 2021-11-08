@@ -189,7 +189,10 @@ class _StepTypeAvatar extends HookWidget {
             ),
           ),
         ),
-        Text(label, style: TextStyle(fontWeight: FontWeight.bold),),
+        Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
@@ -216,7 +219,6 @@ class _StepType extends HookConsumerWidget {
             ),
           ),
         ),
-        const Spacer(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -256,7 +258,6 @@ class _StepType extends HookConsumerWidget {
             child: Text(context.l10n.alreadyHaveAccount),
           ),
         ),
-        const Spacer(),
       ],
     );
   }
