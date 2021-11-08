@@ -19,8 +19,6 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PatientHomeScreen extends HookConsumerWidget {
-  static const name = 'patient_home';
-
   const PatientHomeScreen({Key? key}) : super(key: key);
 
   @override

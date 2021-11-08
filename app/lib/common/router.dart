@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_happy/admin/home_screen.dart';
 import 'package:heal_happy/auth/change_password.dart';
 import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/register/register_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
-import 'package:heal_happy/healer/home_screen.dart';
+import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/main.dart';
-import 'package:heal_happy/patient/home_screen.dart';
+import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_store.dart';
-import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
-extension GoRouterExtension on GoRouter {
-  goToHome() {
-    switch((routerDelegate.refreshListenable as UserStore).requiredUser.type) {
-      case UserTypeEnum.admin:
-        return goNamed(AdminHomeScreen.name);
-      case UserTypeEnum.healer:
-        return goNamed(HealerHomeScreen.name);
-      case UserTypeEnum.patient:
-        return goNamed(PatientHomeScreen.name);
-    }
-  }
-}
+late GoRouter _router;
 
-GoRouter createRouter(UserStore userStore) => GoRouter(
+GoRouter createRouter(UserStore userStore) => _router = GoRouter(
       refreshListenable: userStore,
       // redirect to the login page if the user is not logged in
       redirect: (state) {
-        if (userStore.loginPending) {
+        if (userStore.initPending) {
           //login still ongoing so let's wait
           return null;
         }
@@ -51,14 +40,7 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
         }
 
         if (loggedIn && currentRoute == '/') {
-          switch(userStore.requiredUser.type) {
-            case UserTypeEnum.admin:
-              return state.namedLocation(AdminHomeScreen.name);
-            case UserTypeEnum.healer:
-              return state.namedLocation(HealerHomeScreen.name);
-            case UserTypeEnum.patient:
-              return state.namedLocation(PatientHomeScreen.name);
-          }
+          return state.namedLocation(HomeScreen.name);
         }
 
         // no need to redirect at all
@@ -111,36 +93,14 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
           ),
         ),
         GoRoute(
-          path: '/${AdminHomeScreen.name}',
-          name: AdminHomeScreen.name,
+          path: '/${HomeScreen.name}',
+          name: HomeScreen.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
               return FadeTransition(opacity: animation, child: child);
             },
-            child: const AdminHomeScreen(),
-          ),
-        ),
-        GoRoute(
-          path: '/${PatientHomeScreen.name}',
-          name: PatientHomeScreen.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            child: const PatientHomeScreen(),
-          ),
-        ),
-        GoRoute(
-          path: '/${HealerHomeScreen.name}',
-          name: HealerHomeScreen.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            child: const HealerHomeScreen(),
+            child: const HomeScreen(),
           ),
         ),
       ],
@@ -150,7 +110,23 @@ GoRouter createRouter(UserStore userStore) => GoRouter(
           transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          child: const BgContainer(child: Center(child: Text('404 page not found'))),
+          child: BgContainer(
+            child: IntroDialog(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('404 page introuvable', style: context.textTheme.headline6),
+                  const SizedBox(height: kSmallPadding),
+                  TextButton(
+                    onPressed: () {
+                      _router.go('/');
+                    },
+                    child: const Text('Retourner sur le site'),
+                  ),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );

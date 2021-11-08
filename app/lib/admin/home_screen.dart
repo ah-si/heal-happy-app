@@ -14,8 +14,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdminHomeScreen extends HookConsumerWidget {
-  static const name = 'admin_home';
-
   const AdminHomeScreen({Key? key}) : super(key: key);
 
   @override

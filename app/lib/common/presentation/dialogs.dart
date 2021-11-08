@@ -11,6 +11,44 @@ import 'package:heal_happy/common/utils/extensions.dart';
 
 typedef DialogCallback = Function(BuildContext context);
 
+class IntroDialog extends StatelessWidget {
+  final Widget child;
+  final BoxConstraints? constraints;
+
+  const IntroDialog({Key? key, this.constraints, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 160),
+        child: Container(
+          constraints: constraints,
+          padding: const EdgeInsets.all(kNormalPadding),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(
+                color: kPrimaryColor,
+                blurRadius: 15,
+                offset: Offset(4, 6), // Shadow position
+              ),
+            ],
+            border: Border.all(
+              color: kPrimaryColor,
+              width: 1,
+            ),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(kSmallPadding),
+            ),
+          ),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
 class CustomDialog extends StatelessWidget {
   final Widget title;
   final Widget content;

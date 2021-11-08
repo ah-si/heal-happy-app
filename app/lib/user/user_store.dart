@@ -19,7 +19,7 @@ class UserStore extends ChangeNotifier {
   final BackendApiProvider _apiProvider;
   final PreferencesProvider _preferencesProvider;
   Map<String, String> specialities = {};
-  bool loginPending = false;
+  bool initPending = true;
   User? user;
 
   User get requiredUser => user!;
@@ -41,7 +41,6 @@ class UserStore extends ChangeNotifier {
 
   Future<void> init({bool silent = true}) async {
     try {
-      loginPending = true;
       final token = _preferencesProvider.prefs.getString(PreferencesProvider.keyToken);
       if (token.isNullOrEmpty) {
         throw ErrorResultException(ErrorResult.notLogged);
@@ -50,10 +49,10 @@ class UserStore extends ChangeNotifier {
       _apiProvider.setToken(token!);
       final results = await _apiProvider.api.getUserApi().getProfile();
       user = results.data;
-      loginPending = false;
+      initPending = false;
       notifyListeners();
     } catch (ex) {
-      loginPending = false;
+      initPending = false;
       notifyListeners();
       if (!silent) {
         rethrow;

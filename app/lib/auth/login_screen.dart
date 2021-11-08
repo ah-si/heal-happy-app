@@ -8,6 +8,7 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
+import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -30,7 +31,7 @@ class LoginScreen extends HookConsumerWidget {
           () => store.login(controller.text, controllerPass.text),
         );
         if (success) {
-          context.goToHome();
+          context.goNamed(HomeScreen.name);
         }
       }
     }
@@ -52,79 +53,56 @@ class LoginScreen extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 180),
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 400),
-                      padding: const EdgeInsets.all(kNormalPadding),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: kPrimaryColor,
-                            blurRadius: 15,
-                            offset: Offset(4, 6), // Shadow position
+                IntroDialog(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          controller: controller,
+                          validator: (value) => isEmailValid(value, context),
+                          keyboardType: TextInputType.emailAddress,
+                          autofillHints: const [AutofillHints.email, AutofillHints.username],
+                          decoration: InputDecoration(label: Text(context.l10n.emailField)),
+                        ),
+                        TextFormField(
+                          controller: controllerPass,
+                          obscureText: true,
+                          validator: (value) => isRequired(value, context),
+                          keyboardType: TextInputType.text,
+                          autofillHints: const [AutofillHints.password],
+                          onFieldSubmitted: (_) => submitForm(),
+                          decoration: InputDecoration(label: Text(context.l10n.passwordField)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(kNormalPadding),
+                          child: ElevatedButton(
+                            onPressed: submitForm,
+                            child: Text(context.l10n.loginButton),
                           ),
-                        ],
-                        border: Border.all(
-                          color: kPrimaryColor,
-                          width: 1,
                         ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(kSmallPadding),
+                        TextButton(
+                          onPressed: () {
+                            context.goNamed(RegisterScreen.name);
+                          },
+                          child: Text(context.l10n.noAccount),
                         ),
-                      ),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              controller: controller,
-                              validator: (value) => isEmailValid(value, context),
-                              keyboardType: TextInputType.emailAddress,
-                              autofillHints: const [AutofillHints.email],
-                              decoration: InputDecoration(label: Text(context.l10n.emailField)),
-                            ),
-                            TextFormField(
-                              controller: controllerPass,
-                              obscureText: true,
-                              validator: (value) => isRequired(value, context),
-                              keyboardType: TextInputType.text,
-                              autofillHints: const [AutofillHints.password],
-                              onFieldSubmitted: (_) => submitForm(),
-                              decoration: InputDecoration(label: Text(context.l10n.passwordField)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(kNormalPadding),
-                              child: ElevatedButton(
-                                onPressed: submitForm,
-                                child: Text(context.l10n.loginButton),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.goNamed(RegisterScreen.name);
-                              },
-                              child: Text(context.l10n.noAccount),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                final email = await showPrompt(context, context.l10n.passwordForgotten, description: context.l10n.needEmail, initialValue: controller.text);
-                                if (!email.isNullOrEmpty) {
-                                  final store = ref.read(userStoreProvider);
-                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => store.askResetPassword(email!));
-                                  if (success) {
-                                    showAlert(context, context.l10n.passwordForgotten, (_) => Text(context.l10n.passwordForgottenEmailSent));
-                                  }
-                                }
-                              },
-                              child: Text(context.l10n.passwordForgottenButton),
-                            ),
-                          ],
+                        TextButton(
+                          onPressed: () async {
+                            final email = await showPrompt(context, context.l10n.passwordForgotten, description: context.l10n.needEmail, initialValue: controller.text);
+                            if (!email.isNullOrEmpty) {
+                              final store = ref.read(userStoreProvider);
+                              final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => store.askResetPassword(email!));
+                              if (success) {
+                                showAlert(context, context.l10n.passwordForgotten, (_) => Text(context.l10n.passwordForgottenEmailSent));
+                              }
+                            }
+                          },
+                          child: Text(context.l10n.passwordForgottenButton),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),

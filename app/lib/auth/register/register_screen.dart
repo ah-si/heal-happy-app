@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_happy/admin/home_screen.dart';
 import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
-import 'package:heal_happy/healer/home_screen.dart';
-import 'package:heal_happy/patient/home_screen.dart';
 import 'package:heal_happy/profile/step_calendar_info.dart';
 import 'package:heal_happy/profile/step_personal_info.dart';
 import 'package:heal_happy/profile/step_pro_info.dart';
 import 'package:heal_happy/profile/step_social_info.dart';
+import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -57,77 +55,47 @@ class RegisterScreen extends HookConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 160),
-                      child: Container(
-                        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 550),
-                        padding: const EdgeInsets.all(kNormalPadding),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: kPrimaryColor,
-                                blurRadius: 15,
-                                offset: Offset(4, 6), // Shadow position
-                              ),
-                            ],
-                            border: Border.all(
-                              color: kPrimaryColor,
-                              width: 1,
-                            ),
-                            borderRadius: const BorderRadius.all(Radius.circular(kSmallPadding))),
-                        child: PageView.builder(
-                          controller: controller,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) {
-                            next() => controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-                            register() async {
-                              final store = ref.read(userStoreProvider);
-                              final userInfo = ref.read(userInfoProvider);
-                              final success = await showLoadingDialog(context, (_) => const Text('Inscription en cours...'), () async {
-                                await store.register(userInfo.toUser());
-                              });
-                              if (success) {
-                                switch (store.requiredUser.type) {
-                                  case UserTypeEnum.admin:
-                                    context.goNamed(AdminHomeScreen.name);
-                                    break;
-                                  case UserTypeEnum.healer:
-                                    context.goNamed(HealerHomeScreen.name);
-                                    break;
-                                  case UserTypeEnum.patient:
-                                    context.goNamed(PatientHomeScreen.name);
-                                    break;
-                                }
-                              }
-                            }
+                  IntroDialog(
+                    constraints: const BoxConstraints(maxWidth: 400, maxHeight: 550),
+                    child: PageView.builder(
+                      controller: controller,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (BuildContext context, int index) {
+                        next() => controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                        register() async {
+                          final store = ref.read(userStoreProvider);
+                          final userInfo = ref.read(userInfoProvider);
+                          final success = await showLoadingDialog(context, (_) => const Text('Inscription en cours...'), () async {
+                            await store.register(userInfo.toUser());
+                          });
+                          if (success) {
+                            context.goNamed(HomeScreen.name);
+                          }
+                        }
 
-                            switch (index) {
-                              case 1:
-                                return StepPersonalInfo(onContinue: () {
-                                  if (userInfo.type == UserTypeEnum.patient) {
-                                    register();
-                                  } else {
-                                    next();
-                                  }
-                                });
-                              case 2:
-                                return StepInfoPro(onContinue: next);
-                              case 3:
-                                return SingleChildScrollView(child: StepCalendarInfo(onContinue: next));
-                              case 4:
-                                return StepAddress(onContinue: next);
-                              case 5:
-                                return StepSocial(onContinue: register);
-                            }
-                            return _StepType(
-                              onContinue: next,
-                            );
-                          },
-                          itemCount: userInfo.type == UserTypeEnum.patient ? 2 : 6,
-                        ),
-                      ),
+                        switch (index) {
+                          case 1:
+                            return StepPersonalInfo(onContinue: () {
+                              if (userInfo.type == UserTypeEnum.patient) {
+                                register();
+                              } else {
+                                next();
+                              }
+                            });
+                          case 2:
+                            return StepInfoPro(onContinue: next);
+                          case 3:
+                            return SingleChildScrollView(child: StepCalendarInfo(onContinue: next));
+                          case 4:
+                            return StepAddress(onContinue: next);
+                          case 5:
+                            return StepSocial(onContinue: register);
+                        }
+                        return _StepType(
+                          onContinue: next,
+                        );
+                      },
+                      itemCount: userInfo.type == UserTypeEnum.patient ? 2 : 6,
                     ),
                   ),
                 ],

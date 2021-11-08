@@ -20,8 +20,6 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HealerHomeScreen extends HookConsumerWidget {
-  static const name = 'healer_home';
-
   const HealerHomeScreen({Key? key}) : super(key: key);
 
   @override

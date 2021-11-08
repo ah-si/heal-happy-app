@@ -15,7 +15,7 @@ class Pagination extends StatelessWidget {
         const Text('Pages:'),
         for (var i = 0; i < total; i++)
           TextButton(
-            onPressed: () {
+            onPressed:current == i ? null : () {
               onPageSelected(i);
             },
             child: Text((i + 1).toString(), style: current == i ? const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline) : null),

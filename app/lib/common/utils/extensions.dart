@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
 import 'package:heal_happy/common/l10n/error_localizations.dart';
-import 'package:heal_happy/common/router.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
@@ -46,8 +44,6 @@ extension ContextExtension on BuildContext {
   Color get primaryColor => kPrimaryColor;
 
   Color get accentColor => kAccentColor;
-
-  void goToHome() => GoRouter.of(this).goToHome();
 
   bool isRelevant() {
     try {

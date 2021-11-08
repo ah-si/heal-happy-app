@@ -32,9 +32,9 @@ class LogoutInterceptor extends Interceptor {
         try {
           final result = await _authApi().refreshToken(
               refreshTokenRequest: (RefreshTokenRequestBuilder()
-                ..refreshToken =  _preferenceProvider.prefs.getString(
-                  PreferencesProvider.keyRefreshToken,
-                ))
+                    ..refreshToken = _preferenceProvider.prefs.getString(
+                      PreferencesProvider.keyRefreshToken,
+                    ))
                   .build());
           final token = result.data!.token;
           await _preferenceProvider.prefs.setString(PreferencesProvider.keyToken, token);
@@ -43,11 +43,11 @@ class LogoutInterceptor extends Interceptor {
           //create request with new access token
           final opts = Options(method: err.requestOptions.method, headers: err.requestOptions.headers);
           final response = await BackendApiProvider().api.dio.request(
-            err.requestOptions.path,
-            options: opts,
-            data: err.requestOptions.data,
-            queryParameters: err.requestOptions.queryParameters,
-          );
+                err.requestOptions.path,
+                options: opts,
+                data: err.requestOptions.data,
+                queryParameters: err.requestOptions.queryParameters,
+              );
 
           return handler.resolve(response);
         } catch (err) {
@@ -70,24 +70,15 @@ List<Interceptor> getInterceptors({
   required AuthApi Function() authApi,
   required PreferencesProvider preferenceProvider,
 }) =>
-    kNetworkDebug
-        ? [
-            ApiKeyAuthInterceptor(),
-            LogInterceptor(logPrint: _logPrint, requestBody: true, responseBody: true),
-            LogoutInterceptor(
-              onLogout,
-              authApi,
-              preferenceProvider,
-            )
-          ]
-        : <Interceptor>[
-            ApiKeyAuthInterceptor(),
-            LogoutInterceptor(
-              onLogout,
-              authApi,
-              preferenceProvider,
-            )
-          ];
+    [
+      ApiKeyAuthInterceptor(),
+      if (kNetworkDebug) LogInterceptor(logPrint: _logPrint, requestBody: true, responseBody: true),
+      LogoutInterceptor(
+        onLogout,
+        authApi,
+        preferenceProvider,
+      )
+    ];
 
 class BackendApiProvider {
   static const authKey = 'Bearer';
@@ -131,10 +122,8 @@ class BackendApiProvider {
 
     // when in debug mode we allow self signed certificates
     if (!kIsProductionMode && !kIsWeb) {
-      (_singleton.api.dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (client) {
-        client.badCertificateCallback =
-            (cert, String host, int port) => true;
+      (_singleton.api.dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+        client.badCertificateCallback = (cert, String host, int port) => true;
         return client;
       };
     }

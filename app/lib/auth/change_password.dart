@@ -52,74 +52,51 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 180),
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 400),
-                      padding: const EdgeInsets.all(kNormalPadding),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: kPrimaryColor,
-                            blurRadius: 15,
-                            offset: Offset(4, 6), // Shadow position
+                IntroDialog(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextFormField(
+                          controller: controllerPass,
+                          obscureText: true,
+                          validator: (value) => isRequired(value, context),
+                          keyboardType: TextInputType.text,
+                          autofillHints: const [AutofillHints.newPassword],
+                          onFieldSubmitted: (_) => submitForm(),
+                          decoration: InputDecoration(label: Text(context.l10n.passwordField)),
+                        ),
+                        TextFormField(
+                          controller: controllerConfirm,
+                          obscureText: true,
+                          validator: (value) {
+                            final result = isRequired(value, context);
+                            if (result == null && controllerConfirm.text != controllerPass.text) {
+                              return context.l10n.passwordMismatch;
+                            }
+                            return result;
+                          },
+                          keyboardType: TextInputType.text,
+                          autofillHints: const [AutofillHints.password],
+                          onFieldSubmitted: (_) => submitForm(),
+                          decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(kNormalPadding),
+                          child: ElevatedButton(
+                            onPressed: submitForm,
+                            child: Text(context.l10n.sendButton),
                           ),
-                        ],
-                        border: Border.all(
-                          color: kPrimaryColor,
-                          width: 1,
                         ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(kSmallPadding),
+                        TextButton(
+                          onPressed: () {
+                            context.goNamed(LoginScreen.name);
+                          },
+                          child: Text(context.l10n.backToLogin),
                         ),
-                      ),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            TextFormField(
-                              controller: controllerPass,
-                              obscureText: true,
-                              validator: (value) => isRequired(value, context),
-                              keyboardType: TextInputType.text,
-                              autofillHints: const [AutofillHints.newPassword],
-                              onFieldSubmitted: (_) => submitForm(),
-                              decoration: InputDecoration(label: Text(context.l10n.passwordField)),
-                            ),
-                            TextFormField(
-                              controller: controllerConfirm,
-                              obscureText: true,
-                              validator: (value) {
-                                final result = isRequired(value, context);
-                                if (result == null && controllerConfirm.text != controllerPass.text) {
-                                  return context.l10n.passwordMismatch;
-                                }
-                                return result;
-                              },
-                              keyboardType: TextInputType.text,
-                              autofillHints: const [AutofillHints.password],
-                              onFieldSubmitted: (_) => submitForm(),
-                              decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(kNormalPadding),
-                              child: ElevatedButton(
-                                onPressed: submitForm,
-                                child: Text(context.l10n.sendButton),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                context.goNamed(LoginScreen.name);
-                              },
-                              child: Text(context.l10n.backToLogin),
-                            ),
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
                   ),
                 ),
