@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/utils/constants.dart';
@@ -40,7 +40,7 @@ class ErrorLocalizations {
 
   String get fieldRequiredHint => Intl.message('Merci de remplir ce champ', name: 'fieldRequiredHint', desc: 'When a field is required on a form');
 
-  String get notLogged => Intl.message('Vous nêtes pas connecté', name: 'notLogged', desc: 'When a 401 occurred');
+  String get notLogged => Intl.message('Vous n’êtes pas connecté', name: 'notLogged', desc: 'When a 401 occurred');
 
   String get notLoggedHint => Intl.message('Merci de vous connecter pour réaliser cette action', name: 'notLoggedHint', desc: 'When a 401 occurred');
 
@@ -51,12 +51,12 @@ class ErrorLocalizations {
   String get wrongCredentials => Intl.message('Erreur de connexion', name: 'wrongCredentials', desc: 'When login credentials are wrong');
 
   String get wrongCredentialsHint =>
-      Intl.message('Merci de vérifier votre email et mot de passe avant de retenter', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
+      Intl.message('Merci de vérifier votre email et mot de passe avant nouvelle tentative', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
 
-  String get meetingAlreadyExist => Intl.message('Reservation impossible', name: 'meetingAlreadyExist');
+  String get meetingAlreadyExist => Intl.message('Réservation impossible', name: 'meetingAlreadyExist');
 
   String get meetingAlreadyExistHint =>
-      Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consulation passé.',
+      Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consultation passée.',
           name: 'meetingAlreadyExistHint');
 
   String get emailAlreadyUsed => Intl.message('Email déjà enregistré', name: 'emailAlreadyUsed');
@@ -82,3 +82,4 @@ class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalization
   @override
   bool shouldReload(ErrorLocalizationsDelegate old) => old.locale != locale;
 }
+

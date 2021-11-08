@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/utils/constants.dart';
@@ -28,7 +28,7 @@ class CommonLocalizations {
 
   String get disconnectConfirm => Intl.message('Voulez-vous vous déconnecter?', name: 'disconnectConfirm');
 
-  String get emptyHealer => Intl.message('Vous n\'avez aucun soignant a valider pour le moment.', name: 'emptyHealer');
+  String get emptyHealer => Intl.message('Vous n\'avez aucun soignant à valider pour le moment.', name: 'emptyHealer');
 
   String get pendingHealer => Intl.message('Voici la liste des soignants en attente de validation:', name: 'pendingHealer');
 
@@ -43,13 +43,13 @@ class CommonLocalizations {
   String delete(String name) => Intl.message('Supprimer $name?', args: [name], name: 'delete');
 
   String get deleteHealerConfirm =>
-      Intl.message('Êtes vous sur de vouloir supprimer ce soignant?\nCette action ne peut être annulée et le soignant devra se réinscrire.',
+      Intl.message('Êtes-vous sûr de vouloir supprimer ce soignant?\nCette action ne peut être annulée et le soignant devra se réinscrire.',
           name: 'deleteHealerConfirm');
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
   String get acceptConfirm =>
-      Intl.message('En acceptant le soignant il sera visible dans la recherche et les patients pourrons prendre rendez-vous avec lui.\nVoulez vous continuer?',
+      Intl.message('En acceptant le soignant, il sera visible dans la recherche et les patients pourront prendre rendez-vous avec lui.\nVoulez- vous continuer?',
           name: 'acceptConfirm');
 
   String get accepting => Intl.message('Acceptation en cours...', name: 'accepting');
@@ -60,7 +60,7 @@ class CommonLocalizations {
 
   String get patient => Intl.message('Patient', name: 'patient');
 
-  String get healer => Intl.message('Patient', name: 'healer');
+  String get healer => Intl.message('Soignant', name: 'healer');
 
   String get admin => Intl.message('Administrateur', name: 'admin');
 
@@ -74,7 +74,7 @@ class CommonLocalizations {
 
   String get confirmPasswordField => Intl.message('Confirmation du mot de passe*:', name: 'confirmPasswordField');
 
-  String get passwordMismatch => Intl.message('Les mot de passe ne correspondent pas', name: 'passwordMismatch');
+  String get passwordMismatch => Intl.message('Les mots de passe ne correspondent pas', name: 'passwordMismatch');
 
   String get emailField => Intl.message('Email*:', name: 'emailField');
 
@@ -84,11 +84,11 @@ class CommonLocalizations {
 
   String get loginButton => Intl.message('Connexion', name: 'loginButton');
 
-  String get noAccount => Intl.message('Je n\'ai pas de compte, m\'inscrire', name: 'noAccount');
+  String get noAccount => Intl.message('Je n\'ai pas de compte, procéder à mon inscription', name: 'noAccount');
 
   String get passwordForgotten => Intl.message('Mot de passe oublié', name: 'passwordForgotten');
 
-  String get passwordForgottenEmailSent => Intl.message('Une email vous a été envoyé afin de changer votre mot de passe.', name: 'passwordForgottenEmailSent');
+  String get passwordForgottenEmailSent => Intl.message('Un email vous a été envoyé afin de changer votre mot de passe.', name: 'passwordForgottenEmailSent');
 
   String get passwordForgottenButton => Intl.message('J\'ai oublié mon mot de passe', name: 'passwordForgottenButton');
 
@@ -108,7 +108,7 @@ class CommonLocalizations {
 
   String get joinVisioButton => Intl.message('Rejoindre la visio', name: 'joinVisioButton');
 
-  String get infoSaved => Intl.message('Information enregistré avec succès', name: 'infoSaved');
+  String get infoSaved => Intl.message('Information enregistrée avec succès', name: 'infoSaved');
 
   String get saveButton => Intl.message('Enregistrer', name: 'saveButton');
 
@@ -116,11 +116,11 @@ class CommonLocalizations {
 
   String get address => Intl.message('Adresse', name: 'address');
 
-  String get personalInfo => Intl.message('Information personnelles', name: 'personalInfo');
+  String get personalInfo => Intl.message('Informations personnelles', name: 'personalInfo');
 
-  String get socialInfo => Intl.message('Information social', name: 'socialInfo');
+  String get socialInfo => Intl.message('Information sociale', name: 'socialInfo');
 
-  String get proInfo => Intl.message('Information professionelles', name: 'proInfo');
+  String get proInfo => Intl.message('Informations professionnelles', name: 'proInfo');
 
   String get localizationField => Intl.message('Localisation:', name: 'localizationField');
 
@@ -142,9 +142,9 @@ class CommonLocalizations {
 
   String get addressIntro => Intl.message('Merci de remplir votre adresse:', name: 'addressIntro');
 
-  String get addressDescription => Intl.message('Elle sera utilisée afin que les patients proche de vous puissent vous trouver', name: 'addressDescription');
+  String get addressDescription => Intl.message('Elle sera utilisée afin que les patients proches de vous puissent vous trouver', name: 'addressDescription');
 
-  String get showAddress => Intl.message('Afficher mon adresse publiquement sur mon profile soignant', name: 'showAddress');
+  String get showAddress => Intl.message('Afficher mon adresse publiquement sur mon profil soignant', name: 'showAddress');
 
   String get speField => Intl.message('Spécialité*:', name: 'speField');
 
@@ -172,7 +172,7 @@ class CommonLocalizations {
 
   String get personalInfoIntro => Intl.message('Merci de remplir vos informations personnelles:', name: 'personalInfoIntro');
 
-  String get proInfoIntro => Intl.message('Merci de remplir vos informations professionelles:', name: 'proInfoIntro');
+  String get proInfoIntro => Intl.message('Merci de remplir vos informations professionnelles:', name: 'proInfoIntro');
 
   String get eraseButton => Intl.message('Effacer', name: 'eraseButton');
 
@@ -184,29 +184,29 @@ class CommonLocalizations {
 
   String get consultationDurationField => Intl.message('Durée d\'une consultation*:', name: 'consultationDurationField');
 
-  String get consultationDurationHint => Intl.message('A spécifier en minute', name: 'consultationDurationHint');
+  String get consultationDurationHint => Intl.message('A spécifier en minutes', name: 'consultationDurationHint');
 
-  String calendarDayError(String day) => Intl.message('Les horaires pour $day sont incorrect, merci de corriger.', args: [day], name: 'calendarDayError');
+  String calendarDayError(String day) => Intl.message('Les horaires pour $day sont incorrects, merci de corriger.', args: [day], name: 'calendarDayError');
 
   String get cancelConsultation => Intl.message('Annuler la consultation?', name: 'cancelConsultation');
 
   String cancelConsultationConfirm(String name) =>
-      Intl.message('Êtes vous sur de vouloir annuler la consulation avec $name?', args: [name], name: 'cancelConsultationConfirm');
+      Intl.message('Êtes-vous sûr de vouloir annuler la consultation avec $name?', args: [name], name: 'cancelConsultationConfirm');
 
   String consultationCanceled(String name) =>
       Intl.message('Votre consultation avec $name a été annulée, un email lui a été envoyé pour l\'avertir.', args: [name], name: 'cancelConsultationConfirm');
 
-  String get noEvents => Intl.message('Vous n\'avez aucune consultation planifié pour le moment.', name: 'noEvents');
+  String get noEvents => Intl.message('Vous n\'avez aucune consultation planifiée pour le moment.', name: 'noEvents');
 
   String get loading => Intl.message('Chargement en cours...', name: 'loading');
 
   String get profile => Intl.message('Profile', name: 'profile');
 
   String get accountNotVerified =>
-      Intl.message('Vous n\'avez pas encore validé votre email, merci de cliquez sur le lien que nous vous avons envoyé.', name: 'accountNotVerified');
+      Intl.message('Vous n\'avez pas encore validé votre email, merci de cliquer sur le lien que nous vous avons envoyé.', name: 'accountNotVerified');
 
   String get accountPending =>
-      Intl.message('Votre compte est en attente de validation. Une fois vérifié, les patients pourrons prendre rendez vous.', name: 'accountPending');
+      Intl.message('Votre compte est en attente de validation. Une fois vérifié, les patients pourront prendre rendez-vous.', name: 'accountPending');
 
   String get donate => Intl.message('Faire un don', name: 'donate');
 
@@ -216,18 +216,18 @@ class CommonLocalizations {
 
   String get plannedConsultation => Intl.message('Vos consultations planifiées:', name: 'plannedConsultation');
 
-  String get noConsultation => Intl.message('Vous n\'avez aucune consultation planifié pour le moment.', name: 'noConsultation');
+  String get noConsultation => Intl.message('Vous n\'avez aucune consultation planifiée pour le moment.', name: 'noConsultation');
 
   String get searchButton => Intl.message('Rechercher', name: 'searchButton');
 
-  String get donateDescription => Intl.message('Nous fonctionnons uniquement grace aux dons, cliquez ici pour nous soutenir.', name: 'donateDescription');
+  String get donateDescription => Intl.message('Nous fonctionnons uniquement grâce aux dons, cliquez ici pour nous soutenir.', name: 'donateDescription');
 
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
 
   String get donateInstructions =>
-      Intl.message('Si vous faîtes un don, merci de préciser votre destination de don dans le champ information :', name: 'donateInstructions');
+      Intl.message('Si vous faites un don, merci de préciser votre destination de don dans le champ information :', name: 'donateInstructions');
 
-  String get takeRdv => Intl.message('Prendre rendez vous', name: 'takeRdv');
+  String get takeRdv => Intl.message('Prendre rendez-vous', name: 'takeRdv');
 
   String get rdvCreated => Intl.message('Rendez-vous validé!', name: 'rdvCreated');
 
@@ -237,7 +237,7 @@ class CommonLocalizations {
 
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
-  String takeRdvConfirm(String name, String when) => Intl.message('Voulez prendre rendez vous avec $name à $when?', name: 'takeRdvConfirm');
+  String takeRdvConfirm(String name, String when) => Intl.message('Voulez prendre rendez-vous avec $name à $when?', name: 'takeRdvConfirm');
 }
 
 class CommonLocalizationsDelegate extends LocalizationsDelegate<CommonLocalizations> {
@@ -257,3 +257,4 @@ class CommonLocalizationsDelegate extends LocalizationsDelegate<CommonLocalizati
   @override
   bool shouldReload(CommonLocalizationsDelegate old) => old.locale != locale;
 }
+

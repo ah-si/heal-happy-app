@@ -140,9 +140,10 @@ class RegisterScreen extends HookConsumerWidget {
   }
 }
 
-class _StepTypeAvatar extends HookConsumerWidget {
+class _StepTypeAvatar extends HookWidget {
   final VoidCallback onContinue;
-  final IconData icon;
+  final String hoverIcon;
+  final String icon;
   final Color color;
   final String label;
 
@@ -151,37 +152,44 @@ class _StepTypeAvatar extends HookConsumerWidget {
     required this.onContinue,
     required this.label,
     required this.color,
+    required this.hoverIcon,
     required this.icon,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final hover = useState(false);
     return Column(
       children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundColor: color,
-          child: Stack(
-            children: [
-              Center(
-                child: Icon(
-                  icon,
-                  size: 40,
-                  semanticLabel: label,
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 200),
+          child: Material(
+            type: MaterialType.circle,
+            clipBehavior: Clip.antiAlias,
+            color: Colors.transparent,
+            child: InkResponse(
+              splashFactory: NoSplash.splashFactory,
+              radius: 0,
+              onTap: onContinue,
+              onHover: (newHover) {
+                hover.value = newHover;
+              },
+              onTapDown: (_) {
+                hover.value = true;
+              },
+              onTapCancel: () {
+                hover.value = false;
+              },
+              child: Center(
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 400),
+                  child: hover.value ? Image.asset(hoverIcon) : Image.asset(icon),
                 ),
               ),
-              Material(
-                type: MaterialType.circle,
-                clipBehavior: Clip.antiAlias,
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onContinue,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-        Text(label),
+        Text(label, style: TextStyle(fontWeight: FontWeight.bold),),
       ],
     );
   }
@@ -213,23 +221,29 @@ class _StepType extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _StepTypeAvatar(
-              onContinue: () {
-                userInfo.type = UserTypeEnum.patient;
-                onContinue();
-              },
-              label: context.l10n.patient,
-              icon: Icons.person,
-              color: userInfo.type == UserTypeEnum.patient ? context.primaryColor : Colors.grey.withOpacity(0.5),
+            Expanded(
+              child: _StepTypeAvatar(
+                onContinue: () {
+                  userInfo.type = UserTypeEnum.patient;
+                  onContinue();
+                },
+                label: context.l10n.patient,
+                icon: 'assets/images/patient.png',
+                hoverIcon: 'assets/images/patient_on.png',
+                color: userInfo.type == UserTypeEnum.patient ? context.primaryColor : Colors.grey.withOpacity(0.5),
+              ),
             ),
-            _StepTypeAvatar(
-              onContinue: () {
-                userInfo.type = UserTypeEnum.healer;
-                onContinue();
-              },
-              label: context.l10n.healer,
-              color: userInfo.type == UserTypeEnum.healer ? context.primaryColor : Colors.grey.withOpacity(0.5),
-              icon: Icons.healing,
+            Expanded(
+              child: _StepTypeAvatar(
+                onContinue: () {
+                  userInfo.type = UserTypeEnum.healer;
+                  onContinue();
+                },
+                label: context.l10n.healer,
+                color: userInfo.type == UserTypeEnum.healer ? context.primaryColor : Colors.grey.withOpacity(0.5),
+                icon: 'assets/images/healer.png',
+                hoverIcon: 'assets/images/healer_on.png',
+              ),
             ),
           ],
         ),
