@@ -130,6 +130,16 @@ class StepAddress extends HookConsumerWidget {
     final controllerZipCode = useTextEditingController(text: userInfo.zipCode);
     final isAddressValid = useState(userInfo.isAddressVisible ?? false);
     final formKey = useMemoized(() => GlobalKey<FormState>());
+    submitForm() {
+      if (formKey.currentState!.validate()) {
+        userInfo.isAddressVisible = isAddressValid.value;
+        userInfo.street = controllerStreet.text;
+        userInfo.street2 = controllerStreet2.text;
+        userInfo.city = controllerCity.text;
+        userInfo.zipCode = controllerZipCode.text;
+        onContinue?.call();
+      }
+    }
     return Form(
       key: formKey,
       child: Column(
@@ -183,6 +193,9 @@ class StepAddress extends HookConsumerWidget {
                 autofillHints: const [AutofillHints.postalCode],
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(label: Text(context.l10n.zipField)),
+                onFieldSubmitted: (_) {
+                  submitForm();
+                },
               ),
             ],
           ),
@@ -203,16 +216,7 @@ class StepAddress extends HookConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(kNormalPadding),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      userInfo.isAddressVisible = isAddressValid.value;
-                      userInfo.street = controllerStreet.text;
-                      userInfo.street2 = controllerStreet2.text;
-                      userInfo.city = controllerCity.text;
-                      userInfo.zipCode = controllerZipCode.text;
-                      onContinue?.call();
-                    }
-                  },
+                  onPressed: submitForm,
                   child: Text(saveButtonLabel ?? context.l10n.continueButton),
                 ),
               ),

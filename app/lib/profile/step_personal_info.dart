@@ -24,6 +24,16 @@ class StepPersonalInfo extends HookConsumerWidget {
     final controller = useTextEditingController(text: userInfo.email);
     final controllerPass = useTextEditingController(text: userInfo.password);
     final formKey = useMemoized(() => GlobalKey<FormState>());
+    submitForm() {
+      if (formKey.currentState!.validate()) {
+        userInfo.firstName = controllerFirstName.text;
+        userInfo.lastName = controllerLastName.text;
+        userInfo.email = controller.text;
+        userInfo.mobile = controllerMobile.text;
+        userInfo.password = controllerPass.text;
+        onContinue?.call();
+      }
+    }
     return Form(
       key: formKey,
       child: Column(
@@ -81,6 +91,9 @@ class StepPersonalInfo extends HookConsumerWidget {
                   autofillHints: const [AutofillHints.newPassword],
                   keyboardType: TextInputType.visiblePassword,
                   onChanged: (value) => userInfo.password = value,
+                  onFieldSubmitted: (_) {
+                    submitForm();
+                  },
                   decoration: InputDecoration(label: Text(context.l10n.passwordField)),
                 ),
             ],
@@ -102,16 +115,7 @@ class StepPersonalInfo extends HookConsumerWidget {
               Padding(
                 padding: const EdgeInsets.all(kNormalPadding),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      userInfo.firstName = controllerFirstName.text;
-                      userInfo.lastName = controllerLastName.text;
-                      userInfo.email = controller.text;
-                      userInfo.mobile = controllerMobile.text;
-                      userInfo.password = controllerPass.text;
-                      onContinue?.call();
-                    }
-                  },
+                  onPressed: submitForm,
                   child: Text(saveButtonLabel ?? (userInfo.type == UserTypeEnum.patient ? context.l10n.sendButton : context.l10n.continueButton)),
                 ),
               ),

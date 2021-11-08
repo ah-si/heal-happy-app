@@ -19,6 +19,13 @@ class StepSocial extends HookConsumerWidget {
     final controllerSocial1 = useTextEditingController(text: userInfo.social1);
     final controllerSocial2 = useTextEditingController(text: userInfo.social2);
     final controllerSocial3 = useTextEditingController(text: userInfo.social3);
+    submitForm() {
+      userInfo.website = controllerWebsite.text;
+      userInfo.social1 = controllerSocial1.text;
+      userInfo.social2 = controllerSocial2.text;
+      userInfo.social3 = controllerSocial3.text;
+      onContinue?.call();
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -51,6 +58,9 @@ class StepSocial extends HookConsumerWidget {
               controller: controllerSocial3,
               keyboardType: TextInputType.url,
               decoration: InputDecoration(label: Text(context.l10n.social3Field)),
+              onFieldSubmitted: (_) {
+                submitForm();
+              },
             ),
           ],
         ),
@@ -71,13 +81,7 @@ class StepSocial extends HookConsumerWidget {
             Padding(
               padding: const EdgeInsets.all(kNormalPadding),
               child: ElevatedButton(
-                onPressed: () async {
-                  userInfo.website = controllerWebsite.text;
-                  userInfo.social1 = controllerSocial1.text;
-                  userInfo.social2 = controllerSocial2.text;
-                  userInfo.social3 = controllerSocial3.text;
-                  onContinue?.call();
-                },
+                onPressed: submitForm,
                 child: Text(saveButtonLabel ?? context.l10n.sendButton),
               ),
             ),
