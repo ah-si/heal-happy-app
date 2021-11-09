@@ -20,7 +20,7 @@ class HomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userStore = ref.watch(userStoreProvider);
 
-    if (userStore.initPending) {
+    if (userStore.initPending || userStore.user == null) {
       return const BgContainer(child: Loading());
     }
 
