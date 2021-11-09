@@ -74,7 +74,6 @@ class MyApp extends StatelessWidget {
               title: 'Soignez Heureux',
               theme: ThemeData(
                 primarySwatch: createMaterialColor(kPrimaryColor),
-                scaffoldBackgroundColor: Colors.transparent,
               ),
               locale: kSupportedLanguages.first,
               localizationsDelegates: [
@@ -107,10 +106,8 @@ class SplashScreen extends HookConsumerWidget {
       });
     }, const []);
     return const BgContainer(
-      child: Scaffold(
-        body: Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
+      child: Center(
+        child: CircularProgressIndicator.adaptive(),
       ),
     );
   }
