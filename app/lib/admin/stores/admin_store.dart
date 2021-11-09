@@ -15,7 +15,7 @@ class SearchResults {
   SearchResults(this.healers, this.currentPage, this.totalPages, {this.error});
 }
 
-enum HomeTabs { home }
+enum HomeTabs { home, healerToVerify }
 
 class AdminStore extends ChangeNotifier {
   final AdminApi _adminApi;
@@ -23,9 +23,7 @@ class AdminStore extends ChangeNotifier {
   bool isLoading = false;
   HomeTabs _selectedTab = HomeTabs.home;
 
-  AdminStore({AdminApi? adminApi}) : _adminApi = BackendApiProvider().api.getAdminApi() {
-    searchHealers(0);
-  }
+  AdminStore({AdminApi? adminApi}) : _adminApi = BackendApiProvider().api.getAdminApi();
 
   HomeTabs get selectedTab => _selectedTab;
 

@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:heal_happy/admin/dashboard.dart';
 import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
@@ -9,7 +13,7 @@ import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/user/user_store.dart';
-import 'package:heal_happy_sdk/heal_happy_sdk.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -39,6 +43,13 @@ class AdminHomeScreen extends HookConsumerWidget {
                       selected: store.selectedTab == HomeTabs.home,
                     ),
                     const SizedBox(width: 2),
+                    MenuItem(
+                      label: context.l10n.healerToVerify,
+                      onTap: () {
+                        store.selectedTab = HomeTabs.healerToVerify;
+                      },
+                      selected: store.selectedTab == HomeTabs.healerToVerify,
+                    ),
                     const Spacer(),
                     MenuItem(
                       label: context.l10n.disconnect,
@@ -58,7 +69,7 @@ class AdminHomeScreen extends HookConsumerWidget {
                     color: Colors.white.withOpacity(0.8),
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 400),
-                      child: store.selectedTab == HomeTabs.home ? const _HealerToVerify() : null,
+                      child: store.selectedTab == HomeTabs.home ? const Dashboard() : const _HealerToVerify(),
                     ),
                   ),
                 ),
@@ -77,6 +88,12 @@ class _HealerToVerify extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(adminStoreProvider);
+
+    useEffect(() {
+      scheduleMicrotask((){
+        store.searchHealers(0);
+      });
+    }, const []);
 
     if (store.isLoading || store.searchResults == null) {
       return const Loading();

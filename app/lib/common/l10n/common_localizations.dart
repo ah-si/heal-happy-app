@@ -24,6 +24,8 @@ class CommonLocalizations {
 
   String get home => Intl.message('Accueil', name: 'home');
 
+  String get healerToVerify => Intl.message('Soignants à vérifier', name: 'healerToVerify');
+
   String get disconnect => Intl.message('Déconnexion', name: 'disconnect');
 
   String get disconnectConfirm => Intl.message('Voulez-vous vous déconnecter?', name: 'disconnectConfirm');

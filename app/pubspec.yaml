@@ -15,6 +15,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  syncfusion_flutter_charts: ^19.3.48
   url_launcher: ^6.0.12
   dio:
   intl: ^0.17.0
