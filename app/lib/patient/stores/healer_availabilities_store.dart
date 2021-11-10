@@ -52,6 +52,8 @@ class AvailabilitiesStore extends ChangeNotifier {
     } on DioError catch(ex) {
       if (ex.response?.statusCode == 403) {
         throw ErrorResultException(ErrorResult.meetingAlreadyExist);
+      } else if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('Slot already taken')) {
+        throw ErrorResultException(ErrorResult.meetingAlreadyExist);
       }
       rethrow;
     }

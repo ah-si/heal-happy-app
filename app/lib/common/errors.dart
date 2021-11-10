@@ -58,6 +58,7 @@ class ErrorResult {
   static const noAppForActionError = ErrorResult(_ErrorType.noAppForActionError);
   static const fieldRequired = ErrorResult(_ErrorType.fieldRequired);
   static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
+  static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyExist);
 
   final _ErrorType _type;
 
@@ -88,6 +89,8 @@ class ErrorResult {
         return localizations.meetingAlreadyExist;
       case _ErrorType.emailAlreadyUsed:
         return localizations.emailAlreadyUsed;
+      case _ErrorType.meetingAlreadyBooked:
+        return localizations.meetingAlreadyBooked;
     }
   }
 
@@ -119,6 +122,8 @@ class ErrorResult {
         return localizations.meetingAlreadyExistHint;
       case _ErrorType.emailAlreadyUsed:
         return localizations.emailAlreadyUsedHint;
+      case _ErrorType.meetingAlreadyBooked:
+        return localizations.meetingAlreadyBookedHint;
     }
   }
 
@@ -144,5 +149,6 @@ enum _ErrorType {
   emailAlreadyUsed,
   fieldRequired,
   meetingAlreadyExist,
+  meetingAlreadyBooked,
   noAppForActionError,
 }

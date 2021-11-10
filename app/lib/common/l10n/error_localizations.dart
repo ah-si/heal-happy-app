@@ -63,6 +63,10 @@ class ErrorLocalizations {
 
   String get emailAlreadyUsedHint =>
       Intl.message('Cet email est déjà enregistré, merci de vous connecter avec vos informations ou renseigner un autre email', name: 'emailAlreadyUsedHint');
+
+  String get meetingAlreadyBooked => Intl.message('Ce rendez-vous à déjà été réservé', name: 'meetingAlreadyBooked');
+
+  String get meetingAlreadyBookedHint => Intl.message('Merci de choisir un autre horaire pour votre rendez-vous', name: 'meetingAlreadyBookedHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {
