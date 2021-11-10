@@ -229,7 +229,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                       if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
                       if (!event.description.isNullOrEmpty)
                         Text(
-                          event.description! * 30,
+                          event.description!,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

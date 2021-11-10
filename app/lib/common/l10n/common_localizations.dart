@@ -202,7 +202,7 @@ class CommonLocalizations {
 
   String get loading => Intl.message('Chargement en cours...', name: 'loading');
 
-  String get profile => Intl.message('Profile', name: 'profile');
+  String get profile => Intl.message('Profil', name: 'profile');
 
   String get accountNotVerified =>
       Intl.message('Vous n\'avez pas encore validé votre email, merci de cliquer sur le lien que nous vous avons envoyé.', name: 'accountNotVerified');
