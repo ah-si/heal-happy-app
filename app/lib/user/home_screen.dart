@@ -56,7 +56,7 @@ class _HomeContent extends HookConsumerWidget {
           return const Loading();
         }
         if (snapshot.hasError) {
-          return Text(ErrorResult.internal.twoLiner(context), style: TextStyle(color: context.theme.errorColor));
+          return Center(child: Text(ErrorResult.internal.twoLiner(context), style: TextStyle(color: context.theme.errorColor)));
         }
 
         switch (userStore.user?.type) {
