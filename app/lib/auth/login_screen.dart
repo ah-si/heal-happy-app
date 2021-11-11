@@ -28,7 +28,7 @@ class LoginScreen extends HookConsumerWidget {
         final success = await showLoadingDialog(
           context,
           (context) => Text(context.l10n.login),
-          () => store.login(controller.text, controllerPass.text),
+          () => store.login(controller.text.trim(), controllerPass.text.trim()),
         );
         if (success) {
           context.goNamed(HomeScreen.name);

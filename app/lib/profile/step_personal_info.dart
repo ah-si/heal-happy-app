@@ -28,9 +28,9 @@ class StepPersonalInfo extends HookConsumerWidget {
       if (formKey.currentState!.validate()) {
         userInfo.firstName = controllerFirstName.text;
         userInfo.lastName = controllerLastName.text;
-        userInfo.email = controller.text;
+        userInfo.email = controller.text.trim();
         userInfo.mobile = controllerMobile.text;
-        userInfo.password = controllerPass.text;
+        userInfo.password = controllerPass.text.trim();
         onContinue?.call();
       }
     }
