@@ -85,7 +85,7 @@ class RegisterScreen extends HookConsumerWidget {
                           case 2:
                             return StepInfoPro(onContinue: next);
                           case 3:
-                            return SingleChildScrollView(child: StepCalendarInfo(onContinue: next));
+                            return StepCalendarInfo(onContinue: next);
                           case 4:
                             return StepAddress(onContinue: next);
                           case 5:

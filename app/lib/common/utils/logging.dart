@@ -78,7 +78,8 @@ void _log(LogRecord record) async {
   // send as crash to crashlytics if severe
   if (kIsProductionMode &&
       record.level >= Level.SEVERE &&
-      record.stackTrace != null) {
+      record.stackTrace != null
+    ) {
     await Sentry.captureEvent(
       SentryEvent(
         release: _currentVersion,

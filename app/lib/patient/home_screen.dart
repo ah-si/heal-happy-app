@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -123,11 +124,15 @@ class PatientHomeScreen extends HookConsumerWidget {
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
-                                showAlert(
-                                  context,
-                                  context.l10n.donate,
-                                  (_) => const Donate(),
-                                );
+                                if (kIsWeb) {
+                                  launch('https://www.ah-si.org/dons-soignez-heureux');
+                                } else {
+                                  showAlert(
+                                    context,
+                                    context.l10n.donate,
+                                        (_) => const Donate(),
+                                  );
+                                }
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: kNormalPadding, vertical: kSmallPadding),

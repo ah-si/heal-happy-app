@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/config.dart';
+import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
 import 'package:heal_happy/common/l10n/error_localizations.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -41,6 +43,18 @@ void main() {
   app();
 }
 
+FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
+
+  if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
+    return null;
+  } else if (event.throwable is DioError && event.throwable.statusCode == 401) {
+    return null;
+  }
+
+  return event;
+}
+
+
 void app({Config? config}) async {
   config ??= Config();
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +68,7 @@ void app({Config? config}) async {
   await SentryFlutter.init(
     (options) {
       options.dsn = 'https://55cc8e96b7a7494aa3648c2f16654931@o1060733.ingest.sentry.io/6050521';
+      options.beforeSend = beforeSend;
     },
     appRunner: () => runApp(const MyApp()),
   );

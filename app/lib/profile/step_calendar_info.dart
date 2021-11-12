@@ -12,8 +12,9 @@ class StepCalendarInfoForm extends HookConsumerWidget {
   final String? saveButtonLabel;
   final VoidCallback? onContinue;
   final bool enableBackButton;
+  final ScrollController? controller;
 
-  const StepCalendarInfoForm({Key? key, this.saveButtonLabel, this.onContinue, this.enableBackButton = true}) : super(key: key);
+  const StepCalendarInfoForm({Key? key, this.controller, this.saveButtonLabel, this.onContinue, this.enableBackButton = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -137,6 +138,8 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                         return;
                       }
                       onContinue?.call();
+                    } else {
+                      controller?.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
                     }
                   },
                   child: Text(saveButtonLabel ?? context.l10n.continueButton),
@@ -150,23 +153,27 @@ class StepCalendarInfoForm extends HookConsumerWidget {
   }
 }
 
-class StepCalendarInfo extends StatelessWidget {
+class StepCalendarInfo extends HookWidget {
   final VoidCallback onContinue;
 
   const StepCalendarInfo({Key? key, required this.onContinue}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          context.l10n.calendarIntro,
-          style: context.textTheme.headline5,
-        ),
-        const SizedBox(height: kNormalPadding),
-        StepCalendarInfoForm(onContinue: onContinue),
-      ],
+    final controller = useScrollController();
+    return SingleChildScrollView(
+      controller: controller,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            context.l10n.calendarIntro,
+            style: context.textTheme.headline5,
+          ),
+          const SizedBox(height: kNormalPadding),
+          StepCalendarInfoForm(onContinue: onContinue, controller: controller),
+        ],
+      ),
     );
   }
 }
@@ -254,6 +261,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                 child: _TimePickerField(
                   label: 'M. début:',
                   value: amStartHour.value,
+                  defaultValue: TimeOfDay(hour: 10, minute: 0),
                   onHourChange: (time) {
                     amStartHour.value = time;
                     checkTime();
@@ -268,6 +276,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                   checkTime();
                 },
                 value: amEndHour.value,
+                defaultValue: TimeOfDay(hour: 12, minute: 0),
                 disabled: amStartHour.value == null,
                 label: 'M. fin:',
               )),
@@ -279,6 +288,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                     checkTime();
                   },
                   value: pmStartHour.value,
+                  defaultValue: TimeOfDay(hour: 14, minute: 0),
                   label: 'AM. début:',
                 ),
               ),
@@ -290,6 +300,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                     checkTime();
                   },
                   value: pmEndHour.value,
+                  defaultValue: TimeOfDay(hour: 19, minute: 0),
                   disabled: pmStartHour.value == null,
                   label: 'AM. fin:',
                 ),
@@ -306,6 +317,7 @@ class _TimePickerField extends HookWidget {
   final String label;
   final bool disabled;
   final TimeOfDay? value;
+  final TimeOfDay defaultValue;
   final Function(TimeOfDay?) onHourChange;
 
   const _TimePickerField({
@@ -313,6 +325,7 @@ class _TimePickerField extends HookWidget {
     this.value,
     required this.onHourChange,
     required this.label,
+    required this.defaultValue,
     this.disabled = false,
   }) : super(key: key);
 
@@ -332,10 +345,10 @@ class _TimePickerField extends HookWidget {
         controller.text = '';
       }
     }, [value]);
-    showPopup() async {
+    showPopup(TimeOfDay? current) async {
       final result = await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.now(),
+        initialTime: current ?? TimeOfDay.now(),
         cancelText: context.l10n.eraseButton,
         helpText: MaterialLocalizations.of(context).timePickerDialHelpText + '\n$label',
       );
@@ -347,14 +360,14 @@ class _TimePickerField extends HookWidget {
       focusNode.addListener(() async {
         if (focusNode.hasFocus && !opened) {
           opened = true;
-          showPopup();
+          showPopup(value ?? defaultValue);
         } else if (!focusNode.hasFocus) {
           opened = false;
         }
       });
     }, const []);
     return InkWell(
-      onTap: disabled ? null : showPopup,
+      onTap: disabled ? null : () => showPopup(value ?? defaultValue),
       child: IgnorePointer(
         child: TextField(
           readOnly: true,

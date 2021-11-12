@@ -53,8 +53,7 @@ class Donate extends StatelessWidget {
           const Text('''
 1. SOIGNEZ HEUREUX, Téléconsultation par internet
 2. SOIGNEZ HEUREUX, consultation directe, en présentiel
-3. TCLC, T’as compris le coup ? (soutien pour les enfants)
-4. Don en général pour l’ONG'''),
+'''),
         ],
       ),
     );
