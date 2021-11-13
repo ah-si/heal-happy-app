@@ -217,6 +217,12 @@ class CommonLocalizations {
 
   String get profile => Intl.message('Profil', name: 'profile');
 
+  String get resendActivationLink => Intl.message('Renvoyer le lien', name: 'resendActivationLink');
+
+  String get resendActivationLinkTitle => Intl.message('Activation du compte', name: 'resendActivationLinkTitle');
+
+  String get resendActivationLinkSuccess => Intl.message('Le lien d\'activation vous à été renvoyé par email.', name: 'resendActivationLinkSuccess');
+
   String get accountNotVerified =>
       Intl.message('Vous n\'avez pas encore validé votre email, merci de cliquer sur le lien que nous vous avons envoyé.', name: 'accountNotVerified');
 

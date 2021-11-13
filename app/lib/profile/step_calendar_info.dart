@@ -139,7 +139,7 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                       }
                       onContinue?.call();
                     } else {
-                      controller?.animateTo(0, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                      controller?.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
                     }
                   },
                   child: Text(saveButtonLabel ?? context.l10n.continueButton),
@@ -261,7 +261,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                 child: _TimePickerField(
                   label: 'M. début:',
                   value: amStartHour.value,
-                  defaultValue: TimeOfDay(hour: 10, minute: 0),
+                  defaultValue: const TimeOfDay(hour: 10, minute: 0),
                   onHourChange: (time) {
                     amStartHour.value = time;
                     checkTime();
@@ -276,7 +276,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                   checkTime();
                 },
                 value: amEndHour.value,
-                defaultValue: TimeOfDay(hour: 12, minute: 0),
+                defaultValue: const TimeOfDay(hour: 12, minute: 0),
                 disabled: amStartHour.value == null,
                 label: 'M. fin:',
               )),
@@ -288,7 +288,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                     checkTime();
                   },
                   value: pmStartHour.value,
-                  defaultValue: TimeOfDay(hour: 14, minute: 0),
+                  defaultValue: const TimeOfDay(hour: 14, minute: 0),
                   label: 'AM. début:',
                 ),
               ),
@@ -300,7 +300,7 @@ class _CalendarDaySetting extends HookConsumerWidget {
                     checkTime();
                   },
                   value: pmEndHour.value,
-                  defaultValue: TimeOfDay(hour: 19, minute: 0),
+                  defaultValue: const TimeOfDay(hour: 19, minute: 0),
                   disabled: pmStartHour.value == null,
                   label: 'AM. fin:',
                 ),

@@ -1,3 +1,4 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -43,9 +44,23 @@ class PatientHomeScreen extends HookConsumerWidget {
                     color: context.theme.errorColor.withOpacity(0.8),
                     child: Padding(
                       padding: const EdgeInsets.all(kSmallPadding),
-                      child: Text(
-                        context.l10n.accountNotVerified,
-                        style: const TextStyle(color: Colors.white),
+                      child: Column(
+                        children: [
+                          Text(
+                            context.l10n.accountNotVerified,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          if (!userStore.activationEmailResent)
+                            TextButton(
+                              onPressed: () async {
+                                final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                                if (success) {
+                                  showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
+                                }
+                              },
+                              child: Text(context.l10n.resendActivationLink),
+                            ),
+                        ],
                       ),
                     ),
                   ),
@@ -130,7 +145,7 @@ class PatientHomeScreen extends HookConsumerWidget {
                                   showAlert(
                                     context,
                                     context.l10n.donate,
-                                        (_) => const Donate(),
+                                    (_) => const Donate(),
                                   );
                                 }
                               },
@@ -282,80 +297,78 @@ class _HealerAvailability extends HookConsumerWidget {
             ),
             const Divider(height: 1),
             Expanded(
-              child: HookBuilder(
-                builder: (context) {
-                  final controller = useScrollController();
-                  return Scrollbar(
+              child: HookBuilder(builder: (context) {
+                final controller = useScrollController();
+                return Scrollbar(
+                  controller: controller,
+                  child: SingleChildScrollView(
                     controller: controller,
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: store.availabilities!.slots
-                            .map(
-                              (e) => Expanded(
-                                child: Column(
-                                  children: [
-                                    ...e.slots
-                                        .map((slot) => Padding(
-                                              padding: const EdgeInsets.all(kSmallPadding),
-                                              child: ActionChip(
-                                                label: Text(slot.label),
-                                                labelStyle: const TextStyle(color: Colors.white),
-                                                backgroundColor: context.primaryColor,
-                                                onPressed: () {
-                                                  final controller = TextEditingController();
-                                                  showAppDialog(
-                                                      context,
-                                                      (_) => Text(context.l10n.takeRdv),
-                                                      (context) => Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                            children: [
-                                                              Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
-                                                              TextField(
-                                                                controller: controller,
-                                                                maxLines: 3,
-                                                                decoration: InputDecoration(
-                                                                  label: Text(context.l10n.messageForHealer),
-                                                                ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: store.availabilities!.slots
+                          .map(
+                            (e) => Expanded(
+                              child: Column(
+                                children: [
+                                  ...e.slots
+                                      .map((slot) => Padding(
+                                            padding: const EdgeInsets.all(kSmallPadding),
+                                            child: ActionChip(
+                                              label: Text(slot.label),
+                                              labelStyle: const TextStyle(color: Colors.white),
+                                              backgroundColor: context.primaryColor,
+                                              onPressed: () {
+                                                final controller = TextEditingController();
+                                                showAppDialog(
+                                                    context,
+                                                    (_) => Text(context.l10n.takeRdv),
+                                                    (context) => Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                          children: [
+                                                            Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
+                                                            TextField(
+                                                              controller: controller,
+                                                              maxLines: 3,
+                                                              decoration: InputDecoration(
+                                                                label: Text(context.l10n.messageForHealer),
                                                               ),
-                                                            ],
-                                                          ),
-                                                      actions: [
-                                                        DialogAction(
-                                                          text: MaterialLocalizations.of(context).cancelButtonLabel,
-                                                          callback: (BuildContext context) {
+                                                            ),
+                                                          ],
+                                                        ),
+                                                    actions: [
+                                                      DialogAction(
+                                                        text: MaterialLocalizations.of(context).cancelButtonLabel,
+                                                        callback: (BuildContext context) {
+                                                          Navigator.of(context).pop();
+                                                        },
+                                                      ),
+                                                      DialogAction(
+                                                        text: MaterialLocalizations.of(context).okButtonLabel,
+                                                        callback: (BuildContext context) async {
+                                                          final userStore = ref.read(userStoreProvider);
+                                                          final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
+                                                            await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
+                                                          });
+                                                          if (success) {
                                                             Navigator.of(context).pop();
-                                                          },
-                                                        ),
-                                                        DialogAction(
-                                                          text: MaterialLocalizations.of(context).okButtonLabel,
-                                                          callback: (BuildContext context) async {
-                                                            final userStore = ref.read(userStoreProvider);
-                                                            final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-                                                              await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
-                                                            });
-                                                            if (success) {
-                                                              Navigator.of(context).pop();
-                                                              showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
-                                                            }
-                                                          },
-                                                        ),
-                                                      ]);
-                                                },
-                                              ),
-                                            ))
-                                        .toList(growable: false),
-                                  ],
-                                ),
+                                                            showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
+                                                          }
+                                                        },
+                                                      ),
+                                                    ]);
+                                              },
+                                            ),
+                                          ))
+                                      .toList(growable: false),
+                                ],
                               ),
-                            )
-                            .toList(growable: false),
-                      ),
+                            ),
+                          )
+                          .toList(growable: false),
                     ),
-                  );
-                }
-              ),
+                  ),
+                );
+              }),
             ),
           ],
         ),

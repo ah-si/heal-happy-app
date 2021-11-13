@@ -50,10 +50,14 @@ class AvailabilitiesStore extends ChangeNotifier {
         b.message = message;
       }));
     } on DioError catch(ex) {
-      if (ex.response?.statusCode == 403) {
+      if (ex.response?.statusCode == 403 && ex.response!.data!.toString().contains('meeting_exist_already')) {
         throw ErrorResultException(ErrorResult.meetingAlreadyExist);
-      } else if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('Slot already taken')) {
-        throw ErrorResultException(ErrorResult.meetingAlreadyExist);
+      } else if (ex.response?.statusCode == 403 && ex.response!.data!.toString().contains('account_not_activated')) {
+        throw ErrorResultException(ErrorResult.accountNotActivated);
+      } else if (ex.response?.statusCode == 403 && ex.response!.data!.toString().contains('no_past_event')) {
+        throw ErrorResultException(ErrorResult.noPastEvent);
+      } else if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('slot_taken')) {
+        throw ErrorResultException(ErrorResult.meetingAlreadyBooked);
       }
       rethrow;
     }

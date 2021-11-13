@@ -58,6 +58,8 @@ class ErrorResult {
   static const noAppForActionError = ErrorResult(_ErrorType.noAppForActionError);
   static const fieldRequired = ErrorResult(_ErrorType.fieldRequired);
   static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
+  static const accountNotActivated = ErrorResult(_ErrorType.accountNotActivated);
+  static const noPastEvent = ErrorResult(_ErrorType.noPastEvent);
   static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyExist);
 
   final _ErrorType _type;
@@ -91,6 +93,10 @@ class ErrorResult {
         return localizations.emailAlreadyUsed;
       case _ErrorType.meetingAlreadyBooked:
         return localizations.meetingAlreadyBooked;
+      case _ErrorType.noPastEvent:
+        return localizations.noPastEvent;
+      case _ErrorType.accountNotActivated:
+        return localizations.accountNotActivated;
     }
   }
 
@@ -124,6 +130,10 @@ class ErrorResult {
         return localizations.emailAlreadyUsedHint;
       case _ErrorType.meetingAlreadyBooked:
         return localizations.meetingAlreadyBookedHint;
+      case _ErrorType.noPastEvent:
+        return localizations.noPastEventHint;
+      case _ErrorType.accountNotActivated:
+        return localizations.accountNotActivatedHint;
     }
   }
 
@@ -149,6 +159,8 @@ enum _ErrorType {
   emailAlreadyUsed,
   fieldRequired,
   meetingAlreadyExist,
+  noPastEvent,
+  accountNotActivated,
   meetingAlreadyBooked,
   noAppForActionError,
 }

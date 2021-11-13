@@ -67,6 +67,14 @@ class ErrorLocalizations {
   String get meetingAlreadyBooked => Intl.message('Ce rendez-vous à déjà été réservé', name: 'meetingAlreadyBooked');
 
   String get meetingAlreadyBookedHint => Intl.message('Merci de choisir un autre horaire pour votre rendez-vous', name: 'meetingAlreadyBookedHint');
+
+  String get noPastEvent => Intl.message('Réservation impossible dans la passé', name: 'noPastEvent');
+
+  String get noPastEventHint => Intl.message('Merci de choisir un autre horaire pour votre rendez-vous', name: 'noPastEventHint');
+
+  String get accountNotActivated => Intl.message('Compte inactif', name: 'accountNotActivated');
+
+  String get accountNotActivatedHint => Intl.message('Merci de cliquer sur le lien d\'activation envoyé par email avant de réserver des consultations.', name: 'accountNotActivatedHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

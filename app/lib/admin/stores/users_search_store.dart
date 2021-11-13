@@ -54,4 +54,10 @@ class AdminUsersStore extends ChangeNotifier {
     }
     _lastSearchQuery = query;
   }
+  
+  Future<void> deleteUser(User user) async {
+    await _adminApi.deleteUser(id: user.id!);
+    searchResults = SearchResults(searchResults!.users..remove(user), searchResults!.totalPages, searchResults!.currentPage);
+    notifyListeners();
+  }
 }

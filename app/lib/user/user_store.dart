@@ -20,6 +20,8 @@ class UserStore extends ChangeNotifier {
   final PreferencesProvider _preferencesProvider;
   Map<String, String> _specialities = {};
 
+  bool activationEmailResent = false;
+
   Map<String, String> get specialities {
     getSpecialities();
     return _specialities;
@@ -144,6 +146,12 @@ class UserStore extends ChangeNotifier {
   Future<void> save(User user) async {
     final results = await _apiProvider.api.getUserApi().saveProfile(user: user);
     user = results.data!;
+    notifyListeners();
+  }
+
+  Future<void> resendActivationLink() async {
+    await _apiProvider.api.getUserApi().resendActivationLink();
+    activationEmailResent = true;
     notifyListeners();
   }
 }

@@ -52,7 +52,17 @@ class _HealerToVerify extends HookConsumerWidget {
           Expanded(
             child: ListView.separated(
               itemBuilder: (context, index) {
-                return _UserItem(user: store.searchResults!.healers[index]);
+                final user = store.searchResults!.healers[index];
+                return _UserItem(
+                  user: user,
+                  onDeletePressed: () async {
+                    final success = await showConfirm(context, context.l10n.delete(user.name), context.l10n.deleteHealerConfirm);
+                    if (success) {
+                      final store = ref.read(adminStoreProvider);
+                      showLoadingDialog(context, (_) => Text(context.l10n.deleting), () => store.deleteHealer(user));
+                    }
+                  },
+                );
               },
               separatorBuilder: (BuildContext context, int index) {
                 return const Divider(height: 1);
@@ -76,8 +86,9 @@ class _HealerToVerify extends HookConsumerWidget {
 class _UserItem extends HookConsumerWidget {
   final User user;
   final bool showAcceptButton;
+  final VoidCallback onDeletePressed;
 
-  const _UserItem({Key? key, this.showAcceptButton = true, required this.user}) : super(key: key);
+  const _UserItem({Key? key, required this.onDeletePressed, this.showAcceptButton = true, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -150,13 +161,7 @@ class _UserItem extends HookConsumerWidget {
           ButtonBar(
             children: [
               TextButton(
-                onPressed: () async {
-                  final success = await showConfirm(context, context.l10n.delete(user.name), context.l10n.deleteHealerConfirm);
-                  if (success) {
-                    final store = ref.read(adminStoreProvider);
-                    showLoadingDialog(context, (_) => Text(context.l10n.deleting), () => store.deleteHealer(user));
-                  }
-                },
+                onPressed: onDeletePressed,
                 child: Text(context.l10n.deleteButton),
               ),
               if (showAcceptButton)

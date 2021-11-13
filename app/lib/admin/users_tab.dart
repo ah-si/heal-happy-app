@@ -39,7 +39,18 @@ class _Users extends HookConsumerWidget {
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return _UserItem(user: store.searchResults!.users[index], showAcceptButton: false);
+                  final user = store.searchResults!.users[index];
+                  return _UserItem(
+                    user: user,
+                    showAcceptButton: false,
+                    onDeletePressed: () async {
+                      final success = await showConfirm(context, context.l10n.delete(user.name), context.l10n.deleteHealerConfirm);
+                      if (success) {
+                        final store = ref.read(adminUsersStoreProvider);
+                        showLoadingDialog(context, (_) => Text(context.l10n.deleting), () => store.deleteUser(user));
+                      }
+                    },
+                  );
                 },
                 separatorBuilder: (BuildContext context, int index) {
                   return const Divider(height: 1);
