@@ -87,6 +87,8 @@ class MyApp extends StatelessWidget {
             final router = useMemoized(() => createRouter(userStore));
             return MaterialApp.router(
               title: 'Soignez Heureux',
+              //force time picker and other date widget to use 24h format
+              builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),
               theme: ThemeData(
                 primarySwatch: createMaterialColor(kPrimaryColor),
               ),
