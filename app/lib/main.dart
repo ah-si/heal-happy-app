@@ -45,7 +45,9 @@ void main() {
 
 FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
 
-  if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
+  if (!kIsProductionMode) {
+    return null;
+  } else if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
     return null;
   } else if (event.throwable is DioError && event.throwable.statusCode == 401) {
     return null;

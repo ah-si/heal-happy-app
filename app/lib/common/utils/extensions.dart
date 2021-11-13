@@ -4,6 +4,17 @@ import 'package:heal_happy/common/l10n/error_localizations.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
+extension HealerStatsExtension on HealerStats {
+  String get name => '$firstName $lastName';
+  String get adminAddress {
+    String address = '';
+    address = street.isNullOrEmpty ? '' : '$street\n';
+    address += street2.isNullOrEmpty ? '' : '$street2\n';
+    address += '$zipCode $city';
+    return address;
+  }
+}
+
 extension UserExtension on User {
   String get name => '$firstName $lastName';
 

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/admin/stores/dashboard_store.dart';
+import 'package:heal_happy/admin/stores/healer_stats_store.dart';
 import 'package:heal_happy/admin/stores/users_search_store.dart';
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/network/api_provider.dart';
@@ -20,10 +21,12 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
+part 'healer_reports_tab.dart';
 part 'healers_tab.dart';
 part 'users_tab.dart';
 
@@ -45,6 +48,9 @@ class AdminHomeScreen extends HookConsumerWidget {
         break;
       case HomeTabs.users:
         child = const _Users();
+        break;
+      case HomeTabs.healerStats:
+        child = const HealerReports();
         break;
     }
 
@@ -86,6 +92,14 @@ class AdminHomeScreen extends HookConsumerWidget {
                                 store.selectedTab = HomeTabs.users;
                               },
                               selected: store.selectedTab == HomeTabs.users,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.adminHealerStatsMenu,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.healerStats;
+                              },
+                              selected: store.selectedTab == HomeTabs.healerStats,
                             ),
                             const SizedBox(width: 2),
                           ],

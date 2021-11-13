@@ -29,6 +29,16 @@ class CommonLocalizations {
 
   String get adminUsersMenu => Intl.message('Utilisateurs', name: 'adminUsersMenu');
 
+  String get adminHealerStatsMenu => Intl.message('Compta', name: 'adminHealerStatsMenu');
+
+  String get startDate => Intl.message('Date de début', name: 'startDate');
+
+  String get endDate => Intl.message('Date de fin', name: 'endDate');
+
+  String nbEvents(int events) => Intl.plural(events, args: [events], one: '$events consultation', name: 'nbEvents', other: '$events consultations');
+
+  String nbDuration(int duration) => Intl.message('$duration minutes', args: [duration], name: 'nbEvents');
+
   String get disconnect => Intl.message('Déconnexion', name: 'disconnect');
 
   String get disconnectConfirm => Intl.message('Voulez-vous vous déconnecter?', name: 'disconnectConfirm');
@@ -55,9 +65,9 @@ class CommonLocalizations {
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
-  String get acceptConfirm =>
-      Intl.message('En acceptant le soignant, il sera visible dans la recherche et les patients pourront prendre rendez-vous avec lui.\nVoulez- vous continuer?',
-          name: 'acceptConfirm');
+  String get acceptConfirm => Intl.message(
+      'En acceptant le soignant, il sera visible dans la recherche et les patients pourront prendre rendez-vous avec lui.\nVoulez- vous continuer?',
+      name: 'acceptConfirm');
 
   String get accepting => Intl.message('Acceptation en cours...', name: 'accepting');
 
@@ -292,4 +302,3 @@ class CommonLocalizationsDelegate extends LocalizationsDelegate<CommonLocalizati
   @override
   bool shouldReload(CommonLocalizationsDelegate old) => old.locale != locale;
 }
-
