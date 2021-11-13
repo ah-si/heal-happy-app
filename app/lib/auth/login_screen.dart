@@ -87,7 +87,7 @@ class LoginScreen extends HookConsumerWidget {
                           onPressed: () {
                             context.goNamed(RegisterScreen.name);
                           },
-                          child: Text(context.l10n.noAccount),
+                          child: Text(context.l10n.noAccount, textAlign: TextAlign.center),
                         ),
                         TextButton(
                           onPressed: () async {
@@ -100,7 +100,7 @@ class LoginScreen extends HookConsumerWidget {
                               }
                             }
                           },
-                          child: Text(context.l10n.passwordForgottenButton),
+                          child: Text(context.l10n.passwordForgottenButton, textAlign: TextAlign.center),
                         ),
                       ],
                     ),

@@ -15,7 +15,7 @@ class SearchResults {
   SearchResults(this.healers, this.currentPage, this.totalPages, {this.error});
 }
 
-enum HomeTabs { home, healerToVerify }
+enum HomeTabs { home, healerToVerify, users }
 
 class AdminStore extends ChangeNotifier {
   final AdminApi _adminApi;
@@ -40,7 +40,7 @@ class AdminStore extends ChangeNotifier {
     try {
       final pageToLoad = page;
       final results = await _adminApi.getPendingHealer(page: pageToLoad);
-      searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
+      searchResults = SearchResults(results.data?.users.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
       isLoading = false;
       notifyListeners();
     } catch (error, stackTrace) {

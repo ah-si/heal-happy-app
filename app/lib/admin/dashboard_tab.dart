@@ -1,12 +1,5 @@
-import 'dart:async';
+part of 'home_screen.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:heal_happy/admin/stores/dashboard_store.dart';
-import 'package:heal_happy/common/presentation/loading.dart';
-import 'package:heal_happy/common/utils/constants.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Dashboard extends HookConsumerWidget {
   const Dashboard({Key? key}) : super(key: key);

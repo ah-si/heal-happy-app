@@ -18,7 +18,13 @@ final userStoreProvider = ChangeNotifierProvider<UserStore>((ref) {
 class UserStore extends ChangeNotifier {
   final BackendApiProvider _apiProvider;
   final PreferencesProvider _preferencesProvider;
-  Map<String, String> specialities = {};
+  Map<String, String> _specialities = {};
+
+  Map<String, String> get specialities {
+    getSpecialities();
+    return _specialities;
+  }
+
   bool initPending = true;
   User? user;
 
@@ -32,11 +38,12 @@ class UserStore extends ChangeNotifier {
   }
 
   Future<Map<String, String>> getSpecialities() async {
-    if (specialities.isEmpty) {
+    if (_specialities.isEmpty) {
       final spe = await _apiProvider.api.getUserApi().getSpecialities();
-      specialities = spe.data!.toMap();
+      _specialities = spe.data!.toMap();
+      notifyListeners();
     }
-    return specialities;
+    return _specialities;
   }
 
   Future<void> init({bool silent = true}) async {

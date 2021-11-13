@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -26,11 +27,15 @@ class CommonLocalizations {
 
   String get healerToVerify => Intl.message('Soignants à vérifier', name: 'healerToVerify');
 
+  String get adminUsersMenu => Intl.message('Utilisateurs', name: 'adminUsersMenu');
+
   String get disconnect => Intl.message('Déconnexion', name: 'disconnect');
 
   String get disconnectConfirm => Intl.message('Voulez-vous vous déconnecter?', name: 'disconnectConfirm');
 
   String get emptyHealer => Intl.message('Vous n\'avez aucun soignant à valider pour le moment.', name: 'emptyHealer');
+
+  String get emptyUsers => Intl.message('Aucun utilisateur ne correspond à votre recherche.', name: 'emptyUsers');
 
   String get pendingHealer => Intl.message('Voici la liste des soignants en attente de validation:', name: 'pendingHealer');
 
@@ -150,6 +155,14 @@ class CommonLocalizations {
 
   String get speField => Intl.message('Spécialité*:', name: 'speField');
 
+  String get speField2 => Intl.message('Spécialité:', name: 'speField2');
+
+  String get userTypeField => Intl.message('Type:', name: 'userTypeField');
+
+  String get isActivatedField => Intl.message('Activé:', name: 'isActivatedField');
+
+  String get searchQueryField => Intl.message('Recherche:', name: 'searchQueryField');
+
   String get descriptionField => Intl.message('Description*:', name: 'descriptionField');
 
   String get expField => Intl.message('Experiences:', name: 'expField');
@@ -222,6 +235,8 @@ class CommonLocalizations {
 
   String get searchButton => Intl.message('Rechercher', name: 'searchButton');
 
+  String get exportButton => Intl.message('Exporter', name: 'exportButton');
+
   String get donateDescription => Intl.message('Nous fonctionnons uniquement grâce aux dons, cliquez ici pour nous soutenir.', name: 'donateDescription');
 
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
@@ -240,6 +255,18 @@ class CommonLocalizations {
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
   String takeRdvConfirm(String name, String when) => Intl.message('Voulez prendre rendez-vous avec $name à $when?', name: 'takeRdvConfirm');
+
+  String userType(UserTypeEnum? type) {
+    switch (type) {
+      case UserTypeEnum.admin:
+        return Intl.message('Admin', name: 'typeAdmin');
+      case UserTypeEnum.healer:
+        return Intl.message('Soignant', name: 'typeHealer');
+      case UserTypeEnum.patient:
+        return Intl.message('Patient', name: 'typePatient');
+    }
+    return Intl.message('Tous', name: 'typeUnknown');
+  }
 }
 
 class CommonLocalizationsDelegate extends LocalizationsDelegate<CommonLocalizations> {

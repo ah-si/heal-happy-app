@@ -1,12 +1,17 @@
 import 'dart:async';
 
+import 'package:built_value/serializer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:heal_happy/admin/dashboard.dart';
 import 'package:heal_happy/admin/stores/admin_store.dart';
+import 'package:heal_happy/admin/stores/dashboard_store.dart';
+import 'package:heal_happy/admin/stores/users_search_store.dart';
+import 'package:heal_happy/common/config.dart';
+import 'package:heal_happy/common/network/api_provider.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/presentation/pagination.dart';
@@ -15,7 +20,12 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+part 'dashboard_tab.dart';
+part 'healers_tab.dart';
+part 'users_tab.dart';
 
 class AdminHomeScreen extends HookConsumerWidget {
   const AdminHomeScreen({Key? key}) : super(key: key);
@@ -23,6 +33,20 @@ class AdminHomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(adminStoreProvider);
+
+    late Widget child;
+
+    switch (store.selectedTab) {
+      case HomeTabs.home:
+        child = const Dashboard();
+        break;
+      case HomeTabs.healerToVerify:
+        child = const _HealerToVerify();
+        break;
+      case HomeTabs.users:
+        child = const _Users();
+        break;
+    }
 
     return BgContainer(
       child: Center(
@@ -35,22 +59,39 @@ class AdminHomeScreen extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
-                    MenuItem(
-                      label: context.l10n.home,
-                      onTap: () {
-                        store.selectedTab = HomeTabs.home;
-                      },
-                      selected: store.selectedTab == HomeTabs.home,
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            MenuItem(
+                              label: context.l10n.home,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.home;
+                              },
+                              selected: store.selectedTab == HomeTabs.home,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.healerToVerify,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.healerToVerify;
+                              },
+                              selected: store.selectedTab == HomeTabs.healerToVerify,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.adminUsersMenu,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.users;
+                              },
+                              selected: store.selectedTab == HomeTabs.users,
+                            ),
+                            const SizedBox(width: 2),
+                          ],
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 2),
-                    MenuItem(
-                      label: context.l10n.healerToVerify,
-                      onTap: () {
-                        store.selectedTab = HomeTabs.healerToVerify;
-                      },
-                      selected: store.selectedTab == HomeTabs.healerToVerify,
-                    ),
-                    const Spacer(),
                     MenuItem(
                       label: context.l10n.disconnect,
                       onTap: () async {
@@ -69,7 +110,7 @@ class AdminHomeScreen extends HookConsumerWidget {
                     color: Colors.white.withOpacity(0.8),
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 400),
-                      child: store.selectedTab == HomeTabs.home ? const Dashboard() : const _HealerToVerify(),
+                      child: child,
                     ),
                   ),
                 ),
@@ -77,172 +118,6 @@ class AdminHomeScreen extends HookConsumerWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _HealerToVerify extends HookConsumerWidget {
-  const _HealerToVerify({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.watch(adminStoreProvider);
-
-    useEffect(() {
-      scheduleMicrotask((){
-        store.searchHealers(0);
-      });
-    }, const []);
-
-    if (store.isLoading || store.searchResults == null) {
-      return const Loading();
-    }
-
-    if (store.searchResults!.error != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(kNormalPadding),
-          child: Text(
-            store.searchResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
-    if (store.searchResults!.healers.isEmpty) {
-      return Center(
-        child: Text(
-          context.l10n.emptyHealer,
-          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
-        ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(kNormalPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            context.l10n.pendingHealer,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Expanded(
-            child: ListView.separated(
-              itemBuilder: (context, index) {
-                return _HealerItem(healer: store.searchResults!.healers[index]);
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                return const Divider(height: 1);
-              },
-              itemCount: store.searchResults!.healers.length,
-            ),
-          ),
-          Pagination(
-            total: store.searchResults!.totalPages,
-            current: store.searchResults!.currentPage,
-            onPageSelected: (int selectedPage) {
-              store.searchHealers(selectedPage);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _HealerItem extends HookConsumerWidget {
-  final User healer;
-
-  const _HealerItem({Key? key, required this.healer}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.read(userStoreProvider);
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: kNormalPadding),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(kNormalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(healer.name, style: context.textTheme.subtitle1),
-                Text(
-                  store.specialities[healer.job] ?? healer.job!,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: kSmallPadding),
-                Text(healer.adminAddress),
-                InkWell(
-                  onTap: () {
-                    launch('mailto:${healer.email}');
-                  },
-                  onLongPress: () {
-                    Clipboard.setData(ClipboardData(text: healer.email));
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
-                  },
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.email_outlined),
-                      const SizedBox(width: kSmallPadding),
-                      Expanded(child: Text(healer.email)),
-                    ],
-                  ),
-                ),
-                if (!healer.mobile.isNullOrEmpty)
-                  InkWell(
-                    onTap: () {
-                      launch('tel:${healer.mobile}');
-                    },
-                    onLongPress: () {
-                      Clipboard.setData(ClipboardData(text: healer.mobile));
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.phoneCopied)));
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.call_outlined),
-                        const SizedBox(width: kSmallPadding),
-                        Text(healer.mobile!),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          ButtonBar(
-            children: [
-              TextButton(
-                onPressed: () async {
-                  final success = await showConfirm(context, context.l10n.delete(healer.name), context.l10n.deleteHealerConfirm);
-                  if (success) {
-                    final store = ref.read(adminStoreProvider);
-                    showLoadingDialog(context, (_) => Text(context.l10n.deleting), () => store.deleteHealer(healer));
-                  }
-                },
-                child: Text(context.l10n.deleteButton),
-              ),
-              TextButton(
-                onPressed: () async {
-                  final success = await showConfirm(context, context.l10n.accept(healer.name),
-                      context.l10n.acceptConfirm);
-                  if (success) {
-                    final store = ref.read(adminStoreProvider);
-                    showLoadingDialog(context, (_) => Text(context.l10n.accepting), () => store.validateHealer(healer));
-                  }
-                },
-                child: Text(context.l10n.acceptButton),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
