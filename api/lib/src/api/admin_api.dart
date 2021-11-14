@@ -7,31 +7,28 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'dart:typed_data';
 import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/api_util.dart';
-import 'package:heal_happy_sdk/src/model/create_event_request.dart';
-import 'package:heal_happy_sdk/src/model/file_data.dart';
-import 'package:heal_happy_sdk/src/model/healer.dart';
-import 'package:heal_happy_sdk/src/model/healer_availabilities.dart';
-import 'package:heal_happy_sdk/src/model/paginated_healers.dart';
+import 'package:heal_happy_sdk/src/model/dashboard.dart';
+import 'package:heal_happy_sdk/src/model/date.dart';
+import 'package:heal_happy_sdk/src/model/healer_stats.dart';
+import 'package:heal_happy_sdk/src/model/paginated_users.dart';
 import 'package:heal_happy_sdk/src/model/user.dart';
-import 'package:heal_happy_sdk/src/model/user_event.dart';
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
-class UserApi {
+class AdminApi {
 
   final Dio _dio;
 
   final Serializers _serializers;
 
-  const UserApi(this._dio, this._serializers);
+  const AdminApi(this._dio, this._serializers);
 
-  /// createEvent
+  /// createUser
   /// 
   ///
   /// Parameters:
-  /// * [id] 
-  /// * [createEventRequest] 
+  /// * [user] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -39,11 +36,10 @@ class UserApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future]
+  /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> createEvent({ 
-    required String id,
-    CreateEventRequest? createEventRequest,
+  Future<Response<User>> createUser({ 
+    required User user,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -51,7 +47,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/healers/{id}/events'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/api/v1/admin/users';
     final _options = Options(
       method: r'POST',
       headers: <String, dynamic>{
@@ -75,8 +71,8 @@ class UserApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(CreateEventRequest);
-      _bodyData = createEventRequest == null ? null : _serializers.serialize(createEventRequest, specifiedType: _type);
+      const _type = FullType(User);
+      _bodyData = _serializers.serialize(user, specifiedType: _type);
 
     } catch(error, stackTrace) {
       throw DioError(
@@ -98,14 +94,41 @@ class UserApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    User _responseData;
+
+    try {
+      const _responseType = FullType(User);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as User;
+
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<User>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
   }
 
-  /// deleteEvent
+  /// deleteUser
   /// 
   ///
   /// Parameters:
-  /// * [eventId] 
+  /// * [id] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -115,8 +138,8 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteEvent({ 
-    required String eventId,
+  Future<Response<void>> deleteUser({ 
+    required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -124,7 +147,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/users/me/events/{eventId}'.replaceAll('{' r'eventId' '}', eventId.toString());
+    final _path = r'/api/v1/admin/users/{id}'.replaceAll('{' r'id' '}', id.toString());
     final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
@@ -155,7 +178,7 @@ class UserApi {
     return _response;
   }
 
-  /// getEvents
+  /// getDashboard
   /// 
   ///
   /// Parameters:
@@ -166,9 +189,9 @@ class UserApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [BuiltList<UserEvent>] as data
+  /// Returns a [Future] containing a [Response] with a [Dashboard] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<UserEvent>>> getEvents({ 
+  Future<Response<Dashboard>> getDashboard({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -176,7 +199,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/users/me/events';
+    final _path = r'/api/v1/admin/dashboard';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -204,14 +227,14 @@ class UserApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltList<UserEvent> _responseData;
+    Dashboard _responseData;
 
     try {
-      const _responseType = FullType(BuiltList, [FullType(UserEvent)]);
+      const _responseType = FullType(Dashboard);
       _responseData = _serializers.deserialize(
         _response.data!,
         specifiedType: _responseType,
-      ) as BuiltList<UserEvent>;
+      ) as Dashboard;
 
     } catch (error, stackTrace) {
       throw DioError(
@@ -222,7 +245,7 @@ class UserApi {
       )..stackTrace = stackTrace;
     }
 
-    return Response<BuiltList<UserEvent>>(
+    return Response<Dashboard>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -234,12 +257,12 @@ class UserApi {
     );
   }
 
-  /// getHealerAvailabilities
+  /// getHealerStats
   /// 
   ///
   /// Parameters:
-  /// * [id] 
-  /// * [from] 
+  /// * [start] 
+  /// * [end] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -247,11 +270,11 @@ class UserApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [HealerAvailabilities] as data
+  /// Returns a [Future] containing a [Response] with a [BuiltList<HealerStats>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerAvailabilities>> getHealerAvailabilities({ 
-    required String id,
-    required String from,
+  Future<Response<BuiltList<HealerStats>>> getHealerStats({ 
+    required Date start,
+    required Date end,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -259,7 +282,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/healers/{id}/availabilities'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/api/v1/admin/healers/stats';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -280,7 +303,8 @@ class UserApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      r'from': encodeQueryParameter(_serializers, from, const FullType(String)),
+      r'start': encodeQueryParameter(_serializers, start, const FullType(Date)),
+      r'end': encodeQueryParameter(_serializers, end, const FullType(Date)),
     };
 
     final _response = await _dio.request<Object>(
@@ -292,14 +316,14 @@ class UserApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    HealerAvailabilities _responseData;
+    BuiltList<HealerStats> _responseData;
 
     try {
-      const _responseType = FullType(HealerAvailabilities);
+      const _responseType = FullType(BuiltList, [FullType(HealerStats)]);
       _responseData = _serializers.deserialize(
         _response.data!,
         specifiedType: _responseType,
-      ) as HealerAvailabilities;
+      ) as BuiltList<HealerStats>;
 
     } catch (error, stackTrace) {
       throw DioError(
@@ -310,7 +334,7 @@ class UserApi {
       )..stackTrace = stackTrace;
     }
 
-    return Response<HealerAvailabilities>(
+    return Response<BuiltList<HealerStats>>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -322,11 +346,11 @@ class UserApi {
     );
   }
 
-  /// getHealerProfile
+  /// getPendingHealer
   /// 
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [page] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -334,10 +358,10 @@ class UserApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [Healer] as data
+  /// Returns a [Future] containing a [Response] with a [PaginatedUsers] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<Healer>> getHealerProfile({ 
-    required String id,
+  Future<Response<PaginatedUsers>> getPendingHealer({ 
+    required int page,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -345,7 +369,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/healers/{id}'.replaceAll('{' r'id' '}', id.toString());
+    final _path = r'/api/v1/admin/users/pending';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -360,166 +384,13 @@ class UserApi {
             'where': 'header',
           },
         ],
-        ...?extra,
-      },
-      validateStatus: validateStatus,
-    );
-
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    Healer _responseData;
-
-    try {
-      const _responseType = FullType(Healer);
-      _responseData = _serializers.deserialize(
-        _response.data!,
-        specifiedType: _responseType,
-      ) as Healer;
-
-    } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    return Response<Healer>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
-  }
-
-  /// getProfile
-  /// 
-  ///
-  /// Parameters:
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future] containing a [Response] with a [User] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> getProfile({ 
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final _path = r'/api/v1/users/me';
-    final _options = Options(
-      method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'apiKey',
-            'name': 'Bearer',
-            'keyName': 'Authorization',
-            'where': 'header',
-          },
-        ],
-        ...?extra,
-      },
-      validateStatus: validateStatus,
-    );
-
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    User _responseData;
-
-    try {
-      const _responseType = FullType(User);
-      _responseData = _serializers.deserialize(
-        _response.data!,
-        specifiedType: _responseType,
-      ) as User;
-
-    } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    return Response<User>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
-  }
-
-  /// getSpecialities
-  /// 
-  ///
-  /// Parameters:
-  /// * [onlyExisting] 
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future] containing a [Response] with a [BuiltMap<String, String>] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltMap<String, String>>> getSpecialities({ 
-    bool? onlyExisting,
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final _path = r'/api/v1/healers/specialities';
-    final _options = Options(
-      method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
         ...?extra,
       },
       validateStatus: validateStatus,
     );
 
     final _queryParameters = <String, dynamic>{
-      if (onlyExisting != null) r'onlyExisting': encodeQueryParameter(_serializers, onlyExisting, const FullType(bool)),
+      r'page': encodeQueryParameter(_serializers, page, const FullType(int)),
     };
 
     final _response = await _dio.request<Object>(
@@ -531,14 +402,14 @@ class UserApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    BuiltMap<String, String> _responseData;
+    PaginatedUsers _responseData;
 
     try {
-      const _responseType = FullType(BuiltMap, [FullType(String), FullType(String)]);
+      const _responseType = FullType(PaginatedUsers);
       _responseData = _serializers.deserialize(
         _response.data!,
         specifiedType: _responseType,
-      ) as BuiltMap<String, String>;
+      ) as PaginatedUsers;
 
     } catch (error, stackTrace) {
       throw DioError(
@@ -549,7 +420,7 @@ class UserApi {
       )..stackTrace = stackTrace;
     }
 
-    return Response<BuiltMap<String, String>>(
+    return Response<PaginatedUsers>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,
@@ -561,11 +432,15 @@ class UserApi {
     );
   }
 
-  /// putAvatar
+  /// searchUsers
   /// 
   ///
   /// Parameters:
-  /// * [avatar] 
+  /// * [page] 
+  /// * [query] 
+  /// * [type] 
+  /// * [job] 
+  /// * [isActivated] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -573,10 +448,14 @@ class UserApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [FileData] as data
+  /// Returns a [Future] containing a [Response] with a [PaginatedUsers] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putAvatar({ 
-    Uint8List? avatar,
+  Future<Response<PaginatedUsers>> searchUsers({ 
+    required int page,
+    String? query,
+    UserTypeEnum? type,
+    String? job,
+    bool? isActivated,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -584,207 +463,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/users/me/avatar';
-    final _options = Options(
-      method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'apiKey',
-            'name': 'Bearer',
-            'keyName': 'Authorization',
-            'where': 'header',
-          },
-        ],
-        ...?extra,
-      },
-      contentType: 'multipart/form-data',
-      validateStatus: validateStatus,
-    );
-
-    dynamic _bodyData;
-
-    try {
-      _bodyData = FormData.fromMap(<String, dynamic>{
-        if (avatar != null) r'avatar': encodeFormParameter(_serializers, avatar, const FullType(Uint8List)),
-      });
-
-    } catch(error, stackTrace) {
-      throw DioError(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    FileData _responseData;
-
-    try {
-      const _responseType = FullType(FileData);
-      _responseData = _serializers.deserialize(
-        _response.data!,
-        specifiedType: _responseType,
-      ) as FileData;
-
-    } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    return Response<FileData>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
-  }
-
-  /// putDiploma
-  /// 
-  ///
-  /// Parameters:
-  /// * [diploma] 
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future] containing a [Response] with a [FileData] as data
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putDiploma({ 
-    Uint8List? diploma,
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final _path = r'/api/v1/users/me/diploma';
-    final _options = Options(
-      method: r'PUT',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'apiKey',
-            'name': 'Bearer',
-            'keyName': 'Authorization',
-            'where': 'header',
-          },
-        ],
-        ...?extra,
-      },
-      contentType: 'multipart/form-data',
-      validateStatus: validateStatus,
-    );
-
-    dynamic _bodyData;
-
-    try {
-      _bodyData = FormData.fromMap(<String, dynamic>{
-        if (diploma != null) r'diploma': encodeFormParameter(_serializers, diploma, const FullType(Uint8List)),
-      });
-
-    } catch(error, stackTrace) {
-      throw DioError(
-         requestOptions: _options.compose(
-          _dio.options,
-          _path,
-        ),
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    final _response = await _dio.request<Object>(
-      _path,
-      data: _bodyData,
-      options: _options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    FileData _responseData;
-
-    try {
-      const _responseType = FullType(FileData);
-      _responseData = _serializers.deserialize(
-        _response.data!,
-        specifiedType: _responseType,
-      ) as FileData;
-
-    } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    return Response<FileData>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
-  }
-
-  /// resendActivationLink
-  /// 
-  ///
-  /// Parameters:
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future]
-  /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> resendActivationLink({ 
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final _path = r'/api/v1/users/me/resendActivationLink';
+    final _path = r'/api/v1/admin/users';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -804,21 +483,58 @@ class UserApi {
       validateStatus: validateStatus,
     );
 
+    final _queryParameters = <String, dynamic>{
+      r'page': encodeQueryParameter(_serializers, page, const FullType(int)),
+      if (query != null) r'query': encodeQueryParameter(_serializers, query, const FullType(String)),
+      if (type != null) r'type': encodeQueryParameter(_serializers, type, const FullType(UserTypeEnum)),
+      if (job != null) r'job': encodeQueryParameter(_serializers, job, const FullType(String)),
+      if (isActivated != null) r'isActivated': encodeQueryParameter(_serializers, isActivated, const FullType(bool)),
+    };
+
     final _response = await _dio.request<Object>(
       _path,
       options: _options,
+      queryParameters: _queryParameters,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    PaginatedUsers _responseData;
+
+    try {
+      const _responseType = FullType(PaginatedUsers);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as PaginatedUsers;
+
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<PaginatedUsers>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
   }
 
-  /// saveProfile
+  /// updateUser
   /// 
   ///
   /// Parameters:
+  /// * [id] 
   /// * [user] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
@@ -829,8 +545,9 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> saveProfile({ 
-    User? user,
+  Future<Response<User>> updateUser({ 
+    required String id,
+    required User user,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -838,7 +555,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/users/me';
+    final _path = r'/api/v1/admin/users/{id}'.replaceAll('{' r'id' '}', id.toString());
     final _options = Options(
       method: r'PUT',
       headers: <String, dynamic>{
@@ -863,7 +580,7 @@ class UserApi {
 
     try {
       const _type = FullType(User);
-      _bodyData = user == null ? null : _serializers.serialize(user, specifiedType: _type);
+      _bodyData = _serializers.serialize(user, specifiedType: _type);
 
     } catch(error, stackTrace) {
       throw DioError(
@@ -915,13 +632,11 @@ class UserApi {
     );
   }
 
-  /// searchHealers
+  /// verifyUser
   /// 
   ///
   /// Parameters:
-  /// * [job] 
-  /// * [localization] 
-  /// * [page] 
+  /// * [id] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -929,12 +644,10 @@ class UserApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [PaginatedHealers] as data
+  /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PaginatedHealers>> searchHealers({ 
-    required String job,
-    required String localization,
-    required int page,
+  Future<Response<User>> verifyUser({ 
+    required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -942,9 +655,9 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/healers/search';
+    final _path = r'/api/v1/admin/users/{id}/verify'.replaceAll('{' r'id' '}', id.toString());
     final _options = Options(
-      method: r'GET',
+      method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -962,29 +675,22 @@ class UserApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      r'job': encodeQueryParameter(_serializers, job, const FullType(String)),
-      r'localization': encodeQueryParameter(_serializers, localization, const FullType(String)),
-      r'page': encodeQueryParameter(_serializers, page, const FullType(int)),
-    };
-
     final _response = await _dio.request<Object>(
       _path,
       options: _options,
-      queryParameters: _queryParameters,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    PaginatedHealers _responseData;
+    User _responseData;
 
     try {
-      const _responseType = FullType(PaginatedHealers);
+      const _responseType = FullType(User);
       _responseData = _serializers.deserialize(
         _response.data!,
         specifiedType: _responseType,
-      ) as PaginatedHealers;
+      ) as User;
 
     } catch (error, stackTrace) {
       throw DioError(
@@ -995,7 +701,7 @@ class UserApi {
       )..stackTrace = stackTrace;
     }
 
-    return Response<PaginatedHealers>(
+    return Response<User>(
       data: _responseData,
       headers: _response.headers,
       isRedirect: _response.isRedirect,

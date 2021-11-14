@@ -34,9 +34,9 @@ class AuthApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [LoginResponse] as data
+  /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<LoginResponse>> askResetPassword({ 
+  Future<Response<void>> askResetPassword({ 
     required AskResetPassword askResetPassword,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -47,7 +47,7 @@ class AuthApi {
   }) async {
     final _path = r'/api/v1/auth/askResetPassword';
     final _options = Options(
-      method: r'GET',
+      method: r'POST',
       headers: <String, dynamic>{
         ...?headers,
       },
@@ -85,34 +85,7 @@ class AuthApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    LoginResponse _responseData;
-
-    try {
-      const _responseType = FullType(LoginResponse);
-      _responseData = _serializers.deserialize(
-        _response.data!,
-        specifiedType: _responseType,
-      ) as LoginResponse;
-
-    } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    return Response<LoginResponse>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
+    return _response;
   }
 
   /// login

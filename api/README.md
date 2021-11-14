@@ -46,14 +46,14 @@ Please follow the [installation procedure](#installation--usage) and then run th
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 
-final api = HealHappySdk().getAuthApi();
-final AskResetPassword askResetPassword = ; // AskResetPassword | 
+final api = HealHappySdk().getAdminApi();
+final User user = ; // User | 
 
 try {
-    final response = await api.askResetPassword(askResetPassword);
+    final response = await api.createUser(user);
     print(response);
 } catch on DioError (e) {
-    print("Exception when calling AuthApi->askResetPassword: $e\n");
+    print("Exception when calling AdminApi->createUser: $e\n");
 }
 
 ```
@@ -64,7 +64,15 @@ All URIs are relative to *https://localhost:3443*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-[*AuthApi*](doc/AuthApi.md) | [**askResetPassword**](doc/AuthApi.md#askresetpassword) | **GET** /api/v1/auth/askResetPassword | 
+[*AdminApi*](doc/AdminApi.md) | [**createUser**](doc/AdminApi.md#createuser) | **POST** /api/v1/admin/users | 
+[*AdminApi*](doc/AdminApi.md) | [**deleteUser**](doc/AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
+[*AdminApi*](doc/AdminApi.md) | [**getDashboard**](doc/AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
+[*AdminApi*](doc/AdminApi.md) | [**getHealerStats**](doc/AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
+[*AdminApi*](doc/AdminApi.md) | [**getPendingHealer**](doc/AdminApi.md#getpendinghealer) | **GET** /api/v1/admin/users/pending | 
+[*AdminApi*](doc/AdminApi.md) | [**searchUsers**](doc/AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
+[*AdminApi*](doc/AdminApi.md) | [**updateUser**](doc/AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
+[*AdminApi*](doc/AdminApi.md) | [**verifyUser**](doc/AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
+[*AuthApi*](doc/AuthApi.md) | [**askResetPassword**](doc/AuthApi.md#askresetpassword) | **POST** /api/v1/auth/askResetPassword | 
 [*AuthApi*](doc/AuthApi.md) | [**login**](doc/AuthApi.md#login) | **POST** /api/v1/auth/login | 
 [*AuthApi*](doc/AuthApi.md) | [**refreshToken**](doc/AuthApi.md#refreshtoken) | **POST** /api/v1/auth/token/refresh | 
 [*AuthApi*](doc/AuthApi.md) | [**register**](doc/AuthApi.md#register) | **POST** /api/v1/auth/register | 
@@ -75,7 +83,11 @@ Class | Method | HTTP request | Description
 [*UserApi*](doc/UserApi.md) | [**getHealerAvailabilities**](doc/UserApi.md#gethealeravailabilities) | **GET** /api/v1/healers/{id}/availabilities | 
 [*UserApi*](doc/UserApi.md) | [**getHealerProfile**](doc/UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} | 
 [*UserApi*](doc/UserApi.md) | [**getProfile**](doc/UserApi.md#getprofile) | **GET** /api/v1/users/me | 
-[*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PATCH** /api/v1/users/me | 
+[*UserApi*](doc/UserApi.md) | [**getSpecialities**](doc/UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
+[*UserApi*](doc/UserApi.md) | [**putAvatar**](doc/UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
+[*UserApi*](doc/UserApi.md) | [**putDiploma**](doc/UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
+[*UserApi*](doc/UserApi.md) | [**resendActivationLink**](doc/UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
+[*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
 
 
@@ -85,10 +97,16 @@ Class | Method | HTTP request | Description
  - [CalendarDaySettings](doc/CalendarDaySettings.md)
  - [CalendarSettings](doc/CalendarSettings.md)
  - [CreateEventRequest](doc/CreateEventRequest.md)
+ - [Dashboard](doc/Dashboard.md)
+ - [DashboardUser](doc/DashboardUser.md)
+ - [FileData](doc/FileData.md)
  - [Healer](doc/Healer.md)
  - [HealerAvailabilities](doc/HealerAvailabilities.md)
+ - [HealerStats](doc/HealerStats.md)
  - [LoginRequest](doc/LoginRequest.md)
  - [LoginResponse](doc/LoginResponse.md)
+ - [PaginatedHealers](doc/PaginatedHealers.md)
+ - [PaginatedUsers](doc/PaginatedUsers.md)
  - [RefreshTokenRequest](doc/RefreshTokenRequest.md)
  - [ResetPassword](doc/ResetPassword.md)
  - [User](doc/User.md)

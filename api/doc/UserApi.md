@@ -15,7 +15,11 @@ Method | HTTP request | Description
 [**getHealerAvailabilities**](UserApi.md#gethealeravailabilities) | **GET** /api/v1/healers/{id}/availabilities | 
 [**getHealerProfile**](UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} | 
 [**getProfile**](UserApi.md#getprofile) | **GET** /api/v1/users/me | 
-[**saveProfile**](UserApi.md#saveprofile) | **PATCH** /api/v1/users/me | 
+[**getSpecialities**](UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
+[**putAvatar**](UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
+[**putDiploma**](UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
+[**resendActivationLink**](UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
+[**saveProfile**](UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [**searchHealers**](UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
 
 
@@ -283,6 +287,177 @@ This endpoint does not need any parameter.
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getSpecialities**
+> BuiltMap<String, String> getSpecialities(onlyExisting)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+
+final api = HealHappySdk().getUserApi();
+final bool onlyExisting = true; // bool | 
+
+try { 
+    final response = api.getSpecialities(onlyExisting);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling UserApi->getSpecialities: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **onlyExisting** | **bool**|  | [optional] 
+
+### Return type
+
+**BuiltMap&lt;String, String&gt;**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **putAvatar**
+> FileData putAvatar(avatar)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getUserApi();
+final Uint8List avatar = ; // Uint8List | 
+
+try { 
+    final response = api.putAvatar(avatar);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling UserApi->putAvatar: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **avatar** | [**Uint8List**](Uint8List.md)|  | [optional] 
+
+### Return type
+
+[**FileData**](FileData.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **putDiploma**
+> FileData putDiploma(diploma)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getUserApi();
+final Uint8List diploma = ; // Uint8List | 
+
+try { 
+    final response = api.putDiploma(diploma);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling UserApi->putDiploma: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **diploma** | [**Uint8List**](Uint8List.md)|  | [optional] 
+
+### Return type
+
+[**FileData**](FileData.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **resendActivationLink**
+> resendActivationLink()
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getUserApi();
+
+try { 
+    api.resendActivationLink();
+} catch on DioError (e) {
+    print('Exception when calling UserApi->resendActivationLink: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **saveProfile**
 > User saveProfile(user)
 
@@ -329,7 +504,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **searchHealers**
-> BuiltList<Healer> searchHealers(job, localization)
+> PaginatedHealers searchHealers(job, localization, page)
 
 
 
@@ -344,9 +519,10 @@ import 'package:heal_happy_sdk/api.dart';
 final api = HealHappySdk().getUserApi();
 final String job = job_example; // String | 
 final String localization = localization_example; // String | 
+final int page = 56; // int | 
 
 try { 
-    final response = api.searchHealers(job, localization);
+    final response = api.searchHealers(job, localization, page);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling UserApi->searchHealers: $e\n');
@@ -359,10 +535,11 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **job** | **String**|  | 
  **localization** | **String**|  | 
+ **page** | **int**|  | 
 
 ### Return type
 
-[**BuiltList&lt;Healer&gt;**](Healer.md)
+[**PaginatedHealers**](PaginatedHealers.md)
 
 ### Authorization
 

@@ -9,7 +9,7 @@ All URIs are relative to *https://localhost:3443*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**askResetPassword**](AuthApi.md#askresetpassword) | **GET** /api/v1/auth/askResetPassword | 
+[**askResetPassword**](AuthApi.md#askresetpassword) | **POST** /api/v1/auth/askResetPassword | 
 [**login**](AuthApi.md#login) | **POST** /api/v1/auth/login | 
 [**refreshToken**](AuthApi.md#refreshtoken) | **POST** /api/v1/auth/token/refresh | 
 [**register**](AuthApi.md#register) | **POST** /api/v1/auth/register | 
@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **askResetPassword**
-> LoginResponse askResetPassword(askResetPassword)
+> askResetPassword(askResetPassword)
 
 
 
@@ -29,8 +29,7 @@ final api = HealHappySdk().getAuthApi();
 final AskResetPassword askResetPassword = ; // AskResetPassword | 
 
 try { 
-    final response = api.askResetPassword(askResetPassword);
-    print(response);
+    api.askResetPassword(askResetPassword);
 } catch on DioError (e) {
     print('Exception when calling AuthApi->askResetPassword: $e\n');
 }
@@ -44,7 +43,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**LoginResponse**](LoginResponse.md)
+void (empty response body)
 
 ### Authorization
 
@@ -53,7 +52,7 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
- - **Accept**: application/json
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
