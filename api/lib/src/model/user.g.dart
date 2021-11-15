@@ -54,7 +54,7 @@ class _$User extends User {
   @override
   final String city;
   @override
-  final Uint8List? avatar;
+  final String? avatar;
   @override
   final String email;
   @override
@@ -324,9 +324,9 @@ class UserBuilder implements Builder<User, UserBuilder> {
   String? get city => _$this._city;
   set city(String? city) => _$this._city = city;
 
-  Uint8List? _avatar;
-  Uint8List? get avatar => _$this._avatar;
-  set avatar(Uint8List? avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
   String? _email;
   String? get email => _$this._email;

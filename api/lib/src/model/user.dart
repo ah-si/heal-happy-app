@@ -2,7 +2,6 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'dart:typed_data';
 import 'package:heal_happy_sdk/src/model/user_all_of.dart';
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
@@ -114,7 +113,7 @@ abstract class User implements Built<User, UserBuilder> {
     String get city;
 
     @BuiltValueField(wireName: r'avatar')
-    Uint8List? get avatar;
+    String? get avatar;
 
     @BuiltValueField(wireName: r'email')
     String get email;
@@ -266,7 +265,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
             result
                 ..add(r'avatar')
                 ..add(serializers.serialize(object.avatar,
-                    specifiedType: const FullType(Uint8List)));
+                    specifiedType: const FullType(String)));
         }
         result
             ..add(r'email')
@@ -392,7 +391,7 @@ class _$UserSerializer implements StructuredSerializer<User> {
                     break;
                 case r'avatar':
                     result.avatar = serializers.deserialize(value,
-                        specifiedType: const FullType(Uint8List)) as Uint8List;
+                        specifiedType: const FullType(String)) as String;
                     break;
                 case r'email':
                     result.email = serializers.deserialize(value,

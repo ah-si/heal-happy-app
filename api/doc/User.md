@@ -31,7 +31,7 @@ Name | Type | Description | Notes
 **zipCode** | **String** |  | 
 **country** | **String** |  | [optional] 
 **city** | **String** |  | 
-**avatar** | [**Uint8List**](Uint8List.md) |  | [optional] 
+**avatar** | **String** |  | [optional] 
 **email** | **String** |  | 
 **mobile** | **String** |  | [optional] 
 **password** | **String** |  | [optional] 

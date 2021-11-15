@@ -54,7 +54,7 @@ class _$Healer extends Healer {
   @override
   final String city;
   @override
-  final Uint8List? avatar;
+  final String? avatar;
 
   factory _$Healer([void Function(HealerBuilder)? updates]) =>
       (new HealerBuilder()..update(updates)).build();
@@ -308,9 +308,9 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   String? get city => _$this._city;
   set city(String? city) => _$this._city = city;
 
-  Uint8List? _avatar;
-  Uint8List? get avatar => _$this._avatar;
-  set avatar(Uint8List? avatar) => _$this._avatar = avatar;
+  String? _avatar;
+  String? get avatar => _$this._avatar;
+  set avatar(String? avatar) => _$this._avatar = avatar;
 
   HealerBuilder() {
     Healer._defaults(this);

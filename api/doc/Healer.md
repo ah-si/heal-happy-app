@@ -31,7 +31,7 @@ Name | Type | Description | Notes
 **zipCode** | **String** |  | 
 **country** | **String** |  | [optional] 
 **city** | **String** |  | 
-**avatar** | [**Uint8List**](Uint8List.md) |  | [optional] 
+**avatar** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

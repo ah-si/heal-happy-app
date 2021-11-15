@@ -2,7 +2,6 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'dart:typed_data';
 import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:built_value/built_value.dart';
@@ -109,7 +108,7 @@ abstract class Healer implements Built<Healer, HealerBuilder> {
     String get city;
 
     @BuiltValueField(wireName: r'avatar')
-    Uint8List? get avatar;
+    String? get avatar;
 
     Healer._();
 
@@ -252,7 +251,7 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
             result
                 ..add(r'avatar')
                 ..add(serializers.serialize(object.avatar,
-                    specifiedType: const FullType(Uint8List)));
+                    specifiedType: const FullType(String)));
         }
         return result;
     }
@@ -362,7 +361,7 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
                     break;
                 case r'avatar':
                     result.avatar = serializers.deserialize(value,
-                        specifiedType: const FullType(Uint8List)) as Uint8List;
+                        specifiedType: const FullType(String)) as String;
                     break;
             }
         }
