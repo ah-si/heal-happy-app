@@ -151,7 +151,7 @@ class _StepTypeAvatar extends HookWidget {
               child: Center(
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 400),
-                  child: hover.value ? Image.asset(hoverIcon) : Image.asset(icon),
+                  child: hover.value ? Image.asset(hoverIcon, height: 230) : Image.asset(icon, height: 230),
                 ),
               ),
             ),

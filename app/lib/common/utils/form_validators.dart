@@ -19,9 +19,11 @@ String? isEmailValid(value, BuildContext context) {
   return null;
 }
 
-String? isPasswordValid(value, BuildContext context) {
+String? isPasswordValid(value, bool isRequired, BuildContext context) {
   if (value == null || value.trim().isEmpty) {
-    return context.el10n.fieldRequired;
+    if (isRequired) {
+      return context.el10n.fieldRequired;
+    }
   } else if (value.trim().length < 6) {
     return context.el10n.wrongPasswordMessage;
   }

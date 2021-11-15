@@ -22,7 +22,8 @@ class StepPersonalInfo extends HookConsumerWidget {
     final controllerLastName = useTextEditingController(text: userInfo.lastName);
     final controllerFirstName = useTextEditingController(text: userInfo.firstName);
     final controller = useTextEditingController(text: userInfo.email);
-    final controllerPass = useTextEditingController(text: userInfo.password);
+    final controllerPass = useTextEditingController(text: userInfo.password ?? '');
+    final controllerConfirm = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() {
       if (formKey.currentState!.validate()) {
@@ -30,10 +31,13 @@ class StepPersonalInfo extends HookConsumerWidget {
         userInfo.lastName = controllerLastName.text;
         userInfo.email = controller.text.trim();
         userInfo.mobile = controllerMobile.text;
-        userInfo.password = controllerPass.text.trim();
+        if (controllerPass.text.trim().isNotEmpty) {
+          userInfo.password = controllerPass.text.trim();
+        }
         onContinue?.call();
       }
     }
+
     return Form(
       key: formKey,
       child: Column(
@@ -87,7 +91,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                 TextFormField(
                   controller: controllerPass,
                   obscureText: true,
-                  validator: (value) => isPasswordValid(value, context),
+                  validator: (value) => isPasswordValid(value, !headless, context),
                   autofillHints: const [AutofillHints.newPassword],
                   keyboardType: TextInputType.visiblePassword,
                   onChanged: (value) => userInfo.password = value,
@@ -95,6 +99,21 @@ class StepPersonalInfo extends HookConsumerWidget {
                     submitForm();
                   },
                   decoration: InputDecoration(label: Text(context.l10n.passwordField)),
+                ),
+              if (!headless)
+                TextFormField(
+                  controller: controllerConfirm,
+                  obscureText: true,
+                  validator: (value) {
+                    if (controllerConfirm.text != controllerPass.text) {
+                      return context.l10n.passwordMismatch;
+                    }
+                    return null;
+                  },
+                  keyboardType: TextInputType.text,
+                  autofillHints: const [AutofillHints.password],
+                  onFieldSubmitted: (_) => submitForm(),
+                  decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
                 ),
             ],
           ),

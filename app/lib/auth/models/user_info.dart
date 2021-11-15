@@ -192,6 +192,7 @@ class UserInfo extends ChangeNotifier {
     _zipCode = user.zipCode;
     _city = user.city;
     _job = user.job;
+    _password = null;
     notifyListeners();
   }
 

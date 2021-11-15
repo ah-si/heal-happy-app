@@ -65,7 +65,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                         TextFormField(
                           controller: controllerPass,
                           obscureText: true,
-                          validator: (value) => isPasswordValid(value, context),
+                          validator: (value) => isPasswordValid(value, true, context),
                           keyboardType: TextInputType.text,
                           autofillHints: const [AutofillHints.newPassword],
                           onFieldSubmitted: (_) => submitForm(),
