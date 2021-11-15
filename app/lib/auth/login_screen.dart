@@ -91,7 +91,13 @@ class LoginScreen extends HookConsumerWidget {
                         ),
                         TextButton(
                           onPressed: () async {
-                            final email = await showPrompt(context, context.l10n.passwordForgotten, description: context.l10n.needEmail, initialValue: controller.text);
+                            final email = await showPrompt(
+                              context,
+                              context.l10n.passwordForgotten,
+                              description: context.l10n.needEmail,
+                              initialValue: controller.text,
+                              validator: (value) => isEmailValid(value, context),
+                            );
                             if (!email.isNullOrEmpty) {
                               final store = ref.read(userStoreProvider);
                               final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => store.askResetPassword(email!));

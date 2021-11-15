@@ -105,14 +105,22 @@ class UserStore extends ChangeNotifier {
   }
 
   Future<void> changePassword(String password, String token) async {
-    await _apiProvider.api.getAuthApi().resetPassword(
-      resetPassword: ResetPassword(
-        (b) {
-          b.password = password;
-          b.token = token;
-        },
-      ),
-    );
+    try {
+      await _apiProvider.api.getAuthApi().resetPassword(
+        resetPassword: ResetPassword(
+              (b) {
+            b.password = password;
+            b.token = token;
+          },
+        ),
+      );
+    } on DioError catch(error, stack) {
+      if (error.response?.statusCode == 401) {
+        throw ErrorResultException(ErrorResult.linkExpired);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   Future<void> askResetPassword(String email) async {

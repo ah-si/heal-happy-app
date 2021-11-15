@@ -157,42 +157,50 @@ Future<String?> showPrompt<T>(
   TextEditingController? controller,
   String? initialValue,
   String? description,
+  String? Function(String? value)? validator,
   bool barrierDismissible = true,
   String? hint,
 }) {
   controller ??= TextEditingController(text: initialValue ?? '');
+  final formKey = GlobalKey<FormState>();
   return showAppDialog(
     context,
     (_) => Text(title),
     (_) => Material(
       color: Colors.transparent,
-      child: HookBuilder(
-        builder: (context) {
-          final fieldController = useMemoized(() => controller!, [controller]);
+      child: Form(
+        key: formKey,
+        child: HookBuilder(
+          builder: (context) {
+            final fieldController = useMemoized(() => controller!, [controller]);
 
-          useEffect(() {
-            return fieldController.dispose;
-          }, [fieldController]);
+            useEffect(() {
+              return fieldController.dispose;
+            }, [fieldController]);
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (description != null) Text(description),
-              TextField(
-                autofocus: true,
-                controller: fieldController,
-                onSubmitted: (_) {
-                  Navigator.of(context).pop(fieldController.text);
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.transparent,
-                  hintText: hint,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (description != null) Text(description),
+                TextFormField(
+                  autofocus: true,
+                  controller: fieldController,
+                  onFieldSubmitted: (_) {
+                    if (formKey.currentState!.validate()) {
+                      Navigator.of(context).pop(fieldController.text);
+                    }
+                  },
+                  validator: validator,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.transparent,
+                    hintText: hint,
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+              ],
+            );
+          },
+        ),
       ),
     ),
     barrierDismissible: barrierDismissible,
@@ -207,7 +215,9 @@ Future<String?> showPrompt<T>(
         isDefaultAction: true,
         text: MaterialLocalizations.of(context).okButtonLabel,
         callback: (context) {
-          Navigator.of(context).pop(controller!.text);
+          if (formKey.currentState!.validate()) {
+            Navigator.of(context).pop(controller!.text);
+          }
         },
       ),
     ],

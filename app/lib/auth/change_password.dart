@@ -11,7 +11,7 @@ import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChangePasswordScreen extends HookConsumerWidget {
-  static const String name = 'change_password';
+  static const String name = 'resetPassword';
   final String token;
 
   const ChangePasswordScreen(this.token, {Key? key}) : super(key: key);
@@ -30,6 +30,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
           () => store.changePassword(controllerPass.text, token),
         );
         if (success) {
+          ScaffoldMessenger.maybeOf(context)?.showSnackBar(SnackBar(content: Text(context.l10n.passwordChanged)));
           context.goNamed(LoginScreen.name);
         }
       }
@@ -57,12 +58,14 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   child: Form(
                     key: formKey,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Text(context.l10n.resetPasswordIntro, style: context.textTheme.subtitle1),
                         TextFormField(
                           controller: controllerPass,
                           obscureText: true,
-                          validator: (value) => isRequired(value, context),
+                          validator: (value) => isPasswordValid(value, context),
                           keyboardType: TextInputType.text,
                           autofillHints: const [AutofillHints.newPassword],
                           onFieldSubmitted: (_) => submitForm(),

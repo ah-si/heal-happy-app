@@ -52,6 +52,7 @@ class ErrorResult {
   static const notLogged = ErrorResult(_ErrorType.notLogged);
   static const forbidden = ErrorResult(_ErrorType.forbidden);
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
+  static const linkExpired = ErrorResult(_ErrorType.linkExpired);
 
   // generic
   static const internal = ErrorResult(_ErrorType.internal);
@@ -97,6 +98,8 @@ class ErrorResult {
         return localizations.noPastEvent;
       case _ErrorType.accountNotActivated:
         return localizations.accountNotActivated;
+      case _ErrorType.linkExpired:
+        return localizations.linkExpired;
     }
   }
 
@@ -134,6 +137,8 @@ class ErrorResult {
         return localizations.noPastEventHint;
       case _ErrorType.accountNotActivated:
         return localizations.accountNotActivatedHint;
+      case _ErrorType.linkExpired:
+        return localizations.linkExpiredHint;
     }
   }
 
@@ -154,6 +159,7 @@ enum _ErrorType {
   notLogged,
   forbidden,
   wrongCredentials,
+  linkExpired,
   internal,
   wrongEmail,
   emailAlreadyUsed,

@@ -89,7 +89,11 @@ class CommonLocalizations {
 
   String get passwordField => Intl.message('Mot de passe*:', name: 'passwordField');
 
+  String get resetPasswordIntro => Intl.message('Changement de votre mot de passe', name: 'resetPasswordIntro');
+
   String get confirmPasswordField => Intl.message('Confirmation du mot de passe*:', name: 'confirmPasswordField');
+
+  String get passwordChanged => Intl.message('Votre mot de passe a été mis à jour.', name: 'passwordChanged');
 
   String get passwordMismatch => Intl.message('Les mots de passe ne correspondent pas', name: 'passwordMismatch');
 

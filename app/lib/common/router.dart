@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/auth/change_password.dart';
@@ -32,7 +33,12 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
           '/${ChangePasswordScreen.name}',
           '/${RegisterScreen.name}',
           SplashScreen.name,
-        ].contains(currentRoute);
+        ].firstWhereOrNull((route) {
+          if (route == '/') {
+            return route == currentRoute;
+          }
+          return currentRoute.startsWith(route);
+        }) != null;
 
         // the user is not logged in and not headed to /login, they need to login
         if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == '/')) {

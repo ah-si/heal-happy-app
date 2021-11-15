@@ -75,6 +75,10 @@ class ErrorLocalizations {
   String get accountNotActivated => Intl.message('Compte inactif', name: 'accountNotActivated');
 
   String get accountNotActivatedHint => Intl.message('Merci de cliquer sur le lien d\'activation envoyé par email avant de réserver des consultations.', name: 'accountNotActivatedHint');
+
+  String get linkExpired => Intl.message('Lien expiré', name: 'linkExpired');
+
+  String get linkExpiredHint => Intl.message('Votre lien a expiré, merci de recommencer la demande de changement de mot de passe', name: 'linkExpiredHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {
