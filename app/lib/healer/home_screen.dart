@@ -229,10 +229,15 @@ class _HealerEventDetails extends HookConsumerWidget {
                     const SizedBox(height: kSmallPadding),
                     if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
                     if (!event.description.isNullOrEmpty)
-                      Text(
-                        event.description!,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      InkWell(
+                        onTap: () {
+                            showAlert(context, context.l10n.patientMessage, (context) => ConstrainedBox(constraints: const BoxConstraints(maxHeight: 300), child: SingleChildScrollView(child: Text(event.description!))));
+                        },
+                        child: Text(
+                          event.description!,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                   ],
                 ),
