@@ -144,14 +144,16 @@ class _HealerEvents extends HookConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(kNormalPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(context.l10n.plannedConsultations, style: context.textTheme.subtitle1),
-          Wrap(
-            children: store.eventsResults!.events.map((e) => _HealerEventDetails(event: e)).toList(growable: false),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(context.l10n.plannedConsultations, style: context.textTheme.subtitle1),
+            Wrap(
+              children: store.eventsResults!.events.map((e) => _HealerEventDetails(event: e)).toList(growable: false),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -172,69 +174,67 @@ class _HealerEventDetails extends HookConsumerWidget {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(kNormalPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
-                      const SizedBox(height: kSmallPadding),
-                      Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-                            child: InkWell(
-                              onTap: () {
-                                launch('mailto:${event.patient.email}');
-                              },
-                              onLongPress: () {
-                                Clipboard.setData(ClipboardData(text: event.patient.email));
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
-                              },
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(Icons.email_outlined),
-                                  const SizedBox(width: kSmallPadding),
-                                  Expanded(child: Text(event.patient.email)),
-                                ],
-                              ),
+              child: Padding(
+                padding: const EdgeInsets.all(kNormalPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
+                    const SizedBox(height: kSmallPadding),
+                    Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+                          child: InkWell(
+                            onTap: () {
+                              launch('mailto:${event.patient.email}');
+                            },
+                            onLongPress: () {
+                              Clipboard.setData(ClipboardData(text: event.patient.email));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
+                            },
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.email_outlined),
+                                const SizedBox(width: kSmallPadding),
+                                Expanded(child: Text(event.patient.email)),
+                              ],
                             ),
                           ),
-                          if (!event.patient.mobile.isNullOrEmpty)
-                            InkWell(
-                              onTap: () {
-                                launch('tel:${event.patient.mobile}');
-                              },
-                              onLongPress: () {
-                                Clipboard.setData(ClipboardData(text: event.patient.mobile));
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Téléphone'))));
-                              },
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.call_outlined),
-                                  const SizedBox(width: kSmallPadding),
-                                  Text(event.patient.mobile!),
-                                ],
-                              ),
-                            ),
-                        ],
-                      ),
-                      const SizedBox(height: kSmallPadding),
-                      if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
-                      if (!event.description.isNullOrEmpty)
-                        Text(
-                          event.description!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                    ],
-                  ),
+                        if (!event.patient.mobile.isNullOrEmpty)
+                          InkWell(
+                            onTap: () {
+                              launch('tel:${event.patient.mobile}');
+                            },
+                            onLongPress: () {
+                              Clipboard.setData(ClipboardData(text: event.patient.mobile));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Téléphone'))));
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(Icons.call_outlined),
+                                const SizedBox(width: kSmallPadding),
+                                Text(event.patient.mobile!),
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: kSmallPadding),
+                    if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
+                    if (!event.description.isNullOrEmpty)
+                      Text(
+                        event.description!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
                 ),
               ),
             ),

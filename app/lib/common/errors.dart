@@ -61,7 +61,7 @@ class ErrorResult {
   static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
   static const accountNotActivated = ErrorResult(_ErrorType.accountNotActivated);
   static const noPastEvent = ErrorResult(_ErrorType.noPastEvent);
-  static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyExist);
+  static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyBooked);
 
   final _ErrorType _type;
 
