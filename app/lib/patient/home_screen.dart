@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -35,6 +34,7 @@ class PatientHomeScreen extends HookConsumerWidget {
             padding: const EdgeInsets.all(kNormalPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const _SearchBar(),
                 const SizedBox(height: kNormalPadding),
@@ -69,12 +69,13 @@ class PatientHomeScreen extends HookConsumerWidget {
                     color: Colors.white.withOpacity(0.8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 400),
                             child: store.selectedTab == HomeTabs.home
-                                ? const _PlannedConsultations()
+                                ? const SizedBox(height: double.infinity, child: _PlannedConsultations())
                                 : HookConsumer(
                                     builder: (context, ref, child) {
                                       final store = ref.watch(patientStoreProvider);
@@ -131,6 +132,24 @@ class PatientHomeScreen extends HookConsumerWidget {
                                       );
                                     },
                                   ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(kNormalPadding),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  context.l10n.mentionLegal,
+                                  style: TextStyle(color: context.primaryColor),
+                                ),
+                              ),
+                              const SizedBox(width: kNormalPadding),
+                              Text(
+                                context.l10n.addressLegal,
+                                style: TextStyle(color: context.primaryColor),
+                              ),
+                            ],
                           ),
                         ),
                         ColoredBox(
@@ -421,16 +440,21 @@ class _PlannedConsultations extends HookConsumerWidget {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(kNormalPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(context.l10n.plannedConsultation, style: context.textTheme.subtitle1),
-          Wrap(
-            children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(kNormalPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(context.l10n.plannedConsultation, style: context.textTheme.subtitle1),
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
+              alignment: WrapAlignment.start,
+              children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
+            ),
+          ],
+        ),
       ),
     );
   }

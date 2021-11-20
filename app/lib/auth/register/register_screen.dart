@@ -5,6 +5,7 @@ import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/presentation/expendable_page_view.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/profile/step_calendar_info.dart';
@@ -30,6 +31,7 @@ class RegisterScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfo = ref.watch(userInfoProvider);
     final controller = usePageController();
+    final scrollController = useScrollController();
     return WillPopScope(
       onWillPop: () async {
         if ((controller.page ?? 0) > .0) {
@@ -41,6 +43,7 @@ class RegisterScreen extends HookConsumerWidget {
       child: BgContainer(
         child: Center(
           child: SingleChildScrollView(
+            controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.all(kNormalPadding),
               child: Column(
@@ -56,8 +59,8 @@ class RegisterScreen extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 30),
                   IntroDialog(
-                    constraints: const BoxConstraints(maxWidth: 400, maxHeight: 550),
-                    child: PageView.builder(
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    child: ExpandablePageView.builder(
                       controller: controller,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
@@ -85,7 +88,7 @@ class RegisterScreen extends HookConsumerWidget {
                           case 2:
                             return StepInfoPro(onContinue: next);
                           case 3:
-                            return StepCalendarInfo(onContinue: next);
+                            return StepCalendarInfo(onContinue: next, controller: scrollController);
                           case 4:
                             return StepAddress(onContinue: next);
                           case 5:

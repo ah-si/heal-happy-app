@@ -8,6 +8,15 @@ String? isRequired(value, BuildContext context) {
   return null;
 }
 
+String? isPhoneValid(value, BuildContext context) {
+  if (value == null || value.trim().isEmpty) {
+    return context.el10n.fieldRequired;
+  } else if (value.trim().length < 10) {
+    return context.el10n.wrongPhoneMessage;
+  }
+  return null;
+}
+
 String? isEmailValid(value, BuildContext context) {
   if (value == null || value.trim().isEmpty) {
     return context.el10n.fieldRequired;

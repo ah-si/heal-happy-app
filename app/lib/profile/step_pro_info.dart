@@ -78,7 +78,6 @@ class StepInfoPro extends HookConsumerWidget {
               ),
             ],
           ),
-          if (!headless) const Spacer(),
           Row(
             children: [
               if (!headless)
@@ -150,7 +149,10 @@ class StepAddress extends HookConsumerWidget {
               context.l10n.addressIntro,
               style: context.textTheme.headline5,
             ),
-          if (!headless) Text(context.l10n.addressDescription),
+          if (!headless) Padding(
+            padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+            child: Text(context.l10n.addressDescription),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -199,7 +201,6 @@ class StepAddress extends HookConsumerWidget {
               ),
             ],
           ),
-          if (!headless) const Spacer(),
           Row(
             children: [
               if (!headless)

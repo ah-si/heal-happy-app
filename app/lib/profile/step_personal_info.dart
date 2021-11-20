@@ -51,7 +51,6 @@ class StepPersonalInfo extends HookConsumerWidget {
             ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
@@ -73,6 +72,7 @@ class StepPersonalInfo extends HookConsumerWidget {
               TextFormField(
                 controller: controllerMobile,
                 keyboardType: TextInputType.phone,
+                validator: (value) => isPhoneValid(value, context),
                 autofillHints: const [AutofillHints.telephoneNumber],
                 onChanged: (value) => userInfo.mobile = value,
                 inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[+0-9]'))],
@@ -117,7 +117,6 @@ class StepPersonalInfo extends HookConsumerWidget {
                 ),
             ],
           ),
-          if (!headless) const Spacer(),
           Row(
             children: [
               if (!headless)

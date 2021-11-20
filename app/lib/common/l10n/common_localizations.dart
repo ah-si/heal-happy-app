@@ -187,7 +187,7 @@ class CommonLocalizations {
 
   String get firstNameField => Intl.message('Prénom*:', name: 'firstNameField');
 
-  String get phoneField => Intl.message('Mobile:', name: 'phoneField');
+  String get phoneField => Intl.message('Mobile*:', name: 'phoneField');
 
   String get cityField => Intl.message('Ville*:', name: 'cityField');
 
@@ -258,6 +258,10 @@ class CommonLocalizations {
   String get exportButton => Intl.message('Exporter', name: 'exportButton');
 
   String get donateDescription => Intl.message('Nous fonctionnons uniquement grâce aux dons, cliquez ici pour nous soutenir.', name: 'donateDescription');
+
+  String get mentionLegal => Intl.message('Aucune donnée médicale n\'est demandée ni diffusée. Les données personnelles sont protégées. Les praticiens médicaux et para médicaux de « soignez heureux » se sont engagés à respecter le secret médical.', name: 'mentionLegal');
+
+  String get addressLegal => Intl.message('Alliance Humaine Santé Internationale - AHSI\nHuman Alliance International Health – HAIH\nCH-1202 Genève – Suisse', name: 'addressLegal');
 
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
 

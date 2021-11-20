@@ -28,6 +28,7 @@ class StepSocial extends HookConsumerWidget {
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (!headless)
           Text(
@@ -36,7 +37,6 @@ class StepSocial extends HookConsumerWidget {
           ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
@@ -64,7 +64,6 @@ class StepSocial extends HookConsumerWidget {
             ),
           ],
         ),
-        if (!headless) const Spacer(),
         Row(
           children: [
             if (!headless)

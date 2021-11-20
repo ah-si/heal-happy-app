@@ -44,6 +44,6 @@ class _HomeContent extends HookConsumerWidget {
         return const patient.PatientHomeScreen();
       default:
         return const patient.PatientHomeScreen();
-    };
+    }
   }
 }

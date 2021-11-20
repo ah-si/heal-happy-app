@@ -19,6 +19,8 @@ class ErrorLocalizations {
 
   String get wrongEmailMessage => Intl.message('Email incorrect', name: 'wrongEmailMessage');
 
+  String get wrongPhoneMessage => Intl.message('Mobile incorrect', name: 'wrongPhoneMessage');
+
   String get wrongPasswordMessage => Intl.message('Le mot de passe doit faire 6 caractères minimum', name: 'wrongPasswordMessage');
 
   String get internalMessage => Intl.message('Erreur inconnue', name: 'internalMessage');

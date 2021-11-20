@@ -155,25 +155,22 @@ class StepCalendarInfoForm extends HookConsumerWidget {
 
 class StepCalendarInfo extends HookWidget {
   final VoidCallback onContinue;
+  final ScrollController? controller;
 
-  const StepCalendarInfo({Key? key, required this.onContinue}) : super(key: key);
+  const StepCalendarInfo({Key? key, this.controller, required this.onContinue}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = useScrollController();
-    return SingleChildScrollView(
-      controller: controller,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            context.l10n.calendarIntro,
-            style: context.textTheme.headline5,
-          ),
-          const SizedBox(height: kNormalPadding),
-          StepCalendarInfoForm(onContinue: onContinue, controller: controller),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          context.l10n.calendarIntro,
+          style: context.textTheme.headline5,
+        ),
+        const SizedBox(height: kNormalPadding),
+        StepCalendarInfoForm(onContinue: onContinue, controller: controller),
+      ],
     );
   }
 }
