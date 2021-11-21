@@ -53,6 +53,7 @@ class ErrorResult {
   static const forbidden = ErrorResult(_ErrorType.forbidden);
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
   static const linkExpired = ErrorResult(_ErrorType.linkExpired);
+  static const fileTooBig = ErrorResult(_ErrorType.fileTooBig);
 
   // generic
   static const internal = ErrorResult(_ErrorType.internal);
@@ -100,6 +101,8 @@ class ErrorResult {
         return localizations.accountNotActivated;
       case _ErrorType.linkExpired:
         return localizations.linkExpired;
+      case _ErrorType.fileTooBig:
+        return localizations.fileTooBig;
     }
   }
 
@@ -139,6 +142,8 @@ class ErrorResult {
         return localizations.accountNotActivatedHint;
       case _ErrorType.linkExpired:
         return localizations.linkExpiredHint;
+      case _ErrorType.fileTooBig:
+        return localizations.fileTooBigHint;
     }
   }
 
@@ -160,6 +165,7 @@ enum _ErrorType {
   forbidden,
   wrongCredentials,
   linkExpired,
+  fileTooBig,
   internal,
   wrongEmail,
   emailAlreadyUsed,

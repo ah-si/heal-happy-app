@@ -123,7 +123,7 @@ class ExpandablePageView extends StatefulWidget {
   /// This property defaults to true and must not be null.
   final bool padEnds;
 
-  ExpandablePageView({
+  const ExpandablePageView({
     this.children,
     this.controller,
     this.onPageChanged,
@@ -148,7 +148,7 @@ class ExpandablePageView extends StatefulWidget {
         itemCount = null,
         super(key: key);
 
-  ExpandablePageView.builder({
+  const ExpandablePageView.builder({
     this.itemCount,
     this.itemBuilder,
     this.controller,
@@ -355,7 +355,8 @@ class OverflowPage extends StatelessWidget {
     required this.onSizeChange,
     required this.child,
     required this.alignment,
-  });
+    Key? key,
+  }): super(key: key);
 
   @override
   Widget build(BuildContext context) {

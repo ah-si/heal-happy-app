@@ -81,6 +81,10 @@ class ErrorLocalizations {
   String get linkExpired => Intl.message('Lien expiré', name: 'linkExpired');
 
   String get linkExpiredHint => Intl.message('Votre lien a expiré, merci de recommencer la demande de changement de mot de passe', name: 'linkExpiredHint');
+
+  String get fileTooBig => Intl.message('Fichier trop lourd', name: 'fileTooBig');
+
+  String get fileTooBigHint => Intl.message('Le fichier ne doit pas dépasser 5Mo', name: 'fileTooBigHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

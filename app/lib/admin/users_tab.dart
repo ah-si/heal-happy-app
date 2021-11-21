@@ -42,7 +42,6 @@ class _Users extends HookConsumerWidget {
                   final user = store.searchResults!.users[index];
                   return _UserItem(
                     user: user,
-                    showAcceptButton: false,
                     onDeletePressed: () async {
                       final success = await showConfirm(context, context.l10n.delete(user.name), context.l10n.deleteHealerConfirm);
                       if (success) {

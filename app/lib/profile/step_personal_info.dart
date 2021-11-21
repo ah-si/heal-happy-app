@@ -5,8 +5,10 @@ import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StepPersonalInfo extends HookConsumerWidget {
   final VoidCallback? onContinue;
@@ -18,6 +20,7 @@ class StepPersonalInfo extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userInfo = ref.read(userInfoProvider);
+    final userStore = ref.read(userStoreProvider);
     final controllerMobile = useTextEditingController(text: userInfo.mobile);
     final controllerLastName = useTextEditingController(text: userInfo.lastName);
     final controllerFirstName = useTextEditingController(text: userInfo.firstName);
@@ -26,7 +29,7 @@ class StepPersonalInfo extends HookConsumerWidget {
     final controllerConfirm = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() {
-      if (formKey.currentState!.validate()) {
+      if (formKey.currentState!.validate() && userInfo.isTermsAccepted) {
         userInfo.firstName = controllerFirstName.text;
         userInfo.lastName = controllerLastName.text;
         userInfo.email = controller.text.trim();
@@ -114,6 +117,28 @@ class StepPersonalInfo extends HookConsumerWidget {
                   autofillHints: const [AutofillHints.password],
                   onFieldSubmitted: (_) => submitForm(),
                   decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
+                ),
+              if (!headless || !(userStore.user?.isTermsAccepted ?? false))
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            launch('https://soignez-heureux.ah-si.org/assets/assets/files/terms.pdf');
+                          },
+                          child: Text(context.l10n.acceptTerm),
+                        ),
+                      ),
+                      Checkbox(
+                        value: userInfo.isTermsAccepted,
+                        onChanged: (value) {
+                          userInfo.isTermsAccepted = value!;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ),

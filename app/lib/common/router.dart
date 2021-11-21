@@ -26,6 +26,8 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         final loggedIn = userStore.user != null;
         final currentScreenAllowAnonymous = [
           '/',
+          '/404',
+          '/500',
           RegisterScreen.name,
           LoginScreen.name,
           ChangePasswordScreen.name,
@@ -54,6 +56,26 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
       },
 
       routes: [
+        GoRoute(
+          path: '/404',
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const PageStatus(status: 404),
+          ),
+        ),
+        GoRoute(
+          path: '/500',
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const PageStatus(status: 500),
+          ),
+        ),
         GoRoute(
           path: '/',
           name: SplashScreen.name,
@@ -116,23 +138,40 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
           transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          child: BgContainer(
-            child: IntroDialog(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('404 page introuvable', style: context.textTheme.headline6),
-                  const SizedBox(height: kSmallPadding),
-                  TextButton(
-                    onPressed: () {
-                      _router.go('/');
-                    },
-                    child: const Text('Retourner sur le site'),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          child: const PageStatus(status: 404),
         );
       },
     );
+
+class PageStatus extends StatelessWidget {
+  static const _message = {
+    404: '404 page introuvable',
+    500: '500 erreur serveur',
+  };
+
+  final int status;
+  const PageStatus({
+    Key? key, required this.status,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BgContainer(
+      child: IntroDialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(_message[status]!, style: context.textTheme.headline6),
+            const SizedBox(height: kSmallPadding),
+            TextButton(
+              onPressed: () {
+                _router.go('/');
+              },
+              child: const Text('Retourner sur le site'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

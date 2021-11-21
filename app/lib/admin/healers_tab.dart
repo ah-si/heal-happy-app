@@ -85,10 +85,9 @@ class _HealerToVerify extends HookConsumerWidget {
 
 class _UserItem extends HookConsumerWidget {
   final User user;
-  final bool showAcceptButton;
   final VoidCallback onDeletePressed;
 
-  const _UserItem({Key? key, required this.onDeletePressed, this.showAcceptButton = true, required this.user}) : super(key: key);
+  const _UserItem({Key? key, required this.onDeletePressed, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -160,11 +159,27 @@ class _UserItem extends HookConsumerWidget {
           ),
           ButtonBar(
             children: [
+              if (user.type == UserTypeEnum.healer && user.diplomaFile != null)
+                TextButton(
+                  onPressed: () {
+                    final token = BackendApiProvider().getToken();
+                    launch('${Config().baseUrl}/api/v1/admin/files/download?file=${user.diplomaFile}&token=$token');
+                  },
+                  child: Text(context.l10n.downloadDiploma),
+                ),
+              if (user.type == UserTypeEnum.healer && user.healerTermsFile != null)
+                TextButton(
+                  onPressed: () {
+                    final token = BackendApiProvider().getToken();
+                    launch('${Config().baseUrl}/api/v1/admin/files/download?file=${user.healerTermsFile}&token=$token');
+                  },
+                  child: Text(context.l10n.downloadHealerTerms),
+                ),
               TextButton(
                 onPressed: onDeletePressed,
                 child: Text(context.l10n.deleteButton),
               ),
-              if (showAcceptButton)
+              if (user.type == UserTypeEnum.healer && !user.isVerified)
                 TextButton(
                   onPressed: () async {
                     final success = await showConfirm(context, context.l10n.accept(user.name), context.l10n.acceptConfirm);

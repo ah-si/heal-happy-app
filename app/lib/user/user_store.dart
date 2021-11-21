@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -8,6 +10,15 @@ import 'package:heal_happy/common/network/api_provider.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
+import 'package:http_parser/http_parser.dart';
+
+const _FILE_TYPE_MAP = {
+  // mime type
+  "png": "image/png",
+  "jpeg": "image/jpeg",
+  "jpg": "image/jpg",
+  "pdf": "application/pdf",
+};
 
 final userStoreProvider = ChangeNotifierProvider<UserStore>((ref) {
   final api = ref.watch(apiProvider);
@@ -108,13 +119,13 @@ class UserStore extends ChangeNotifier {
     try {
       await _apiProvider.api.getAuthApi().resetPassword(
         resetPassword: ResetPassword(
-              (b) {
+          (b) {
             b.password = password;
             b.token = token;
           },
         ),
       );
-    } on DioError catch(error, stack) {
+    } on DioError catch (error, stack) {
       if (error.response?.statusCode == 401) {
         throw ErrorResultException(ErrorResult.linkExpired);
       } else {
@@ -161,5 +172,46 @@ class UserStore extends ChangeNotifier {
     await _apiProvider.api.getUserApi().resendActivationLink();
     activationEmailResent = true;
     notifyListeners();
+  }
+
+  Future<void> uploadTerms(FilePickerResult result) async {
+    try {
+      var data = result.files.first.bytes;
+      data ??= File(result.files.first.path!).readAsBytesSync();
+
+      await _apiProvider.api.getUserApi().putTerms(
+            terms: MultipartFile.fromBytes(
+              data,
+              filename: result.files.first.name,
+              contentType: MediaType.parse(_FILE_TYPE_MAP[result.files.first.extension!]!),
+            ),
+          );
+    } on DioError catch (ex) {
+      if (ex.response?.statusCode == 400 && ex.response!.data.toString().contains('LIMIT_FILE_SIZE')) {
+        throw ErrorResultException(ErrorResult.fileTooBig);
+      }
+      rethrow;
+    }
+    await init();
+  }
+
+  Future<void> uploadDiploma(FilePickerResult result) async {
+    try {
+      var data = result.files.first.bytes;
+      data ??= File(result.files.first.path!).readAsBytesSync();
+      await _apiProvider.api.getUserApi().putDiploma(
+            diploma: MultipartFile.fromBytes(
+              data,
+              filename: result.files.first.name,
+              contentType: MediaType.parse(_FILE_TYPE_MAP[result.files.first.extension!]!),
+            ),
+          );
+    } on DioError catch (ex) {
+      if (ex.response?.statusCode == 400 && ex.response!.data.toString().contains('LIMIT_FILE_SIZE')) {
+        throw ErrorResultException(ErrorResult.fileTooBig);
+      }
+      rethrow;
+    }
+    await init();
   }
 }

@@ -138,6 +138,8 @@ class UserInfo extends ChangeNotifier {
     builder(UserBuilder b) {
       b.isVerified = false;
       b.isActivated = false;
+      b.isTermsAccepted = _isTermsAccepted;
+
       b.type = type;
       b.type = type;
       b.lang = 'fr_FR';
@@ -187,6 +189,7 @@ class UserInfo extends ChangeNotifier {
     _description = user.description;
     _experiences = user.experiences;
     _diploma = user.diploma;
+    _isTermsAccepted = user.isTermsAccepted;
     _street = user.street;
     _street2 = user.street2;
     _zipCode = user.zipCode;
@@ -202,6 +205,15 @@ class UserInfo extends ChangeNotifier {
 
   set isAddressVisible(value) {
     _isAddressVisible = value;
+    notifyListeners();
+  }
+
+  bool _isTermsAccepted = false;
+
+  bool get isTermsAccepted => _isTermsAccepted;
+
+  set isTermsAccepted(bool value) {
+    _isTermsAccepted = value;
     notifyListeners();
   }
 

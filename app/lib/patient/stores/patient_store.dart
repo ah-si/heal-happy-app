@@ -22,7 +22,7 @@ class PatientEventResults {
   PatientEventResults(this.events, {this.error});
 }
 
-enum HomeTabs { home, search }
+enum HomeTabs { home, profile, search }
 
 class PatientStore extends ChangeNotifier {
   final UserApi _userApi;

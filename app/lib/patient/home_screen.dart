@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/donate.dart';
@@ -13,6 +14,7 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/patient/stores/healer_availabilities_store.dart';
 import 'package:heal_happy/patient/stores/patient_store.dart';
+import 'package:heal_happy/profile/step_personal_info.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,6 +28,75 @@ class PatientHomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userStore = ref.watch(userStoreProvider);
     final store = ref.watch(patientStoreProvider);
+
+    late Widget child;
+    switch(store.selectedTab) {
+      case HomeTabs.home:
+        child = const SizedBox(height: double.infinity, child: _PlannedConsultations());
+        break;
+      case HomeTabs.profile:
+        child = const _PatientProfile();
+        break;
+      case HomeTabs.search:
+        child = HookConsumer(
+          builder: (context, ref, child) {
+            final store = ref.watch(patientStoreProvider);
+
+            if (store.searchResults == null || store.isLoading) {
+              return const Loading();
+            }
+
+            if (store.searchResults?.error != null) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(kNormalPadding),
+                  child: Text(
+                    store.searchResults!.error!.cause.twoLiner(context),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: context.theme.errorColor),
+                  ),
+                ),
+              );
+            }
+
+            if (store.searchResults!.healers.isEmpty) {
+              return Center(
+                child: Text(
+                  context.l10n.noSearchResults,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              );
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      return _HealerListItem(healer: store.searchResults!.healers[index]);
+                    },
+                    separatorBuilder: (context, index) => const Divider(height: 1),
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: store.searchResults?.healers.length ?? 0,
+                  ),
+                ),
+                Pagination(
+                  total: store.searchResults!.totalPages,
+                  current: store.searchResults!.currentPage,
+                  onPageSelected: (int selectedPage) {
+                    store.loadHealersPage(selectedPage);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        break;
+    }
+
     return BgContainer(
       child: Center(
         child: ConstrainedBox(
@@ -74,64 +145,7 @@ class PatientHomeScreen extends HookConsumerWidget {
                         Expanded(
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 400),
-                            child: store.selectedTab == HomeTabs.home
-                                ? const SizedBox(height: double.infinity, child: _PlannedConsultations())
-                                : HookConsumer(
-                                    builder: (context, ref, child) {
-                                      final store = ref.watch(patientStoreProvider);
-
-                                      if (store.searchResults == null || store.isLoading) {
-                                        return const Loading();
-                                      }
-
-                                      if (store.searchResults?.error != null) {
-                                        return Center(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(kNormalPadding),
-                                            child: Text(
-                                              store.searchResults!.error!.cause.twoLiner(context),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(color: context.theme.errorColor),
-                                            ),
-                                          ),
-                                        );
-                                      }
-
-                                      if (store.searchResults!.healers.isEmpty) {
-                                        return Center(
-                                          child: Text(
-                                            context.l10n.noSearchResults,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                                          ),
-                                        );
-                                      }
-
-                                      return Column(
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                                        children: [
-                                          Expanded(
-                                            child: ListView.separated(
-                                              itemBuilder: (context, index) {
-                                                return _HealerListItem(healer: store.searchResults!.healers[index]);
-                                              },
-                                              separatorBuilder: (context, index) => const Divider(height: 1),
-                                              primary: false,
-                                              shrinkWrap: true,
-                                              itemCount: store.searchResults?.healers.length ?? 0,
-                                            ),
-                                          ),
-                                          Pagination(
-                                            total: store.searchResults!.totalPages,
-                                            current: store.searchResults!.currentPage,
-                                            onPageSelected: (int selectedPage) {
-                                              store.loadHealersPage(selectedPage);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
+                            child: child,
                           ),
                         ),
                         Padding(
@@ -207,6 +221,14 @@ class _MenuBar extends HookConsumerWidget {
             store.selectedTab = HomeTabs.home;
           },
           selected: store.selectedTab == HomeTabs.home,
+        ),
+        const SizedBox(width: 2),
+        MenuItem(
+          label: context.l10n.profile,
+          onTap: () {
+            store.selectedTab = HomeTabs.profile;
+          },
+          selected: store.selectedTab == HomeTabs.profile,
         ),
         const SizedBox(width: 2),
         if (store.searchResults != null)
@@ -433,10 +455,15 @@ class _PlannedConsultations extends HookConsumerWidget {
     }
 
     if (store.eventsResults!.events.isEmpty) {
-      return Text(
-        context.l10n.noConsultation,
-        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(kNormalPadding),
+          child: Text(
+            context.l10n.noConsultation,
+            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+        ),
       );
     }
 
@@ -625,6 +652,48 @@ class _SearchBar extends HookConsumerWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PatientProfile extends HookConsumerWidget {
+  const _PatientProfile();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.watch(userInfoProvider);
+    final userStore = ref.watch(userStoreProvider);
+    useEffect(() {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        store.fromUser(userStore.user!);
+      });
+    }, const []);
+    save() {
+      final info = ref.read(userInfoProvider);
+      userStore.save(info.toUser(existingUser: userStore.user));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(context.l10n.infoSaved),
+      ));
+    }
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(kNormalPadding),
+        child: Column(
+          children: [
+            ExpansionTile(
+              title: Text(context.l10n.personalInfo),
+              children: [
+                StepPersonalInfo(
+                  headless: true,
+                  onContinue: save,
+                  saveButtonLabel: context.l10n.saveButton,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

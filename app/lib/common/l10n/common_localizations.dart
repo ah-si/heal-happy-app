@@ -57,6 +57,10 @@ class CommonLocalizations {
 
   String get deleteButton => Intl.message('Supprimer', name: 'deleteButton');
 
+  String get downloadDiploma => Intl.message('Télécharger le diplôme', name: 'downloadDiploma');
+
+  String get downloadTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
+
   String delete(String name) => Intl.message('Supprimer $name?', args: [name], name: 'delete');
 
   String get deleteHealerConfirm =>
@@ -93,11 +97,27 @@ class CommonLocalizations {
 
   String get confirmPasswordField => Intl.message('Confirmation du mot de passe*:', name: 'confirmPasswordField');
 
+  String get acceptTerm => Intl.message('En soumettant le formulaire j\'accepte la politique de confidentialité des données. Pour la lire, cliquez ici.', name: 'acceptTerm');
+
   String get passwordChanged => Intl.message('Votre mot de passe a été mis à jour.', name: 'passwordChanged');
 
   String get passwordMismatch => Intl.message('Les mots de passe ne correspondent pas', name: 'passwordMismatch');
 
   String get emailField => Intl.message('Email*:', name: 'emailField');
+
+  String get uploading => Intl.message('Uploading...', name: 'uploading');
+
+  String get downloadHealerTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
+
+  String get diplomaUpload => Intl.message('Afin de valider votre compte soignant, merci de nous fournir une preuve de votre spécialité (diplôme, attestation de formation...).', name: 'diplomaUpload');
+
+  String get diplomaDialogTitle => Intl.message('Choisir mon diplôme', name: 'diplomaDialogTitle');
+
+  String get termsDialogTitle => Intl.message('Choisir la charte signé', name: 'termsDialogTitle');
+
+  String get termsUpload => Intl.message('Merci de télécharger la charte d\'utilisation de Soignez Heureux, la signer et nous la fournir.', name: 'termsUpload');
+
+  String get uploadButton => Intl.message('Envoyer', name: 'uploadButton');
 
   String get backToLogin => Intl.message('Retour au login', name: 'backToLogin');
 

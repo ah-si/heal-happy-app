@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -92,13 +93,121 @@ class HealerHomeScreen extends HookConsumerWidget {
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
-                    child: store.selectedTab == HomeTabs.home ? const _HealerEvents() : _HealerProfile(),
+                    child: store.selectedTab == HomeTabs.home ? const _HealerHomePage() : const _HealerProfile(),
                   ),
                 ),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _UploadFileCard extends StatelessWidget {
+  final String description;
+  final String dialogTitle;
+  final Widget? downloadButton;
+  final Function(FilePickerResult result) onFilePicked;
+
+  const _UploadFileCard({
+    Key? key,
+    this.downloadButton,
+    required this.description,
+    required this.onFilePicked,
+    required this.dialogTitle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(kNormalPadding),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 300, maxHeight: 150, minWidth: 200),
+          child: Column(
+            children: [
+              Expanded(child: Text(description)),
+              ButtonBar(
+                children: [
+                  if (downloadButton != null) downloadButton!,
+                  TextButton(
+                    onPressed: () async {
+                      final result = await FilePicker.platform.pickFiles(
+                        dialogTitle: dialogTitle,
+                        allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'],
+                        type: FileType.custom,
+                      );
+                      if (result != null) {
+                        onFilePicked(result);
+                      }
+                    },
+                    child: Text(context.l10n.uploadButton),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HealerHomePage extends HookConsumerWidget {
+  const _HealerHomePage();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userStore = ref.watch(userStoreProvider);
+
+    final needFileUpload = userStore.user?.diplomaFile == null || userStore.user?.healerTermsFile == null;
+
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (needFileUpload)
+            Padding(
+              padding: const EdgeInsets.all(kNormalPadding),
+              child: Wrap(
+                children: [
+                  if (userStore.user?.diplomaFile == null)
+                    _UploadFileCard(
+                      description: context.l10n.diplomaUpload,
+                      dialogTitle: context.l10n.diplomaDialogTitle,
+                      onFilePicked: (FilePickerResult result) async {
+                        await showLoadingDialog(
+                          context,
+                          (_) => Text(context.l10n.uploading),
+                          () => userStore.uploadDiploma(result),
+                        );
+                      },
+                    ),
+                  if (userStore.user?.healerTermsFile == null)
+                    _UploadFileCard(
+                      description: context.l10n.termsUpload,
+                      downloadButton: TextButton(
+                        onPressed: () {
+                          launch('https://soignez-heureux.ah-si.org/assets/assets/files/healerTerms.pdf');
+                        },
+                        child: Text(context.l10n.downloadTerms),
+                      ),
+                      dialogTitle: context.l10n.termsDialogTitle,
+                      onFilePicked: (FilePickerResult result) async {
+                        await showLoadingDialog(
+                          context,
+                          (_) => Text(context.l10n.uploading),
+                          () => userStore.uploadTerms(result),
+                        );
+                      },
+                    ),
+                ],
+              ),
+            ),
+          const _HealerEvents(),
+        ],
       ),
     );
   }
@@ -134,26 +243,27 @@ class _HealerEvents extends HookConsumerWidget {
 
     if (store.eventsResults!.events.isEmpty) {
       return Center(
-        child: Text(
-          context.l10n.noEvents,
-          style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+        child: Padding(
+          padding: const EdgeInsets.all(kNormalPadding),
+          child: Text(
+            context.l10n.noEvents,
+            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
         ),
       );
     }
 
     return Padding(
       padding: const EdgeInsets.all(kNormalPadding),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(context.l10n.plannedConsultations, style: context.textTheme.subtitle1),
-            Wrap(
-              children: store.eventsResults!.events.map((e) => _HealerEventDetails(event: e)).toList(growable: false),
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(context.l10n.plannedConsultations, style: context.textTheme.subtitle1),
+          Wrap(
+            children: store.eventsResults!.events.map((e) => _HealerEventDetails(event: e)).toList(growable: false),
+          ),
+        ],
       ),
     );
   }
@@ -231,7 +341,11 @@ class _HealerEventDetails extends HookConsumerWidget {
                     if (!event.description.isNullOrEmpty)
                       InkWell(
                         onTap: () {
-                            showAlert(context, context.l10n.patientMessage, (context) => ConstrainedBox(constraints: const BoxConstraints(maxHeight: 300), child: SingleChildScrollView(child: Text(event.description!))));
+                          showAlert(
+                              context,
+                              context.l10n.patientMessage,
+                              (context) => ConstrainedBox(
+                                  constraints: const BoxConstraints(maxHeight: 300), child: SingleChildScrollView(child: Text(event.description!))));
                         },
                         child: Text(
                           event.description!,
@@ -275,6 +389,8 @@ class _HealerEventDetails extends HookConsumerWidget {
 }
 
 class _HealerProfile extends HookConsumerWidget {
+  const _HealerProfile();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(userInfoProvider);
