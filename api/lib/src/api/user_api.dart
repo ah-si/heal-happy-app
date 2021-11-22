@@ -7,7 +7,6 @@ import 'dart:async';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
-import 'dart:typed_data';
 import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/api_util.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
@@ -576,7 +575,7 @@ class UserApi {
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
   Future<Response<FileData>> putAvatar({ 
-    Uint8List? avatar,
+    MultipartFile? avatar,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -609,7 +608,7 @@ class UserApi {
 
     try {
       _bodyData = FormData.fromMap(<String, dynamic>{
-        if (avatar != null) r'avatar': encodeFormParameter(_serializers, avatar, const FullType(Uint8List)),
+        if (avatar != null) r'avatar': avatar,
       });
 
     } catch(error, stackTrace) {
@@ -677,7 +676,7 @@ class UserApi {
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
   Future<Response<FileData>> putDiploma({ 
-    Uint8List? diploma,
+    MultipartFile? diploma,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -710,7 +709,108 @@ class UserApi {
 
     try {
       _bodyData = FormData.fromMap(<String, dynamic>{
-        if (diploma != null) r'diploma': encodeFormParameter(_serializers, diploma, const FullType(Uint8List)),
+        if (diploma != null) r'diploma': diploma,
+      });
+
+    } catch(error, stackTrace) {
+      throw DioError(
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    FileData _responseData;
+
+    try {
+      const _responseType = FullType(FileData);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as FileData;
+
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<FileData>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// putTerms
+  /// 
+  ///
+  /// Parameters:
+  /// * [terms] 
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [FileData] as data
+  /// Throws [DioError] if API call or serialization fails
+  Future<Response<FileData>> putTerms({ 
+    MultipartFile? terms,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/api/v1/users/me/terms';
+    final _options = Options(
+      method: r'PUT',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'multipart/form-data',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      _bodyData = FormData.fromMap(<String, dynamic>{
+        if (terms != null) r'terms': terms,
       });
 
     } catch(error, stackTrace) {

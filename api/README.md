@@ -86,6 +86,7 @@ Class | Method | HTTP request | Description
 [*UserApi*](doc/UserApi.md) | [**getSpecialities**](doc/UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
 [*UserApi*](doc/UserApi.md) | [**putAvatar**](doc/UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
 [*UserApi*](doc/UserApi.md) | [**putDiploma**](doc/UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
+[*UserApi*](doc/UserApi.md) | [**putTerms**](doc/UserApi.md#putterms) | **PUT** /api/v1/users/me/terms | 
 [*UserApi*](doc/UserApi.md) | [**resendActivationLink**](doc/UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
 [*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 

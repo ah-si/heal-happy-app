@@ -15,11 +15,15 @@ Name | Type | Description | Notes
 **firstName** | **String** |  | 
 **consultationDuration** | **int** |  | 
 **isAddressPublic** | **bool** |  | [default to false]
+**isTermsAccepted** | **bool** |  | 
+**versionTermsAccepted** | **String** |  | [optional] 
 **lang** | **String** |  | 
 **type** | [**UserTypeEnum**](UserTypeEnum.md) |  | 
 **experiences** | **String** |  | [optional] 
 **description** | **String** |  | 
 **diploma** | **String** |  | [optional] 
+**diplomaFile** | **String** |  | [optional] 
+**healerTermsFile** | **String** |  | [optional] 
 **website** | **String** |  | [optional] 
 **social1** | **String** |  | [optional] 
 **social2** | **String** |  | [optional] 

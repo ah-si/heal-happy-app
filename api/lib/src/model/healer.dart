@@ -19,11 +19,15 @@ part 'healer.g.dart';
 /// * [firstName] 
 /// * [consultationDuration] 
 /// * [isAddressPublic] 
+/// * [isTermsAccepted] 
+/// * [versionTermsAccepted] 
 /// * [lang] 
 /// * [type] 
 /// * [experiences] 
 /// * [description] 
 /// * [diploma] 
+/// * [diplomaFile] 
+/// * [healerTermsFile] 
 /// * [website] 
 /// * [social1] 
 /// * [social2] 
@@ -58,6 +62,12 @@ abstract class Healer implements Built<Healer, HealerBuilder> {
     @BuiltValueField(wireName: r'isAddressPublic')
     bool get isAddressPublic;
 
+    @BuiltValueField(wireName: r'isTermsAccepted')
+    bool get isTermsAccepted;
+
+    @BuiltValueField(wireName: r'versionTermsAccepted')
+    String? get versionTermsAccepted;
+
     @BuiltValueField(wireName: r'lang')
     String get lang;
 
@@ -73,6 +83,12 @@ abstract class Healer implements Built<Healer, HealerBuilder> {
 
     @BuiltValueField(wireName: r'diploma')
     String? get diploma;
+
+    @BuiltValueField(wireName: r'diplomaFile')
+    String? get diplomaFile;
+
+    @BuiltValueField(wireName: r'healerTermsFile')
+    String? get healerTermsFile;
 
     @BuiltValueField(wireName: r'website')
     String? get website;
@@ -166,6 +182,16 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
             ..add(serializers.serialize(object.isAddressPublic,
                 specifiedType: const FullType(bool)));
         result
+            ..add(r'isTermsAccepted')
+            ..add(serializers.serialize(object.isTermsAccepted,
+                specifiedType: const FullType(bool)));
+        if (object.versionTermsAccepted != null) {
+            result
+                ..add(r'versionTermsAccepted')
+                ..add(serializers.serialize(object.versionTermsAccepted,
+                    specifiedType: const FullType(String)));
+        }
+        result
             ..add(r'lang')
             ..add(serializers.serialize(object.lang,
                 specifiedType: const FullType(String)));
@@ -187,6 +213,18 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
             result
                 ..add(r'diploma')
                 ..add(serializers.serialize(object.diploma,
+                    specifiedType: const FullType(String)));
+        }
+        if (object.diplomaFile != null) {
+            result
+                ..add(r'diplomaFile')
+                ..add(serializers.serialize(object.diplomaFile,
+                    specifiedType: const FullType(String)));
+        }
+        if (object.healerTermsFile != null) {
+            result
+                ..add(r'healerTermsFile')
+                ..add(serializers.serialize(object.healerTermsFile,
                     specifiedType: const FullType(String)));
         }
         if (object.website != null) {
@@ -295,6 +333,14 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
                     result.isAddressPublic = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     break;
+                case r'isTermsAccepted':
+                    result.isTermsAccepted = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'versionTermsAccepted':
+                    result.versionTermsAccepted = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
                 case r'lang':
                     result.lang = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
@@ -313,6 +359,14 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
                     break;
                 case r'diploma':
                     result.diploma = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'diplomaFile':
+                    result.diplomaFile = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'healerTermsFile':
+                    result.healerTermsFile = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
                     break;
                 case r'website':

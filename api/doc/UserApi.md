@@ -18,6 +18,7 @@ Method | HTTP request | Description
 [**getSpecialities**](UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
 [**putAvatar**](UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
 [**putDiploma**](UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
+[**putTerms**](UserApi.md#putterms) | **PUT** /api/v1/users/me/terms | 
 [**resendActivationLink**](UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
 [**saveProfile**](UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [**searchHealers**](UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
@@ -342,7 +343,7 @@ import 'package:heal_happy_sdk/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = HealHappySdk().getUserApi();
-final Uint8List avatar = ; // Uint8List | 
+final MultipartFile avatar = BINARY_DATA_HERE; // MultipartFile | 
 
 try { 
     final response = api.putAvatar(avatar);
@@ -356,7 +357,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **avatar** | [**Uint8List**](Uint8List.md)|  | [optional] 
+ **avatar** | **MultipartFile**|  | [optional] 
 
 ### Return type
 
@@ -387,7 +388,7 @@ import 'package:heal_happy_sdk/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = HealHappySdk().getUserApi();
-final Uint8List diploma = ; // Uint8List | 
+final MultipartFile diploma = BINARY_DATA_HERE; // MultipartFile | 
 
 try { 
     final response = api.putDiploma(diploma);
@@ -401,7 +402,52 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **diploma** | [**Uint8List**](Uint8List.md)|  | [optional] 
+ **diploma** | **MultipartFile**|  | [optional] 
+
+### Return type
+
+[**FileData**](FileData.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **putTerms**
+> FileData putTerms(terms)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getUserApi();
+final MultipartFile terms = BINARY_DATA_HERE; // MultipartFile | 
+
+try { 
+    final response = api.putTerms(terms);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling UserApi->putTerms: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **terms** | **MultipartFile**|  | [optional] 
 
 ### Return type
 

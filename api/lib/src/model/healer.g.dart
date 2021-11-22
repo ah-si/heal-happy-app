@@ -22,6 +22,10 @@ class _$Healer extends Healer {
   @override
   final bool isAddressPublic;
   @override
+  final bool isTermsAccepted;
+  @override
+  final String? versionTermsAccepted;
+  @override
   final String lang;
   @override
   final UserTypeEnum type;
@@ -31,6 +35,10 @@ class _$Healer extends Healer {
   final String? description;
   @override
   final String? diploma;
+  @override
+  final String? diplomaFile;
+  @override
+  final String? healerTermsFile;
   @override
   final String? website;
   @override
@@ -67,11 +75,15 @@ class _$Healer extends Healer {
       required this.firstName,
       this.consultationDuration,
       required this.isAddressPublic,
+      required this.isTermsAccepted,
+      this.versionTermsAccepted,
       required this.lang,
       required this.type,
       this.experiences,
       this.description,
       this.diploma,
+      this.diplomaFile,
+      this.healerTermsFile,
       this.website,
       this.social1,
       this.social2,
@@ -90,6 +102,8 @@ class _$Healer extends Healer {
     BuiltValueNullFieldError.checkNotNull(firstName, 'Healer', 'firstName');
     BuiltValueNullFieldError.checkNotNull(
         isAddressPublic, 'Healer', 'isAddressPublic');
+    BuiltValueNullFieldError.checkNotNull(
+        isTermsAccepted, 'Healer', 'isTermsAccepted');
     BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang');
     BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type');
     BuiltValueNullFieldError.checkNotNull(lastName, 'Healer', 'lastName');
@@ -117,11 +131,15 @@ class _$Healer extends Healer {
         firstName == other.firstName &&
         consultationDuration == other.consultationDuration &&
         isAddressPublic == other.isAddressPublic &&
+        isTermsAccepted == other.isTermsAccepted &&
+        versionTermsAccepted == other.versionTermsAccepted &&
         lang == other.lang &&
         type == other.type &&
         experiences == other.experiences &&
         description == other.description &&
         diploma == other.diploma &&
+        diplomaFile == other.diplomaFile &&
+        healerTermsFile == other.healerTermsFile &&
         website == other.website &&
         social1 == other.social1 &&
         social2 == other.social2 &&
@@ -156,14 +174,14 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), job.hashCode), firstName.hashCode),
-                                                                                consultationDuration.hashCode),
-                                                                            isAddressPublic.hashCode),
-                                                                        lang.hashCode),
-                                                                    type.hashCode),
-                                                                experiences.hashCode),
-                                                            description.hashCode),
-                                                        diploma.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
+                                                                                lang.hashCode),
+                                                                            type.hashCode),
+                                                                        experiences.hashCode),
+                                                                    description.hashCode),
+                                                                diploma.hashCode),
+                                                            diplomaFile.hashCode),
+                                                        healerTermsFile.hashCode),
                                                     website.hashCode),
                                                 social1.hashCode),
                                             social2.hashCode),
@@ -188,11 +206,15 @@ class _$Healer extends Healer {
           ..add('firstName', firstName)
           ..add('consultationDuration', consultationDuration)
           ..add('isAddressPublic', isAddressPublic)
+          ..add('isTermsAccepted', isTermsAccepted)
+          ..add('versionTermsAccepted', versionTermsAccepted)
           ..add('lang', lang)
           ..add('type', type)
           ..add('experiences', experiences)
           ..add('description', description)
           ..add('diploma', diploma)
+          ..add('diplomaFile', diplomaFile)
+          ..add('healerTermsFile', healerTermsFile)
           ..add('website', website)
           ..add('social1', social1)
           ..add('social2', social2)
@@ -242,6 +264,16 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   set isAddressPublic(bool? isAddressPublic) =>
       _$this._isAddressPublic = isAddressPublic;
 
+  bool? _isTermsAccepted;
+  bool? get isTermsAccepted => _$this._isTermsAccepted;
+  set isTermsAccepted(bool? isTermsAccepted) =>
+      _$this._isTermsAccepted = isTermsAccepted;
+
+  String? _versionTermsAccepted;
+  String? get versionTermsAccepted => _$this._versionTermsAccepted;
+  set versionTermsAccepted(String? versionTermsAccepted) =>
+      _$this._versionTermsAccepted = versionTermsAccepted;
+
   String? _lang;
   String? get lang => _$this._lang;
   set lang(String? lang) => _$this._lang = lang;
@@ -261,6 +293,15 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   String? _diploma;
   String? get diploma => _$this._diploma;
   set diploma(String? diploma) => _$this._diploma = diploma;
+
+  String? _diplomaFile;
+  String? get diplomaFile => _$this._diplomaFile;
+  set diplomaFile(String? diplomaFile) => _$this._diplomaFile = diplomaFile;
+
+  String? _healerTermsFile;
+  String? get healerTermsFile => _$this._healerTermsFile;
+  set healerTermsFile(String? healerTermsFile) =>
+      _$this._healerTermsFile = healerTermsFile;
 
   String? _website;
   String? get website => _$this._website;
@@ -326,11 +367,15 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
       _firstName = $v.firstName;
       _consultationDuration = $v.consultationDuration;
       _isAddressPublic = $v.isAddressPublic;
+      _isTermsAccepted = $v.isTermsAccepted;
+      _versionTermsAccepted = $v.versionTermsAccepted;
       _lang = $v.lang;
       _type = $v.type;
       _experiences = $v.experiences;
       _description = $v.description;
       _diploma = $v.diploma;
+      _diplomaFile = $v.diplomaFile;
+      _healerTermsFile = $v.healerTermsFile;
       _website = $v.website;
       _social1 = $v.social1;
       _social2 = $v.social2;
@@ -376,6 +421,9 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
               consultationDuration: consultationDuration,
               isAddressPublic: BuiltValueNullFieldError.checkNotNull(
                   isAddressPublic, 'Healer', 'isAddressPublic'),
+              isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
+                  isTermsAccepted, 'Healer', 'isTermsAccepted'),
+              versionTermsAccepted: versionTermsAccepted,
               lang:
                   BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang'),
               type:
@@ -383,6 +431,8 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
               experiences: experiences,
               description: description,
               diploma: diploma,
+              diplomaFile: diplomaFile,
+              healerTermsFile: healerTermsFile,
               website: website,
               social1: social1,
               social2: social2,
