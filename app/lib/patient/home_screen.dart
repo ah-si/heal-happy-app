@@ -30,12 +30,12 @@ class PatientHomeScreen extends HookConsumerWidget {
     final store = ref.watch(patientStoreProvider);
 
     late Widget child;
-    switch(store.selectedTab) {
+    switch (store.selectedTab) {
       case HomeTabs.home:
         child = const SizedBox(height: double.infinity, child: _PlannedConsultations());
         break;
       case HomeTabs.profile:
-        child = const _PatientProfile();
+        child = const SizedBox(height: double.infinity, child: _PatientProfile());
         break;
       case HomeTabs.search:
         child = HookConsumer(
@@ -148,24 +148,29 @@ class PatientHomeScreen extends HookConsumerWidget {
                             child: child,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(kNormalPadding),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  context.l10n.mentionLegal,
-                                  style: TextStyle(color: context.primaryColor),
+                        if (MediaQuery.of(context).size.width > 650)
+                          Padding(
+                            padding: const EdgeInsets.all(kNormalPadding),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    context.l10n.mentionLegal,
+                                    style: TextStyle(color: context.primaryColor),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: kNormalPadding),
-                              Text(
-                                context.l10n.addressLegal,
-                                style: TextStyle(color: context.primaryColor),
-                              ),
-                            ],
+                                const SizedBox(width: kNormalPadding),
+                                Expanded(
+                                  child: Text(
+                                    context.l10n.addressLegal,
+                                    style: TextStyle(color: context.primaryColor),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
                         ColoredBox(
                           color: context.primaryColor,
                           child: Material(
@@ -616,8 +621,11 @@ class _SearchBar extends HookConsumerWidget {
                   ),
                   flex: 5,
                 ),
+                if (false)
                 const Icon(Icons.location_on_outlined),
+                if (false)
                 const SizedBox(width: kNormalPadding),
+                if (false)
                 Expanded(
                   flex: 3,
                   child: Center(
@@ -682,6 +690,7 @@ class _PatientProfile extends HookConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.all(kNormalPadding),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             ExpansionTile(
               title: Text(context.l10n.personalInfo),

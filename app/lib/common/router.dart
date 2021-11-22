@@ -25,22 +25,25 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         final currentRoute = state.name ?? state.location;
         final loggedIn = userStore.user != null;
         final currentScreenAllowAnonymous = [
-          '/',
-          '/404',
-          '/500',
-          RegisterScreen.name,
-          LoginScreen.name,
-          ChangePasswordScreen.name,
-          '/${LoginScreen.name}',
-          '/${ChangePasswordScreen.name}',
-          '/${RegisterScreen.name}',
-          SplashScreen.name,
-        ].firstWhereOrNull((route) {
-          if (route == '/') {
-            return route == currentRoute;
-          }
-          return currentRoute.startsWith(route);
-        }) != null;
+              '/',
+              '/404',
+              '/500',
+              RegisterScreen.name,
+              LoginScreen.name,
+              ChangePasswordScreen.name,
+              '/${LoginScreen.name}',
+              '/${ChangePasswordScreen.name}',
+              '/${RegisterScreen.name}',
+              SplashScreen.name,
+            ].firstWhereOrNull(
+              (route) {
+                if (route == '/') {
+                  return route == currentRoute;
+                }
+                return currentRoute.startsWith(route);
+              },
+            ) !=
+            null;
 
         // the user is not logged in and not headed to /login, they need to login
         if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == '/')) {
@@ -150,8 +153,10 @@ class PageStatus extends StatelessWidget {
   };
 
   final int status;
+
   const PageStatus({
-    Key? key, required this.status,
+    Key? key,
+    required this.status,
   }) : super(key: key);
 
   @override

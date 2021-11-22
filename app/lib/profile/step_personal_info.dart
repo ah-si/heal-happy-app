@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
+import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
@@ -121,23 +122,15 @@ class StepPersonalInfo extends HookConsumerWidget {
               if (!headless || !(userStore.user?.isTermsAccepted ?? false))
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            launch('https://soignez-heureux.ah-si.org/assets/assets/files/terms.pdf');
-                          },
-                          child: Text(context.l10n.acceptTerm),
-                        ),
-                      ),
-                      Checkbox(
-                        value: userInfo.isTermsAccepted,
-                        onChanged: (value) {
-                          userInfo.isTermsAccepted = value!;
-                        },
-                      ),
-                    ],
+                  child: CheckboxListTile(
+                    value: userInfo.isTermsAccepted,
+                    onChanged: (value) {
+                      userInfo.isTermsAccepted = value!;
+                    },
+                    title: Text(
+                      context.l10n.acceptTerms,
+                      style: const TextStyle(fontSize: 12),
+                    ),
                   ),
                 ),
             ],
@@ -164,6 +157,16 @@ class StepPersonalInfo extends HookConsumerWidget {
               ),
             ],
           ),
+          if (!headless || !(userStore.user?.isTermsAccepted ?? false))
+            TextButton(
+              onPressed: () {
+                launch('${Config().baseUrl}/terms');
+              },
+              child: Text(
+                context.l10n.goToTerms,
+                textAlign: TextAlign.center,
+              ),
+            ),
         ],
       ),
     );

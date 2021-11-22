@@ -97,7 +97,9 @@ class CommonLocalizations {
 
   String get confirmPasswordField => Intl.message('Confirmation du mot de passe*:', name: 'confirmPasswordField');
 
-  String get acceptTerm => Intl.message('En soumettant le formulaire j\'accepte la politique de confidentialité des données. Pour la lire, cliquez ici.', name: 'acceptTerm');
+  String get acceptTerms => Intl.message('Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par l\'Alliance Humaine Santé Internationale pour nous permettre de traiter votre demande. Elles sont conservées pendant tout la durée de notre relation. En soumettant ce formulaire, j’accepte que mes informations soient utilisées exclusivement dans le cadre de ma demande et de la relation personnalisée qui pourrait en découler si je le souhaite.', name: 'acceptTerms');
+
+  String get goToTerms => Intl.message('Pour connaître et exercer mes droits, notamment pour annuler mon consentement, je consulte la politique de vie privée en cliquant ici.', name: 'goToTerms');
 
   String get passwordChanged => Intl.message('Votre mot de passe a été mis à jour.', name: 'passwordChanged');
 
