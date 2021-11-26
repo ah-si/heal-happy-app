@@ -40,8 +40,6 @@ class PatientHomeScreen extends HookConsumerWidget {
       case HomeTabs.search:
         child = HookConsumer(
           builder: (context, ref, child) {
-            final store = ref.watch(patientStoreProvider);
-
             if (store.searchResults == null || store.isLoading) {
               return const Loading();
             }
@@ -276,23 +274,26 @@ class _HealerListItem extends HookConsumerWidget {
         children: [
           const Icon(Icons.healing, size: 50),
           const SizedBox(width: kNormalPadding),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(healer.name, style: context.textTheme.headline6),
-              Text(store.specialities[healer.job] ?? '', style: context.textTheme.subtitle2),
-              const SizedBox(height: kNormalPadding),
-              Text(healer.address),
-              const SizedBox(height: kNormalPadding),
-              if (false)
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('En savoir plus'),
-                ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(healer.name, style: context.textTheme.headline6),
+                Text(store.specialities[healer.job] ?? '', style: context.textTheme.subtitle2),
+                const SizedBox(height: kNormalPadding),
+                Text(healer.address),
+                const SizedBox(height: kNormalPadding),
+                if (false)
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('En savoir plus'),
+                  ),
+              ],
+            ),
           ),
           const SizedBox(width: kNormalPadding),
           Expanded(
+            flex: 4,
             child: _HealerAvailability(healer: healer),
           ),
         ],
@@ -324,15 +325,24 @@ class _HealerAvailability extends HookConsumerWidget {
         ),
       );
     } else {
+      final slots = store.availabilities!.slots;
+      bool isEmpty = true;
+      for (var i = 0; i < slots.length; i++) {
+        if (slots[i].slots.isNotEmpty) {
+          isEmpty = false;
+          break;
+        }
+      }
+
       child = ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 220),
+        constraints: const BoxConstraints(maxHeight: 220, minWidth: 500),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: store.availabilities!.slots
+                children: slots
                     .map(
                       (e) => Expanded(
                         child: Text(e.date, textAlign: TextAlign.center),
@@ -343,78 +353,87 @@ class _HealerAvailability extends HookConsumerWidget {
             ),
             const Divider(height: 1),
             Expanded(
-              child: HookBuilder(builder: (context) {
-                final controller = useScrollController();
-                return Scrollbar(
-                  controller: controller,
-                  child: SingleChildScrollView(
-                    controller: controller,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: store.availabilities!.slots
-                          .map(
-                            (e) => Expanded(
-                              child: Column(
-                                children: [
-                                  ...e.slots
-                                      .map((slot) => Padding(
-                                            padding: const EdgeInsets.all(kSmallPadding),
-                                            child: ActionChip(
-                                              label: Text(slot.label),
-                                              labelStyle: const TextStyle(color: Colors.white),
-                                              backgroundColor: context.primaryColor,
-                                              onPressed: () {
-                                                final controller = TextEditingController();
-                                                showAppDialog(
-                                                    context,
-                                                    (_) => Text(context.l10n.takeRdv),
-                                                    (context) => Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                          children: [
-                                                            Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
-                                                            TextField(
-                                                              controller: controller,
-                                                              maxLines: 3,
-                                                              decoration: InputDecoration(
-                                                                label: Text(context.l10n.messageForHealer),
+              child: isEmpty
+                  ? Center(
+                      child: Text(
+                        context.l10n.noAvailabilities,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : HookBuilder(builder: (context) {
+                      final controller = useScrollController();
+                      return Scrollbar(
+                        controller: controller,
+                        child: SingleChildScrollView(
+                          controller: controller,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: slots
+                                .map(
+                                  (e) => Expanded(
+                                    child: Column(
+                                      children: [
+                                        ...e.slots
+                                            .map((slot) => Padding(
+                                                  padding: const EdgeInsets.all(kSmallPadding),
+                                                  child: ActionChip(
+                                                    label: Text(slot.label),
+                                                    labelStyle: const TextStyle(color: Colors.white),
+                                                    backgroundColor: context.primaryColor,
+                                                    onPressed: () {
+                                                      final controller = TextEditingController();
+                                                      showAppDialog(
+                                                          context,
+                                                          (_) => Text(context.l10n.takeRdv),
+                                                          (context) => Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                children: [
+                                                                  Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
+                                                                  TextField(
+                                                                    controller: controller,
+                                                                    maxLines: 3,
+                                                                    decoration: InputDecoration(
+                                                                      label: Text(context.l10n.messageForHealer),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
+                                                          actions: [
+                                                            DialogAction(
+                                                              text: MaterialLocalizations.of(context).cancelButtonLabel,
+                                                              callback: (BuildContext context) {
+                                                                Navigator.of(context).pop();
+                                                              },
                                                             ),
-                                                          ],
-                                                        ),
-                                                    actions: [
-                                                      DialogAction(
-                                                        text: MaterialLocalizations.of(context).cancelButtonLabel,
-                                                        callback: (BuildContext context) {
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                      ),
-                                                      DialogAction(
-                                                        text: MaterialLocalizations.of(context).okButtonLabel,
-                                                        callback: (BuildContext context) async {
-                                                          final userStore = ref.read(userStoreProvider);
-                                                          final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-                                                            await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
-                                                          });
-                                                          if (success) {
-                                                            Navigator.of(context).pop();
-                                                            showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
-                                                          }
-                                                        },
-                                                      ),
-                                                    ]);
-                                              },
-                                            ),
-                                          ))
-                                      .toList(growable: false),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(growable: false),
-                    ),
-                  ),
-                );
-              }),
+                                                            DialogAction(
+                                                              text: MaterialLocalizations.of(context).okButtonLabel,
+                                                              callback: (BuildContext context) async {
+                                                                final userStore = ref.read(userStoreProvider);
+                                                                final success =
+                                                                    await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
+                                                                  await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
+                                                                });
+                                                                if (success) {
+                                                                  Navigator.of(context).pop();
+                                                                  showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
+                                                                }
+                                                              },
+                                                            ),
+                                                          ]);
+                                                    },
+                                                  ),
+                                                ))
+                                            .toList(growable: false),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(growable: false),
+                          ),
+                        ),
+                      );
+                    }),
             ),
           ],
         ),
@@ -621,24 +640,22 @@ class _SearchBar extends HookConsumerWidget {
                   ),
                   flex: 5,
                 ),
+                if (false) const Icon(Icons.location_on_outlined),
+                if (false) const SizedBox(width: kNormalPadding),
                 if (false)
-                const Icon(Icons.location_on_outlined),
-                if (false)
-                const SizedBox(width: kNormalPadding),
-                if (false)
-                Expanded(
-                  flex: 3,
-                  child: Center(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: context.l10n.localizationField,
-                        border: InputBorder.none,
+                  Expanded(
+                    flex: 3,
+                    child: Center(
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: context.l10n.localizationField,
+                          border: InputBorder.none,
+                        ),
+                        controller: controllerLocalization,
+                        onFieldSubmitted: (_) => submitForm(),
                       ),
-                      controller: controllerLocalization,
-                      onFieldSubmitted: (_) => submitForm(),
                     ),
                   ),
-                ),
                 ColoredBox(
                   color: context.primaryColor,
                   child: Material(

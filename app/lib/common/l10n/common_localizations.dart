@@ -113,6 +113,8 @@ class CommonLocalizations {
 
   String get diplomaUpload => Intl.message('Afin de valider votre compte soignant, merci de nous fournir une preuve de votre spécialité (diplôme, attestation de formation...).', name: 'diplomaUpload');
 
+  String get noAvailabilities => Intl.message('Aucune disponibilité pour le moment', name: 'noAvailabilities');
+
   String get diplomaDialogTitle => Intl.message('Choisir mon diplôme', name: 'diplomaDialogTitle');
 
   String get termsDialogTitle => Intl.message('Choisir la charte signé', name: 'termsDialogTitle');

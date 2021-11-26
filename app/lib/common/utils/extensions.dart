@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
 import 'package:heal_happy/common/l10n/error_localizations.dart';
 import 'package:heal_happy/common/utils/constants.dart';
+import 'package:heal_happy/common/utils/diacritic_replacement_map.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 extension HealerStatsExtension on HealerStats {
@@ -74,6 +75,10 @@ extension StringCasingExtension on String {
   String get capitalized => length > 0 ? '${this[0].toUpperCase()}${substring(1)}' : '';
 
   String get titleCase => replaceAll(RegExp(' +'), ' ').split(" ").map((str) => str.capitalized).join(" ");
+
+  String removeDiacritic() {
+    return String.fromCharCodes(replaceCodeUnits(codeUnits));
+  }
 }
 
 extension TimeOfDayExtension on TimeOfDay {
