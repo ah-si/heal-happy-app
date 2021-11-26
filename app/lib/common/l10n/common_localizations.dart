@@ -197,6 +197,8 @@ class CommonLocalizations {
 
   String get isActivatedField => Intl.message('Activé:', name: 'isActivatedField');
 
+  String get isVerifiedField => Intl.message('Vérifié:', name: 'isVerifiedField');
+
   String get searchQueryField => Intl.message('Recherche:', name: 'searchQueryField');
 
   String get descriptionField => Intl.message('Description*:', name: 'descriptionField');

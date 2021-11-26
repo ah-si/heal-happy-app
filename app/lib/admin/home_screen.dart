@@ -27,7 +27,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
 part 'healer_reports_tab.dart';
-part 'healers_tab.dart';
 part 'users_tab.dart';
 
 class AdminHomeScreen extends HookConsumerWidget {
@@ -42,9 +41,6 @@ class AdminHomeScreen extends HookConsumerWidget {
     switch (store.selectedTab) {
       case HomeTabs.home:
         child = const Dashboard();
-        break;
-      case HomeTabs.healerToVerify:
-        child = const _HealerToVerify();
         break;
       case HomeTabs.users:
         child = const _Users();
@@ -76,14 +72,6 @@ class AdminHomeScreen extends HookConsumerWidget {
                                 store.selectedTab = HomeTabs.home;
                               },
                               selected: store.selectedTab == HomeTabs.home,
-                            ),
-                            const SizedBox(width: 2),
-                            MenuItem(
-                              label: context.l10n.healerToVerify,
-                              onTap: () {
-                                store.selectedTab = HomeTabs.healerToVerify;
-                              },
-                              selected: store.selectedTab == HomeTabs.healerToVerify,
                             ),
                             const SizedBox(width: 2),
                             MenuItem(

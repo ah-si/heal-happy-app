@@ -15,7 +15,7 @@ class SearchResults {
   SearchResults(this.healers, this.currentPage, this.totalPages, {this.error});
 }
 
-enum HomeTabs { home, healerToVerify, healerStats, users }
+enum HomeTabs { home, healerStats, users }
 
 class AdminStore extends ChangeNotifier {
   final AdminApi _adminApi;

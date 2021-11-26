@@ -11,8 +11,15 @@ class SearchQuery {
   final String? job;
   final UserTypeEnum? type;
   final bool? isActivated;
+  final bool? isVerified;
 
-  SearchQuery(this.query, this.type, this.job, this.isActivated);
+  SearchQuery(
+    this.query,
+    this.type,
+    this.job,
+    this.isActivated,
+    this.isVerified,
+  );
 }
 
 class SearchResults {
@@ -39,6 +46,7 @@ class AdminUsersStore extends ChangeNotifier {
     try {
       final results = await _adminApi.searchUsers(
         isActivated: query.isActivated,
+        isVerified: query.isVerified,
         query: query.query,
         job: query.job,
         type: query.type,
@@ -54,7 +62,7 @@ class AdminUsersStore extends ChangeNotifier {
     }
     _lastSearchQuery = query;
   }
-  
+
   Future<void> deleteUser(User user) async {
     await _adminApi.deleteUser(id: user.id!);
     searchResults = SearchResults(searchResults!.users..remove(user), searchResults!.totalPages, searchResults!.currentPage);

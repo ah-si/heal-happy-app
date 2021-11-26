@@ -28,8 +28,11 @@ class StepPersonalInfo extends HookConsumerWidget {
     final controller = useTextEditingController(text: userInfo.email);
     final controllerPass = useTextEditingController(text: userInfo.password ?? '');
     final controllerConfirm = useTextEditingController();
+    final termsState = useState(true);
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() {
+      termsState.value = userInfo.isTermsAccepted;
+
       if (formKey.currentState!.validate() && userInfo.isTermsAccepted) {
         userInfo.firstName = controllerFirstName.text;
         userInfo.lastName = controllerLastName.text;
@@ -126,10 +129,11 @@ class StepPersonalInfo extends HookConsumerWidget {
                     value: userInfo.isTermsAccepted,
                     onChanged: (value) {
                       userInfo.isTermsAccepted = value!;
+                      termsState.value = userInfo.isTermsAccepted;
                     },
                     title: Text(
                       context.l10n.acceptTerms,
-                      style: const TextStyle(fontSize: 12),
+                      style: TextStyle(fontSize: 12, color: termsState.value ? Colors.black : Colors.red),
                     ),
                   ),
                 ),

@@ -164,7 +164,7 @@ class UserStore extends ChangeNotifier {
 
   Future<void> save(User user) async {
     final results = await _apiProvider.api.getUserApi().saveProfile(user: user);
-    user = results.data!;
+    this.user = results.data!;
     notifyListeners();
   }
 

@@ -162,7 +162,7 @@ class _HealerHomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userStore = ref.watch(userStoreProvider);
 
-    final needFileUpload = userStore.user?.diplomaFile == null || userStore.user?.healerTermsFile == null;
+    final needFileUpload = !(userStore.user?.isVerified ?? false) && (userStore.user?.diplomaFile == null || userStore.user?.healerTermsFile == null);
 
     return SingleChildScrollView(
       child: Column(
@@ -397,9 +397,11 @@ class _HealerProfile extends HookConsumerWidget {
     final userStore = ref.watch(userStoreProvider);
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        store.fromUser(userStore.user!);
+        if (userStore.user != null) {
+          store.fromUser(userStore.user!);
+        }
       });
-    }, const []);
+    }, [userStore.user]);
     save() {
       final info = ref.read(userInfoProvider);
       userStore.save(info.toUser(existingUser: userStore.user));
