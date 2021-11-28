@@ -91,7 +91,7 @@ class _UsersSearch extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(kNormalPadding),
       child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.end,
         runAlignment: WrapAlignment.spaceEvenly,
         alignment: WrapAlignment.spaceEvenly,
         runSpacing: kNormalPadding,
@@ -159,7 +159,7 @@ class _UsersSearch extends HookConsumerWidget {
               final store = ref.read(adminUsersStoreProvider);
               store.search(0,
                   query: SearchQuery(
-                    controllerSearch.text,
+                    controllerSearch.text.trim(),
                     typeState.value,
                     controllerSpe.text.isNullOrEmpty ? null : jobState.value,
                     activatedState.value,
@@ -172,7 +172,7 @@ class _UsersSearch extends HookConsumerWidget {
             onPressed: () {
               String url = '${Config().baseUrl}/api/v1/admin/users?';
 
-              if (!controllerSearch.text.isNullOrEmpty) url += 'query=${controllerSearch.text}&';
+              if (!controllerSearch.text.isNullOrEmpty) url += 'query=${controllerSearch.text.trim()}&';
               if (typeState.value != null) {
                 final serialized = serializers.serialize(
                   typeState.value as Object,
@@ -302,7 +302,7 @@ class _UserItem extends HookConsumerWidget {
                   onPressed: () async {
                     final success = await showConfirm(context, context.l10n.accept(user.name), context.l10n.acceptConfirm);
                     if (success) {
-                      final store = ref.read(adminStoreProvider);
+                      final store = ref.read(adminUsersStoreProvider);
                       showLoadingDialog(context, (_) => Text(context.l10n.accepting), () => store.validateHealer(user));
                     }
                   },

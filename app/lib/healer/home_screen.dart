@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
+import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
@@ -190,7 +191,7 @@ class _HealerHomePage extends HookConsumerWidget {
                       description: context.l10n.termsUpload,
                       downloadButton: TextButton(
                         onPressed: () {
-                          launch('https://soignez-heureux.ah-si.org/assets/assets/files/healerTerms.pdf');
+                          launch('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
                         },
                         child: Text(context.l10n.downloadTerms),
                       ),
