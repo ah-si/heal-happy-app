@@ -4,10 +4,12 @@ import 'package:built_value/serializer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/admin/stores/dashboard_store.dart';
 import 'package:heal_happy/admin/stores/healer_stats_store.dart';
 import 'package:heal_happy/admin/stores/users_search_store.dart';
+import 'package:heal_happy/admin/user_details_screen.dart';
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/network/api_provider.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -18,6 +20,7 @@ import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
+import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -47,6 +50,9 @@ class AdminHomeScreen extends HookConsumerWidget {
         break;
       case HomeTabs.healerStats:
         child = const HealerReports();
+        break;
+      case HomeTabs.profile:
+        child = const SizedBox(height: double.infinity, child: SingleChildScrollView(child: UserProfile()));
         break;
     }
 
@@ -88,6 +94,14 @@ class AdminHomeScreen extends HookConsumerWidget {
                                 store.selectedTab = HomeTabs.healerStats;
                               },
                               selected: store.selectedTab == HomeTabs.healerStats,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.profile,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.profile;
+                              },
+                              selected: store.selectedTab == HomeTabs.profile,
                             ),
                             const SizedBox(width: 2),
                           ],

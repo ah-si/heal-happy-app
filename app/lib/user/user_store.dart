@@ -40,6 +40,7 @@ class UserStore extends ChangeNotifier {
 
   bool initPending = true;
   User? user;
+  User? currentEditedUser;
 
   User get requiredUser => user!;
 
@@ -48,6 +49,24 @@ class UserStore extends ChangeNotifier {
       user = null;
       notifyListeners();
     };
+  }
+
+  Future<User> getUser(String id) async {
+    final user = await _apiProvider.api.getUserApi().getUser(id: id);
+    currentEditedUser = user.data!;
+    notifyListeners();
+    return currentEditedUser!;
+  }
+
+  Future<void> saveUser(String id, User user) async {
+    try {
+      await _apiProvider.api.getUserApi().saveUser(id: id, user: user);
+    } on DioError catch(error) {
+      if (error.response?.statusCode == 400 && error.response!.data.toString().contains('terms_required')) {
+        throw ErrorResultException(ErrorResult.adminTermsRequired);
+      }
+      rethrow;
+    }
   }
 
   Future<Map<String, String>> getSpecialities() async {

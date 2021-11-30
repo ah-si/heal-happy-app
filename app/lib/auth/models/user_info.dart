@@ -4,7 +4,9 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' as backend;
 
-final userInfoProvider = ChangeNotifierProvider((ref) => UserInfo());
+final userInfoProvider = ChangeNotifierProvider((ref) {
+  return UserInfo();
+});
 
 class CalendarTimeOfDaySettings {
   final TimeOfDay? start;

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/admin/user_details_screen.dart';
 import 'package:heal_happy/auth/change_password.dart';
 import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/register/register_screen.dart';
@@ -11,6 +12,7 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/main.dart';
 import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_store.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 late GoRouter _router;
 
@@ -44,6 +46,10 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               },
             ) !=
             null;
+
+        if (currentRoute.startsWith('/admin') && userStore.user?.type != UserTypeEnum.admin) {
+          return state.namedLocation(HomeScreen.name);
+        }
 
         // the user is not logged in and not headed to /login, they need to login
         if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == '/')) {
@@ -110,6 +116,18 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               return FadeTransition(opacity: animation, child: child);
             },
             child: ChangePasswordScreen(state.queryParams['token'] ?? ''),
+          ),
+        ),
+        GoRoute(
+          path: UserDetailsScreen.route,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: UserDetailsScreen(
+              id: state.params['id']!,
+            ),
           ),
         ),
         GoRoute(

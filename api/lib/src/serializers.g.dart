@@ -12,6 +12,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(CalendarSettings.serializer)
       ..add(CreateEventRequest.serializer)
       ..add(Dashboard.serializer)
+      ..add(DashboardEvent.serializer)
       ..add(DashboardUser.serializer)
       ..add(FileData.serializer)
       ..add(Healer.serializer)
@@ -30,6 +31,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(DashboardUser)]),
           () => new ListBuilder<DashboardUser>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(DashboardEvent)]),
+          () => new ListBuilder<DashboardEvent>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(DateTime)]),
           () => new ListBuilder<DateTime>())

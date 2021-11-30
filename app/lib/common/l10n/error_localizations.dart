@@ -85,6 +85,12 @@ class ErrorLocalizations {
   String get fileTooBig => Intl.message('Fichier trop lourd', name: 'fileTooBig');
 
   String get fileTooBigHint => Intl.message('Le fichier ne doit pas dépasser 5Mo', name: 'fileTooBigHint');
+
+  String get termsRequired => Intl.message('Problème relatif au traitement des données personnelles', name: 'termsRequired');
+
+  String get termsRequiredHint => Intl.message('Merci d\'aller dans vos informations personnelles et accepté le traitement de vos données.', name: 'termsRequiredHint');
+
+  String get adminTermsRequiredHint => Intl.message('L\'utilisateur n\'a pas accepté le traitement de ces données (RGPD), il est donc impossible de modifier ses données.\nIl doit aller dans ces informations personnelles et accepter le traitement de ces données.', name: 'adminTermsRequiredHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

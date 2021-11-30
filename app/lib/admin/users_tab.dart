@@ -188,6 +188,14 @@ class _UsersSearch extends HookConsumerWidget {
                 );
                 url += 'isActivated=$serialized&';
               }
+              if (verifiedState.value != null) {
+                final serialized = serializers.serialize(
+                  verifiedState.value as Object,
+                  specifiedType: const FullType(bool),
+                );
+                url += 'isVerified=$serialized&';
+              }
+
               final token = BackendApiProvider().getToken();
               url += 'token=$token&';
               launch(url);
@@ -308,6 +316,12 @@ class _UserItem extends HookConsumerWidget {
                   },
                   child: Text(context.l10n.acceptButton),
                 ),
+              TextButton(
+                onPressed: () async {
+                  context.go(UserDetailsScreen.route.replaceAll(':id', user.id!));
+                },
+                child: Text(context.l10n.editButton),
+              ),
             ],
           ),
         ],

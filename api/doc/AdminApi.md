@@ -13,7 +13,6 @@ Method | HTTP request | Description
 [**deleteUser**](AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [**getDashboard**](AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
 [**getHealerStats**](AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
-[**getPendingHealer**](AdminApi.md#getpendinghealer) | **GET** /api/v1/admin/users/pending | 
 [**searchUsers**](AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
 [**updateUser**](AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
 [**verifyUser**](AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
@@ -196,53 +195,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **getPendingHealer**
-> PaginatedUsers getPendingHealer(page)
-
-
-
-### Example 
-```dart
-import 'package:heal_happy_sdk/api.dart';
-// TODO Configure API key authorization: Bearer
-//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
-// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
-
-final api = HealHappySdk().getAdminApi();
-final int page = 56; // int | 
-
-try { 
-    final response = api.getPendingHealer(page);
-    print(response);
-} catch on DioError (e) {
-    print('Exception when calling AdminApi->getPendingHealer: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **page** | **int**|  | 
-
-### Return type
-
-[**PaginatedUsers**](PaginatedUsers.md)
-
-### Authorization
-
-[Bearer](../README.md#Bearer)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
 # **searchUsers**
-> PaginatedUsers searchUsers(page, query, type, job, isActivated)
+> PaginatedUsers searchUsers(page, query, type, job, isActivated, isVerified)
 
 
 
@@ -260,9 +214,10 @@ final String query = query_example; // String |
 final UserTypeEnum type = ; // UserTypeEnum | 
 final String job = job_example; // String | 
 final bool isActivated = true; // bool | 
+final bool isVerified = true; // bool | 
 
 try { 
-    final response = api.searchUsers(page, query, type, job, isActivated);
+    final response = api.searchUsers(page, query, type, job, isActivated, isVerified);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling AdminApi->searchUsers: $e\n');
@@ -278,6 +233,7 @@ Name | Type | Description  | Notes
  **type** | [**UserTypeEnum**](.md)|  | [optional] 
  **job** | **String**|  | [optional] 
  **isActivated** | **bool**|  | [optional] 
+ **isVerified** | **bool**|  | [optional] 
 
 ### Return type
 

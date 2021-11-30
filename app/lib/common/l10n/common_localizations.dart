@@ -69,6 +69,8 @@ class CommonLocalizations {
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
+  String get editButton => Intl.message('Modifier', name: 'editButton');
+
   String get acceptConfirm => Intl.message(
       'En acceptant le soignant, il sera visible dans la recherche et les patients pourront prendre rendez-vous avec lui.\nVoulez- vous continuer?',
       name: 'acceptConfirm');
@@ -124,6 +126,8 @@ class CommonLocalizations {
   String get uploadButton => Intl.message('Envoyer', name: 'uploadButton');
 
   String get backToLogin => Intl.message('Retour au login', name: 'backToLogin');
+
+  String get backButton => Intl.message('Retour', name: 'backButton');
 
   String get login => Intl.message('Connexion en cours...', name: 'login');
 

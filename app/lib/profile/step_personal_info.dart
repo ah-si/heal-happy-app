@@ -14,9 +14,10 @@ import 'package:url_launcher/url_launcher.dart';
 class StepPersonalInfo extends HookConsumerWidget {
   final VoidCallback? onContinue;
   final String? saveButtonLabel;
+  final bool showTerms;
   final bool headless;
 
-  const StepPersonalInfo({this.headless = false, this.saveButtonLabel, this.onContinue, Key? key}) : super(key: key);
+  const StepPersonalInfo({this.headless = false, this.showTerms = true, this.saveButtonLabel, this.onContinue, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,7 +34,7 @@ class StepPersonalInfo extends HookConsumerWidget {
     submitForm() {
       termsState.value = userInfo.isTermsAccepted;
 
-      if (formKey.currentState!.validate() && userInfo.isTermsAccepted) {
+      if (formKey.currentState!.validate() && (userInfo.isTermsAccepted || !showTerms)) {
         userInfo.firstName = controllerFirstName.text;
         userInfo.lastName = controllerLastName.text;
         userInfo.email = controller.text.trim();
@@ -122,7 +123,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                   onFieldSubmitted: (_) => submitForm(),
                   decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
                 ),
-              if (!headless || !(userStore.user?.isTermsAccepted ?? false))
+              if ((!headless || !(userStore.user?.isTermsAccepted ?? false)) && showTerms)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
                   child: CheckboxListTile(
@@ -161,7 +162,7 @@ class StepPersonalInfo extends HookConsumerWidget {
               ),
             ],
           ),
-          if (!headless || !(userStore.user?.isTermsAccepted ?? false))
+          if ((!headless || !(userStore.user?.isTermsAccepted ?? false)) && showTerms)
             TextButton(
               onPressed: () {
                 launch('${Config().baseUrl}/terms');

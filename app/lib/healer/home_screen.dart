@@ -2,7 +2,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
@@ -11,10 +10,7 @@ import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/healer/stores/healer_store.dart';
-import 'package:heal_happy/profile/step_calendar_info.dart';
-import 'package:heal_happy/profile/step_personal_info.dart';
-import 'package:heal_happy/profile/step_pro_info.dart';
-import 'package:heal_happy/profile/step_social_info.dart';
+import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -74,9 +70,23 @@ class HealerHomeScreen extends HookConsumerWidget {
                     color: context.theme.errorColor.withOpacity(0.8),
                     child: Padding(
                       padding: const EdgeInsets.all(kSmallPadding),
-                      child: Text(
-                        context.l10n.accountNotVerified,
-                        style: const TextStyle(color: Colors.white),
+                      child: Column(
+                        children: [
+                          Text(
+                            context.l10n.accountNotVerified,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          if (!userStore.activationEmailResent)
+                            TextButton(
+                              onPressed: () async {
+                                final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                                if (success) {
+                                  showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
+                                }
+                              },
+                              child: Text(context.l10n.resendActivationLink),
+                            ),
+                        ],
                       ),
                     ),
                   ),
@@ -94,7 +104,7 @@ class HealerHomeScreen extends HookConsumerWidget {
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
-                    child: store.selectedTab == HomeTabs.home ? const _HealerHomePage() : const _HealerProfile(),
+                    child: store.selectedTab == HomeTabs.home ? const _HealerHomePage() : const UserProfile(),
                   ),
                 ),
               ],
@@ -226,30 +236,39 @@ class _HealerEvents extends HookConsumerWidget {
     }, const []);
 
     if (store.eventsResults == null || store.isLoading) {
-      return const Loading();
+      return SizedBox(
+        child: const Loading(),
+        height: MediaQuery.of(context).size.height,
+      );
     }
 
     if (store.eventsResults?.error != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(kNormalPadding),
-          child: Text(
-            store.eventsResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
-            textAlign: TextAlign.center,
+      return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(kNormalPadding),
+            child: Text(
+              store.eventsResults!.error!.cause.twoLiner(context),
+              style: TextStyle(color: context.theme.errorColor),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       );
     }
 
     if (store.eventsResults!.events.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(kNormalPadding),
-          child: Text(
-            context.l10n.noEvents,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+      return SizedBox(
+        height: MediaQuery.of(context).size.height,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(kNormalPadding),
+            child: Text(
+              context.l10n.noEvents,
+              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       );
@@ -382,90 +401,6 @@ class _HealerEventDetails extends HookConsumerWidget {
                 ),
               ],
             )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _HealerProfile extends HookConsumerWidget {
-  const _HealerProfile();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.watch(userInfoProvider);
-    final userStore = ref.watch(userStoreProvider);
-    useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        if (userStore.user != null) {
-          store.fromUser(userStore.user!);
-        }
-      });
-    }, [userStore.user]);
-    save() {
-      final info = ref.read(userInfoProvider);
-      userStore.save(info.toUser(existingUser: userStore.user));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(context.l10n.infoSaved),
-      ));
-    }
-
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(kNormalPadding),
-        child: Column(
-          children: [
-            ExpansionTile(
-              title: Text(context.l10n.calendar),
-              children: [
-                StepCalendarInfoForm(
-                  enableBackButton: false,
-                  saveButtonLabel: context.l10n.saveButton,
-                  onContinue: save,
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(context.l10n.personalInfo),
-              children: [
-                StepPersonalInfo(
-                  headless: true,
-                  onContinue: save,
-                  saveButtonLabel: context.l10n.saveButton,
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(context.l10n.proInfo),
-              children: [
-                StepInfoPro(
-                  headless: true,
-                  onContinue: save,
-                  saveButtonLabel: context.l10n.saveButton,
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(context.l10n.address),
-              children: [
-                StepAddress(
-                  headless: true,
-                  onContinue: save,
-                  saveButtonLabel: context.l10n.saveButton,
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: Text(context.l10n.socialInfo),
-              children: [
-                StepSocial(
-                  headless: true,
-                  onContinue: save,
-                  saveButtonLabel: context.l10n.saveButton,
-                ),
-              ],
-            ),
           ],
         ),
       ),

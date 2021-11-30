@@ -5,19 +5,19 @@
 // ignore_for_file: unused_import
 
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:built_value/json_object.dart';
 import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
-import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:heal_happy_sdk/src/date_serializer.dart';
-import 'package:heal_happy_sdk/src/model/date.dart';
-
 import 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
 import 'package:heal_happy_sdk/src/model/calendar_day_settings.dart';
 import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
 import 'package:heal_happy_sdk/src/model/dashboard.dart';
+import 'package:heal_happy_sdk/src/model/dashboard_event.dart';
 import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
+import 'package:heal_happy_sdk/src/model/date.dart';
 import 'package:heal_happy_sdk/src/model/file_data.dart';
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/healer_availabilities.dart';
@@ -41,6 +41,7 @@ part 'serializers.g.dart';
   CalendarSettings,
   CreateEventRequest,
   Dashboard,
+  DashboardEvent,
   DashboardUser,
   FileData,
   Healer,

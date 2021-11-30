@@ -22,6 +22,8 @@ ErrorResultException handleError(error, stackTrace) {
       result = ErrorResultException(ErrorResult.notLogged);
     } else if (error is DioError && error.response?.statusCode == 403) {
       result = ErrorResultException(ErrorResult.forbidden);
+    } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data.toString().contains('terms_required')) {
+      result = ErrorResultException(ErrorResult.termsRequired);
     }
     kDebugLogger.severe('handleError: Future error from $error forwarded to $result', error, stackTrace);
     return result;
@@ -51,6 +53,8 @@ class ErrorResult {
   static const emailAlreadyUsed = ErrorResult(_ErrorType.emailAlreadyUsed);
   static const notLogged = ErrorResult(_ErrorType.notLogged);
   static const forbidden = ErrorResult(_ErrorType.forbidden);
+  static const termsRequired = ErrorResult(_ErrorType.termsRequired);
+  static const adminTermsRequired = ErrorResult(_ErrorType.adminTermsRequired);
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
   static const linkExpired = ErrorResult(_ErrorType.linkExpired);
   static const fileTooBig = ErrorResult(_ErrorType.fileTooBig);
@@ -103,6 +107,10 @@ class ErrorResult {
         return localizations.linkExpired;
       case _ErrorType.fileTooBig:
         return localizations.fileTooBig;
+      case _ErrorType.termsRequired:
+        return localizations.termsRequired;
+      case _ErrorType.adminTermsRequired:
+        return localizations.termsRequired;
     }
   }
 
@@ -144,6 +152,10 @@ class ErrorResult {
         return localizations.linkExpiredHint;
       case _ErrorType.fileTooBig:
         return localizations.fileTooBigHint;
+      case _ErrorType.termsRequired:
+        return localizations.termsRequiredHint;
+      case _ErrorType.adminTermsRequired:
+        return localizations.adminTermsRequiredHint;
     }
   }
 
@@ -163,6 +175,8 @@ enum _ErrorType {
   noNetwork,
   notLogged,
   forbidden,
+  termsRequired,
+  adminTermsRequired,
   wrongCredentials,
   linkExpired,
   fileTooBig,

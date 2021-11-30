@@ -1,4 +1,4 @@
-# heal_happy_sdk.model.Dashboard
+# heal_happy_sdk.model.DashboardEvent
 
 ## Load the model package
 ```dart
@@ -8,8 +8,9 @@ import 'package:heal_happy_sdk/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**users** | [**BuiltList&lt;DashboardUser&gt;**](DashboardUser.md) |  | 
-**events** | [**BuiltList&lt;DashboardEvent&gt;**](DashboardEvent.md) |  | 
+**year** | **int** |  | 
+**month** | **int** |  | 
+**total** | **int** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

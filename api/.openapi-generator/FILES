@@ -8,6 +8,7 @@ doc/CalendarDaySettings.md
 doc/CalendarSettings.md
 doc/CreateEventRequest.md
 doc/Dashboard.md
+doc/DashboardEvent.md
 doc/DashboardUser.md
 doc/FileData.md
 doc/Healer.md
@@ -41,6 +42,7 @@ lib/src/model/calendar_day_settings.dart
 lib/src/model/calendar_settings.dart
 lib/src/model/create_event_request.dart
 lib/src/model/dashboard.dart
+lib/src/model/dashboard_event.dart
 lib/src/model/dashboard_user.dart
 lib/src/model/date.dart
 lib/src/model/file_data.dart
@@ -65,6 +67,7 @@ test/auth_api_test.dart
 test/calendar_day_settings_test.dart
 test/calendar_settings_test.dart
 test/create_event_request_test.dart
+test/dashboard_event_test.dart
 test/dashboard_test.dart
 test/dashboard_user_test.dart
 test/file_data_test.dart

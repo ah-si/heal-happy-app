@@ -9,12 +9,15 @@ part of 'dashboard.dart';
 class _$Dashboard extends Dashboard {
   @override
   final BuiltList<DashboardUser> users;
+  @override
+  final BuiltList<DashboardEvent> events;
 
   factory _$Dashboard([void Function(DashboardBuilder)? updates]) =>
       (new DashboardBuilder()..update(updates)).build();
 
-  _$Dashboard._({required this.users}) : super._() {
+  _$Dashboard._({required this.users, required this.events}) : super._() {
     BuiltValueNullFieldError.checkNotNull(users, 'Dashboard', 'users');
+    BuiltValueNullFieldError.checkNotNull(events, 'Dashboard', 'events');
   }
 
   @override
@@ -27,17 +30,19 @@ class _$Dashboard extends Dashboard {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Dashboard && users == other.users;
+    return other is Dashboard && users == other.users && events == other.events;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, users.hashCode));
+    return $jf($jc($jc(0, users.hashCode), events.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Dashboard')..add('users', users))
+    return (newBuiltValueToStringHelper('Dashboard')
+          ..add('users', users)
+          ..add('events', events))
         .toString();
   }
 }
@@ -50,6 +55,11 @@ class DashboardBuilder implements Builder<Dashboard, DashboardBuilder> {
       _$this._users ??= new ListBuilder<DashboardUser>();
   set users(ListBuilder<DashboardUser>? users) => _$this._users = users;
 
+  ListBuilder<DashboardEvent>? _events;
+  ListBuilder<DashboardEvent> get events =>
+      _$this._events ??= new ListBuilder<DashboardEvent>();
+  set events(ListBuilder<DashboardEvent>? events) => _$this._events = events;
+
   DashboardBuilder() {
     Dashboard._defaults(this);
   }
@@ -58,6 +68,7 @@ class DashboardBuilder implements Builder<Dashboard, DashboardBuilder> {
     final $v = _$v;
     if ($v != null) {
       _users = $v.users.toBuilder();
+      _events = $v.events.toBuilder();
       _$v = null;
     }
     return this;
@@ -78,12 +89,15 @@ class DashboardBuilder implements Builder<Dashboard, DashboardBuilder> {
   _$Dashboard build() {
     _$Dashboard _$result;
     try {
-      _$result = _$v ?? new _$Dashboard._(users: users.build());
+      _$result = _$v ??
+          new _$Dashboard._(users: users.build(), events: events.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'users';
         users.build();
+        _$failedField = 'events';
+        events.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Dashboard', _$failedField, e.toString());

@@ -3,19 +3,24 @@
 //
 
 import 'package:built_collection/built_collection.dart';
-import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/dashboard_event.dart';
+import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
 
 part 'dashboard.g.dart';
 
 /// Dashboard
 ///
 /// Properties:
-/// * [users] 
+/// * [users]
+/// * [events]
 abstract class Dashboard implements Built<Dashboard, DashboardBuilder> {
     @BuiltValueField(wireName: r'users')
     BuiltList<DashboardUser> get users;
+
+    @BuiltValueField(wireName: r'events')
+    BuiltList<DashboardEvent> get events;
 
     Dashboard._();
 
@@ -43,6 +48,10 @@ class _$DashboardSerializer implements StructuredSerializer<Dashboard> {
             ..add(r'users')
             ..add(serializers.serialize(object.users,
                 specifiedType: const FullType(BuiltList, [FullType(DashboardUser)])));
+        result
+            ..add(r'events')
+            ..add(serializers.serialize(object.events,
+                specifiedType: const FullType(BuiltList, [FullType(DashboardEvent)])));
         return result;
     }
 
@@ -60,6 +69,10 @@ class _$DashboardSerializer implements StructuredSerializer<Dashboard> {
                 case r'users':
                     result.users.replace(serializers.deserialize(value,
                         specifiedType: const FullType(BuiltList, [FullType(DashboardUser)])) as BuiltList<DashboardUser>);
+                    break;
+                case r'events':
+                    result.events.replace(serializers.deserialize(value,
+                        specifiedType: const FullType(BuiltList, [FullType(DashboardEvent)])) as BuiltList<DashboardEvent>);
                     break;
             }
         }
