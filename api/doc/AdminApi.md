@@ -13,6 +13,7 @@ Method | HTTP request | Description
 [**deleteUser**](AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [**getDashboard**](AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
 [**getHealerStats**](AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
+[**getUser**](AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
 [**searchUsers**](AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
 [**updateUser**](AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
 [**verifyUser**](AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
@@ -183,6 +184,51 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**BuiltList&lt;HealerStats&gt;**](HealerStats.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getUser**
+> User getUser(id)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getAdminApi();
+final String id = id_example; // String | 
+
+try { 
+    final response = api.getUser(id);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling AdminApi->getUser: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**|  | 
+
+### Return type
+
+[**User**](User.md)
 
 ### Authorization
 

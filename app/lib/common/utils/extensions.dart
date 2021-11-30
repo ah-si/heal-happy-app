@@ -7,6 +7,7 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 extension HealerStatsExtension on HealerStats {
   String get name => '$firstName $lastName';
+
   String get adminAddress {
     String address = '';
     address = street.isNullOrEmpty ? '' : '$street\n';
@@ -18,6 +19,20 @@ extension HealerStatsExtension on HealerStats {
 
 extension UserExtension on User {
   String get name => '$firstName $lastName';
+
+  bool get _canJoinHealerTelegram => [
+        'cardiologue',
+        'chir_dentiste',
+        'med_gene',
+        'psychiatre',
+        'psychiatre_enfant_ado',
+        'spe_med_interne',
+        'spe_med_exper',
+        'spe_med_readaptation',
+        'spe_med_readaptation',
+      ].contains(job);
+
+  String get telegramUrl => _canJoinHealerTelegram ? kUrlTelegramHealer : kUrlTelegramPara;
 
   String get adminAddress {
     String address = '';

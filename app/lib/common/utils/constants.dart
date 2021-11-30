@@ -4,6 +4,10 @@ import 'package:logging/logging.dart';
 
 const bool kIsProductionMode = bool.fromEnvironment('dart.vm.product');
 
+const String kUrlYoutube = 'https://www.youtube.com/channel/UCPJ5aTSrWqz8AXyxQS-Melw';
+const String kUrlTelegramHealer = 'https://t.me/+TceR1MPeLAY4ZDI0';
+const String kUrlTelegramPara = 'https://t.me/+nIG4tVyJpC01OTc0';
+
 final kDebugLogger = Logger('HealHappy');
 
 final kSupportedLanguages = [
@@ -22,4 +26,3 @@ const double kHugePadding = 54.0;
 const kGradient1Color = Color(0xFF101f34);
 const kGradient2Color = Color(0xFF4d8c3f);
 const kGradient3Color = Color(0xFF6aa842);
-

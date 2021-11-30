@@ -22,7 +22,7 @@ class PatientEventResults {
   PatientEventResults(this.events, {this.error});
 }
 
-enum HomeTabs { home, profile, search }
+enum HomeTabs { home, profile, search, history }
 
 class PatientStore extends ChangeNotifier {
   final UserApi _userApi;
@@ -78,13 +78,13 @@ class PatientStore extends ChangeNotifier {
 
   Future<void> cancelEvent(String eventId) async {
     await _userApi.deleteEvent(eventId: eventId);
-    loadEvents();
+    loadEvents(false);
   }
 
-  Future<void> loadEvents() async {
+  Future<void> loadEvents(bool showHistory) async {
     isLoading = true;
     try {
-      final events = await _userApi.getEvents();
+      final events = await _userApi.getEvents(includePastEvents: showHistory);
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();

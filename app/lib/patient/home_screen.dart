@@ -31,7 +31,20 @@ class PatientHomeScreen extends HookConsumerWidget {
     late Widget child;
     switch (store.selectedTab) {
       case HomeTabs.home:
-        child = const SizedBox(height: double.infinity, child: _PlannedConsultations());
+        child = SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(kNormalPadding),
+                child: Text(context.l10n.eventsDescription),
+              ),
+              const Expanded(child: _PlannedConsultations(key: Key('consultations'),)),
+            ],
+          ),
+        );
         break;
       case HomeTabs.profile:
         child = const SizedBox(height: double.infinity, child: UserProfile());
@@ -90,6 +103,22 @@ class PatientHomeScreen extends HookConsumerWidget {
               ],
             );
           },
+        );
+        break;
+      case HomeTabs.history:
+        child = SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(kNormalPadding),
+                child: Text(context.l10n.eventHistoryIntro),
+              ),
+              const Expanded(child: _PlannedConsultations(showHistory: true)),
+            ],
+          ),
         );
         break;
     }
@@ -217,31 +246,48 @@ class _MenuBar extends HookConsumerWidget {
     final store = ref.watch(patientStoreProvider);
     return Row(
       children: [
-        MenuItem(
-          label: context.l10n.home,
-          onTap: () {
-            store.selectedTab = HomeTabs.home;
-          },
-          selected: store.selectedTab == HomeTabs.home,
-        ),
-        const SizedBox(width: 2),
-        MenuItem(
-          label: context.l10n.profile,
-          onTap: () {
-            store.selectedTab = HomeTabs.profile;
-          },
-          selected: store.selectedTab == HomeTabs.profile,
-        ),
-        const SizedBox(width: 2),
-        if (store.searchResults != null)
-          MenuItem(
-            label: context.l10n.search,
-            onTap: () {
-              store.selectedTab = HomeTabs.search;
-            },
-            selected: store.selectedTab == HomeTabs.search,
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                MenuItem(
+                  label: context.l10n.home,
+                  onTap: () {
+                    store.selectedTab = HomeTabs.home;
+                  },
+                  selected: store.selectedTab == HomeTabs.home,
+                ),
+                const SizedBox(width: 2),
+                MenuItem(
+                  label: context.l10n.profile,
+                  onTap: () {
+                    store.selectedTab = HomeTabs.profile;
+                  },
+                  selected: store.selectedTab == HomeTabs.profile,
+                ),
+                if (store.searchResults != null) const SizedBox(width: 2),
+                if (store.searchResults != null)
+                  MenuItem(
+                    label: context.l10n.search,
+                    onTap: () {
+                      store.selectedTab = HomeTabs.search;
+                    },
+                    selected: store.selectedTab == HomeTabs.search,
+                  ),
+                const SizedBox(width: 2),
+                MenuItem(
+                  label: context.l10n.eventsHistory,
+                  onTap: () {
+                    store.selectedTab = HomeTabs.history;
+                  },
+                  selected: store.selectedTab == HomeTabs.history,
+                ),
+              ],
+            ),
           ),
-        const Spacer(),
+        ),
+        const SizedBox(width: 2),
         MenuItem(
           label: context.l10n.disconnect,
           onTap: () async {
@@ -449,15 +495,18 @@ class _HealerAvailability extends HookConsumerWidget {
 }
 
 class _PlannedConsultations extends HookConsumerWidget {
+  final bool showHistory;
+
   const _PlannedConsultations({
     Key? key,
+    this.showHistory = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(patientStoreProvider);
     useEffect(() {
-      store.loadEvents();
+      store.loadEvents(showHistory);
     }, const []);
 
     if (store.eventsResults == null || store.isLoading) {
@@ -493,17 +542,10 @@ class _PlannedConsultations extends HookConsumerWidget {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(kNormalPadding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(context.l10n.plannedConsultation, style: context.textTheme.subtitle1),
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.start,
-              alignment: WrapAlignment.start,
-              children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
-            ),
-          ],
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.start,
+          alignment: WrapAlignment.start,
+          children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
         ),
       ),
     );
@@ -554,26 +596,28 @@ class _PatientEventDetails extends HookConsumerWidget {
             ),
             ButtonBar(
               children: [
-                TextButton(
-                  onPressed: () async {
-                    final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.healer.name));
-                    if (success) {
-                      final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
-                        await ref.read(patientStoreProvider).cancelEvent(event.id);
-                      });
-                      if (cancelled) {
-                        showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
+                if (event.start.isAfter(DateTime.now()))
+                  TextButton(
+                    onPressed: () async {
+                      final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.healer.name));
+                      if (success) {
+                        final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
+                          await ref.read(patientStoreProvider).cancelEvent(event.id);
+                        });
+                        if (cancelled) {
+                          showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
+                        }
                       }
-                    }
-                  },
-                  child: Text(context.l10n.cancelButton),
-                ),
-                TextButton(
-                  onPressed: () {
-                    launch(event.link);
-                  },
-                  child: Text(context.l10n.joinVisioButton),
-                ),
+                    },
+                    child: Text(context.l10n.cancelButton),
+                  ),
+                if (event.start.isAfter(DateTime.now()..subtract(const Duration(days: 1))))
+                  TextButton(
+                    onPressed: () {
+                      launch(event.link);
+                    },
+                    child: Text(context.l10n.joinVisioButton),
+                  ),
               ],
             )
           ],

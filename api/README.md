@@ -68,6 +68,7 @@ Class | Method | HTTP request | Description
 [*AdminApi*](doc/AdminApi.md) | [**deleteUser**](doc/AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**getDashboard**](doc/AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
 [*AdminApi*](doc/AdminApi.md) | [**getHealerStats**](doc/AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
+[*AdminApi*](doc/AdminApi.md) | [**getUser**](doc/AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**searchUsers**](doc/AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
 [*AdminApi*](doc/AdminApi.md) | [**updateUser**](doc/AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**verifyUser**](doc/AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
@@ -83,13 +84,11 @@ Class | Method | HTTP request | Description
 [*UserApi*](doc/UserApi.md) | [**getHealerProfile**](doc/UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} | 
 [*UserApi*](doc/UserApi.md) | [**getProfile**](doc/UserApi.md#getprofile) | **GET** /api/v1/users/me | 
 [*UserApi*](doc/UserApi.md) | [**getSpecialities**](doc/UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
-[*UserApi*](doc/UserApi.md) | [**getUser**](doc/UserApi.md#getuser) | **GET** /api/v1/users/{id} | 
 [*UserApi*](doc/UserApi.md) | [**putAvatar**](doc/UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
 [*UserApi*](doc/UserApi.md) | [**putDiploma**](doc/UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
 [*UserApi*](doc/UserApi.md) | [**putTerms**](doc/UserApi.md#putterms) | **PUT** /api/v1/users/me/terms | 
 [*UserApi*](doc/UserApi.md) | [**resendActivationLink**](doc/UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
 [*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
-[*UserApi*](doc/UserApi.md) | [**saveUser**](doc/UserApi.md#saveuser) | **PUT** /api/v1/users/{id} | 
 [*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
 
 

@@ -52,7 +52,7 @@ class UserStore extends ChangeNotifier {
   }
 
   Future<User> getUser(String id) async {
-    final user = await _apiProvider.api.getUserApi().getUser(id: id);
+    final user = await _apiProvider.api.getAdminApi().getUser(id: id);
     currentEditedUser = user.data!;
     notifyListeners();
     return currentEditedUser!;
@@ -60,7 +60,7 @@ class UserStore extends ChangeNotifier {
 
   Future<void> saveUser(String id, User user) async {
     try {
-      await _apiProvider.api.getUserApi().saveUser(id: id, user: user);
+      await _apiProvider.api.getAdminApi().updateUser(id: id, user: user);
     } on DioError catch(error) {
       if (error.response?.statusCode == 400 && error.response!.data.toString().contains('terms_required')) {
         throw ErrorResultException(ErrorResult.adminTermsRequired);

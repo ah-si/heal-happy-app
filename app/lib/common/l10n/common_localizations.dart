@@ -257,11 +257,25 @@ class CommonLocalizations {
 
   String get noEvents => Intl.message('Vous n\'avez aucune consultation planifiée pour le moment.', name: 'noEvents');
 
+  String get eventHistoryIntro => Intl.message('Voici l\'historique de vos consultations, seul l\'historique à 30 jours est affiché ici.', name: 'eventHistoryIntro');
+
+  String get noEventHistory => Intl.message('Vous n\'avez aucune consultation dans votre historique.', name: 'noEventHistory');
+
   String get loading => Intl.message('Chargement en cours...', name: 'loading');
 
   String get profile => Intl.message('Profil', name: 'profile');
 
+  String get help => Intl.message('Aide', name: 'help');
+
+  String get helpIntro => Intl.message('Si vous avez besoin d\'aide, rejoignez d\'autres soignants sur le réseau Telegram dédié de Soignez Heureux en cliquant sur le lien suivant:', name: 'helpIntro');
+
+  String get helpYoutube => Intl.message('Une série de tutoriels sont disponibles sur notre chaine Youtube officiel:', name: 'helpYoutube');
+
+  String get eventsHistory => Intl.message('Historique', name: 'eventsHistory');
+
   String get resendActivationLink => Intl.message('Renvoyer le lien', name: 'resendActivationLink');
+
+  String get eventsDescription => Intl.message('Vos consultations à venir son affichées ici, pour voir vos anciennes consultations, consultez votre historique.', name: 'eventsDescription');
 
   String get resendActivationLinkTitle => Intl.message('Activation du compte', name: 'resendActivationLinkTitle');
 

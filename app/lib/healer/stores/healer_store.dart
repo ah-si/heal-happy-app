@@ -16,7 +16,7 @@ class PatientEventResults {
 }
 
 enum HomeTabs {
-  home, profile
+  home, profile, history, help
 }
 
 class HealerStore extends ChangeNotifier {
@@ -37,13 +37,13 @@ class HealerStore extends ChangeNotifier {
 
   Future<void> cancelEvent(String eventId) async {
     await _userApi.deleteEvent(eventId:eventId);
-    loadEvents();
+    loadEvents(false);
   }
 
-  Future<void> loadEvents() async {
+  Future<void> loadEvents(bool showHistory) async {
     isLoading = true;
     try {
-      final events = await _userApi.getEvents();
+      final events = await _userApi.getEvents(includePastEvents: showHistory);
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();
