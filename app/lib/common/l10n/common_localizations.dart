@@ -157,6 +157,10 @@ class CommonLocalizations {
 
   String get joinVisioButton => Intl.message('Rejoindre la visio', name: 'joinVisioButton');
 
+  String get updateEvent => Intl.message('Modifier', name: 'updateEvent');
+
+  String get updateEventMessage => Intl.message('Message pour le patient', name: 'updateEventMessage');
+
   String get infoSaved => Intl.message('Information enregistrée avec succès', name: 'infoSaved');
 
   String get saveButton => Intl.message('Enregistrer', name: 'saveButton');

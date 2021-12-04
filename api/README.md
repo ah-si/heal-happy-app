@@ -90,6 +90,7 @@ Class | Method | HTTP request | Description
 [*UserApi*](doc/UserApi.md) | [**resendActivationLink**](doc/UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
 [*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
+[*UserApi*](doc/UserApi.md) | [**updateEvent**](doc/UserApi.md#updateevent) | **PATCH** /api/v1/users/me/events/{eventId} | 
 
 
 ## Documentation For Models
@@ -101,6 +102,7 @@ Class | Method | HTTP request | Description
  - [Dashboard](doc/Dashboard.md)
  - [DashboardEvent](doc/DashboardEvent.md)
  - [DashboardUser](doc/DashboardUser.md)
+ - [DeleteEventRequest](doc/DeleteEventRequest.md)
  - [FileData](doc/FileData.md)
  - [Healer](doc/Healer.md)
  - [HealerAvailabilities](doc/HealerAvailabilities.md)
@@ -111,6 +113,7 @@ Class | Method | HTTP request | Description
  - [PaginatedUsers](doc/PaginatedUsers.md)
  - [RefreshTokenRequest](doc/RefreshTokenRequest.md)
  - [ResetPassword](doc/ResetPassword.md)
+ - [UpdateEventRequest](doc/UpdateEventRequest.md)
  - [User](doc/User.md)
  - [UserAllOf](doc/UserAllOf.md)
  - [UserEvent](doc/UserEvent.md)

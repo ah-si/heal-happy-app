@@ -22,6 +22,7 @@ Method | HTTP request | Description
 [**resendActivationLink**](UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
 [**saveProfile**](UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [**searchHealers**](UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
+[**updateEvent**](UserApi.md#updateevent) | **PATCH** /api/v1/users/me/events/{eventId} | 
 
 
 # **createEvent**
@@ -71,7 +72,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteEvent**
-> deleteEvent(eventId)
+> deleteEvent(eventId, deleteEventRequest)
 
 
 
@@ -85,9 +86,10 @@ import 'package:heal_happy_sdk/api.dart';
 
 final api = HealHappySdk().getUserApi();
 final String eventId = eventId_example; // String | 
+final DeleteEventRequest deleteEventRequest = ; // DeleteEventRequest | 
 
 try { 
-    api.deleteEvent(eventId);
+    api.deleteEvent(eventId, deleteEventRequest);
 } catch on DioError (e) {
     print('Exception when calling UserApi->deleteEvent: $e\n');
 }
@@ -98,6 +100,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **eventId** | **String**|  | 
+ **deleteEventRequest** | [**DeleteEventRequest**](DeleteEventRequest.md)|  | 
 
 ### Return type
 
@@ -109,7 +112,7 @@ void (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -598,6 +601,53 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **updateEvent**
+> UserEvent updateEvent(eventId, updateEventRequest)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getUserApi();
+final String eventId = eventId_example; // String | 
+final UpdateEventRequest updateEventRequest = ; // UpdateEventRequest | 
+
+try { 
+    final response = api.updateEvent(eventId, updateEventRequest);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling UserApi->updateEvent: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **eventId** | **String**|  | 
+ **updateEventRequest** | [**UpdateEventRequest**](UpdateEventRequest.md)|  | [optional] 
+
+### Return type
+
+[**UserEvent**](UserEvent.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

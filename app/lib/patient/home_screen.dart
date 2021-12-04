@@ -640,10 +640,10 @@ class _PatientEventDetails extends HookConsumerWidget {
                 if (event.start.isAfter(DateTime.now()))
                   TextButton(
                     onPressed: () async {
-                      final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.healer.name));
-                      if (success) {
+                      final message = await showPrompt(context, context.l10n.cancelConsultation, validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.healer.name));
+                      if (!message.isNullOrEmpty) {
                         final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
-                          await ref.read(patientStoreProvider).cancelEvent(event.id);
+                          await ref.read(patientStoreProvider).cancelEvent(event.id, message!);
                         });
                         if (cancelled) {
                           showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));

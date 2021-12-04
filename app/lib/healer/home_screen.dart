@@ -9,6 +9,7 @@ import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
+import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/healer/stores/healer_store.dart';
 import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
@@ -385,7 +386,10 @@ class _HealerEvents extends HookConsumerWidget {
         Padding(
           padding: const EdgeInsets.all(kNormalPadding),
           child: Wrap(
-            children: store.eventsResults!.events.where((element) => store.seeOnlyUrgency ? element.isUrgent : true).map((e) => _HealerEventDetails(event: e)).toList(growable: false),
+            children: store.eventsResults!.events
+                .where((element) => store.seeOnlyUrgency ? element.isUrgent : true)
+                .map((e) => _HealerEventDetails(event: e))
+                .toList(growable: false),
           ),
         ),
       ],
@@ -410,7 +414,44 @@ class _HealerEventDetails extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
+                Row(
+                  children: [
+                    Expanded(child: Text(_dateFormat.format(event.start), style: context.textTheme.headline6)),
+                    if (event.start.isAfter(DateTime.now()))
+                      IconButton(
+                        onPressed: () async {
+                          final now = DateTime.now();
+                          var date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: now.subtract(Duration(days: now.day - 1)),
+                            lastDate: now.add(
+                              const Duration(days: 15),
+                            ),
+                          );
+                          if (date != null) {
+                            final time = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.fromDateTime(event.start),
+                            );
+                            if (time != null) {
+                              date = date.copyWith(hour: time.hour, minute: time.minute);
+                              final message = await showPrompt(context, context.l10n.updateEventMessage);
+                              if (message != null) {
+                                final store = ref.read(healerStoreProvider);
+                                showLoadingDialog(
+                                  context,
+                                  (_) => Text(context.l10n.sending),
+                                  () => store.updateEvent(event, date!, message),
+                                );
+                              }
+                            }
+                          }
+                        },
+                        icon: const Icon(Icons.edit),
+                      ),
+                  ],
+                ),
                 const SizedBox(height: kSmallPadding),
                 Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
                 Column(
@@ -483,10 +524,11 @@ class _HealerEventDetails extends HookConsumerWidget {
             if (event.start.isAfter(DateTime.now()))
               TextButton(
                 onPressed: () async {
-                  final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.patient.name));
-                  if (success) {
+                  final message = await showPrompt(context, context.l10n.cancelConsultation,
+                      validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.patient.name));
+                  if (!message.isNullOrEmpty) {
                     final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
-                      await ref.read(healerStoreProvider).cancelEvent(event.id);
+                      await ref.read(healerStoreProvider).cancelEvent(event.id, message!);
                     });
                     if (cancelled) {
                       showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));

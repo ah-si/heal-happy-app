@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -15,9 +13,7 @@ class PatientEventResults {
   PatientEventResults(this.events, {this.error});
 }
 
-enum HomeTabs {
-  home, profile, history, help
-}
+enum HomeTabs { home, profile, history, help }
 
 class HealerStore extends ChangeNotifier {
   final UserApi _userApi;
@@ -27,15 +23,17 @@ class HealerStore extends ChangeNotifier {
   int eventUrgent = 0;
   HomeTabs _selectedTab = HomeTabs.home;
 
-  HealerStore({UserApi? userApi}): _userApi = BackendApiProvider().api.getUserApi();
+  HealerStore({UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi();
 
   bool get seeOnlyUrgency => _seeOnlyUrgency;
+
   set seeOnlyUrgency(bool value) {
     _seeOnlyUrgency = value;
     notifyListeners();
   }
 
   HomeTabs get selectedTab => _selectedTab;
+
   set selectedTab(HomeTabs value) {
     if (_selectedTab != value) {
       _selectedTab = value;
@@ -43,8 +41,8 @@ class HealerStore extends ChangeNotifier {
     }
   }
 
-  Future<void> cancelEvent(String eventId) async {
-    await _userApi.deleteEvent(eventId:eventId);
+  Future<void> cancelEvent(String eventId, String message) async {
+    await _userApi.deleteEvent(eventId: eventId, deleteEventRequest: DeleteEventRequest((b) => b.message = message));
     loadEvents(false);
   }
 
@@ -56,11 +54,27 @@ class HealerStore extends ChangeNotifier {
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       eventUrgent = 0;
       eventsResults = PatientEventResults([], error: handleError(error, stackTrace));
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> updateEvent(UserEvent event, DateTime date, String? message) async {
+    final updatedEvent = await _userApi.updateEvent(eventId: event.id, updateEventRequest: UpdateEventRequest((b) {
+      b.start = date;
+      b.message = message;
+    }));
+    final index = eventsResults!.events.indexOf(event);
+    if (date.isBefore(DateTime.now())) {
+      eventsResults = PatientEventResults(List.from(eventsResults!.events)
+        ..removeAt(index));
+    } else {
+      eventsResults = PatientEventResults(List.from(eventsResults!.events)
+        ..replaceRange(index, index + 1, [updatedEvent.data!]));
+    }
+    notifyListeners();
   }
 }

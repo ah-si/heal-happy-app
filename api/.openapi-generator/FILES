@@ -10,6 +10,7 @@ doc/CreateEventRequest.md
 doc/Dashboard.md
 doc/DashboardEvent.md
 doc/DashboardUser.md
+doc/DeleteEventRequest.md
 doc/FileData.md
 doc/Healer.md
 doc/HealerAvailabilities.md
@@ -20,6 +21,7 @@ doc/PaginatedHealers.md
 doc/PaginatedUsers.md
 doc/RefreshTokenRequest.md
 doc/ResetPassword.md
+doc/UpdateEventRequest.md
 doc/User.md
 doc/UserAllOf.md
 doc/UserApi.md
@@ -45,6 +47,7 @@ lib/src/model/dashboard.dart
 lib/src/model/dashboard_event.dart
 lib/src/model/dashboard_user.dart
 lib/src/model/date.dart
+lib/src/model/delete_event_request.dart
 lib/src/model/file_data.dart
 lib/src/model/healer.dart
 lib/src/model/healer_availabilities.dart
@@ -55,6 +58,7 @@ lib/src/model/paginated_healers.dart
 lib/src/model/paginated_users.dart
 lib/src/model/refresh_token_request.dart
 lib/src/model/reset_password.dart
+lib/src/model/update_event_request.dart
 lib/src/model/user.dart
 lib/src/model/user_all_of.dart
 lib/src/model/user_event.dart
@@ -70,6 +74,7 @@ test/create_event_request_test.dart
 test/dashboard_event_test.dart
 test/dashboard_test.dart
 test/dashboard_user_test.dart
+test/delete_event_request_test.dart
 test/file_data_test.dart
 test/healer_availabilities_test.dart
 test/healer_stats_test.dart
@@ -80,6 +85,7 @@ test/paginated_healers_test.dart
 test/paginated_users_test.dart
 test/refresh_token_request_test.dart
 test/reset_password_test.dart
+test/update_event_request_test.dart
 test/user_all_of_test.dart
 test/user_api_test.dart
 test/user_event_test.dart
