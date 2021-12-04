@@ -14,6 +14,8 @@ class _$UserEvent extends UserEvent {
   @override
   final Healer healer;
   @override
+  final bool isUrgent;
+  @override
   final DateTime start;
   @override
   final DateTime end;
@@ -31,6 +33,7 @@ class _$UserEvent extends UserEvent {
       {required this.id,
       required this.patient,
       required this.healer,
+      required this.isUrgent,
       required this.start,
       required this.end,
       required this.name,
@@ -40,6 +43,7 @@ class _$UserEvent extends UserEvent {
     BuiltValueNullFieldError.checkNotNull(id, 'UserEvent', 'id');
     BuiltValueNullFieldError.checkNotNull(patient, 'UserEvent', 'patient');
     BuiltValueNullFieldError.checkNotNull(healer, 'UserEvent', 'healer');
+    BuiltValueNullFieldError.checkNotNull(isUrgent, 'UserEvent', 'isUrgent');
     BuiltValueNullFieldError.checkNotNull(start, 'UserEvent', 'start');
     BuiltValueNullFieldError.checkNotNull(end, 'UserEvent', 'end');
     BuiltValueNullFieldError.checkNotNull(name, 'UserEvent', 'name');
@@ -60,6 +64,7 @@ class _$UserEvent extends UserEvent {
         id == other.id &&
         patient == other.patient &&
         healer == other.healer &&
+        isUrgent == other.isUrgent &&
         start == other.start &&
         end == other.end &&
         name == other.name &&
@@ -74,8 +79,10 @@ class _$UserEvent extends UserEvent {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, id.hashCode), patient.hashCode),
-                            healer.hashCode),
+                        $jc(
+                            $jc($jc($jc(0, id.hashCode), patient.hashCode),
+                                healer.hashCode),
+                            isUrgent.hashCode),
                         start.hashCode),
                     end.hashCode),
                 name.hashCode),
@@ -89,6 +96,7 @@ class _$UserEvent extends UserEvent {
           ..add('id', id)
           ..add('patient', patient)
           ..add('healer', healer)
+          ..add('isUrgent', isUrgent)
           ..add('start', start)
           ..add('end', end)
           ..add('name', name)
@@ -112,6 +120,10 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   HealerBuilder? _healer;
   HealerBuilder get healer => _$this._healer ??= new HealerBuilder();
   set healer(HealerBuilder? healer) => _$this._healer = healer;
+
+  bool? _isUrgent;
+  bool? get isUrgent => _$this._isUrgent;
+  set isUrgent(bool? isUrgent) => _$this._isUrgent = isUrgent;
 
   DateTime? _start;
   DateTime? get start => _$this._start;
@@ -143,6 +155,7 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
       _id = $v.id;
       _patient = $v.patient.toBuilder();
       _healer = $v.healer.toBuilder();
+      _isUrgent = $v.isUrgent;
       _start = $v.start;
       _end = $v.end;
       _name = $v.name;
@@ -173,6 +186,8 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
               id: BuiltValueNullFieldError.checkNotNull(id, 'UserEvent', 'id'),
               patient: patient.build(),
               healer: healer.build(),
+              isUrgent: BuiltValueNullFieldError.checkNotNull(
+                  isUrgent, 'UserEvent', 'isUrgent'),
               start: BuiltValueNullFieldError.checkNotNull(
                   start, 'UserEvent', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(

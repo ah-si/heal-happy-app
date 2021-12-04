@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
@@ -34,15 +35,18 @@ class PatientHomeScreen extends HookConsumerWidget {
         child = SizedBox(
           height: double.infinity,
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(kNormalPadding),
-                child: Text(context.l10n.eventsDescription),
-              ),
-              const Expanded(child: _PlannedConsultations(key: Key('consultations'),)),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(kNormalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(context.l10n.eventsDescription),
+                const Expanded(
+                    child: _PlannedConsultations(
+                  key: Key('consultations'),
+                )),
+              ],
+            ),
           ),
         );
         break;
@@ -82,6 +86,23 @@ class PatientHomeScreen extends HookConsumerWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                if (store.lastJobSearch == 'med_gene')
+                  Padding(
+                    padding: const EdgeInsets.all(kSmallPadding),
+                    child: TextButton(
+                      onPressed: () {
+                        launch('mailto:urgence@ah-si.org');
+                      },
+                      onLongPress: () {
+                        Clipboard.setData(const ClipboardData(text: 'urgence@ah-si.org'));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
+                      },
+                      child: Text(
+                        context.l10n.urgencyContact,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
                 Expanded(
                   child: ListView.separated(
                     itemBuilder: (context, index) {
@@ -426,47 +447,7 @@ class _HealerAvailability extends HookConsumerWidget {
                                                     label: Text(slot.label),
                                                     labelStyle: const TextStyle(color: Colors.white),
                                                     backgroundColor: context.primaryColor,
-                                                    onPressed: () {
-                                                      final controller = TextEditingController();
-                                                      showAppDialog(
-                                                          context,
-                                                          (_) => Text(context.l10n.takeRdv),
-                                                          (context) => Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                                children: [
-                                                                  Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
-                                                                  TextField(
-                                                                    controller: controller,
-                                                                    maxLines: 3,
-                                                                    decoration: InputDecoration(
-                                                                      label: Text(context.l10n.messageForHealer),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                          actions: [
-                                                            DialogAction(
-                                                              text: MaterialLocalizations.of(context).cancelButtonLabel,
-                                                              callback: (BuildContext context) {
-                                                                Navigator.of(context).pop();
-                                                              },
-                                                            ),
-                                                            DialogAction(
-                                                              text: MaterialLocalizations.of(context).okButtonLabel,
-                                                              callback: (BuildContext context) async {
-                                                                final userStore = ref.read(userStoreProvider);
-                                                                final success =
-                                                                    await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-                                                                  await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text);
-                                                                });
-                                                                if (success) {
-                                                                  Navigator.of(context).pop();
-                                                                  showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
-                                                                }
-                                                              },
-                                                            ),
-                                                          ]);
-                                                    },
+                                                    onPressed: () => _showEventPopup(context, ref, store, slot),
                                                   ),
                                                 ))
                                             .toList(growable: false),
@@ -491,6 +472,69 @@ class _HealerAvailability extends HookConsumerWidget {
       ]),
       child: child,
     );
+  }
+
+  void _showEventPopup(BuildContext context, WidgetRef ref, AvailabilitiesStore store, SlotInfo slot) {
+    final controller = TextEditingController();
+    var isUrgent = false;
+    showAppDialog(
+        context,
+        (_) => Text(context.l10n.takeRdv),
+        (context) => Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(context.l10n.takeRdvConfirm(healer.name, slot.label)),
+                TextField(
+                  controller: controller,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    label: Text(context.l10n.messageForHealer),
+                  ),
+                ),
+                HookBuilder(
+                  builder: (context) {
+                    final urgentState = useState(isUrgent);
+                    return CheckboxListTile(
+                      value: urgentState.value,
+                      onChanged: (value) async {
+                        if (value!) {
+                          final confirm = await showConfirm(context, context.l10n.eventUrgencyTitle, context.l10n.eventUrgencyDesc);
+                          if (confirm) {
+                            isUrgent = value;
+                            urgentState.value = isUrgent;
+                          }
+                        } else {
+                          isUrgent = value;
+                          urgentState.value = isUrgent;
+                        }
+                      },
+                      title: Text(context.l10n.eventIsUrgency),
+                    );
+                  },
+                ),
+              ],
+            ),
+        actions: [
+          DialogAction(
+            text: MaterialLocalizations.of(context).cancelButtonLabel,
+            callback: (BuildContext context) {
+              Navigator.of(context).pop();
+            },
+          ),
+          DialogAction(
+            text: MaterialLocalizations.of(context).okButtonLabel,
+            callback: (BuildContext context) async {
+              final userStore = ref.read(userStoreProvider);
+              final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
+                await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text, isUrgent);
+              });
+              if (success) {
+                Navigator.of(context).pop();
+                showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
+              }
+            },
+          ),
+        ]);
   }
 }
 
@@ -540,13 +584,10 @@ class _PlannedConsultations extends HookConsumerWidget {
     }
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(kNormalPadding),
-        child: Wrap(
-          crossAxisAlignment: WrapCrossAlignment.start,
-          alignment: WrapAlignment.start,
-          children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
-        ),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.start,
+        alignment: WrapAlignment.start,
+        children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:heal_happy_sdk/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **slot** | [**DateTime**](DateTime.md) |  | 
+**isUrgent** | **bool** |  | [optional] 
 **patientId** | **String** |  | 
 **message** | **String** |  | [optional] 
 

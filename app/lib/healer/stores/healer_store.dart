@@ -23,9 +23,17 @@ class HealerStore extends ChangeNotifier {
   final UserApi _userApi;
   PatientEventResults? eventsResults;
   bool isLoading = false;
+  bool _seeOnlyUrgency = false;
+  int eventUrgent = 0;
   HomeTabs _selectedTab = HomeTabs.home;
 
   HealerStore({UserApi? userApi}): _userApi = BackendApiProvider().api.getUserApi();
+
+  bool get seeOnlyUrgency => _seeOnlyUrgency;
+  set seeOnlyUrgency(bool value) {
+    _seeOnlyUrgency = value;
+    notifyListeners();
+  }
 
   HomeTabs get selectedTab => _selectedTab;
   set selectedTab(HomeTabs value) {
@@ -44,10 +52,12 @@ class HealerStore extends ChangeNotifier {
     isLoading = true;
     try {
       final events = await _userApi.getEvents(includePastEvents: showHistory);
+      eventUrgent = events.data!.where((p0) => p0.isUrgent).length;
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();
     } catch(error, stackTrace) {
+      eventUrgent = 0;
       eventsResults = PatientEventResults([], error: handleError(error, stackTrace));
       isLoading = false;
       notifyListeners();

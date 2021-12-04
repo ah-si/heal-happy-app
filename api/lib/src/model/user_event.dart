@@ -2,24 +2,25 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/healer.dart';
-import 'package:heal_happy_sdk/src/model/user.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/healer.dart';
+import 'package:heal_happy_sdk/src/model/user.dart';
 
 part 'user_event.g.dart';
 
 /// UserEvent
 ///
 /// Properties:
-/// * [id] 
-/// * [patient] 
-/// * [healer] 
-/// * [start] 
-/// * [end] 
-/// * [name] 
-/// * [description] 
-/// * [link] 
+/// * [id]
+/// * [patient]
+/// * [healer]
+/// * [isUrgent]
+/// * [start]
+/// * [end]
+/// * [name]
+/// * [description]
+/// * [link]
 abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;
@@ -29,6 +30,9 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
 
     @BuiltValueField(wireName: r'healer')
     Healer get healer;
+
+    @BuiltValueField(wireName: r'isUrgent')
+    bool get isUrgent;
 
     @BuiltValueField(wireName: r'start')
     DateTime get start;
@@ -80,6 +84,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(serializers.serialize(object.healer,
                 specifiedType: const FullType(Healer)));
         result
+            ..add(r'isUrgent')
+            ..add(serializers.serialize(object.isUrgent,
+                specifiedType: const FullType(bool)));
+        result
             ..add(r'start')
             ..add(serializers.serialize(object.start,
                 specifiedType: const FullType(DateTime)));
@@ -126,6 +134,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                 case r'healer':
                     result.healer.replace(serializers.deserialize(value,
                         specifiedType: const FullType(Healer)) as Healer);
+                    break;
+                case r'isUrgent':
+                    result.isUrgent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
                     break;
                 case r'start':
                     result.start = serializers.deserialize(value,

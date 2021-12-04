@@ -369,11 +369,26 @@ class _HealerEvents extends HookConsumerWidget {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(kNormalPadding),
-      child: Wrap(
-        children: store.eventsResults!.events.map((e) => _HealerEventDetails(event: e)).toList(growable: false),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (store.eventUrgent > 0)
+          CheckboxListTile(
+            value: store.seeOnlyUrgency,
+            onChanged: (value) {
+              store.seeOnlyUrgency = value!;
+            },
+            title: Text(
+              context.l10n.seeOnlyUrgencies(store.eventUrgent),
+            ),
+          ),
+        Padding(
+          padding: const EdgeInsets.all(kNormalPadding),
+          child: Wrap(
+            children: store.eventsResults!.events.where((element) => store.seeOnlyUrgency ? element.isUrgent : true).map((e) => _HealerEventDetails(event: e)).toList(growable: false),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -387,114 +402,121 @@ class _HealerEventDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 280),
-      child: Card(
-        margin: const EdgeInsets.all(kSmallPadding),
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(kNormalPadding),
-                child: Column(
+    final content = Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(kNormalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
+                const SizedBox(height: kSmallPadding),
+                Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
-                    const SizedBox(height: kSmallPadding),
-                    Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-                          child: InkWell(
-                            onTap: () {
-                              launch('mailto:${event.patient.email}');
-                            },
-                            onLongPress: () {
-                              Clipboard.setData(ClipboardData(text: event.patient.email));
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
-                            },
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.email_outlined),
-                                const SizedBox(width: kSmallPadding),
-                                Expanded(child: Text(event.patient.email)),
-                              ],
-                            ),
-                          ),
+                    Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+                      child: InkWell(
+                        onTap: () {
+                          launch('mailto:${event.patient.email}');
+                        },
+                        onLongPress: () {
+                          Clipboard.setData(ClipboardData(text: event.patient.email));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.email_outlined),
+                            const SizedBox(width: kSmallPadding),
+                            Expanded(child: Text(event.patient.email)),
+                          ],
                         ),
-                        if (!event.patient.mobile.isNullOrEmpty)
-                          InkWell(
-                            onTap: () {
-                              launch('tel:${event.patient.mobile}');
-                            },
-                            onLongPress: () {
-                              Clipboard.setData(ClipboardData(text: event.patient.mobile));
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Téléphone'))));
-                            },
-                            child: Row(
-                              children: [
-                                const Icon(Icons.call_outlined),
-                                const SizedBox(width: kSmallPadding),
-                                Text(event.patient.mobile!),
-                              ],
-                            ),
-                          ),
-                      ],
+                      ),
                     ),
-                    const SizedBox(height: kSmallPadding),
-                    if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
-                    if (!event.description.isNullOrEmpty)
+                    if (!event.patient.mobile.isNullOrEmpty)
                       InkWell(
                         onTap: () {
-                          showAlert(
-                              context,
-                              context.l10n.patientMessage,
-                              (context) => ConstrainedBox(
-                                  constraints: const BoxConstraints(maxHeight: 300), child: SingleChildScrollView(child: Text(event.description!))));
+                          launch('tel:${event.patient.mobile}');
                         },
-                        child: Text(
-                          event.description!,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
+                        onLongPress: () {
+                          Clipboard.setData(ClipboardData(text: event.patient.mobile));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Téléphone'))));
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(Icons.call_outlined),
+                            const SizedBox(width: kSmallPadding),
+                            Text(event.patient.mobile!),
+                          ],
                         ),
                       ),
                   ],
                 ),
-              ),
-            ),
-            ButtonBar(
-              children: [
-                if (event.start.isAfter(DateTime.now()))
-                  TextButton(
-                    onPressed: () async {
-                      final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.patient.name));
-                      if (success) {
-                        final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
-                          await ref.read(healerStoreProvider).cancelEvent(event.id);
-                        });
-                        if (cancelled) {
-                          showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
-                        }
-                      }
+                const SizedBox(height: kSmallPadding),
+                if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
+                if (!event.description.isNullOrEmpty)
+                  InkWell(
+                    onTap: () {
+                      showAlert(
+                          context,
+                          context.l10n.patientMessage,
+                          (context) =>
+                              ConstrainedBox(constraints: const BoxConstraints(maxHeight: 300), child: SingleChildScrollView(child: Text(event.description!))));
                     },
-                    child: Text(context.l10n.cancelButton),
-                  ),
-                if (event.start.isAfter(DateTime.now()..subtract(const Duration(days: 1))))
-                  TextButton(
-                    onPressed: () {
-                      launch(event.link);
-                    },
-                    child: Text(context.l10n.joinVisioButton),
+                    child: Text(
+                      event.description!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
               ],
-            )
-          ],
+            ),
+          ),
         ),
+        ButtonBar(
+          children: [
+            if (event.start.isAfter(DateTime.now()))
+              TextButton(
+                onPressed: () async {
+                  final success = await showConfirm(context, context.l10n.cancelConsultation, context.l10n.cancelConsultationConfirm(event.patient.name));
+                  if (success) {
+                    final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
+                      await ref.read(healerStoreProvider).cancelEvent(event.id);
+                    });
+                    if (cancelled) {
+                      showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
+                    }
+                  }
+                },
+                child: Text(context.l10n.cancelButton),
+              ),
+            if (event.start.isAfter(DateTime.now()..subtract(const Duration(days: 1))))
+              TextButton(
+                onPressed: () {
+                  launch(event.link);
+                },
+                child: Text(context.l10n.joinVisioButton),
+              ),
+          ],
+        )
+      ],
+    );
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 280),
+      child: Card(
+        margin: const EdgeInsets.all(kSmallPadding),
+        child: event.isUrgent
+            ? Banner(
+                location: BannerLocation.topEnd,
+                message: 'Urgent',
+                child: content,
+              )
+            : content,
       ),
     );
   }

@@ -11,11 +11,15 @@ part 'create_event_request.g.dart';
 ///
 /// Properties:
 /// * [slot] 
+/// * [isUrgent] 
 /// * [patientId] 
 /// * [message] 
 abstract class CreateEventRequest implements Built<CreateEventRequest, CreateEventRequestBuilder> {
     @BuiltValueField(wireName: r'slot')
     DateTime get slot;
+
+    @BuiltValueField(wireName: r'isUrgent')
+    bool? get isUrgent;
 
     @BuiltValueField(wireName: r'patientId')
     String get patientId;
@@ -49,6 +53,12 @@ class _$CreateEventRequestSerializer implements StructuredSerializer<CreateEvent
             ..add(r'slot')
             ..add(serializers.serialize(object.slot,
                 specifiedType: const FullType(DateTime)));
+        if (object.isUrgent != null) {
+            result
+                ..add(r'isUrgent')
+                ..add(serializers.serialize(object.isUrgent,
+                    specifiedType: const FullType(bool)));
+        }
         result
             ..add(r'patientId')
             ..add(serializers.serialize(object.patientId,
@@ -76,6 +86,10 @@ class _$CreateEventRequestSerializer implements StructuredSerializer<CreateEvent
                 case r'slot':
                     result.slot = serializers.deserialize(value,
                         specifiedType: const FullType(DateTime)) as DateTime;
+                    break;
+                case r'isUrgent':
+                    result.isUrgent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
                     break;
                 case r'patientId':
                     result.patientId = serializers.deserialize(value,

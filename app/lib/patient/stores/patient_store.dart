@@ -38,6 +38,8 @@ class PatientStore extends ChangeNotifier {
 
   HomeTabs get selectedTab => _selectedTab;
 
+  String get lastJobSearch => _lastJobSearch;
+
   set selectedTab(HomeTabs value) {
     if (_selectedTab != value) {
       _selectedTab = value;

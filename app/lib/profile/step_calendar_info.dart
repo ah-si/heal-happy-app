@@ -28,7 +28,13 @@ class StepCalendarInfoForm extends HookConsumerWidget {
         children: [
           TextFormField(
             controller: controllerConsultation,
-            validator: (value) => isRequired(value, context),
+            validator: (value) {
+              final result = isRequired(value, context);
+              if (result == null && (int.tryParse(value!) ?? 0) < 30) {
+                return context.l10n.wrongConsultationDuration;
+              }
+              return result;
+            },
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(),
             decoration: InputDecoration(label: Text(context.l10n.consultationDurationField), hintText: context.l10n.consultationDurationHint),

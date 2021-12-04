@@ -145,7 +145,7 @@ class UserInfo extends ChangeNotifier {
       b.type = type;
       b.type = type;
       b.lang = 'fr_FR';
-      b.consultationDuration = consultationDuration ?? 15;
+      b.consultationDuration = consultationDuration ?? 30;
       b.calendarSettings = calendarSettings.toApiBuilder();
 
       b.job = job;

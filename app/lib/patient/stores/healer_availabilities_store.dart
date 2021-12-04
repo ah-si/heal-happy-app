@@ -42,11 +42,12 @@ class AvailabilitiesStore extends ChangeNotifier {
     getAvailabilitiesHealers();
   }
 
-  Future<void> createEvent(String patientId, DateTime slot, String message) async {
+  Future<void> createEvent(String patientId, DateTime slot, String message, bool isUrgent) async {
     try {
       await _userApi.createEvent(id: healerId, createEventRequest: CreateEventRequest((b) {
         b.patientId = patientId;
         b.slot = slot;
+        b.isUrgent = isUrgent;
         b.message = message;
       }));
     } on DioError catch(ex) {

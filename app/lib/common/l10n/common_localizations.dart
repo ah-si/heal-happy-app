@@ -316,13 +316,25 @@ class CommonLocalizations {
 
   String get rdvCreated => Intl.message('Rendez-vous validé!', name: 'rdvCreated');
 
+  String get eventIsUrgency => Intl.message('Signaler au soignant que c\'est une urgence', name: 'eventIsUrgency');
+
+  String get eventUrgencyTitle => Intl.message('Rendez-vous urgent', name: 'eventUrgencyTitle');
+
+  String get eventUrgencyDesc => Intl.message('Si votre cas est grave et que vous avez besoin d\'une consultation urgente, ceci alertera le soignant. Si il peut vous prendre plus tôt il vous contactera directement par téléphone.\n\nVérifiez que vos informations de contact soient correctes dans votre profil.\n\nMerci d\'utiliser ceci uniquement en cas d\'urgence.', name: 'eventUrgencyDesc');
+
+  String get urgencyContact => Intl.message('En cas d\'urgence, et si vous ne trouvez pas de médecin disponible, merci de nous contacter à urgence@ah-si.org en précisant votre problème et vos informations de contact.', name: 'urgencyContact');
+
+  String seeOnlyUrgencies(int nb) => Intl.message('Voir uniquement les $nb consultation(s) urgente', args: [nb], name: 'seeOnlyUrgencies');
+
   String get rdvCreatedDescription => Intl.message('Vous allez recevoir un email de confirmation.', name: 'rdvCreatedDescription');
 
   String get messageForHealer => Intl.message('Message pour le soignant:', name: 'messageForHealer');
 
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
-  String takeRdvConfirm(String name, String when) => Intl.message('Voulez prendre rendez-vous avec $name à $when?', name: 'takeRdvConfirm');
+  String get wrongConsultationDuration => Intl.message('30 minutes minimum', name: 'wrongConsultationDuration');
+
+  String takeRdvConfirm(String name, String when) => Intl.message('Voulez-vous prendre rendez-vous avec $name à $when?', name: 'takeRdvConfirm');
 
   String userType(UserTypeEnum? type) {
     switch (type) {
