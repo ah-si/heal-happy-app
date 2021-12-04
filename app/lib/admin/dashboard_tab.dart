@@ -54,6 +54,10 @@ class Dashboard extends HookConsumerWidget {
                       primaryXAxis: CategoryAxis(),
                       primaryYAxis: NumericAxis(minimum: 0, interval: 50),
                       title: ChartTitle(text: 'Consultations'),
+                      legend: Legend(
+                        isVisible: true,
+                        isResponsive: true,
+                      ),
                       series: store.eventsChart!,
                     ),
                   ),

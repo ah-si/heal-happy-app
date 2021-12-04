@@ -13,6 +13,8 @@ part 'dashboard_event.g.dart';
 /// * [year] 
 /// * [month] 
 /// * [total] 
+/// * [isUrgent] 
+/// * [isCancelled] 
 abstract class DashboardEvent implements Built<DashboardEvent, DashboardEventBuilder> {
     @BuiltValueField(wireName: r'year')
     int get year;
@@ -22,6 +24,12 @@ abstract class DashboardEvent implements Built<DashboardEvent, DashboardEventBui
 
     @BuiltValueField(wireName: r'total')
     int get total;
+
+    @BuiltValueField(wireName: r'isUrgent')
+    bool get isUrgent;
+
+    @BuiltValueField(wireName: r'isCancelled')
+    bool get isCancelled;
 
     DashboardEvent._();
 
@@ -57,6 +65,14 @@ class _$DashboardEventSerializer implements StructuredSerializer<DashboardEvent>
             ..add(r'total')
             ..add(serializers.serialize(object.total,
                 specifiedType: const FullType(int)));
+        result
+            ..add(r'isUrgent')
+            ..add(serializers.serialize(object.isUrgent,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isCancelled')
+            ..add(serializers.serialize(object.isCancelled,
+                specifiedType: const FullType(bool)));
         return result;
     }
 
@@ -82,6 +98,14 @@ class _$DashboardEventSerializer implements StructuredSerializer<DashboardEvent>
                 case r'total':
                     result.total = serializers.deserialize(value,
                         specifiedType: const FullType(int)) as int;
+                    break;
+                case r'isUrgent':
+                    result.isUrgent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isCancelled':
+                    result.isCancelled = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
                     break;
             }
         }

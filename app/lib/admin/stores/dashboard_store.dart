@@ -39,7 +39,9 @@ class AdminDashboardStore extends ChangeNotifier {
   AdminDashboardStore({AdminApi? adminApi}) : _adminApi = BackendApiProvider().api.getAdminApi();
 
   void _manageEventsChart(Dashboard dashboard) async {
-    final eventsData = dashboard.events;
+    final eventsData = dashboard.events.where((p0) => !p0.isCancelled && !p0.isUrgent).toList();
+    final canceledEventsData = dashboard.events.where((p0) => p0.isCancelled).toList();
+    final urgentEventsData = dashboard.events.where((p0) => !p0.isCancelled && p0.isUrgent).toList();
     final _uiFormat = DateFormat('MMM');
     final year = Date.now().year;
     String? getCallback(EventsChartData row, _) {
@@ -50,8 +52,10 @@ class AdminDashboardStore extends ChangeNotifier {
     String? getCallbackLabel(EventsChartData row, _) {
       return row.total.toString();
     }
+
     eventsChart = [
       ColumnSeries(
+        legendItemText: 'Normales',
         dataSource: eventsData.reversed.map((p0) => EventsChartData(p0.month, p0.year, p0.total)).toList(),
         dataLabelSettings: const DataLabelSettings(isVisible: true),
         enableTooltip: true,
@@ -59,7 +63,27 @@ class AdminDashboardStore extends ChangeNotifier {
         yValueMapper: (EventsChartData data, _) => data.total,
         // Set a label accessor to control the text of the bar label.
         dataLabelMapper: getCallbackLabel,
-      )
+      ),
+      ColumnSeries(
+        legendItemText: 'Annulées',
+        dataSource: canceledEventsData.reversed.map((p0) => EventsChartData(p0.month, p0.year, p0.total)).toList(),
+        dataLabelSettings: const DataLabelSettings(isVisible: true),
+        enableTooltip: true,
+        xValueMapper: getCallback,
+        yValueMapper: (EventsChartData data, _) => data.total,
+        // Set a label accessor to control the text of the bar label.
+        dataLabelMapper: getCallbackLabel,
+      ),
+      ColumnSeries(
+        legendItemText: 'Urgentes',
+        dataSource: urgentEventsData.reversed.map((p0) => EventsChartData(p0.month, p0.year, p0.total)).toList(),
+        dataLabelSettings: const DataLabelSettings(isVisible: true),
+        enableTooltip: true,
+        xValueMapper: getCallback,
+        yValueMapper: (EventsChartData data, _) => data.total,
+        // Set a label accessor to control the text of the bar label.
+        dataLabelMapper: getCallbackLabel,
+      ),
     ];
   }
 
@@ -145,5 +169,4 @@ class AdminDashboardStore extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

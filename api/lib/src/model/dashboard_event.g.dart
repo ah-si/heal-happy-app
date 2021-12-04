@@ -13,16 +13,28 @@ class _$DashboardEvent extends DashboardEvent {
   final int month;
   @override
   final int total;
+  @override
+  final bool isUrgent;
+  @override
+  final bool isCancelled;
 
   factory _$DashboardEvent([void Function(DashboardEventBuilder)? updates]) =>
       (new DashboardEventBuilder()..update(updates)).build();
 
   _$DashboardEvent._(
-      {required this.year, required this.month, required this.total})
+      {required this.year,
+      required this.month,
+      required this.total,
+      required this.isUrgent,
+      required this.isCancelled})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(year, 'DashboardEvent', 'year');
     BuiltValueNullFieldError.checkNotNull(month, 'DashboardEvent', 'month');
     BuiltValueNullFieldError.checkNotNull(total, 'DashboardEvent', 'total');
+    BuiltValueNullFieldError.checkNotNull(
+        isUrgent, 'DashboardEvent', 'isUrgent');
+    BuiltValueNullFieldError.checkNotNull(
+        isCancelled, 'DashboardEvent', 'isCancelled');
   }
 
   @override
@@ -39,12 +51,17 @@ class _$DashboardEvent extends DashboardEvent {
     return other is DashboardEvent &&
         year == other.year &&
         month == other.month &&
-        total == other.total;
+        total == other.total &&
+        isUrgent == other.isUrgent &&
+        isCancelled == other.isCancelled;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, year.hashCode), month.hashCode), total.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, year.hashCode), month.hashCode), total.hashCode),
+            isUrgent.hashCode),
+        isCancelled.hashCode));
   }
 
   @override
@@ -52,7 +69,9 @@ class _$DashboardEvent extends DashboardEvent {
     return (newBuiltValueToStringHelper('DashboardEvent')
           ..add('year', year)
           ..add('month', month)
-          ..add('total', total))
+          ..add('total', total)
+          ..add('isUrgent', isUrgent)
+          ..add('isCancelled', isCancelled))
         .toString();
   }
 }
@@ -73,6 +92,14 @@ class DashboardEventBuilder
   int? get total => _$this._total;
   set total(int? total) => _$this._total = total;
 
+  bool? _isUrgent;
+  bool? get isUrgent => _$this._isUrgent;
+  set isUrgent(bool? isUrgent) => _$this._isUrgent = isUrgent;
+
+  bool? _isCancelled;
+  bool? get isCancelled => _$this._isCancelled;
+  set isCancelled(bool? isCancelled) => _$this._isCancelled = isCancelled;
+
   DashboardEventBuilder() {
     DashboardEvent._defaults(this);
   }
@@ -83,6 +110,8 @@ class DashboardEventBuilder
       _year = $v.year;
       _month = $v.month;
       _total = $v.total;
+      _isUrgent = $v.isUrgent;
+      _isCancelled = $v.isCancelled;
       _$v = null;
     }
     return this;
@@ -108,7 +137,11 @@ class DashboardEventBuilder
             month: BuiltValueNullFieldError.checkNotNull(
                 month, 'DashboardEvent', 'month'),
             total: BuiltValueNullFieldError.checkNotNull(
-                total, 'DashboardEvent', 'total'));
+                total, 'DashboardEvent', 'total'),
+            isUrgent: BuiltValueNullFieldError.checkNotNull(
+                isUrgent, 'DashboardEvent', 'isUrgent'),
+            isCancelled: BuiltValueNullFieldError.checkNotNull(
+                isCancelled, 'DashboardEvent', 'isCancelled'));
     replace(_$result);
     return _$result;
   }
