@@ -48,7 +48,13 @@ class HealerReports extends HookConsumerWidget {
       padding: const EdgeInsets.all(kNormalPadding),
       child: Column(
         children: [
-          const _SearchStats(),
+          ExpansionTile(
+            initiallyExpanded: (store.results?.stats.length ?? 0) == 0,
+            title: Text(context.l10n.search),
+            children: const [
+              _SearchStats(),
+            ],
+          ),
           const SizedBox(height: kNormalPadding),
           Expanded(child: child),
         ],

@@ -6,7 +6,14 @@ import 'package:heal_happy/common/network/api_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:intl/intl.dart';
 
-final availabilitiesStoreProvider = ChangeNotifierProvider.family<AvailabilitiesStore, String>((_, id) => AvailabilitiesStore(id));
+final availabilitiesStoreProvider = ChangeNotifierProvider.family<AvailabilitiesStore, StoreInfo>((_, info) => AvailabilitiesStore(info.id, mobileFormat: info.mobileFormat));
+
+class StoreInfo {
+  final String id;
+  final bool mobileFormat;
+
+  StoreInfo(this.id, this.mobileFormat);
+}
 
 class SlotInfo {
   final String label;
@@ -31,14 +38,16 @@ class AvailabilitiesResults {
 
 class AvailabilitiesStore extends ChangeNotifier {
   final UserApi _userApi;
-  final _hourFormat = DateFormat('HH:mm');
-  final _uiFormat = DateFormat('EEEE\ndd MMM');
+  static final _hourFormat = DateFormat('HH:mm');
+  static final _uiFormat = DateFormat('EEEE\ndd MMM');
+  static final _mobileUiFormat = DateFormat('EEE\ndd MMM');
   AvailabilitiesResults? availabilities;
   bool isLoading = false;
   DateTime? _from;
   final String healerId;
+  final bool mobileFormat;
 
-  AvailabilitiesStore(this.healerId, {UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi() {
+  AvailabilitiesStore(this.healerId, {UserApi? userApi, this.mobileFormat=false}) : _userApi = BackendApiProvider().api.getUserApi() {
     getAvailabilitiesHealers();
   }
 
@@ -46,7 +55,7 @@ class AvailabilitiesStore extends ChangeNotifier {
     try {
       await _userApi.createEvent(id: healerId, createEventRequest: CreateEventRequest((b) {
         b.patientId = patientId;
-        b.slot = slot;
+        b.slot = slot.toUtc();
         b.isUrgent = isUrgent;
         b.message = message;
       }));
@@ -83,14 +92,14 @@ class AvailabilitiesStore extends ChangeNotifier {
       final now = DateTime.now().add(const Duration(hours: 1));
       for (var i = 0; i<7; i++) {
         final date = DateTime.fromMillisecondsSinceEpoch(_from!.millisecondsSinceEpoch).add(Duration(days: i));
-        final dateStr = _uiFormat.format(date);
+        final dateStr = (mobileFormat ? _mobileUiFormat : _uiFormat).format(date);
         dates[dateStr] = [];
       }
       for (var slot in slots) {
         if (now.isAfter(slot)) {
           continue;
         }
-        final date = _uiFormat.format(slot);
+        final date = (mobileFormat ? _mobileUiFormat : _uiFormat).format(slot);
         dates[date]!.add(SlotInfo(_hourFormat.format(slot), slot));
       }
       availabilities = AvailabilitiesResults(dates.keys.map((e) => DaySlots(e, dates[e] ?? [])).toList(growable: false));

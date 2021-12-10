@@ -31,7 +31,7 @@ class AutocompleteFormField<T> extends StatelessWidget {
       this.maxLines = 1,
       this.autofocus = false,
       this.controller,
-        this.nbVisibleResults = 3,
+      this.nbVisibleResults = 3,
       this.characterThreshold = 3,
       required this.onItemSelected,
       required this.itemBuilder,
@@ -237,7 +237,15 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
                 stream: _bloc.results,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: Loading());
+                    return Padding(
+                      padding: const EdgeInsets.all(kNormalPadding),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Center(child: Loading()),
+                        ],
+                      ),
+                    );
                   }
 
                   if (!snapshot.hasData || snapshot.requireData.isEmpty) {

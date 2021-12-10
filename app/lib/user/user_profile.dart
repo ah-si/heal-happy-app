@@ -38,7 +38,7 @@ class UserProfile extends HookConsumerWidget {
       });
     }, [id]);
 
-    if (id != null && userStore.currentEditedUser == null) {
+    if (id != null && userStore.currentEditedUser == null || store.email == null) {
       return const Loading();
     }
 
@@ -78,6 +78,7 @@ class UserProfile extends HookConsumerWidget {
               ),
             ExpansionTile(
               title: Text(context.l10n.personalInfo),
+              initiallyExpanded: !isHealer,
               children: [
                 StepPersonalInfo(
                   headless: true,

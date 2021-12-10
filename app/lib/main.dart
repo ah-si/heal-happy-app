@@ -97,6 +97,7 @@ class MyApp extends StatelessWidget {
               locale: kSupportedLanguages.first,
               localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
                 CommonLocalizationsDelegate(),
                 ErrorLocalizationsDelegate(),
               ],
@@ -118,12 +119,6 @@ class SplashScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userStore = ref.read(userStoreProvider); //read and not watch to avoid loop
-    useEffect(() {
-      scheduleMicrotask(() {
-        userStore.init(silent: false);
-      });
-    }, const []);
     return const BgContainer(
       child: Center(
         child: CircularProgressIndicator.adaptive(),

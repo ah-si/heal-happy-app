@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
 import 'package:heal_happy/common/l10n/error_localizations.dart';
@@ -44,7 +46,7 @@ extension DateTimeExtention on DateTime {
 extension UserExtension on User {
   String get name => '$firstName $lastName';
 
-  bool get _canJoinHealerTelegram => [
+  bool get isDoctor => [
         'cardiologue',
         'chir_dentiste',
         'med_gene',
@@ -56,7 +58,7 @@ extension UserExtension on User {
         'spe_med_readaptation',
       ].contains(job);
 
-  String get telegramUrl => _canJoinHealerTelegram ? kUrlTelegramHealer : kUrlTelegramPara;
+  String get telegramUrl => isDoctor ? kUrlTelegramHealer : kUrlTelegramPara;
 
   String get adminAddress {
     String address = '';
@@ -82,6 +84,11 @@ extension HealerExtension on Healer {
 }
 
 extension ContextExtension on BuildContext {
+  bool get isMobile {
+    final size = min(MediaQuery.of(this).size.width, MediaQuery.of(this).size.height);
+    return size <= 576;
+  }
+
   NavigatorState get navigator => Navigator.of(this);
 
   CommonLocalizations get l10n => CommonLocalizations.of(this);

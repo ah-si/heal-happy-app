@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
-import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_profile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,6 +15,11 @@ class UserDetailsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return BgContainer(
+      appBar: context.isMobile
+          ? AppBar(
+              title: Text(context.l10n.editUser),
+            )
+          : null,
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -24,18 +27,19 @@ class UserDetailsScreen extends HookConsumerWidget {
             padding: const EdgeInsets.all(kNormalPadding),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    MenuItem(
-                      label: context.l10n.backButton,
-                      onTap: () {
-                        context.goNamed(HomeScreen.name);
-                      },
-                      selected: false,
-                    ),
-                    const SizedBox(width: 2),
-                  ],
-                ),
+                if (!context.isMobile)
+                  Row(
+                    children: [
+                      MenuItem(
+                        label: context.l10n.backButton,
+                        onTap: () {
+                          context.navigator.pop();
+                        },
+                        selected: false,
+                      ),
+                      const SizedBox(width: 2),
+                    ],
+                  ),
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),

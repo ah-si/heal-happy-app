@@ -72,7 +72,13 @@ class _Users extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _UsersSearch(),
+        ExpansionTile(
+          initiallyExpanded: (store.searchResults?.users.length ?? 0) == 0,
+          title: Text(context.l10n.search),
+          children: [
+            _UsersSearch(),
+          ],
+        ),
         Expanded(child: child),
       ],
     );
@@ -100,7 +106,7 @@ class _UsersSearch extends HookConsumerWidget {
             constraints: const BoxConstraints(maxWidth: 200),
             child: TextField(
               controller: controllerSearch,
-              decoration: InputDecoration(label: Text(context.l10n.searchQueryField)),
+              decoration: InputDecoration(label: Text(context.l10n.searchQueryField), hintText: context.l10n.searchQueryPlaceholder),
             ),
           ),
           ConstrainedBox(
@@ -140,7 +146,7 @@ class _UsersSearch extends HookConsumerWidget {
                 activatedState.value = value;
               },
               tristate: true,
-              title: Text(context.l10n.isActivatedField),
+              title: Text(context.l10n.isActivatedField, maxLines: 1),
             ),
           ),
           ConstrainedBox(
@@ -151,7 +157,7 @@ class _UsersSearch extends HookConsumerWidget {
                 verifiedState.value = value;
               },
               tristate: true,
-              title: Text(context.l10n.isVerifiedField),
+              title: Text(context.l10n.isVerifiedField, maxLines: 1),
             ),
           ),
           ElevatedButton(
@@ -207,7 +213,6 @@ class _UsersSearch extends HookConsumerWidget {
     );
   }
 }
-
 
 class _UserItem extends HookConsumerWidget {
   final User user;
@@ -318,7 +323,7 @@ class _UserItem extends HookConsumerWidget {
                 ),
               TextButton(
                 onPressed: () async {
-                  context.go(UserDetailsScreen.route.replaceAll(':id', user.id!));
+                  context.push(UserDetailsScreen.route.replaceAll(':id', user.id!));
                 },
                 child: Text(context.l10n.editButton),
               ),

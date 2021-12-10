@@ -90,7 +90,7 @@ class ErrorLocalizations {
 
   String get termsRequiredHint => Intl.message('Merci d\'aller dans vos informations personnelles et accepté le traitement de vos données.', name: 'termsRequiredHint');
 
-  String get adminTermsRequiredHint => Intl.message('L\'utilisateur n\'a pas accepté le traitement de ces données (RGPD), il est donc impossible de modifier ses données.\nIl doit aller dans ces informations personnelles et accepter le traitement de ces données.', name: 'adminTermsRequiredHint');
+  String get adminTermsRequiredHint => Intl.message('L\'utilisateur n\'a pas accepté le traitement de ses données (RGPD), il est donc impossible de modifier ses données.\nIl doit aller dans ses informations personnelles et accepter le traitement de ses données.', name: 'adminTermsRequiredHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

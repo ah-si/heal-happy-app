@@ -32,8 +32,91 @@ part 'dashboard_tab.dart';
 part 'healer_reports_tab.dart';
 part 'users_tab.dart';
 
-class AdminHomeScreen extends HookConsumerWidget {
+void _disconnect(BuildContext context, WidgetRef ref) async {
+  final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
+  if (success) {
+    final store = ref.read(userStoreProvider);
+    store.logout();
+  }
+}
+
+class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return context.isMobile ? const MobileAdminHome() : const DesktopAdminHome();
+  }
+}
+
+class MobileAdminHome extends HookConsumerWidget {
+  const MobileAdminHome({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.read(adminStoreProvider);
+    final controller = useTabController(initialLength: 4, initialIndex: store.selectedTab.index);
+
+    useEffect(() {
+      controller.addListener(() {
+        if (controller.index != controller.previousIndex) {
+          store.selectedTab = HomeTabs.values[controller.index];
+        }
+      });
+    }, [controller]);
+
+    return BgContainer(
+      appBar: AppBar(
+        title: Text(context.l10n.appTitle),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _disconnect(context, ref);
+            },
+            tooltip: context.l10n.disconnect,
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+        bottom: TabBar(
+          controller: controller,
+          tabs: [
+            Tab(
+              text: context.l10n.home,
+            ),
+            Tab(
+              text: context.l10n.adminUsersMenu,
+            ),
+            Tab(
+              text: context.l10n.adminHealerStatsMenu,
+            ),
+            Tab(
+              text: context.l10n.profile,
+            ),
+          ],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(kNormalPadding),
+        child: ColoredBox(
+          color: Colors.white.withOpacity(0.8),
+          child: TabBarView(
+            children: const [
+              Dashboard(),
+              _Users(),
+              HealerReports(),
+              UserProfile(),
+            ],
+            controller: controller,
+          ),
+        ),
+      ),
+    );
+  }
+
+}
+
+class DesktopAdminHome extends HookConsumerWidget {
+  const DesktopAdminHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,11 +194,7 @@ class AdminHomeScreen extends HookConsumerWidget {
                     MenuItem(
                       label: context.l10n.disconnect,
                       onTap: () async {
-                        final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
-                        if (success) {
-                          final store = ref.read(userStoreProvider);
-                          store.logout();
-                        }
+                        _disconnect(context, ref);
                       },
                       selected: true,
                     ),

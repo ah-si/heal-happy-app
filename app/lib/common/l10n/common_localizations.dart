@@ -27,6 +27,12 @@ class CommonLocalizations {
 
   String get healerToVerify => Intl.message('Soignants à vérifier', name: 'healerToVerify');
 
+  String get healerDescription => Intl.message('Description:', name: 'healerDescription');
+
+  String get healerDiploma => Intl.message('Diploma:', name: 'healerDiploma');
+
+  String get healerExperiences => Intl.message('Expériences:', name: 'healerExperiences');
+
   String get adminUsersMenu => Intl.message('Utilisateurs', name: 'adminUsersMenu');
 
   String get adminHealerStatsMenu => Intl.message('Compta', name: 'adminHealerStatsMenu');
@@ -151,7 +157,7 @@ class CommonLocalizations {
 
   String get yourPatient => Intl.message('Votre patient:', name: 'yourPatient');
 
-  String get patientMessage => Intl.message('Message du patient:', name: 'patientMessage');
+  String get patientMessage => Intl.message('Motif du rendez-vous:', name: 'patientMessage');
 
   String get cancelButton => Intl.message('Annuler', name: 'cancelButton');
 
@@ -210,6 +216,10 @@ class CommonLocalizations {
   String get isVerifiedField => Intl.message('Vérifié:', name: 'isVerifiedField');
 
   String get searchQueryField => Intl.message('Recherche:', name: 'searchQueryField');
+
+  String get searchQueryPlaceholder => Intl.message('Nom, prénom, email...', name: 'searchQueryPlaceholder');
+
+  String get editUser => Intl.message('Modifier l\'utilisateur', name: 'editUser');
 
   String get descriptionField => Intl.message('Description*:', name: 'descriptionField');
 
@@ -273,7 +283,13 @@ class CommonLocalizations {
 
   String get helpIntro => Intl.message('Si vous avez besoin d\'aide, rejoignez d\'autres soignants sur le réseau Telegram dédié de Soignez Heureux en cliquant sur le lien suivant:', name: 'helpIntro');
 
+  String get helpOrdo => Intl.message('Pour vos prescriptions, vous pouvez utiliser l\'ordonnance de l\'ONG:', name: 'helpOrdo');
+
+  String get helpDownloadOrdo => Intl.message('Télécharger l\'ordonnance', name: 'helpDownloadOrdo');
+
   String get helpYoutube => Intl.message('Une série de tutoriels sont disponibles sur notre chaine Youtube officiel:', name: 'helpYoutube');
+
+  String get helpCall => Intl.message('Pour appeler les patients de manière anonyme (numéro masqué), vous pouvez rajouter #31# avant le numéro du patient.', name: 'helpCall');
 
   String get eventsHistory => Intl.message('Historique', name: 'eventsHistory');
 
@@ -332,7 +348,7 @@ class CommonLocalizations {
 
   String get rdvCreatedDescription => Intl.message('Vous allez recevoir un email de confirmation.', name: 'rdvCreatedDescription');
 
-  String get messageForHealer => Intl.message('Message pour le soignant:', name: 'messageForHealer');
+  String get messageForHealer => Intl.message('Motif du rendez-vous:', name: 'messageForHealer');
 
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 

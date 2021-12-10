@@ -13,7 +13,7 @@ part 'delete_event_request.g.dart';
 /// * [message] 
 abstract class DeleteEventRequest implements Built<DeleteEventRequest, DeleteEventRequestBuilder> {
     @BuiltValueField(wireName: r'message')
-    String? get message;
+    String get message;
 
     DeleteEventRequest._();
 
@@ -37,12 +37,10 @@ class _$DeleteEventRequestSerializer implements StructuredSerializer<DeleteEvent
     Iterable<Object?> serialize(Serializers serializers, DeleteEventRequest object,
         {FullType specifiedType = FullType.unspecified}) {
         final result = <Object?>[];
-        if (object.message != null) {
-            result
-                ..add(r'message')
-                ..add(serializers.serialize(object.message,
-                    specifiedType: const FullType(String)));
-        }
+        result
+            ..add(r'message')
+            ..add(serializers.serialize(object.message,
+                specifiedType: const FullType(String)));
         return result;
     }
 

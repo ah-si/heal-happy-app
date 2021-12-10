@@ -10,6 +10,7 @@ import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/main.dart';
+import 'package:heal_happy/patient/healer_profile_screen.dart';
 import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
@@ -63,7 +64,7 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         // no need to redirect at all
         return null;
       },
-
+      debugLogDiagnostics: true,
       routes: [
         GoRoute(
           path: '/404',
@@ -126,6 +127,18 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               return FadeTransition(opacity: animation, child: child);
             },
             child: UserDetailsScreen(
+              id: state.params['id']!,
+            ),
+          ),
+        ),
+        GoRoute(
+          path: HealerProfileScreen.route,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: HealerProfileScreen(
               id: state.params['id']!,
             ),
           ),

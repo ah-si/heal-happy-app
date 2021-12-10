@@ -18,8 +18,98 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HealerHomeScreen extends HookConsumerWidget {
+void _disconnect(BuildContext context, WidgetRef ref) async {
+  final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
+  if (success) {
+    final store = ref.read(userStoreProvider);
+    store.logout();
+  }
+}
+
+class MobileHealerHome extends HookConsumerWidget {
+  const MobileHealerHome({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final store = ref.read(healerStoreProvider);
+    final controller = useTabController(initialLength: 4, initialIndex: store.selectedTab.index);
+    useEffect(() {
+      controller.addListener(() {
+        if (controller.index != controller.previousIndex) {
+          store.selectedTab = HomeTabs.values[controller.index];
+        }
+      });
+    }, [controller]);
+
+    return BgContainer(
+      appBar: AppBar(
+        title: Text(context.l10n.appTitle),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _disconnect(context, ref);
+            },
+            tooltip: context.l10n.disconnect,
+            icon: const Icon(Icons.logout),
+          ),
+        ],
+        bottom: TabBar(
+          controller: controller,
+          tabs: [
+            Tab(
+              text: context.l10n.home,
+            ),
+            Tab(
+              text: context.l10n.profile,
+            ),
+            Tab(
+              text: context.l10n.eventsHistory,
+            ),
+            Tab(
+              text: context.l10n.help,
+            ),
+          ],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(kNormalPadding),
+        child: ColoredBox(
+          color: Colors.white.withOpacity(0.8),
+          child: TabBarView(
+            children: [
+              const _HealerHomePage(),
+              const UserProfile(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(kNormalPadding),
+                    child: Text(context.l10n.eventHistoryIntro),
+                  ),
+                  const Expanded(child: SingleChildScrollView(child: _HealerEvents(showHistory: true))),
+                ],
+              ),
+              const SingleChildScrollView(child: _Help()),
+            ],
+            controller: controller,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class HealerHomeScreen extends StatelessWidget {
   const HealerHomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return context.isMobile ? const MobileHealerHome() : const DesktopHealerHome();
+  }
+}
+
+class DesktopHealerHome extends HookConsumerWidget {
+  const DesktopHealerHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,114 +142,114 @@ class HealerHomeScreen extends HookConsumerWidget {
         break;
     }
 
-    return BgContainer(
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: Padding(
-            padding: const EdgeInsets.all(kNormalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
+    return SafeArea(
+      child: BgContainer(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: Padding(
+              padding: const EdgeInsets.all(kNormalPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              MenuItem(
+                                label: context.l10n.home,
+                                onTap: () {
+                                  store.selectedTab = HomeTabs.home;
+                                },
+                                selected: store.selectedTab == HomeTabs.home,
+                              ),
+                              const SizedBox(width: 2),
+                              MenuItem(
+                                label: context.l10n.eventsHistory,
+                                onTap: () {
+                                  store.selectedTab = HomeTabs.history;
+                                },
+                                selected: store.selectedTab == HomeTabs.history,
+                              ),
+                              const SizedBox(width: 2),
+                              MenuItem(
+                                label: context.l10n.profile,
+                                onTap: () {
+                                  store.selectedTab = HomeTabs.profile;
+                                },
+                                selected: store.selectedTab == HomeTabs.profile,
+                              ),
+                              const SizedBox(width: 2),
+                              MenuItem(
+                                label: context.l10n.help,
+                                onTap: () {
+                                  store.selectedTab = HomeTabs.help;
+                                },
+                                selected: store.selectedTab == HomeTabs.help,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      MenuItem(
+                        label: context.l10n.disconnect,
+                        onTap: () async {
+                          _disconnect(context, ref);
+                        },
+                        selected: true,
+                      ),
+                    ],
+                  ),
+                  if (!(userStore.user?.isActivated ?? true))
+                    ColoredBox(
+                      color: context.theme.errorColor.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kSmallPadding),
+                        child: Column(
                           children: [
-                            MenuItem(
-                              label: context.l10n.home,
-                              onTap: () {
-                                store.selectedTab = HomeTabs.home;
-                              },
-                              selected: store.selectedTab == HomeTabs.home,
+                            Text(
+                              context.l10n.accountNotVerified,
+                              style: const TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
                             ),
-                            const SizedBox(width: 2),
-                            MenuItem(
-                              label: context.l10n.eventsHistory,
-                              onTap: () {
-                                store.selectedTab = HomeTabs.history;
-                              },
-                              selected: store.selectedTab == HomeTabs.history,
-                            ),
-                            const SizedBox(width: 2),
-                            MenuItem(
-                              label: context.l10n.profile,
-                              onTap: () {
-                                store.selectedTab = HomeTabs.profile;
-                              },
-                              selected: store.selectedTab == HomeTabs.profile,
-                            ),
-                            const SizedBox(width: 2),
-                            MenuItem(
-                              label: context.l10n.help,
-                              onTap: () {
-                                store.selectedTab = HomeTabs.help;
-                              },
-                              selected: store.selectedTab == HomeTabs.help,
-                            ),
+                            if (!userStore.activationEmailResent)
+                              TextButton(
+                                onPressed: () async {
+                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                                  if (success) {
+                                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
+                                  }
+                                },
+                                child: Text(context.l10n.resendActivationLink),
+                              ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(width: 2),
-                    MenuItem(
-                      label: context.l10n.disconnect,
-                      onTap: () async {
-                        final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
-                        if (success) {
-                          final store = ref.read(userStoreProvider);
-                          store.logout();
-                        }
-                      },
-                      selected: true,
-                    ),
-                  ],
-                ),
-                if (!(userStore.user?.isActivated ?? true))
-                  ColoredBox(
-                    color: context.theme.errorColor.withOpacity(0.8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(kSmallPadding),
-                      child: Column(
-                        children: [
-                          Text(
-                            context.l10n.accountNotVerified,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          if (!userStore.activationEmailResent)
-                            TextButton(
-                              onPressed: () async {
-                                final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
-                                if (success) {
-                                  showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
-                                }
-                              },
-                              child: Text(context.l10n.resendActivationLink),
-                            ),
-                        ],
+                  if (!(userStore.user?.isVerified ?? true))
+                    ColoredBox(
+                      color: context.theme.errorColor.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kSmallPadding),
+                        child: Text(
+                          context.l10n.accountPending,
+                          style: const TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ),
-                  ),
-                if (!(userStore.user?.isVerified ?? true))
-                  ColoredBox(
-                    color: context.theme.errorColor.withOpacity(0.8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(kSmallPadding),
-                      child: Text(
-                        context.l10n.accountPending,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                  Expanded(
+                    child: ColoredBox(
+                      color: Colors.white.withOpacity(0.8),
+                      child: child,
                     ),
                   ),
-                Expanded(
-                  child: ColoredBox(
-                    color: Colors.white.withOpacity(0.8),
-                    child: child,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -180,6 +270,8 @@ class _Help extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text(context.l10n.helpCall),
+          const SizedBox(height: kNormalPadding),
           Text(context.l10n.helpYoutube),
           const SizedBox(height: kNormalPadding),
           TextButton(
@@ -205,6 +297,16 @@ class _Help extends HookConsumerWidget {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
               },
               child: Text(userStore.user!.telegramUrl),
+            ),
+          const SizedBox(height: kNormalPadding),
+          if (userStore.user?.isDoctor ?? false) Text(context.l10n.helpOrdo),
+          const SizedBox(height: kNormalPadding),
+          if (userStore.user?.isDoctor ?? false)
+            TextButton(
+              onPressed: () {
+                launch('${Config().baseUrl}/assets/assets/files/ordo.doc');
+              },
+              child: Text(context.l10n.helpDownloadOrdo),
             ),
         ],
       ),
@@ -549,7 +651,7 @@ class _HealerEventDetails extends HookConsumerWidget {
       ],
     );
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 280),
+      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 320),
       child: Card(
         margin: const EdgeInsets.all(kSmallPadding),
         child: event.isUrgent

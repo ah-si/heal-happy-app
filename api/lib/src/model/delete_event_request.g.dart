@@ -8,13 +8,16 @@ part of 'delete_event_request.dart';
 
 class _$DeleteEventRequest extends DeleteEventRequest {
   @override
-  final String? message;
+  final String message;
 
   factory _$DeleteEventRequest(
           [void Function(DeleteEventRequestBuilder)? updates]) =>
       (new DeleteEventRequestBuilder()..update(updates)).build();
 
-  _$DeleteEventRequest._({this.message}) : super._();
+  _$DeleteEventRequest._({required this.message}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(
+        message, 'DeleteEventRequest', 'message');
+  }
 
   @override
   DeleteEventRequest rebuild(
@@ -78,7 +81,10 @@ class DeleteEventRequestBuilder
 
   @override
   _$DeleteEventRequest build() {
-    final _$result = _$v ?? new _$DeleteEventRequest._(message: message);
+    final _$result = _$v ??
+        new _$DeleteEventRequest._(
+            message: BuiltValueNullFieldError.checkNotNull(
+                message, 'DeleteEventRequest', 'message'));
     replace(_$result);
     return _$result;
   }
