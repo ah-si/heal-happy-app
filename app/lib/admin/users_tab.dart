@@ -94,6 +94,17 @@ class _UsersSearch extends HookConsumerWidget {
     final verifiedState = useState<bool?>(null);
     final jobState = useState<String?>(null);
     final typeState = useState<UserTypeEnum?>(null);
+    search() {
+      final store = ref.read(adminUsersStoreProvider);
+      store.search(0,
+          query: SearchQuery(
+            controllerSearch.text.trim(),
+            typeState.value,
+            controllerSpe.text.isNullOrEmpty ? null : jobState.value,
+            activatedState.value,
+            verifiedState.value,
+          ));
+    }
     return Padding(
       padding: const EdgeInsets.all(kNormalPadding),
       child: Wrap(
@@ -106,6 +117,9 @@ class _UsersSearch extends HookConsumerWidget {
             constraints: const BoxConstraints(maxWidth: 200),
             child: TextField(
               controller: controllerSearch,
+              onSubmitted: (value) {
+                search();
+              },
               decoration: InputDecoration(label: Text(context.l10n.searchQueryField), hintText: context.l10n.searchQueryPlaceholder),
             ),
           ),
@@ -161,17 +175,7 @@ class _UsersSearch extends HookConsumerWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              final store = ref.read(adminUsersStoreProvider);
-              store.search(0,
-                  query: SearchQuery(
-                    controllerSearch.text.trim(),
-                    typeState.value,
-                    controllerSpe.text.isNullOrEmpty ? null : jobState.value,
-                    activatedState.value,
-                    verifiedState.value,
-                  ));
-            },
+            onPressed: search,
             child: Text(context.l10n.searchButton),
           ),
           ElevatedButton(
