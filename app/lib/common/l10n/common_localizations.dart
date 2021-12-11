@@ -65,6 +65,14 @@ class CommonLocalizations {
 
   String get downloadDiploma => Intl.message('Télécharger le diplôme', name: 'downloadDiploma');
 
+  String get userActivated => Intl.message('L\'utilisateur a validé son email', name: 'userActivated');
+  String get userUnActivated => Intl.message('L\'utilisateur n\'a pas validé son email, si il est soignant, il n\'est pas visible pour les patients', name: 'userUnActivated');
+
+  String get userVerified => Intl.message('L\'utilisateur est vérifié', name: 'userVerified');
+  String get userUnVerified => Intl.message('L\'utilisateur n\'a pas été vérifié et donc n\'est pas visible pour les patients', name: 'userUnVerified');
+
+  String get userRgpdKo => Intl.message('L\'utilisateur n\'a pas accepté la politique de confidentialité RGPD, il doit aller sur son profil, partie "informations personnelles", cocher la case de confidentialité et cliquer "enregistrer"', name: 'userRgpdKo');
+
   String get downloadTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
 
   String delete(String name) => Intl.message('Supprimer $name?', args: [name], name: 'delete');

@@ -64,7 +64,6 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         // no need to redirect at all
         return null;
       },
-      debugLogDiagnostics: true,
       routes: [
         GoRoute(
           path: '/404',

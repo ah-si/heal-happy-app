@@ -289,6 +289,10 @@ class _UserItem extends HookConsumerWidget {
                       ],
                     ),
                   ),
+                user.isActivated ? Text(context.l10n.userActivated):Text(context.l10n.userUnActivated),
+                if (user.type == UserTypeEnum.healer)
+                  user.isVerified ? Text(context.l10n.userVerified):Text(context.l10n.userUnVerified),
+                if (!user.isTermsAccepted) Text(context.l10n.userRgpdKo),
               ],
             ),
           ),
