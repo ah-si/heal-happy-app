@@ -30,7 +30,7 @@ extension DateTimeExtention on DateTime {
     int? millisecond,
     int? microsecond,
   }) {
-    return DateTime.utc(
+    return DateTime(
       year ?? this.year,
       month ?? this.month,
       day ?? this.day,
@@ -130,8 +130,8 @@ extension StringCasingExtension on String {
 extension TimeOfDayExtension on TimeOfDay {
   bool isAfter(TimeOfDay? other) {
     if (other == null) return false;
-    if (hour < other.hour) {
-      return false;
+    if (hour > other.hour) {
+      return true;
     }
     return minute > other.minute;
   }

@@ -64,7 +64,7 @@ class HealerStore extends ChangeNotifier {
 
   Future<void> updateEvent(UserEvent event, DateTime date, String? message) async {
     final updatedEvent = await _userApi.updateEvent(eventId: event.id, updateEventRequest: UpdateEventRequest((b) {
-      b.start = date;
+      b.start = date.toUtc();
       b.message = message;
     }));
     final index = eventsResults!.events.indexOf(event);

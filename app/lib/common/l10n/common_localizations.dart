@@ -75,6 +75,10 @@ class CommonLocalizations {
 
   String get downloadTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
 
+  String get downloadTuto => Intl.message('Télécharger notre tutoriel', name: 'downloadTuto');
+
+  String get helpTuto => Intl.message('Si vous avez besoin d\'aide pour la gestion de votre compte, vous pouvez consulter notre tutoriel:', name: 'helpTuto');
+
   String delete(String name) => Intl.message('Supprimer $name?', args: [name], name: 'delete');
 
   String get deleteHealerConfirm =>

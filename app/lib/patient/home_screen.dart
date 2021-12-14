@@ -564,7 +564,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(_dateFormat.format(event.start), style: context.textTheme.headline6),
+                    Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
                     const SizedBox(height: kSmallPadding),
                     Text(context.l10n.yourHealer),
                     Row(

@@ -110,6 +110,10 @@ class StepCalendarInfoForm extends HookConsumerWidget {
                     if (formKey.currentState!.validate()) {
                       userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
 
+                      if (userInfo.consultationDuration == null) {
+                        return;
+                      }
+
                       showDayError(String day) {
                         showAlert(
                           context,

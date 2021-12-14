@@ -272,6 +272,15 @@ class _Help extends HookConsumerWidget {
         children: [
           Text(context.l10n.helpCall),
           const SizedBox(height: kNormalPadding),
+          Text(context.l10n.helpTuto),
+          const SizedBox(height: kNormalPadding),
+          TextButton(
+            onPressed: () {
+              launch('${Config().baseUrl}/assets/assets/files/tuto.pdf');
+            },
+            child: Text(context.l10n.downloadTuto),
+          ),
+          /*const SizedBox(height: kNormalPadding),
           Text(context.l10n.helpYoutube),
           const SizedBox(height: kNormalPadding),
           TextButton(
@@ -283,7 +292,7 @@ class _Help extends HookConsumerWidget {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
             },
             child: const Text('Voir la chaine Youtube'),
-          ),
+          ),*/
           const SizedBox(height: kNormalPadding),
           if (userStore.user?.isVerified ?? false) Text(context.l10n.helpIntro),
           const SizedBox(height: kNormalPadding),
@@ -518,14 +527,14 @@ class _HealerEventDetails extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(child: Text(_dateFormat.format(event.start), style: context.textTheme.headline6)),
+                    Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
                     if (event.start.isAfter(DateTime.now()))
                       IconButton(
                         onPressed: () async {
                           final now = DateTime.now();
                           var date = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate: event.start.toLocal(),
                             firstDate: now.subtract(Duration(days: now.day - 1)),
                             lastDate: now.add(
                               const Duration(days: 15),
@@ -534,10 +543,10 @@ class _HealerEventDetails extends HookConsumerWidget {
                           if (date != null) {
                             final time = await showTimePicker(
                               context: context,
-                              initialTime: TimeOfDay.fromDateTime(event.start),
+                              initialTime: TimeOfDay.fromDateTime(event.start.toLocal()),
                             );
                             if (time != null) {
-                              date = date.copyWith(hour: time.hour, minute: time.minute);
+                              date = date.toLocal().copyWith(hour: time.hour, minute: time.minute);
                               final message = await showPrompt(context, context.l10n.updateEventMessage);
                               if (message != null) {
                                 final store = ref.read(healerStoreProvider);
