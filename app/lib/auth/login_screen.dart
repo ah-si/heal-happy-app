@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/auth/register/register_screen.dart';
@@ -24,6 +25,7 @@ class LoginScreen extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() async {
       if (formKey.currentState!.validate()) {
+        TextInput.finishAutofillContext(shouldSave: true);
         final store = ref.read(userStoreProvider);
         final success = await showLoadingDialog(
           context,
@@ -55,60 +57,63 @@ class LoginScreen extends HookConsumerWidget {
                 const SizedBox(height: 30),
                 IntroDialog(
                   constraints: const BoxConstraints(maxWidth: 400),
-                  child: Form(
-                    key: formKey,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextFormField(
-                          controller: controller,
-                          validator: (value) => isEmailValid(value, context),
-                          keyboardType: TextInputType.emailAddress,
-                          autofillHints: const [AutofillHints.email, AutofillHints.username],
-                          decoration: InputDecoration(label: Text(context.l10n.emailField)),
-                        ),
-                        TextFormField(
-                          controller: controllerPass,
-                          obscureText: true,
-                          validator: (value) => isRequired(value, context),
-                          keyboardType: TextInputType.text,
-                          autofillHints: const [AutofillHints.password],
-                          onFieldSubmitted: (_) => submitForm(),
-                          decoration: InputDecoration(label: Text(context.l10n.passwordField)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(kNormalPadding),
-                          child: ElevatedButton(
-                            onPressed: submitForm,
-                            child: Text(context.l10n.loginButton),
+                  child: AutofillGroup(
+                    onDisposeAction: AutofillContextAction.commit,
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TextFormField(
+                            controller: controller,
+                            validator: (value) => isEmailValid(value, context),
+                            keyboardType: TextInputType.emailAddress,
+                            autofillHints: const [AutofillHints.email, AutofillHints.username],
+                            decoration: InputDecoration(label: Text(context.l10n.emailField)),
                           ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            context.goNamed(RegisterScreen.name);
-                          },
-                          child: Text(context.l10n.noAccount, textAlign: TextAlign.center),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            final email = await showPrompt(
-                              context,
-                              context.l10n.passwordForgotten,
-                              description: context.l10n.needEmail,
-                              initialValue: controller.text,
-                              validator: (value) => isEmailValid(value, context),
-                            );
-                            if (!email.isNullOrEmpty) {
-                              final store = ref.read(userStoreProvider);
-                              final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => store.askResetPassword(email!));
-                              if (success) {
-                                showAlert(context, context.l10n.passwordForgotten, (_) => Text(context.l10n.passwordForgottenEmailSent));
+                          TextFormField(
+                            controller: controllerPass,
+                            obscureText: true,
+                            validator: (value) => isRequired(value, context),
+                            keyboardType: TextInputType.text,
+                            autofillHints: const [AutofillHints.password],
+                            onFieldSubmitted: (_) => submitForm(),
+                            decoration: InputDecoration(label: Text(context.l10n.passwordField)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(kNormalPadding),
+                            child: ElevatedButton(
+                              onPressed: submitForm,
+                              child: Text(context.l10n.loginButton),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              context.goNamed(RegisterScreen.name);
+                            },
+                            child: Text(context.l10n.noAccount, textAlign: TextAlign.center),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              final email = await showPrompt(
+                                context,
+                                context.l10n.passwordForgotten,
+                                description: context.l10n.needEmail,
+                                initialValue: controller.text,
+                                validator: (value) => isEmailValid(value, context),
+                              );
+                              if (!email.isNullOrEmpty) {
+                                final store = ref.read(userStoreProvider);
+                                final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => store.askResetPassword(email!));
+                                if (success) {
+                                  showAlert(context, context.l10n.passwordForgotten, (_) => Text(context.l10n.passwordForgottenEmailSent));
+                                }
                               }
-                            }
-                          },
-                          child: Text(context.l10n.passwordForgottenButton, textAlign: TextAlign.center),
-                        ),
-                      ],
+                            },
+                            child: Text(context.l10n.passwordForgottenButton, textAlign: TextAlign.center),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
