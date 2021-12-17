@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -95,7 +96,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                 onChanged: (value) => userInfo.email = value,
                 decoration: InputDecoration(label: Text(context.l10n.emailField)),
               ),
-              if (!headless)
+              if (!headless || kIsWeb)
                 TextFormField(
                   controller: controllerPass,
                   obscureText: true,
@@ -108,7 +109,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                   },
                   decoration: InputDecoration(label: Text(context.l10n.passwordField)),
                 ),
-              if (!headless)
+              if (!headless || kIsWeb)
                 TextFormField(
                   controller: controllerConfirm,
                   obscureText: true,

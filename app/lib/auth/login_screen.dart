@@ -25,7 +25,7 @@ class LoginScreen extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() async {
       if (formKey.currentState!.validate()) {
-        TextInput.finishAutofillContext(shouldSave: true);
+        //TextInput.finishAutofillContext(shouldSave: true);
         final store = ref.read(userStoreProvider);
         final success = await showLoadingDialog(
           context,

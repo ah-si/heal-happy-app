@@ -16,6 +16,7 @@ part 'user_event.g.dart';
 /// * [patient]
 /// * [healer]
 /// * [isUrgent]
+/// * [createdAt]
 /// * [start]
 /// * [end]
 /// * [name]
@@ -33,6 +34,9 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
 
     @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
+
+    @BuiltValueField(wireName: r'createdAt')
+    DateTime get createdAt;
 
     @BuiltValueField(wireName: r'start')
     DateTime get start;
@@ -88,6 +92,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(serializers.serialize(object.isUrgent,
                 specifiedType: const FullType(bool)));
         result
+            ..add(r'createdAt')
+            ..add(serializers.serialize(object.createdAt,
+                specifiedType: const FullType(DateTime)));
+        result
             ..add(r'start')
             ..add(serializers.serialize(object.start,
                 specifiedType: const FullType(DateTime)));
@@ -138,6 +146,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                 case r'isUrgent':
                     result.isUrgent = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'createdAt':
+                    result.createdAt = serializers.deserialize(value,
+                        specifiedType: const FullType(DateTime)) as DateTime;
                     break;
                 case r'start':
                     result.start = serializers.deserialize(value,

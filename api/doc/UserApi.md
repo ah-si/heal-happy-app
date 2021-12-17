@@ -177,7 +177,7 @@ import 'package:heal_happy_sdk/api.dart';
 
 final api = HealHappySdk().getUserApi();
 final String id = id_example; // String | 
-final String from = from_example; // String | 
+final DateTime from = 2013-10-20T19:20:30+01:00; // DateTime | 
 
 try { 
     final response = api.getHealerAvailabilities(id, from);
@@ -192,7 +192,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String**|  | 
- **from** | **String**|  | 
+ **from** | **DateTime**|  | 
 
 ### Return type
 

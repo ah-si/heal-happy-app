@@ -16,6 +16,8 @@ class _$UserEvent extends UserEvent {
   @override
   final bool isUrgent;
   @override
+  final DateTime createdAt;
+  @override
   final DateTime start;
   @override
   final DateTime end;
@@ -34,6 +36,7 @@ class _$UserEvent extends UserEvent {
       required this.patient,
       required this.healer,
       required this.isUrgent,
+      required this.createdAt,
       required this.start,
       required this.end,
       required this.name,
@@ -44,6 +47,7 @@ class _$UserEvent extends UserEvent {
     BuiltValueNullFieldError.checkNotNull(patient, 'UserEvent', 'patient');
     BuiltValueNullFieldError.checkNotNull(healer, 'UserEvent', 'healer');
     BuiltValueNullFieldError.checkNotNull(isUrgent, 'UserEvent', 'isUrgent');
+    BuiltValueNullFieldError.checkNotNull(createdAt, 'UserEvent', 'createdAt');
     BuiltValueNullFieldError.checkNotNull(start, 'UserEvent', 'start');
     BuiltValueNullFieldError.checkNotNull(end, 'UserEvent', 'end');
     BuiltValueNullFieldError.checkNotNull(name, 'UserEvent', 'name');
@@ -65,6 +69,7 @@ class _$UserEvent extends UserEvent {
         patient == other.patient &&
         healer == other.healer &&
         isUrgent == other.isUrgent &&
+        createdAt == other.createdAt &&
         start == other.start &&
         end == other.end &&
         name == other.name &&
@@ -80,9 +85,11 @@ class _$UserEvent extends UserEvent {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, id.hashCode), patient.hashCode),
-                                healer.hashCode),
-                            isUrgent.hashCode),
+                            $jc(
+                                $jc($jc($jc(0, id.hashCode), patient.hashCode),
+                                    healer.hashCode),
+                                isUrgent.hashCode),
+                            createdAt.hashCode),
                         start.hashCode),
                     end.hashCode),
                 name.hashCode),
@@ -97,6 +104,7 @@ class _$UserEvent extends UserEvent {
           ..add('patient', patient)
           ..add('healer', healer)
           ..add('isUrgent', isUrgent)
+          ..add('createdAt', createdAt)
           ..add('start', start)
           ..add('end', end)
           ..add('name', name)
@@ -124,6 +132,10 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   bool? _isUrgent;
   bool? get isUrgent => _$this._isUrgent;
   set isUrgent(bool? isUrgent) => _$this._isUrgent = isUrgent;
+
+  DateTime? _createdAt;
+  DateTime? get createdAt => _$this._createdAt;
+  set createdAt(DateTime? createdAt) => _$this._createdAt = createdAt;
 
   DateTime? _start;
   DateTime? get start => _$this._start;
@@ -156,6 +168,7 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
       _patient = $v.patient.toBuilder();
       _healer = $v.healer.toBuilder();
       _isUrgent = $v.isUrgent;
+      _createdAt = $v.createdAt;
       _start = $v.start;
       _end = $v.end;
       _name = $v.name;
@@ -188,6 +201,8 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
               healer: healer.build(),
               isUrgent: BuiltValueNullFieldError.checkNotNull(
                   isUrgent, 'UserEvent', 'isUrgent'),
+              createdAt: BuiltValueNullFieldError.checkNotNull(
+                  createdAt, 'UserEvent', 'createdAt'),
               start: BuiltValueNullFieldError.checkNotNull(
                   start, 'UserEvent', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(

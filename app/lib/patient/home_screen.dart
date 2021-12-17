@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -21,6 +20,7 @@ import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
@@ -590,7 +590,16 @@ class _PatientEventDetails extends HookConsumerWidget {
                 if (event.start.isAfter(DateTime.now()..subtract(const Duration(days: 1))))
                   TextButton(
                     onPressed: () {
-                      launch(event.link);
+                      if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
+                        launch(event.link);
+                      } else {
+                        var options = JitsiMeetingOptions(
+                          roomNameOrUrl: event.link,
+                          userDisplayName: event.patient.firstName,
+                          subject: 'Consultation Soignez Heureux',
+                        );
+                        JitsiMeetWrapper.joinMeeting(options: options);
+                      }
                     },
                     child: Text(context.l10n.joinVisioButton),
                   ),

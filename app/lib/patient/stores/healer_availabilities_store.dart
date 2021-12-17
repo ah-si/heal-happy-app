@@ -85,7 +85,7 @@ class AvailabilitiesStore extends ChangeNotifier {
       _from!.add(const Duration(days: -7));
     }
     try {
-      final results = await _userApi.getHealerAvailabilities(id: healerId, from: _from!.toUtc().toIso8601String());
+      final results = await _userApi.getHealerAvailabilities(id: healerId, from: _from!.toUtc());
       final slots = results.data!.slots;
       final Map<String, List<SlotInfo>> dates = {};
       // hide all available slots that are before now + 1 hour

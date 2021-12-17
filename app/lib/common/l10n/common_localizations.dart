@@ -341,6 +341,8 @@ class CommonLocalizations {
 
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
 
+  String eventCreatedAt(String date) => Intl.message('Consultation prise le $date', args: [date],name: 'eventCreatedAt');
+
   String get donateInstructions =>
       Intl.message('Si vous faites un don, merci de préciser votre destination de don dans le champ information :', name: 'donateInstructions');
 

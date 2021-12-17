@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,6 +17,7 @@ import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
@@ -512,6 +514,7 @@ class _HealerEventDetails extends HookConsumerWidget {
   final UserEvent event;
 
   static final DateFormat _dateFormat = DateFormat('EEE dd MMM à HH:mm');
+  static final DateFormat _dateFormatCreation = DateFormat('EEE dd MMM');
 
   const _HealerEventDetails({Key? key, required this.event}) : super(key: key);
 
@@ -528,7 +531,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                 Row(
                   children: [
                     Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
-                    if (event.start.isAfter(DateTime.now()))
+                    if (event.start.toLocal().isAfter(DateTime.now()))
                       IconButton(
                         onPressed: () async {
                           final now = DateTime.now();
@@ -569,6 +572,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(context.l10n.eventCreatedAt(_dateFormatCreation.format(event.createdAt.toLocal()))),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
                       child: InkWell(
@@ -615,10 +619,15 @@ class _HealerEventDetails extends HookConsumerWidget {
                   InkWell(
                     onTap: () {
                       showAlert(
-                          context,
-                          context.l10n.patientMessage,
-                          (context) =>
-                              ConstrainedBox(constraints: const BoxConstraints(maxHeight: 300), child: SingleChildScrollView(child: Text(event.description!))));
+                        context,
+                        context.l10n.patientMessage,
+                        (context) => ConstrainedBox(
+                          constraints: const BoxConstraints(maxHeight: 300),
+                          child: SingleChildScrollView(
+                            child: Text(event.description!),
+                          ),
+                        ),
+                      );
                     },
                     child: Text(
                       event.description!,
@@ -632,7 +641,7 @@ class _HealerEventDetails extends HookConsumerWidget {
         ),
         ButtonBar(
           children: [
-            if (event.start.isAfter(DateTime.now()))
+            if (event.start.toLocal().isAfter(DateTime.now()))
               TextButton(
                 onPressed: () async {
                   final message = await showPrompt(context, context.l10n.cancelConsultation,
@@ -648,10 +657,19 @@ class _HealerEventDetails extends HookConsumerWidget {
                 },
                 child: Text(context.l10n.cancelButton),
               ),
-            if (event.start.isAfter(DateTime.now()..subtract(const Duration(days: 1))))
+            if (event.start.toLocal().isAfter(DateTime.now()..subtract(const Duration(days: 1))))
               TextButton(
                 onPressed: () {
-                  launch(event.link);
+                  if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
+                    launch(event.link);
+                  } else {
+                    var options = JitsiMeetingOptions(
+                      roomNameOrUrl: event.link,
+                      userDisplayName: event.healer.firstName,
+                      subject: 'Consultation Soignez Heureux',
+                    );
+                    JitsiMeetWrapper.joinMeeting(options: options);
+                  }
                 },
                 child: Text(context.l10n.joinVisioButton),
               ),

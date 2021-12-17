@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **patient** | [**User**](User.md) |  | 
 **healer** | [**Healer**](Healer.md) |  | 
 **isUrgent** | **bool** |  | 
+**createdAt** | [**DateTime**](DateTime.md) |  | 
 **start** | [**DateTime**](DateTime.md) |  | 
 **end** | [**DateTime**](DateTime.md) |  | 
 **name** | **String** |  | 

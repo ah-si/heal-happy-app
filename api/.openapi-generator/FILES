@@ -64,7 +64,6 @@ lib/src/model/user_all_of.dart
 lib/src/model/user_event.dart
 lib/src/model/user_type_enum.dart
 lib/src/serializers.dart
-pubspec.yaml
 test/admin_api_test.dart
 test/ask_reset_password_test.dart
 test/auth_api_test.dart
