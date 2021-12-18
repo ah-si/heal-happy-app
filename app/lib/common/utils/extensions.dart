@@ -132,6 +132,8 @@ extension TimeOfDayExtension on TimeOfDay {
     if (other == null) return false;
     if (hour > other.hour) {
       return true;
+    } else if (hour < other.hour) {
+      return false;
     }
     return minute > other.minute;
   }
@@ -140,6 +142,8 @@ extension TimeOfDayExtension on TimeOfDay {
     if (other == null) return false;
     if (hour < other.hour) {
       return true;
+    } else if (hour > other.hour) {
+      return false;
     }
     return minute < other.minute;
   }
