@@ -16,11 +16,13 @@ part 'user_event.g.dart';
 /// * [patient]
 /// * [healer]
 /// * [isUrgent]
+/// * [isCancelled]
 /// * [createdAt]
 /// * [start]
 /// * [end]
 /// * [name]
 /// * [description]
+/// * [cancelledDescription]
 /// * [link]
 abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     @BuiltValueField(wireName: r'id')
@@ -34,6 +36,9 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
 
     @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
+
+    @BuiltValueField(wireName: r'isCancelled')
+    bool get isCancelled;
 
     @BuiltValueField(wireName: r'createdAt')
     DateTime get createdAt;
@@ -49,6 +54,9 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
 
     @BuiltValueField(wireName: r'description')
     String? get description;
+
+    @BuiltValueField(wireName: r'cancelledDescription')
+    String? get cancelledDescription;
 
     @BuiltValueField(wireName: r'link')
     String get link;
@@ -92,6 +100,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(serializers.serialize(object.isUrgent,
                 specifiedType: const FullType(bool)));
         result
+            ..add(r'isCancelled')
+            ..add(serializers.serialize(object.isCancelled,
+                specifiedType: const FullType(bool)));
+        result
             ..add(r'createdAt')
             ..add(serializers.serialize(object.createdAt,
                 specifiedType: const FullType(DateTime)));
@@ -111,6 +123,12 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             result
                 ..add(r'description')
                 ..add(serializers.serialize(object.description,
+                    specifiedType: const FullType(String)));
+        }
+        if (object.cancelledDescription != null) {
+            result
+                ..add(r'cancelledDescription')
+                ..add(serializers.serialize(object.cancelledDescription,
                     specifiedType: const FullType(String)));
         }
         result
@@ -147,6 +165,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                     result.isUrgent = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     break;
+                case r'isCancelled':
+                    result.isCancelled = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
                 case r'createdAt':
                     result.createdAt = serializers.deserialize(value,
                         specifiedType: const FullType(DateTime)) as DateTime;
@@ -165,6 +187,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                     break;
                 case r'description':
                     result.description = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'cancelledDescription':
+                    result.cancelledDescription = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
                     break;
                 case r'link':

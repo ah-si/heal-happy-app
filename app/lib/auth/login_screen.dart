@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,9 +10,10 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
-import 'package:heal_happy/user/home_screen.dart';
+import 'package:heal_happy/main.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends HookConsumerWidget {
   static const name = 'login';
@@ -117,6 +119,48 @@ class LoginScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
+                if (kIsWeb)
+                  Center(
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            launch(kUrlPlayStore);
+                          },
+                          child: Image.asset(
+                            'assets/images/play_badge.png',
+                            width: 250,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        if (false)
+                          InkWell(
+                            onTap: () {
+                              launch(kUrlAppStore);
+                            },
+                            child: Image.asset(
+                              'assets/images/apple_badge.png',
+                              width: 220,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        if (false)
+                          InkWell(
+                            onTap: () {
+                              launch(kUrlAppMacStore);
+                            },
+                            child: Image.asset(
+                              'assets/images/mac_badge.png',
+                              width: 250,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),

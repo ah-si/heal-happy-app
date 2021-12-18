@@ -171,6 +171,8 @@ class CommonLocalizations {
 
   String get patientMessage => Intl.message('Motif du rendez-vous:', name: 'patientMessage');
 
+  String get patientCancelledMessage => Intl.message('Motif de l\'annulation:', name: 'patientCancelledMessage');
+
   String get cancelButton => Intl.message('Annuler', name: 'cancelButton');
 
   String get joinVisioButton => Intl.message('Rejoindre la visio', name: 'joinVisioButton');

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/admin/home_screen.dart' as admin;
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
@@ -15,7 +16,10 @@ import 'package:heal_happy/common/router.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/logging.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
+import 'package:heal_happy/healer/home_screen.dart' as healer;
+import 'package:heal_happy/patient/home_screen.dart' as patient;
 import 'package:heal_happy/user/user_store.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -112,17 +116,32 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SplashScreen extends HookConsumerWidget {
-  static const name = 'splashScreen';
+class HomeScreen extends HookConsumerWidget {
+  static const name = '/';
 
-  const SplashScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const BgContainer(
-      child: Center(
-        child: CircularProgressIndicator.adaptive(),
-      ),
-    );
+    final userStore = ref.watch(userStoreProvider);
+
+    if (userStore.user == null) {
+      return const BgContainer(
+        child: Center(
+          child: CircularProgressIndicator.adaptive(),
+        ),
+      );
+    }
+
+    switch (userStore.user?.type) {
+      case UserTypeEnum.admin:
+        return const admin.AdminHomeScreen();
+      case UserTypeEnum.healer:
+        return const healer.HealerHomeScreen();
+      case UserTypeEnum.patient:
+        return const patient.PatientHomeScreen();
+      default:
+        return const patient.PatientHomeScreen();
+    }
   }
 }

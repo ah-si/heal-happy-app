@@ -60,7 +60,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://localhost:3443*
+All URIs are relative to *https://soignez-heureux.ah-si.org*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

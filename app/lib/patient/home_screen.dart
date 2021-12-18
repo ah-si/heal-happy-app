@@ -535,78 +535,92 @@ class _PatientEventDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 300, maxHeight: 250),
-      child: Card(
-        margin: const EdgeInsets.all(kSmallPadding),
-        child: Column(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(kNormalPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+    final content = Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(kNormalPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
+                const SizedBox(height: kSmallPadding),
+                Text(context.l10n.yourHealer),
+                Row(
                   children: [
-                    Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
-                    const SizedBox(height: kSmallPadding),
-                    Text(context.l10n.yourHealer),
-                    Row(
-                      children: [
-                        const Icon(Icons.healing, size: 50),
-                        const SizedBox(width: kNormalPadding),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Text(event.healer.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                              Text(event.healer.address, style: const TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                      ],
+                    const Icon(Icons.healing, size: 50),
+                    const SizedBox(width: kNormalPadding),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(event.healer.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(event.healer.address, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
-            ButtonBar(
-              children: [
-                if (event.start.isAfter(DateTime.now()))
-                  TextButton(
-                    onPressed: () async {
-                      final message = await showPrompt(context, context.l10n.cancelConsultation,
-                          validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.healer.name));
-                      if (!message.isNullOrEmpty) {
-                        final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
-                          await ref.read(patientStoreProvider).cancelEvent(event.id, message!);
-                        });
-                        if (cancelled) {
-                          showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
-                        }
-                      }
-                    },
-                    child: Text(context.l10n.cancelButton),
-                  ),
-                if (event.start.isAfter(DateTime.now()..subtract(const Duration(days: 1))))
-                  TextButton(
-                    onPressed: () {
-                      if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                        launch(event.link);
-                      } else {
-                        var options = JitsiMeetingOptions(
-                          roomNameOrUrl: event.link,
-                          userDisplayName: event.patient.firstName,
-                          subject: 'Consultation Soignez Heureux',
-                        );
-                        JitsiMeetWrapper.joinMeeting(options: options);
-                      }
-                    },
-                    child: Text(context.l10n.joinVisioButton),
-                  ),
+                if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
+                if (event.isCancelled)
+                  Text(
+                    event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  )
               ],
-            )
-          ],
+            ),
+          ),
         ),
+        ButtonBar(
+          children: [
+            if (!event.isCancelled && event.start.isAfter(DateTime.now()))
+              TextButton(
+                onPressed: () async {
+                  final message = await showPrompt(context, context.l10n.cancelConsultation,
+                      validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.healer.name));
+                  if (!message.isNullOrEmpty) {
+                    final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
+                      await ref.read(patientStoreProvider).cancelEvent(event.id, message!);
+                    });
+                    if (cancelled) {
+                      showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
+                    }
+                  }
+                },
+                child: Text(context.l10n.cancelButton),
+              ),
+            if (!event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 1))))
+              TextButton(
+                onPressed: () {
+                  if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
+                    launch(event.link);
+                  } else {
+                    var options = JitsiMeetingOptions(
+                      roomNameOrUrl: event.link,
+                      userDisplayName: event.patient.firstName,
+                      subject: 'Consultation Soignez Heureux',
+                    );
+                    JitsiMeetWrapper.joinMeeting(options: options);
+                  }
+                },
+                child: Text(context.l10n.joinVisioButton),
+              ),
+          ],
+        )
+      ],
+    );
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 250),
+      child: Card(
+        margin: const EdgeInsets.all(kSmallPadding),
+        child: event.isUrgent || event.isCancelled
+            ? Banner(
+                location: BannerLocation.topEnd,
+                message: event.isUrgent ? 'Urgent' : 'Annulée',
+                child: content,
+              )
+            : content,
       ),
     );
   }

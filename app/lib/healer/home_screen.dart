@@ -531,7 +531,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                 Row(
                   children: [
                     Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
-                    if (event.start.toLocal().isAfter(DateTime.now()))
+                    if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
                       IconButton(
                         onPressed: () async {
                           final now = DateTime.now();
@@ -614,23 +614,24 @@ class _HealerEventDetails extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: kSmallPadding),
-                if (!event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
-                if (!event.description.isNullOrEmpty)
+                if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
+                if (!event.isCancelled && !event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
+                if (!event.description.isNullOrEmpty || !event.cancelledDescription.isNullOrEmpty)
                   InkWell(
                     onTap: () {
                       showAlert(
                         context,
-                        context.l10n.patientMessage,
+                        event.isCancelled ? context.l10n.patientCancelledMessage : context.l10n.patientMessage,
                         (context) => ConstrainedBox(
                           constraints: const BoxConstraints(maxHeight: 300),
                           child: SingleChildScrollView(
-                            child: Text(event.description!),
+                            child: Text(event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!),
                           ),
                         ),
                       );
                     },
                     child: Text(
-                      event.description!,
+                      event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -641,7 +642,7 @@ class _HealerEventDetails extends HookConsumerWidget {
         ),
         ButtonBar(
           children: [
-            if (event.start.toLocal().isAfter(DateTime.now()))
+            if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
               TextButton(
                 onPressed: () async {
                   final message = await showPrompt(context, context.l10n.cancelConsultation,
@@ -657,7 +658,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                 },
                 child: Text(context.l10n.cancelButton),
               ),
-            if (event.start.toLocal().isAfter(DateTime.now()..subtract(const Duration(days: 1))))
+            if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now().subtract(const Duration(days: 1))))
               TextButton(
                 onPressed: () {
                   if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
@@ -681,10 +682,10 @@ class _HealerEventDetails extends HookConsumerWidget {
       constraints: const BoxConstraints(maxWidth: 320, maxHeight: 320),
       child: Card(
         margin: const EdgeInsets.all(kSmallPadding),
-        child: event.isUrgent
+        child: event.isUrgent || event.isCancelled
             ? Banner(
                 location: BannerLocation.topEnd,
-                message: 'Urgent',
+                message: event.isUrgent ? 'Urgent' : 'Annulée',
                 child: content,
               )
             : content,

@@ -5,7 +5,7 @@
 import 'package:heal_happy_sdk/api.dart';
 ```
 
-All URIs are relative to *https://localhost:3443*
+All URIs are relative to *https://soignez-heureux.ah-si.org*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

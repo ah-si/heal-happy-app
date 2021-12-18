@@ -5,6 +5,9 @@ import 'package:logging/logging.dart';
 const bool kIsProductionMode = bool.fromEnvironment('dart.vm.product');
 
 const String kUrlYoutube = 'https://www.youtube.com/channel/UCPJ5aTSrWqz8AXyxQS-Melw';
+const String kUrlPlayStore = 'https://play.google.com/store/apps/details?id=org.ashi.soignezheureux';
+const String kUrlAppStore = 'org.ashi.soignezheureux';
+const String kUrlAppMacStore = 'org.ashi.soignezheureux';
 const String kUrlTelegramHealer = 'https://t.me/+TceR1MPeLAY4ZDI0';
 const String kUrlTelegramPara = 'https://t.me/+nIG4tVyJpC01OTc0';
 

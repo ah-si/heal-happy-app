@@ -11,7 +11,6 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/main.dart';
 import 'package:heal_happy/patient/healer_profile_screen.dart';
-import 'package:heal_happy/user/home_screen.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
@@ -28,7 +27,7 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         final currentRoute = state.name ?? state.location;
         final loggedIn = userStore.user != null;
         final currentScreenAllowAnonymous = [
-              '/',
+              HomeScreen.name,
               '/404',
               '/500',
               RegisterScreen.name,
@@ -37,10 +36,9 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               '/${LoginScreen.name}',
               '/${ChangePasswordScreen.name}',
               '/${RegisterScreen.name}',
-              SplashScreen.name,
             ].firstWhereOrNull(
               (route) {
-                if (route == '/') {
+                if (route == HomeScreen.name) {
                   return route == currentRoute;
                 }
                 return currentRoute.startsWith(route);
@@ -53,12 +51,8 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         }
 
         // the user is not logged in and not headed to /login, they need to login
-        if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == '/')) {
+        if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == HomeScreen.name)) {
           return state.namedLocation(LoginScreen.name);
-        }
-
-        if (loggedIn && currentRoute == '/') {
-          return state.namedLocation(HomeScreen.name);
         }
 
         // no need to redirect at all
@@ -87,13 +81,13 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
         ),
         GoRoute(
           path: '/',
-          name: SplashScreen.name,
+          name: HomeScreen.name,
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
               return child;
             },
-            child: const SplashScreen(),
+            child: const HomeScreen(),
           ),
         ),
         GoRoute(
@@ -151,17 +145,6 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               return FadeTransition(opacity: animation, child: child);
             },
             child: const RegisterScreen(),
-          ),
-        ),
-        GoRoute(
-          path: '/${HomeScreen.name}',
-          name: HomeScreen.name,
-          pageBuilder: (context, state) => CustomTransitionPage<void>(
-            key: state.pageKey,
-            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-              return FadeTransition(opacity: animation, child: child);
-            },
-            child: const HomeScreen(),
           ),
         ),
       ],
