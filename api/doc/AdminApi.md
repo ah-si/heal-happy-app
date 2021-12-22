@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**getDashboard**](AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
 [**getHealerStats**](AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
 [**getUser**](AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
+[**searchEvents**](AdminApi.md#searchevents) | **GET** /api/v1/admin/events | 
 [**searchUsers**](AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
 [**updateUser**](AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
 [**verifyUser**](AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
@@ -229,6 +230,53 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**User**](User.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **searchEvents**
+> PaginatedEvents searchEvents(start, end)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getAdminApi();
+final Date start = ; // Date | 
+final Date end = ; // Date | 
+
+try { 
+    final response = api.searchEvents(start, end);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling AdminApi->searchEvents: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **start** | [**Date**](.md)|  | 
+ **end** | [**Date**](.md)|  | 
+
+### Return type
+
+[**PaginatedEvents**](PaginatedEvents.md)
 
 ### Authorization
 

@@ -35,6 +35,8 @@ class CommonLocalizations {
 
   String get adminUsersMenu => Intl.message('Utilisateurs', name: 'adminUsersMenu');
 
+  String get adminEventsMenu => Intl.message('Consultations', name: 'adminEventsMenu');
+
   String get adminHealerStatsMenu => Intl.message('Compta', name: 'adminHealerStatsMenu');
 
   String get startDate => Intl.message('Date de début', name: 'startDate');
@@ -52,6 +54,8 @@ class CommonLocalizations {
   String get emptyHealer => Intl.message('Vous n\'avez aucun soignant à valider pour le moment.', name: 'emptyHealer');
 
   String get emptyUsers => Intl.message('Aucun utilisateur ne correspond à votre recherche.', name: 'emptyUsers');
+
+  String get emptyEvents => Intl.message('Aucune consultation ne correspond à votre recherche.', name: 'emptyEvents');
 
   String get pendingHealer => Intl.message('Voici la liste des soignants en attente de validation:', name: 'pendingHealer');
 

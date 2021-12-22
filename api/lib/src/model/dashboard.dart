@@ -3,18 +3,18 @@
 //
 
 import 'package:built_collection/built_collection.dart';
+import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
+import 'package:heal_happy_sdk/src/model/dashboard_event.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/dashboard_event.dart';
-import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
 
 part 'dashboard.g.dart';
 
 /// Dashboard
 ///
 /// Properties:
-/// * [users]
-/// * [events]
+/// * [users] 
+/// * [events] 
 abstract class Dashboard implements Built<Dashboard, DashboardBuilder> {
     @BuiltValueField(wireName: r'users')
     BuiltList<DashboardUser> get users;

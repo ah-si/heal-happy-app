@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:built_value/serializer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/admin/stores/dashboard_store.dart';
+import 'package:heal_happy/admin/stores/events_search_store.dart';
 import 'package:heal_happy/admin/stores/healer_stats_store.dart';
 import 'package:heal_happy/admin/stores/users_search_store.dart';
 import 'package:heal_happy/admin/user_details_screen.dart';
@@ -20,17 +22,20 @@ import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
+import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
 part 'healer_reports_tab.dart';
 part 'users_tab.dart';
+part 'events_tab.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
   final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
@@ -55,7 +60,7 @@ class MobileAdminHome extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(adminStoreProvider);
-    final controller = useTabController(initialLength: 4, initialIndex: store.selectedTab.index);
+    final controller = useTabController(initialLength: 5, initialIndex: store.selectedTab.index);
 
     useEffect(() {
       controller.addListener(() {
@@ -87,6 +92,9 @@ class MobileAdminHome extends HookConsumerWidget {
               text: context.l10n.adminUsersMenu,
             ),
             Tab(
+              text: context.l10n.adminEventsMenu,
+            ),
+            Tab(
               text: context.l10n.adminHealerStatsMenu,
             ),
             Tab(
@@ -103,6 +111,7 @@ class MobileAdminHome extends HookConsumerWidget {
             children: const [
               Dashboard(),
               _Users(),
+              _Events(),
               HealerReports(),
               UserProfile(),
             ],
@@ -130,6 +139,9 @@ class DesktopAdminHome extends HookConsumerWidget {
         break;
       case HomeTabs.users:
         child = const _Users();
+        break;
+      case HomeTabs.events:
+        child = const _Events();
         break;
       case HomeTabs.healerStats:
         child = const HealerReports();
@@ -169,6 +181,14 @@ class DesktopAdminHome extends HookConsumerWidget {
                                 store.selectedTab = HomeTabs.users;
                               },
                               selected: store.selectedTab == HomeTabs.users,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.adminEventsMenu,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.events;
+                              },
+                              selected: store.selectedTab == HomeTabs.events,
                             ),
                             const SizedBox(width: 2),
                             MenuItem(

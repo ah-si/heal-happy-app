@@ -2,14 +2,13 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/user.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'user_event.g.dart';
+part 'admin_user_event.g.dart';
 
-/// UserEvent
+/// AdminUserEvent
 ///
 /// Properties:
 /// * [id] 
@@ -24,7 +23,7 @@ part 'user_event.g.dart';
 /// * [description] 
 /// * [cancelledDescription] 
 /// * [link] 
-abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
+abstract class AdminUserEvent implements Built<AdminUserEvent, AdminUserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;
 
@@ -32,7 +31,7 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     User get patient;
 
     @BuiltValueField(wireName: r'healer')
-    Healer get healer;
+    User get healer;
 
     @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
@@ -61,26 +60,26 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     @BuiltValueField(wireName: r'link')
     String get link;
 
-    UserEvent._();
+    AdminUserEvent._();
 
     @BuiltValueHook(initializeBuilder: true)
-    static void _defaults(UserEventBuilder b) => b;
+    static void _defaults(AdminUserEventBuilder b) => b;
 
-    factory UserEvent([void updates(UserEventBuilder b)]) = _$UserEvent;
+    factory AdminUserEvent([void updates(AdminUserEventBuilder b)]) = _$AdminUserEvent;
 
     @BuiltValueSerializer(custom: true)
-    static Serializer<UserEvent> get serializer => _$UserEventSerializer();
+    static Serializer<AdminUserEvent> get serializer => _$AdminUserEventSerializer();
 }
 
-class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
+class _$AdminUserEventSerializer implements StructuredSerializer<AdminUserEvent> {
     @override
-    final Iterable<Type> types = const [UserEvent, _$UserEvent];
+    final Iterable<Type> types = const [AdminUserEvent, _$AdminUserEvent];
 
     @override
-    final String wireName = r'UserEvent';
+    final String wireName = r'AdminUserEvent';
 
     @override
-    Iterable<Object?> serialize(Serializers serializers, UserEvent object,
+    Iterable<Object?> serialize(Serializers serializers, AdminUserEvent object,
         {FullType specifiedType = FullType.unspecified}) {
         final result = <Object?>[];
         result
@@ -94,7 +93,7 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
         result
             ..add(r'healer')
             ..add(serializers.serialize(object.healer,
-                specifiedType: const FullType(Healer)));
+                specifiedType: const FullType(User)));
         result
             ..add(r'isUrgent')
             ..add(serializers.serialize(object.isUrgent,
@@ -139,9 +138,9 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
     }
 
     @override
-    UserEvent deserialize(Serializers serializers, Iterable<Object?> serialized,
+    AdminUserEvent deserialize(Serializers serializers, Iterable<Object?> serialized,
         {FullType specifiedType = FullType.unspecified}) {
-        final result = UserEventBuilder();
+        final result = AdminUserEventBuilder();
 
         final iterator = serialized.iterator;
         while (iterator.moveNext()) {
@@ -159,7 +158,7 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                     break;
                 case r'healer':
                     result.healer.replace(serializers.deserialize(value,
-                        specifiedType: const FullType(Healer)) as Healer);
+                        specifiedType: const FullType(User)) as User);
                     break;
                 case r'isUrgent':
                     result.isUrgent = serializers.deserialize(value,

@@ -7,6 +7,7 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
+      ..add(AdminUserEvent.serializer)
       ..add(AskResetPassword.serializer)
       ..add(CalendarDaySettings.serializer)
       ..add(CalendarSettings.serializer)
@@ -21,6 +22,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(HealerStats.serializer)
       ..add(LoginRequest.serializer)
       ..add(LoginResponse.serializer)
+      ..add(PaginatedEvents.serializer)
       ..add(PaginatedHealers.serializer)
       ..add(PaginatedUsers.serializer)
       ..add(RefreshTokenRequest.serializer)
@@ -30,6 +32,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UserAllOf.serializer)
       ..add(UserEvent.serializer)
       ..add(UserTypeEnum.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(AdminUserEvent)]),
+          () => new ListBuilder<AdminUserEvent>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(DashboardUser)]),
           () => new ListBuilder<DashboardUser>())

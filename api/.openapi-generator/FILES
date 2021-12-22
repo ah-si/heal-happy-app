@@ -2,6 +2,7 @@
 README.md
 analysis_options.yaml
 doc/AdminApi.md
+doc/AdminUserEvent.md
 doc/AskResetPassword.md
 doc/AuthApi.md
 doc/CalendarDaySettings.md
@@ -17,6 +18,7 @@ doc/HealerAvailabilities.md
 doc/HealerStats.md
 doc/LoginRequest.md
 doc/LoginResponse.md
+doc/PaginatedEvents.md
 doc/PaginatedHealers.md
 doc/PaginatedUsers.md
 doc/RefreshTokenRequest.md
@@ -39,6 +41,7 @@ lib/src/auth/basic_auth.dart
 lib/src/auth/bearer_auth.dart
 lib/src/auth/oauth.dart
 lib/src/date_serializer.dart
+lib/src/model/admin_user_event.dart
 lib/src/model/ask_reset_password.dart
 lib/src/model/calendar_day_settings.dart
 lib/src/model/calendar_settings.dart
@@ -54,6 +57,7 @@ lib/src/model/healer_availabilities.dart
 lib/src/model/healer_stats.dart
 lib/src/model/login_request.dart
 lib/src/model/login_response.dart
+lib/src/model/paginated_events.dart
 lib/src/model/paginated_healers.dart
 lib/src/model/paginated_users.dart
 lib/src/model/refresh_token_request.dart
@@ -65,6 +69,7 @@ lib/src/model/user_event.dart
 lib/src/model/user_type_enum.dart
 lib/src/serializers.dart
 test/admin_api_test.dart
+test/admin_user_event_test.dart
 test/ask_reset_password_test.dart
 test/auth_api_test.dart
 test/calendar_day_settings_test.dart
@@ -80,6 +85,7 @@ test/healer_stats_test.dart
 test/healer_test.dart
 test/login_request_test.dart
 test/login_response_test.dart
+test/paginated_events_test.dart
 test/paginated_healers_test.dart
 test/paginated_users_test.dart
 test/refresh_token_request_test.dart

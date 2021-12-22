@@ -12,6 +12,7 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:heal_happy_sdk/src/date_serializer.dart';
 import 'package:heal_happy_sdk/src/model/date.dart';
 
+import 'package:heal_happy_sdk/src/model/admin_user_event.dart';
 import 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
 import 'package:heal_happy_sdk/src/model/calendar_day_settings.dart';
 import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
@@ -26,6 +27,7 @@ import 'package:heal_happy_sdk/src/model/healer_availabilities.dart';
 import 'package:heal_happy_sdk/src/model/healer_stats.dart';
 import 'package:heal_happy_sdk/src/model/login_request.dart';
 import 'package:heal_happy_sdk/src/model/login_response.dart';
+import 'package:heal_happy_sdk/src/model/paginated_events.dart';
 import 'package:heal_happy_sdk/src/model/paginated_healers.dart';
 import 'package:heal_happy_sdk/src/model/paginated_users.dart';
 import 'package:heal_happy_sdk/src/model/refresh_token_request.dart';
@@ -39,6 +41,7 @@ import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 part 'serializers.g.dart';
 
 @SerializersFor([
+  AdminUserEvent,
   AskResetPassword,
   CalendarDaySettings,
   CalendarSettings,
@@ -53,6 +56,7 @@ part 'serializers.g.dart';
   HealerStats,
   LoginRequest,
   LoginResponse,
+  PaginatedEvents,
   PaginatedHealers,
   PaginatedUsers,
   RefreshTokenRequest,

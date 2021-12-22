@@ -43,7 +43,7 @@ class HealerStore extends ChangeNotifier {
 
   Future<void> cancelEvent(String eventId, String message) async {
     await _userApi.deleteEvent(eventId: eventId, deleteEventRequest: DeleteEventRequest((b) => b.message = message));
-    loadEvents(false);
+    await loadEvents(false);
   }
 
   Future<void> loadEvents(bool showHistory) async {

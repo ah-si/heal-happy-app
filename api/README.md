@@ -69,6 +69,7 @@ Class | Method | HTTP request | Description
 [*AdminApi*](doc/AdminApi.md) | [**getDashboard**](doc/AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
 [*AdminApi*](doc/AdminApi.md) | [**getHealerStats**](doc/AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
 [*AdminApi*](doc/AdminApi.md) | [**getUser**](doc/AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
+[*AdminApi*](doc/AdminApi.md) | [**searchEvents**](doc/AdminApi.md#searchevents) | **GET** /api/v1/admin/events | 
 [*AdminApi*](doc/AdminApi.md) | [**searchUsers**](doc/AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
 [*AdminApi*](doc/AdminApi.md) | [**updateUser**](doc/AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**verifyUser**](doc/AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
@@ -95,6 +96,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [AdminUserEvent](doc/AdminUserEvent.md)
  - [AskResetPassword](doc/AskResetPassword.md)
  - [CalendarDaySettings](doc/CalendarDaySettings.md)
  - [CalendarSettings](doc/CalendarSettings.md)
@@ -109,6 +111,7 @@ Class | Method | HTTP request | Description
  - [HealerStats](doc/HealerStats.md)
  - [LoginRequest](doc/LoginRequest.md)
  - [LoginResponse](doc/LoginResponse.md)
+ - [PaginatedEvents](doc/PaginatedEvents.md)
  - [PaginatedHealers](doc/PaginatedHealers.md)
  - [PaginatedUsers](doc/PaginatedUsers.md)
  - [RefreshTokenRequest](doc/RefreshTokenRequest.md)

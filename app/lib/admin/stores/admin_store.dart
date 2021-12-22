@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final adminStoreProvider = ChangeNotifierProvider((_) => AdminStore());
 
-enum HomeTabs { home, users, healerStats, profile }
+enum HomeTabs { home, users, events, healerStats, profile }
 
 class AdminStore extends ChangeNotifier {
   HomeTabs _selectedTab = HomeTabs.home;
