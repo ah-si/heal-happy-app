@@ -434,6 +434,8 @@ class AdminApi {
   /// Parameters:
   /// * [start] 
   /// * [end] 
+  /// * [isUrgent] 
+  /// * [isCancelled] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -446,6 +448,8 @@ class AdminApi {
   Future<Response<PaginatedEvents>> searchEvents({ 
     required Date start,
     required Date end,
+    bool? isUrgent,
+    bool? isCancelled,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -476,6 +480,8 @@ class AdminApi {
     final _queryParameters = <String, dynamic>{
       r'start': encodeQueryParameter(_serializers, start, const FullType(Date)),
       r'end': encodeQueryParameter(_serializers, end, const FullType(Date)),
+      if (isUrgent != null) r'isUrgent': encodeQueryParameter(_serializers, isUrgent, const FullType(bool)),
+      if (isCancelled != null) r'isCancelled': encodeQueryParameter(_serializers, isCancelled, const FullType(bool)),
     };
 
     final _response = await _dio.request<Object>(

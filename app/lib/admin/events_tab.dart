@@ -80,6 +80,8 @@ class _EventsSearch extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final startState = useState<DateTime?>(null);
     final endState = useState<DateTime?>(null);
+    final urgent = useState<bool?>(null);
+    final cancelled = useState<bool?>(null);
     return SizedBox(
       width: double.infinity,
       child: Wrap(
@@ -98,11 +100,33 @@ class _EventsSearch extends HookConsumerWidget {
             },
             value: endState.value,
           ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 140),
+            child: CheckboxListTile(
+              value: urgent.value,
+              onChanged: (value) {
+                urgent.value = value;
+              },
+              tristate: true,
+              title: Text(context.l10n.adminEventIsUrgency, maxLines: 1),
+            ),
+          ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 140),
+            child: CheckboxListTile(
+              value: cancelled.value,
+              onChanged: (value) {
+                cancelled.value = value;
+              },
+              tristate: true,
+              title: Text(context.l10n.adminEventIsCancelled, maxLines: 1),
+            ),
+          ),
           ElevatedButton(
             onPressed: () {
               if (startState.value != null && endState.value != null) {
                 final store = ref.read(adminEventsSearchStoreProvider);
-                store.getEvents(0, startState.value!, endState.value!);
+                store.getEvents(0, startState.value!, endState.value!, urgent.value, cancelled.value);
               }
             },
             child: Text(context.l10n.searchButton),

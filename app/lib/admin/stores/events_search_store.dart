@@ -22,22 +22,31 @@ class AdminEventsSearchStore extends ChangeNotifier {
   bool isLoading = false;
   late DateTime _start;
   late DateTime _end;
+  bool? _isUrgent;
+  bool? _isCancelled;
 
   AdminEventsSearchStore({AdminApi? adminApi, UserApi? userApi})
       : _adminApi = adminApi ?? BackendApiProvider().api.getAdminApi(),
         _userApi = userApi ?? BackendApiProvider().api.getUserApi();
 
   Future<void> loadEventsPage(int page) async {
-    return getEvents(page, _start, _end);
+    return getEvents(page, _start, _end, _isUrgent, _isCancelled);
   }
 
-  Future<void> getEvents(int page, DateTime start, DateTime end) async {
+  Future<void> getEvents(int page, DateTime start, DateTime end, bool? isUrgent, bool? isCancelled) async {
     isLoading = true;
     _start = start;
     _end = end;
+    _isUrgent = isUrgent;
+    _isCancelled = isCancelled;
     notifyListeners();
     try {
-      final results = await _adminApi.searchEvents(start: start.toDate(), end: end.toDate());
+      final results = await _adminApi.searchEvents(
+        start: start.toDate(),
+        end: end.toDate(),
+        isCancelled: isCancelled,
+        isUrgent: isUrgent,
+      );
       searchResults = SearchResults(results.data!.events.toList(), page, results.data!.totalPages);
       isLoading = false;
       notifyListeners();

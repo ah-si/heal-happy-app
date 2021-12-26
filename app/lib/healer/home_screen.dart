@@ -445,6 +445,7 @@ class _HealerEvents extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(healerStoreProvider);
+    final hideCancelled = useState(false);
 
     useEffect(() {
       store.loadEvents(showHistory);
@@ -496,11 +497,25 @@ class _HealerEvents extends HookConsumerWidget {
               context.l10n.seeOnlyUrgencies(store.eventUrgent),
             ),
           ),
+        if (showHistory)
+          CheckboxListTile(
+            value: hideCancelled.value,
+            onChanged: (value) {
+              hideCancelled.value = value!;
+            },
+            title: Text(context.l10n.hideCancelled),
+          ),
         Padding(
           padding: const EdgeInsets.all(kNormalPadding),
           child: Wrap(
             children: store.eventsResults!.events
-                .where((element) => store.seeOnlyUrgency ? element.isUrgent : true)
+                .where((element) {
+                  if (hideCancelled.value && element.isCancelled) {
+                    return false;
+                  }
+
+                  return store.seeOnlyUrgency ? element.isUrgent : true;
+                })
                 .map((e) => _HealerEventDetails(event: e))
                 .toList(growable: false),
           ),

@@ -358,9 +358,15 @@ class CommonLocalizations {
 
   String get eventIsUrgency => Intl.message('Signaler au soignant que c\'est une urgence', name: 'eventIsUrgency');
 
+  String get adminEventIsUrgency => Intl.message('Urgent', name: 'adminEventIsUrgency');
+
+  String get adminEventIsCancelled => Intl.message('Annulée', name: 'adminEventIsCancelled');
+
   String get eventUrgencyTitle => Intl.message('Rendez-vous urgent', name: 'eventUrgencyTitle');
 
   String get eventUrgencyDesc => Intl.message('Si votre cas est grave et que vous avez besoin d\'une consultation urgente, ceci alertera le soignant. Si il peut vous prendre plus tôt il vous contactera directement par téléphone.\n\nMerci de préciser votre age et vos pathologies dans le motif de votre consultation.\n\nVérifiez que vos informations de contact soient correctes dans votre profil.\n\nMerci d\'utiliser ceci uniquement en cas d\'urgence.', name: 'eventUrgencyDesc');
+
+  String get hideCancelled => Intl.message('Cacher les annulations', name: 'hideCancelled');
 
   String seeOnlyUrgencies(int nb) => Intl.message('Voir uniquement les $nb consultation(s) urgente', args: [nb], name: 'seeOnlyUrgencies');
 

@@ -243,7 +243,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **searchEvents**
-> PaginatedEvents searchEvents(start, end)
+> PaginatedEvents searchEvents(start, end, isUrgent, isCancelled)
 
 
 
@@ -258,9 +258,11 @@ import 'package:heal_happy_sdk/api.dart';
 final api = HealHappySdk().getAdminApi();
 final Date start = ; // Date | 
 final Date end = ; // Date | 
+final bool isUrgent = true; // bool | 
+final bool isCancelled = true; // bool | 
 
 try { 
-    final response = api.searchEvents(start, end);
+    final response = api.searchEvents(start, end, isUrgent, isCancelled);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling AdminApi->searchEvents: $e\n');
@@ -273,6 +275,8 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **start** | [**Date**](.md)|  | 
  **end** | [**Date**](.md)|  | 
+ **isUrgent** | **bool**|  | [optional] 
+ **isCancelled** | **bool**|  | [optional] 
 
 ### Return type
 
