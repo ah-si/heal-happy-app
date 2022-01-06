@@ -46,73 +46,82 @@ class HealerAvailability extends HookConsumerWidget {
         }
       }
 
-      child = ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 230, minWidth: 500),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: slots
-                    .map(
-                      (e) => Expanded(
-                    child: Text(e.date, textAlign: TextAlign.center),
+      const minWidth = 80.0;
+
+      child = Scrollbar(
+        isAlwaysShown: true,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 230),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: slots
+                        .map(
+                          (e) => SizedBox(width: minWidth, child: Text(e.date, textAlign: TextAlign.center)),
+                        )
+                        .toList(growable: false),
                   ),
-                )
-                    .toList(growable: false),
-              ),
-            ),
-            const Divider(height: 1),
-            Expanded(
-              child: isEmpty
-                  ? Center(
-                child: Text(
-                  context.l10n.noAvailabilities,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
                 ),
-              )
-                  : HookBuilder(
-                builder: (context) {
-                  final controller = useScrollController();
-                  return Scrollbar(
-                    controller: controller,
-                    child: SingleChildScrollView(
-                      controller: controller,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: slots
-                            .map(
-                              (e) => Expanded(
-                            child: Column(
-                              children: [
-                                ...e.slots
-                                    .map((slot) => Padding(
-                                  padding: const EdgeInsets.all(kSmallPadding),
-                                  child: ActionChip(
-                                    label: Text(slot.label),
-                                    labelStyle: const TextStyle(color: Colors.white),
-                                    backgroundColor: context.primaryColor,
-                                    onPressed: () => _showEventPopup(context, ref, store, slot),
-                                  ),
-                                ))
-                                    .toList(growable: false),
-                              ],
-                            ),
+                const Divider(height: 1),
+                Expanded(
+                  child: isEmpty
+                      ? Center(
+                          child: Text(
+                            context.l10n.noAvailabilities,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
                           ),
                         )
-                            .toList(growable: false),
-                      ),
-                    ),
-                  );
-                },
-              ),
+                      : HookBuilder(
+                          builder: (context) {
+                            final controller = useScrollController();
+                            return Scrollbar(
+                              controller: controller,
+                              isAlwaysShown: true,
+                              scrollbarOrientation: ScrollbarOrientation.left,
+                              child: SingleChildScrollView(
+                                controller: controller,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: slots
+                                      .map(
+                                        (e) => SizedBox(
+                                          width: minWidth,
+                                          child: Column(
+                                            children: [
+                                              ...e.slots
+                                                  .map((slot) => Padding(
+                                                        padding: const EdgeInsets.all(kSmallPadding),
+                                                        child: ActionChip(
+                                                          label: Text(slot.label),
+                                                          labelStyle: const TextStyle(color: Colors.white),
+                                                          backgroundColor: context.primaryColor,
+                                                          onPressed: () => _showEventPopup(context, ref, store, slot),
+                                                        ),
+                                                      ))
+                                                  .toList(growable: false),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                      .toList(growable: false),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       );
     }
@@ -131,45 +140,45 @@ class HealerAvailability extends HookConsumerWidget {
     final formKey = GlobalKey<FormState>();
     showAppDialog(
         context,
-            (_) => Text(context.l10n.takeRdv),
-            (context) => Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(context.l10n.takeRdvConfirm(healerName, slot.label)),
-              TextFormField(
-                controller: controller,
-                maxLines: 3,
-                validator: (value) => isRequired(value, context),
-                decoration: InputDecoration(
-                  label: Text(context.l10n.messageForHealer),
-                ),
-              ),
-              HookBuilder(
-                builder: (context) {
-                  final urgentState = useState(isUrgent);
-                  return CheckboxListTile(
-                    value: urgentState.value,
-                    onChanged: (value) async {
-                      if (value!) {
-                        final confirm = await showConfirm(context, context.l10n.eventUrgencyTitle, context.l10n.eventUrgencyDesc);
-                        if (confirm) {
-                          isUrgent = value;
-                          urgentState.value = isUrgent;
-                        }
-                      } else {
-                        isUrgent = value;
-                        urgentState.value = isUrgent;
-                      }
+        (_) => Text(context.l10n.takeRdv),
+        (context) => Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(context.l10n.takeRdvConfirm(healerName, slot.label)),
+                  TextFormField(
+                    controller: controller,
+                    maxLines: 3,
+                    validator: (value) => isRequired(value, context),
+                    decoration: InputDecoration(
+                      label: Text(context.l10n.messageForHealer),
+                    ),
+                  ),
+                  HookBuilder(
+                    builder: (context) {
+                      final urgentState = useState(isUrgent);
+                      return CheckboxListTile(
+                        value: urgentState.value,
+                        onChanged: (value) async {
+                          if (value!) {
+                            final confirm = await showConfirm(context, context.l10n.eventUrgencyTitle, context.l10n.eventUrgencyDesc);
+                            if (confirm) {
+                              isUrgent = value;
+                              urgentState.value = isUrgent;
+                            }
+                          } else {
+                            isUrgent = value;
+                            urgentState.value = isUrgent;
+                          }
+                        },
+                        title: Text(context.l10n.eventIsUrgency),
+                      );
                     },
-                    title: Text(context.l10n.eventIsUrgency),
-                  );
-                },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
         actions: [
           DialogAction(
             text: MaterialLocalizations.of(context).cancelButtonLabel,

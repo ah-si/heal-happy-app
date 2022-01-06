@@ -95,10 +95,11 @@ class _EventsSearch extends HookConsumerWidget {
           ),
           _DateTimeField(
             label: context.l10n.endDate,
+            lastDate: DateTime.now().add(const Duration(days: 1)),
             onDateSelected: (DateTime date) {
               endState.value = date;
             },
-            value: endState.value,
+            value: endState.value ?? DateTime.now().add(const Duration(days: 1)),
           ),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 140),

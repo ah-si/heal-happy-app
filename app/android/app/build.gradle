@@ -57,7 +57,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "org.ashi.soignezheureux"
+        applicationId "org.ahsi.soignez_heureux"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()

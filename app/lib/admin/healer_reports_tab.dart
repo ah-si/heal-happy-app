@@ -209,6 +209,8 @@ class _SearchStats extends HookConsumerWidget {
 
 class _DateTimeField extends HookWidget {
   final DateTime? value;
+  final DateTime? lastDate;
+  final DateTime? firstDate;
   final String label;
   final Function(DateTime date) onDateSelected;
   static final _dateFormatter = DateFormat('dd/MM/yyyy');
@@ -216,6 +218,8 @@ class _DateTimeField extends HookWidget {
   const _DateTimeField({
     Key? key,
     this.value,
+    this.lastDate,
+    this.firstDate,
     required this.onDateSelected,
     required this.label,
   }) : super(key: key);
@@ -232,8 +236,8 @@ class _DateTimeField extends HookWidget {
           onTap: () async {
             final date = await showDatePicker(
               context: context,
-              firstDate: DateTime.now().subtract(const Duration(days: 365)),
-              lastDate: DateTime.now(),
+              firstDate: firstDate ?? DateTime.now().subtract(const Duration(days: 365)),
+              lastDate: lastDate ?? DateTime.now(),
               initialDate: DateTime.now(),
             );
             if (date != null) {

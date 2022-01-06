@@ -463,8 +463,8 @@ class _HealerListItem extends HookConsumerWidget {
           if (!context.isMobile) const SizedBox(width: kNormalPadding),
           if (!context.isMobile)
             Expanded(
-              flex: 4,
-              child: HealerAvailability(id: healer.id!, healerName: healer.name),
+              flex: 3,
+              child: Align(alignment: Alignment.centerRight, child: HealerAvailability(id: healer.id!, healerName: healer.name)),
             ),
         ],
       ),

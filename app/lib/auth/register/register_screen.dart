@@ -88,17 +88,17 @@ class RegisterScreen extends HookConsumerWidget {
                           case 2:
                             return StepInfoPro(onContinue: next);
                           case 3:
-                            return StepCalendarInfo(onContinue: next, controller: scrollController);
-                          case 4:
+                            //return StepCalendarInfo(onContinue: next, controller: scrollController);
                             return StepAddress(onContinue: next);
-                          case 5:
+                          case 4:
                             return StepSocial(onContinue: register);
+                          case 5:
                         }
                         return _StepType(
                           onContinue: next,
                         );
                       },
-                      itemCount: userInfo.type == UserTypeEnum.patient ? 2 : 6,
+                      itemCount: userInfo.type == UserTypeEnum.patient ? 2 : 5,
                     ),
                   ),
                 ],
