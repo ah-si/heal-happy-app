@@ -347,6 +347,8 @@ class CommonLocalizations {
 
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
 
+  String get urgencyContact => Intl.message('En cas d\'urgence, et si vous ne trouvez pas de médecin disponible, merci de nous contacter à urgence@ah-si.org en précisant votre problème et vos informations de contact.', name: 'urgencyContact');
+
   String eventCreatedAt(String date) => Intl.message('Consultation prise le $date', args: [date],name: 'eventCreatedAt');
 
   String get donateInstructions =>

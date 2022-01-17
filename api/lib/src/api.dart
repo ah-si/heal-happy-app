@@ -14,7 +14,7 @@ import 'package:heal_happy_sdk/src/api/auth_api.dart';
 import 'package:heal_happy_sdk/src/api/user_api.dart';
 
 class HealHappySdk {
-  static const String basePath = r'https://soignez-heureux.ah-si.org';
+  static const String basePath = r'https://soignez-heureux.com';
 
   final Dio dio;
   final Serializers serializers;

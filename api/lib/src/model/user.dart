@@ -2,49 +2,47 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/user_all_of.dart';
-import 'package:heal_happy_sdk/src/model/healer.dart';
-import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
-import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
 part 'user.g.dart';
 
 /// User
 ///
 /// Properties:
-/// * [id] 
-/// * [isVerified] 
-/// * [isActivated] 
-/// * [job] 
-/// * [firstName] 
-/// * [consultationDuration] 
-/// * [isAddressPublic] 
-/// * [isTermsAccepted] 
-/// * [versionTermsAccepted] 
-/// * [lang] 
-/// * [type] 
-/// * [experiences] 
-/// * [description] 
-/// * [diploma] 
-/// * [diplomaFile] 
-/// * [healerTermsFile] 
-/// * [website] 
-/// * [social1] 
-/// * [social2] 
-/// * [social3] 
-/// * [lastName] 
-/// * [calendarSettings] 
-/// * [street] 
-/// * [street2] 
-/// * [zipCode] 
-/// * [country] 
-/// * [city] 
-/// * [avatar] 
-/// * [email] 
-/// * [mobile] 
-/// * [password] 
+/// * [id]
+/// * [isVerified]
+/// * [isActivated]
+/// * [job]
+/// * [firstName]
+/// * [consultationDuration]
+/// * [isAddressPublic]
+/// * [isTermsAccepted]
+/// * [versionTermsAccepted]
+/// * [lang]
+/// * [type]
+/// * [experiences]
+/// * [description]
+/// * [diploma]
+/// * [diplomaFile]
+/// * [healerTermsFile]
+/// * [website]
+/// * [social1]
+/// * [social2]
+/// * [social3]
+/// * [lastName]
+/// * [calendarSettings]
+/// * [street]
+/// * [street2]
+/// * [zipCode]
+/// * [country]
+/// * [city]
+/// * [avatar]
+/// * [email]
+/// * [mobile]
+/// * [password]
 abstract class User implements Built<User, UserBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;

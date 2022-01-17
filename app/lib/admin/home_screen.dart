@@ -28,14 +28,13 @@ import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
+part 'events_tab.dart';
 part 'healer_reports_tab.dart';
 part 'users_tab.dart';
-part 'events_tab.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
   final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);

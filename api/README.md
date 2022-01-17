@@ -60,7 +60,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://soignez-heureux.ah-si.org*
+All URIs are relative to *https://soignez-heureux.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

@@ -278,7 +278,7 @@ class _Help extends HookConsumerWidget {
           const SizedBox(height: kNormalPadding),
           TextButton(
             onPressed: () {
-              launch('${Config().baseUrl}/assets/assets/files/tuto.pdf');
+              launch('https://www.ah-si.org/wp-content/uploads/Tutoriel-Soignants-soignez-heureux-AH-SI.pdf');
             },
             child: Text(context.l10n.downloadTuto),
           ),

@@ -126,7 +126,6 @@ class LoginScreen extends HookConsumerWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       alignment: WrapAlignment.center,
                       children: [
-                        if (false)
                         InkWell(
                           onTap: () {
                             launch(kUrlPlayStore);

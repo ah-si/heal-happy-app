@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -323,6 +324,23 @@ class _HealerList extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (store.lastJobSearch == 'med_gene')
+          Padding(
+            padding: const EdgeInsets.all(kSmallPadding),
+            child: TextButton(
+              onPressed: () {
+                launch('mailto:urgence@ah-si.org');
+              },
+              onLongPress: () {
+                Clipboard.setData(const ClipboardData(text: 'urgence@ah-si.org'));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
+              },
+              child: Text(
+                context.l10n.urgencyContact,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         Expanded(
           child: ListView.separated(
             itemBuilder: (context, index) {
