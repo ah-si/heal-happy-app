@@ -19,6 +19,7 @@ class HealerAvailability extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final info = useMemoized(() => StoreInfo(id, context.isMobile), [id]);
     final store = ref.watch(availabilitiesStoreProvider(info));
+    final controller = useScrollController();
     late Widget child;
     if (store.isLoading) {
       child = const Padding(
@@ -49,8 +50,9 @@ class HealerAvailability extends HookConsumerWidget {
       const minWidth = 80.0;
 
       child = Scrollbar(
-        isAlwaysShown: true,
+        controller: controller,
         child: SingleChildScrollView(
+          controller: controller,
           scrollDirection: Axis.horizontal,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 230),
@@ -85,7 +87,6 @@ class HealerAvailability extends HookConsumerWidget {
                             return Scrollbar(
                               controller: controller,
                               isAlwaysShown: true,
-                              scrollbarOrientation: ScrollbarOrientation.left,
                               child: SingleChildScrollView(
                                 controller: controller,
                                 child: Row(
@@ -139,69 +140,71 @@ class HealerAvailability extends HookConsumerWidget {
     var isUrgent = false;
     final formKey = GlobalKey<FormState>();
     showAppDialog(
-        context,
-        (_) => Text(context.l10n.takeRdv),
-        (context) => Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(context.l10n.takeRdvConfirm(healerName, slot.label)),
-                  TextFormField(
-                    controller: controller,
-                    maxLines: 3,
-                    validator: (value) => isRequired(value, context),
-                    decoration: InputDecoration(
-                      label: Text(context.l10n.messageForHealer),
-                    ),
-                  ),
-                  HookBuilder(
-                    builder: (context) {
-                      final urgentState = useState(isUrgent);
-                      return CheckboxListTile(
-                        value: urgentState.value,
-                        onChanged: (value) async {
-                          if (value!) {
-                            final confirm = await showConfirm(context, context.l10n.eventUrgencyTitle, context.l10n.eventUrgencyDesc);
-                            if (confirm) {
-                              isUrgent = value;
-                              urgentState.value = isUrgent;
-                            }
-                          } else {
-                            isUrgent = value;
-                            urgentState.value = isUrgent;
-                          }
-                        },
-                        title: Text(context.l10n.eventIsUrgency),
-                      );
-                    },
-                  ),
-                ],
+      context,
+      (_) => Text(context.l10n.takeRdv),
+      (context) => Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(context.l10n.takeRdvConfirm(healerName, slot.label)),
+            TextFormField(
+              controller: controller,
+              maxLines: 3,
+              validator: (value) => isRequired(value, context),
+              decoration: InputDecoration(
+                label: Text(context.l10n.messageForHealer),
+                hintText: context.l10n.hintReasonConsultation,
               ),
             ),
-        actions: [
-          DialogAction(
-            text: MaterialLocalizations.of(context).cancelButtonLabel,
-            callback: (BuildContext context) {
+            HookBuilder(
+              builder: (context) {
+                final urgentState = useState(isUrgent);
+                return CheckboxListTile(
+                  value: urgentState.value,
+                  onChanged: (value) async {
+                    if (value!) {
+                      final confirm = await showConfirm(context, context.l10n.eventUrgencyTitle, context.l10n.eventUrgencyDesc);
+                      if (confirm) {
+                        isUrgent = value;
+                        urgentState.value = isUrgent;
+                      }
+                    } else {
+                      isUrgent = value;
+                      urgentState.value = isUrgent;
+                    }
+                  },
+                  title: Text(context.l10n.eventIsUrgency),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        DialogAction(
+          text: MaterialLocalizations.of(context).cancelButtonLabel,
+          callback: (BuildContext context) {
+            Navigator.of(context).pop();
+          },
+        ),
+        DialogAction(
+          text: MaterialLocalizations.of(context).okButtonLabel,
+          callback: (BuildContext context) async {
+            if (!(formKey.currentState?.validate() ?? false)) {
+              return;
+            }
+            final userStore = ref.read(userStoreProvider);
+            final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
+              await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text, isUrgent);
+            });
+            if (success) {
               Navigator.of(context).pop();
-            },
-          ),
-          DialogAction(
-            text: MaterialLocalizations.of(context).okButtonLabel,
-            callback: (BuildContext context) async {
-              if (!(formKey.currentState?.validate() ?? false)) {
-                return;
-              }
-              final userStore = ref.read(userStoreProvider);
-              final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-                await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text, isUrgent);
-              });
-              if (success) {
-                Navigator.of(context).pop();
-                showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
-              }
-            },
-          ),
-        ]);
+              showAlert(context, context.l10n.rdvCreated, (_) => Text(context.l10n.rdvCreatedDescription));
+            }
+          },
+        ),
+      ],
+    );
   }
 }

@@ -48,7 +48,6 @@ void main() {
 }
 
 FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
-
   if (!kIsProductionMode) {
     return null;
   } else if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
@@ -59,7 +58,6 @@ FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
 
   return event;
 }
-
 
 void app({Config? config}) async {
   config ??= Config();
@@ -97,6 +95,9 @@ class MyApp extends StatelessWidget {
               builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),
               theme: ThemeData(
                 primarySwatch: createMaterialColor(kPrimaryColor),
+                scrollbarTheme: ScrollbarThemeData().copyWith(
+                  thumbColor: MaterialStateProperty.all(Colors.grey[500]),
+                ),
               ),
               locale: kSupportedLanguages.first,
               localizationsDelegates: [

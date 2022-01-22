@@ -366,7 +366,7 @@ class CommonLocalizations {
 
   String get eventUrgencyTitle => Intl.message('Rendez-vous urgent', name: 'eventUrgencyTitle');
 
-  String get eventUrgencyDesc => Intl.message('Si votre cas est grave et que vous avez besoin d\'une consultation urgente, ceci alertera le soignant. Si il peut vous prendre plus tôt il vous contactera directement par téléphone.\n\nMerci de préciser votre age et vos pathologies dans le motif de votre consultation.\n\nVérifiez que vos informations de contact soient correctes dans votre profil.\n\nMerci d\'utiliser ceci uniquement en cas d\'urgence.', name: 'eventUrgencyDesc');
+  String get eventUrgencyDesc => Intl.message('Si votre cas est grave et que vous avez besoin d\'une consultation urgente, ceci alertera le soignant. Si il peut vous prendre plus tôt il vous contactera directement par téléphone.\n\nVérifiez que vos informations de contact soient correctes dans votre profil.\n\nMerci d\'utiliser ceci uniquement en cas d\'urgence.', name: 'eventUrgencyDesc');
 
   String get hideCancelled => Intl.message('Cacher les annulations', name: 'hideCancelled');
 
@@ -379,6 +379,8 @@ class CommonLocalizations {
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
   String get wrongConsultationDuration => Intl.message('30 minutes minimum', name: 'wrongConsultationDuration');
+
+  String get hintReasonConsultation => Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');
 
   String takeRdvConfirm(String name, String when) => Intl.message('Voulez-vous prendre rendez-vous avec $name à $when?', name: 'takeRdvConfirm');
 

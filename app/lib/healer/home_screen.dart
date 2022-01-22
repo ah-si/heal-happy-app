@@ -673,22 +673,21 @@ class _HealerEventDetails extends HookConsumerWidget {
                 },
                 child: Text(context.l10n.cancelButton),
               ),
-            if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now().subtract(const Duration(days: 1))))
-              TextButton(
-                onPressed: () {
-                  if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                    launch(event.link);
-                  } else {
-                    var options = JitsiMeetingOptions(
-                      roomNameOrUrl: event.link,
-                      userDisplayName: event.healer.firstName,
-                      subject: 'Consultation Soignez Heureux',
-                    );
-                    JitsiMeetWrapper.joinMeeting(options: options);
-                  }
-                },
-                child: Text(context.l10n.joinVisioButton),
-              ),
+            TextButton(
+              onPressed: () {
+                if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
+                  launch(event.link);
+                } else {
+                  var options = JitsiMeetingOptions(
+                    roomNameOrUrl: event.link,
+                    userDisplayName: event.healer.firstName,
+                    subject: 'Consultation Soignez Heureux',
+                  );
+                  JitsiMeetWrapper.joinMeeting(options: options);
+                }
+              },
+              child: Text(context.l10n.joinVisioButton),
+            ),
           ],
         )
       ],

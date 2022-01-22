@@ -289,6 +289,7 @@ class _HealerList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(patientStoreProvider);
+    final controller = useScrollController();
 
     if (store.searchResults == null) {
       return const SizedBox(height: 0, width: 0);
@@ -324,7 +325,7 @@ class _HealerList extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (store.lastJobSearch == 'med_gene')
+        if (store.lastJobSearch == 'med_gene' && false)
           Padding(
             padding: const EdgeInsets.all(kSmallPadding),
             child: TextButton(
@@ -342,14 +343,19 @@ class _HealerList extends HookConsumerWidget {
             ),
           ),
         Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) {
-              return _HealerListItem(healer: store.searchResults!.healers[index]);
-            },
-            separatorBuilder: (context, index) => const Divider(height: 1),
-            primary: false,
-            shrinkWrap: true,
-            itemCount: store.searchResults?.healers.length ?? 0,
+          child: Scrollbar(
+            isAlwaysShown: true,
+            controller: controller,
+            child: ListView.separated(
+              controller: controller,
+              itemBuilder: (context, index) {
+                return _HealerListItem(healer: store.searchResults!.healers[index]);
+              },
+              separatorBuilder: (context, index) => const Divider(height: 1),
+              primary: false,
+              shrinkWrap: true,
+              itemCount: store.searchResults?.healers.length ?? 0,
+            ),
           ),
         ),
         Pagination(
@@ -501,6 +507,8 @@ class _PlannedConsultations extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(patientStoreProvider);
+    final controller = useScrollController();
+
     useEffect(() {
       store.loadEvents(showHistory);
     }, const []);
@@ -535,11 +543,16 @@ class _PlannedConsultations extends HookConsumerWidget {
       );
     }
 
-    return SingleChildScrollView(
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.start,
-        alignment: context.isMobile ? WrapAlignment.center : WrapAlignment.start,
-        children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
+    return Scrollbar(
+      isAlwaysShown: true,
+      controller: controller,
+      child: SingleChildScrollView(
+        controller: controller,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.start,
+          alignment: context.isMobile ? WrapAlignment.center : WrapAlignment.start,
+          children: store.eventsResults!.events.map((e) => _PatientEventDetails(event: e)).toList(growable: false),
+        ),
       ),
     );
   }
@@ -608,7 +621,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                 },
                 child: Text(context.l10n.cancelButton),
               ),
-            if (!event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 1))))
+            if (!event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 4))))
               TextButton(
                 onPressed: () {
                   if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
