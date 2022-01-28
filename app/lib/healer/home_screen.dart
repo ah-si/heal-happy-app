@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -325,56 +324,6 @@ class _Help extends HookConsumerWidget {
   }
 }
 
-class _UploadFileCard extends StatelessWidget {
-  final String description;
-  final String dialogTitle;
-  final Widget? downloadButton;
-  final Function(FilePickerResult result) onFilePicked;
-
-  const _UploadFileCard({
-    Key? key,
-    this.downloadButton,
-    required this.description,
-    required this.onFilePicked,
-    required this.dialogTitle,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(kNormalPadding),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 300, maxHeight: 150, minWidth: 200),
-          child: Column(
-            children: [
-              Expanded(child: Text(description)),
-              ButtonBar(
-                children: [
-                  if (downloadButton != null) downloadButton!,
-                  TextButton(
-                    onPressed: () async {
-                      final result = await FilePicker.platform.pickFiles(
-                        dialogTitle: dialogTitle,
-                        allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg'],
-                        type: FileType.custom,
-                      );
-                      if (result != null) {
-                        onFilePicked(result);
-                      }
-                    },
-                    child: Text(context.l10n.uploadButton),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _HealerHomePage extends HookConsumerWidget {
   const _HealerHomePage();
 
@@ -382,7 +331,7 @@ class _HealerHomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userStore = ref.watch(userStoreProvider);
 
-    final needFileUpload = !(userStore.user?.isVerified ?? false) && (userStore.user?.diplomaFile == null || userStore.user?.healerTermsFile == null);
+    final needFileUpload = !(userStore.user?.isVerified ?? false);
 
     return SingleChildScrollView(
       child: Column(
@@ -390,39 +339,28 @@ class _HealerHomePage extends HookConsumerWidget {
         children: [
           if (needFileUpload)
             Padding(
-              padding: const EdgeInsets.all(kNormalPadding),
+              padding: const EdgeInsets.all(kSmallPadding),
               child: Wrap(
                 children: [
-                  if (userStore.user?.diplomaFile == null)
-                    _UploadFileCard(
-                      description: context.l10n.diplomaUpload,
-                      dialogTitle: context.l10n.diplomaDialogTitle,
-                      onFilePicked: (FilePickerResult result) async {
-                        await showLoadingDialog(
-                          context,
-                          (_) => Text(context.l10n.uploading),
-                          () => userStore.uploadDiploma(result),
-                        );
-                      },
+                  Card(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(kNormalPadding),
+                          child: SelectableText(context.l10n.sendHealerProof),
+                        ),
+                        ButtonBar(
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  launch('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
+                                },
+                                child: Text(context.l10n.downloadHealerTerms))
+                          ],
+                        )
+                      ],
                     ),
-                  if (userStore.user?.healerTermsFile == null)
-                    _UploadFileCard(
-                      description: context.l10n.termsUpload,
-                      downloadButton: TextButton(
-                        onPressed: () {
-                          launch('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
-                        },
-                        child: Text(context.l10n.downloadTerms),
-                      ),
-                      dialogTitle: context.l10n.termsDialogTitle,
-                      onFilePicked: (FilePickerResult result) async {
-                        await showLoadingDialog(
-                          context,
-                          (_) => Text(context.l10n.uploading),
-                          () => userStore.uploadTerms(result),
-                        );
-                      },
-                    ),
+                  ),
                 ],
               ),
             ),

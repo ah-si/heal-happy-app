@@ -298,22 +298,6 @@ class _UserItem extends HookConsumerWidget {
           ),
           ButtonBar(
             children: [
-              if (user.type == UserTypeEnum.healer && user.diplomaFile != null)
-                TextButton(
-                  onPressed: () {
-                    final token = BackendApiProvider().getToken();
-                    launch('${Config().baseUrl}/api/v1/admin/files/download?file=${user.diplomaFile}&token=$token');
-                  },
-                  child: Text(context.l10n.downloadDiploma),
-                ),
-              if (user.type == UserTypeEnum.healer && user.healerTermsFile != null)
-                TextButton(
-                  onPressed: () {
-                    final token = BackendApiProvider().getToken();
-                    launch('${Config().baseUrl}/api/v1/admin/files/download?file=${user.healerTermsFile}&token=$token');
-                  },
-                  child: Text(context.l10n.downloadHealerTerms),
-                ),
               TextButton(
                 onPressed: onDeletePressed,
                 child: Text(context.l10n.deleteButton),

@@ -43,6 +43,8 @@ class UserStore extends ChangeNotifier {
   User? user;
   User? currentEditedUser;
 
+  AppSettings? appSettings;
+
   User get requiredUser => user!;
 
   UserStore(this._apiProvider, this._preferencesProvider) {
@@ -80,7 +82,24 @@ class UserStore extends ChangeNotifier {
     return _specialities;
   }
 
+  Future<void> loadSettings({bool force = false}) async {
+    //settings already loaded
+    if (appSettings != null && !force) {
+      return;
+    }
+
+    try {
+      appSettings = (await _apiProvider.api.getSettingsApi().getSettings()).data!;
+    } catch(ex) {
+      appSettings = AppSettings((b) => b.enableUrgencyButton = true);
+    }
+    if (force) {
+      notifyListeners();
+    }
+  }
+
   Future<void> init({bool silent = true}) async {
+    await loadSettings();
     try {
       final token = _preferencesProvider.prefs.getString(PreferencesProvider.keyToken);
       if (token.isNullOrEmpty) {

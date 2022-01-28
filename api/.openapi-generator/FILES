@@ -3,6 +3,7 @@ README.md
 analysis_options.yaml
 doc/AdminApi.md
 doc/AdminUserEvent.md
+doc/AppSettings.md
 doc/AskResetPassword.md
 doc/AuthApi.md
 doc/CalendarDaySettings.md
@@ -23,6 +24,7 @@ doc/PaginatedHealers.md
 doc/PaginatedUsers.md
 doc/RefreshTokenRequest.md
 doc/ResetPassword.md
+doc/SettingsApi.md
 doc/UpdateEventRequest.md
 doc/User.md
 doc/UserAllOf.md
@@ -33,6 +35,7 @@ lib/heal_happy_sdk.dart
 lib/src/api.dart
 lib/src/api/admin_api.dart
 lib/src/api/auth_api.dart
+lib/src/api/settings_api.dart
 lib/src/api/user_api.dart
 lib/src/api_util.dart
 lib/src/auth/api_key_auth.dart
@@ -42,6 +45,7 @@ lib/src/auth/bearer_auth.dart
 lib/src/auth/oauth.dart
 lib/src/date_serializer.dart
 lib/src/model/admin_user_event.dart
+lib/src/model/app_settings.dart
 lib/src/model/ask_reset_password.dart
 lib/src/model/calendar_day_settings.dart
 lib/src/model/calendar_settings.dart
@@ -70,6 +74,7 @@ lib/src/model/user_type_enum.dart
 lib/src/serializers.dart
 test/admin_api_test.dart
 test/admin_user_event_test.dart
+test/app_settings_test.dart
 test/ask_reset_password_test.dart
 test/auth_api_test.dart
 test/calendar_day_settings_test.dart
@@ -90,6 +95,7 @@ test/paginated_healers_test.dart
 test/paginated_users_test.dart
 test/refresh_token_request_test.dart
 test/reset_password_test.dart
+test/settings_api_test.dart
 test/update_event_request_test.dart
 test/user_all_of_test.dart
 test/user_api_test.dart

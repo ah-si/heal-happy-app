@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
               builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),
               theme: ThemeData(
                 primarySwatch: createMaterialColor(kPrimaryColor),
-                scrollbarTheme: ScrollbarThemeData().copyWith(
+                scrollbarTheme: const ScrollbarThemeData().copyWith(
                   thumbColor: MaterialStateProperty.all(Colors.grey[500]),
                 ),
               ),

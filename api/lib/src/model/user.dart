@@ -2,47 +2,47 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+import 'package:heal_happy_sdk/src/model/user_all_of.dart';
+import 'package:heal_happy_sdk/src/model/healer.dart';
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
+import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
-import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
 part 'user.g.dart';
 
 /// User
 ///
 /// Properties:
-/// * [id]
-/// * [isVerified]
-/// * [isActivated]
-/// * [job]
-/// * [firstName]
-/// * [consultationDuration]
-/// * [isAddressPublic]
-/// * [isTermsAccepted]
-/// * [versionTermsAccepted]
-/// * [lang]
-/// * [type]
-/// * [experiences]
-/// * [description]
-/// * [diploma]
-/// * [diplomaFile]
-/// * [healerTermsFile]
-/// * [website]
-/// * [social1]
-/// * [social2]
-/// * [social3]
-/// * [lastName]
-/// * [calendarSettings]
-/// * [street]
-/// * [street2]
-/// * [zipCode]
-/// * [country]
-/// * [city]
-/// * [avatar]
-/// * [email]
-/// * [mobile]
-/// * [password]
+/// * [id] 
+/// * [isVerified] 
+/// * [isActivated] 
+/// * [job] 
+/// * [firstName] 
+/// * [consultationDuration] 
+/// * [isAddressPublic] 
+/// * [isTermsAccepted] 
+/// * [versionTermsAccepted] 
+/// * [lang] 
+/// * [type] 
+/// * [experiences] 
+/// * [description] 
+/// * [diploma] 
+/// * [website] 
+/// * [social1] 
+/// * [social2] 
+/// * [social3] 
+/// * [lastName] 
+/// * [calendarSettings] 
+/// * [street] 
+/// * [street2] 
+/// * [zipCode] 
+/// * [country] 
+/// * [city] 
+/// * [avatar] 
+/// * [email] 
+/// * [mobile] 
+/// * [password] 
 abstract class User implements Built<User, UserBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;
@@ -86,12 +86,6 @@ abstract class User implements Built<User, UserBuilder> {
 
     @BuiltValueField(wireName: r'diploma')
     String? get diploma;
-
-    @BuiltValueField(wireName: r'diplomaFile')
-    String? get diplomaFile;
-
-    @BuiltValueField(wireName: r'healerTermsFile')
-    String? get healerTermsFile;
 
     @BuiltValueField(wireName: r'website')
     String? get website;
@@ -225,18 +219,6 @@ class _$UserSerializer implements StructuredSerializer<User> {
             result
                 ..add(r'diploma')
                 ..add(serializers.serialize(object.diploma,
-                    specifiedType: const FullType(String)));
-        }
-        if (object.diplomaFile != null) {
-            result
-                ..add(r'diplomaFile')
-                ..add(serializers.serialize(object.diplomaFile,
-                    specifiedType: const FullType(String)));
-        }
-        if (object.healerTermsFile != null) {
-            result
-                ..add(r'healerTermsFile')
-                ..add(serializers.serialize(object.healerTermsFile,
                     specifiedType: const FullType(String)));
         }
         if (object.website != null) {
@@ -387,14 +369,6 @@ class _$UserSerializer implements StructuredSerializer<User> {
                     break;
                 case r'diploma':
                     result.diploma = serializers.deserialize(value,
-                        specifiedType: const FullType(String)) as String;
-                    break;
-                case r'diplomaFile':
-                    result.diplomaFile = serializers.deserialize(value,
-                        specifiedType: const FullType(String)) as String;
-                    break;
-                case r'healerTermsFile':
-                    result.healerTermsFile = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
                     break;
                 case r'website':

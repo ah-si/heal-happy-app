@@ -78,6 +78,8 @@ Class | Method | HTTP request | Description
 [*AuthApi*](doc/AuthApi.md) | [**refreshToken**](doc/AuthApi.md#refreshtoken) | **POST** /api/v1/auth/token/refresh | 
 [*AuthApi*](doc/AuthApi.md) | [**register**](doc/AuthApi.md#register) | **POST** /api/v1/auth/register | 
 [*AuthApi*](doc/AuthApi.md) | [**resetPassword**](doc/AuthApi.md#resetpassword) | **POST** /api/v1/auth/resetPassword | 
+[*SettingsApi*](doc/SettingsApi.md) | [**getSettings**](doc/SettingsApi.md#getsettings) | **GET** /api/v1/settings | 
+[*SettingsApi*](doc/SettingsApi.md) | [**updateSettings**](doc/SettingsApi.md#updatesettings) | **PATCH** /api/v1/admin/settings | 
 [*UserApi*](doc/UserApi.md) | [**createEvent**](doc/UserApi.md#createevent) | **POST** /api/v1/healers/{id}/events | 
 [*UserApi*](doc/UserApi.md) | [**deleteEvent**](doc/UserApi.md#deleteevent) | **DELETE** /api/v1/users/me/events/{eventId} | 
 [*UserApi*](doc/UserApi.md) | [**getEvents**](doc/UserApi.md#getevents) | **GET** /api/v1/users/me/events | 
@@ -97,6 +99,7 @@ Class | Method | HTTP request | Description
 ## Documentation For Models
 
  - [AdminUserEvent](doc/AdminUserEvent.md)
+ - [AppSettings](doc/AppSettings.md)
  - [AskResetPassword](doc/AskResetPassword.md)
  - [CalendarDaySettings](doc/CalendarDaySettings.md)
  - [CalendarSettings](doc/CalendarSettings.md)

@@ -32,11 +32,18 @@ class EventsChartData {
 
 class AdminDashboardStore extends ChangeNotifier {
   final AdminApi _adminApi;
+  final SettingsApi _settingsApi;
   List<CircularSeries<UsersChartData, String>>? usersChart;
   List<ColumnSeries<EventsChartData, String>>? eventsChart;
   bool isLoading = false;
 
-  AdminDashboardStore({AdminApi? adminApi}) : _adminApi = BackendApiProvider().api.getAdminApi();
+  AdminDashboardStore({AdminApi? adminApi, SettingsApi? settingsApi}) :
+        _adminApi = adminApi ?? BackendApiProvider().api.getAdminApi(),
+        _settingsApi = settingsApi ?? BackendApiProvider().api.getSettingsApi();
+
+  Future<void> updateSettings(bool enableUrgency) async {
+    await _settingsApi.updateSettings(appSettings: AppSettings((b) => b.enableUrgencyButton = enableUrgency));
+  }
 
   void _manageEventsChart(Dashboard dashboard) async {
     final eventsData = dashboard.events.where((p0) => !p0.isCancelled && !p0.isUrgent).toList();

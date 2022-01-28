@@ -36,10 +36,6 @@ class _$Healer extends Healer {
   @override
   final String? diploma;
   @override
-  final String? diplomaFile;
-  @override
-  final String? healerTermsFile;
-  @override
   final String? website;
   @override
   final String? social1;
@@ -82,8 +78,6 @@ class _$Healer extends Healer {
       this.experiences,
       this.description,
       this.diploma,
-      this.diplomaFile,
-      this.healerTermsFile,
       this.website,
       this.social1,
       this.social2,
@@ -138,8 +132,6 @@ class _$Healer extends Healer {
         experiences == other.experiences &&
         description == other.description &&
         diploma == other.diploma &&
-        diplomaFile == other.diplomaFile &&
-        healerTermsFile == other.healerTermsFile &&
         website == other.website &&
         social1 == other.social1 &&
         social2 == other.social2 &&
@@ -174,14 +166,14 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
-                                                                                lang.hashCode),
-                                                                            type.hashCode),
-                                                                        experiences.hashCode),
-                                                                    description.hashCode),
-                                                                diploma.hashCode),
-                                                            diplomaFile.hashCode),
-                                                        healerTermsFile.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode),
+                                                                                isTermsAccepted.hashCode),
+                                                                            versionTermsAccepted.hashCode),
+                                                                        lang.hashCode),
+                                                                    type.hashCode),
+                                                                experiences.hashCode),
+                                                            description.hashCode),
+                                                        diploma.hashCode),
                                                     website.hashCode),
                                                 social1.hashCode),
                                             social2.hashCode),
@@ -213,8 +205,6 @@ class _$Healer extends Healer {
           ..add('experiences', experiences)
           ..add('description', description)
           ..add('diploma', diploma)
-          ..add('diplomaFile', diplomaFile)
-          ..add('healerTermsFile', healerTermsFile)
           ..add('website', website)
           ..add('social1', social1)
           ..add('social2', social2)
@@ -294,15 +284,6 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   String? get diploma => _$this._diploma;
   set diploma(String? diploma) => _$this._diploma = diploma;
 
-  String? _diplomaFile;
-  String? get diplomaFile => _$this._diplomaFile;
-  set diplomaFile(String? diplomaFile) => _$this._diplomaFile = diplomaFile;
-
-  String? _healerTermsFile;
-  String? get healerTermsFile => _$this._healerTermsFile;
-  set healerTermsFile(String? healerTermsFile) =>
-      _$this._healerTermsFile = healerTermsFile;
-
   String? _website;
   String? get website => _$this._website;
   set website(String? website) => _$this._website = website;
@@ -374,8 +355,6 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
       _experiences = $v.experiences;
       _description = $v.description;
       _diploma = $v.diploma;
-      _diplomaFile = $v.diplomaFile;
-      _healerTermsFile = $v.healerTermsFile;
       _website = $v.website;
       _social1 = $v.social1;
       _social2 = $v.social2;
@@ -431,8 +410,6 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
               experiences: experiences,
               description: description,
               diploma: diploma,
-              diplomaFile: diplomaFile,
-              healerTermsFile: healerTermsFile,
               website: website,
               social1: social1,
               social2: social2,

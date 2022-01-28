@@ -131,19 +131,11 @@ class CommonLocalizations {
 
   String get emailField => Intl.message('Email*:', name: 'emailField');
 
-  String get uploading => Intl.message('Uploading...', name: 'uploading');
-
   String get downloadHealerTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
 
-  String get diplomaUpload => Intl.message('Afin de valider votre compte soignant, merci de nous fournir une preuve de votre spécialité (diplôme, attestation de formation...).', name: 'diplomaUpload');
+  String get sendHealerProof => Intl.message('Afin de valider votre compte soignant, merci de nous fournir votre carte d\'identité, la charte Soignez Heureux signé ainsi une preuve de votre spécialité (diplôme, attestation de formation...) par email à contact@ah-si.org.', name: 'sendHealerProof');
 
   String get noAvailabilities => Intl.message('Aucune disponibilité pour le moment', name: 'noAvailabilities');
-
-  String get diplomaDialogTitle => Intl.message('Choisir mon diplôme', name: 'diplomaDialogTitle');
-
-  String get termsDialogTitle => Intl.message('Choisir la charte signé', name: 'termsDialogTitle');
-
-  String get termsUpload => Intl.message('Merci de télécharger la charte d\'utilisation de Soignez Heureux, la signer et nous la fournir.', name: 'termsUpload');
 
   String get uploadButton => Intl.message('Envoyer', name: 'uploadButton');
 
@@ -361,6 +353,8 @@ class CommonLocalizations {
   String get eventIsUrgency => Intl.message('Signaler au soignant que c\'est une urgence', name: 'eventIsUrgency');
 
   String get adminEventIsUrgency => Intl.message('Urgent', name: 'adminEventIsUrgency');
+
+  String get adminEnableUrgency => Intl.message('Afficher le bouton urgence', name: 'adminEnableUrgency');
 
   String get adminEventIsCancelled => Intl.message('Annulée', name: 'adminEventIsCancelled');
 

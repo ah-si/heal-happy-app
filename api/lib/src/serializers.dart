@@ -13,6 +13,7 @@ import 'package:heal_happy_sdk/src/date_serializer.dart';
 import 'package:heal_happy_sdk/src/model/date.dart';
 
 import 'package:heal_happy_sdk/src/model/admin_user_event.dart';
+import 'package:heal_happy_sdk/src/model/app_settings.dart';
 import 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
 import 'package:heal_happy_sdk/src/model/calendar_day_settings.dart';
 import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
@@ -42,6 +43,7 @@ part 'serializers.g.dart';
 
 @SerializersFor([
   AdminUserEvent,
+  AppSettings,
   AskResetPassword,
   CalendarDaySettings,
   CalendarSettings,

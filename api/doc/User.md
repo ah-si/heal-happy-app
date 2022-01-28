@@ -22,8 +22,6 @@ Name | Type | Description | Notes
 **experiences** | **String** |  | [optional] 
 **description** | **String** |  | 
 **diploma** | **String** |  | [optional] 
-**diplomaFile** | **String** |  | [optional] 
-**healerTermsFile** | **String** |  | [optional] 
 **website** | **String** |  | [optional] 
 **social1** | **String** |  | [optional] 
 **social2** | **String** |  | [optional] 

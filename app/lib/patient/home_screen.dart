@@ -289,6 +289,7 @@ class _HealerList extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(patientStoreProvider);
+    final userStore = ref.watch(userStoreProvider);
     final controller = useScrollController();
 
     if (store.searchResults == null) {
@@ -325,7 +326,7 @@ class _HealerList extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (store.lastJobSearch == 'med_gene' && false)
+        if (store.lastJobSearch == 'med_gene' && userStore.appSettings!.enableUrgencyButton)
           Padding(
             padding: const EdgeInsets.all(kSmallPadding),
             child: TextButton(

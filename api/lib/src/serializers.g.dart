@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AdminUserEvent.serializer)
+      ..add(AppSettings.serializer)
       ..add(AskResetPassword.serializer)
       ..add(CalendarDaySettings.serializer)
       ..add(CalendarSettings.serializer)
