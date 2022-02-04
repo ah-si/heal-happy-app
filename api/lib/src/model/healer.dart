@@ -110,7 +110,7 @@ abstract class Healer implements Built<Healer, HealerBuilder> {
     String get zipCode;
 
     @BuiltValueField(wireName: r'country')
-    String? get country;
+    String get country;
 
     @BuiltValueField(wireName: r'city')
     String get city;
@@ -255,12 +255,10 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
             ..add(r'zipCode')
             ..add(serializers.serialize(object.zipCode,
                 specifiedType: const FullType(String)));
-        if (object.country != null) {
-            result
-                ..add(r'country')
-                ..add(serializers.serialize(object.country,
-                    specifiedType: const FullType(String)));
-        }
+        result
+            ..add(r'country')
+            ..add(serializers.serialize(object.country,
+                specifiedType: const FullType(String)));
         result
             ..add(r'city')
             ..add(serializers.serialize(object.city,

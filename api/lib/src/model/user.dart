@@ -115,7 +115,7 @@ abstract class User implements Built<User, UserBuilder> {
     String get zipCode;
 
     @BuiltValueField(wireName: r'country')
-    String? get country;
+    String get country;
 
     @BuiltValueField(wireName: r'city')
     String get city;
@@ -269,12 +269,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
             ..add(r'zipCode')
             ..add(serializers.serialize(object.zipCode,
                 specifiedType: const FullType(String)));
-        if (object.country != null) {
-            result
-                ..add(r'country')
-                ..add(serializers.serialize(object.country,
-                    specifiedType: const FullType(String)));
-        }
+        result
+            ..add(r'country')
+            ..add(serializers.serialize(object.country,
+                specifiedType: const FullType(String)));
         result
             ..add(r'city')
             ..add(serializers.serialize(object.city,

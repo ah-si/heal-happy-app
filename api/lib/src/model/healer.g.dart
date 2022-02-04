@@ -54,7 +54,7 @@ class _$Healer extends Healer {
   @override
   final String zipCode;
   @override
-  final String? country;
+  final String country;
   @override
   final String city;
   @override
@@ -87,7 +87,7 @@ class _$Healer extends Healer {
       this.street,
       this.street2,
       required this.zipCode,
-      this.country,
+      required this.country,
       required this.city,
       this.avatar})
       : super._() {
@@ -104,6 +104,7 @@ class _$Healer extends Healer {
     BuiltValueNullFieldError.checkNotNull(
         calendarSettings, 'Healer', 'calendarSettings');
     BuiltValueNullFieldError.checkNotNull(zipCode, 'Healer', 'zipCode');
+    BuiltValueNullFieldError.checkNotNull(country, 'Healer', 'country');
     BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city');
   }
 
@@ -421,9 +422,9 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
               street2: street2,
               zipCode: BuiltValueNullFieldError.checkNotNull(
                   zipCode, 'Healer', 'zipCode'),
-              country: country,
-              city:
-                  BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city'),
+              country: BuiltValueNullFieldError.checkNotNull(
+                  country, 'Healer', 'country'),
+              city: BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city'),
               avatar: avatar);
     } catch (_) {
       late String _$failedField;

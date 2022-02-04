@@ -170,6 +170,7 @@ class UserInfo extends ChangeNotifier {
       b.street2 = street2;
       b.zipCode = zipCode ?? '';
       b.city = city ?? '';
+      b.country = country;
     }
 
     return existingUser?.rebuild(builder) ?? User(builder);
@@ -197,6 +198,7 @@ class UserInfo extends ChangeNotifier {
     _zipCode = user.zipCode;
     _city = user.city;
     _job = user.job;
+    _country = user.country;
     _password = null;
     notifyListeners();
   }
@@ -395,6 +397,15 @@ class UserInfo extends ChangeNotifier {
 
   set zipCode(value) {
     _zipCode = value;
+    notifyListeners();
+  }
+
+  String? _country;
+
+  String get country => _country ?? 'FR';
+
+  set country(value) {
+    _country = value;
     notifyListeners();
   }
 }

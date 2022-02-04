@@ -289,6 +289,8 @@ class CommonLocalizations {
 
   String get profile => Intl.message('Profil', name: 'profile');
 
+  String get countryField => Intl.message('Pays', name: 'countryField');
+
   String get help => Intl.message('Aide', name: 'help');
 
   String get helpIntro => Intl.message('Si vous avez besoin d\'aide, rejoignez d\'autres soignants sur le réseau Telegram dédié de Soignez Heureux en cliquant sur le lien suivant:', name: 'helpIntro');

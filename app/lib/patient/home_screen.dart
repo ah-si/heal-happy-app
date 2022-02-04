@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -457,13 +458,21 @@ class _HealerListItem extends HookConsumerWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.healing, size: 50),
-          const SizedBox(width: kNormalPadding),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(healer.name, style: context.textTheme.headline6),
+                Row(
+                  children: [
+                    Image.asset(
+                      CountryCode.fromCountryCode(healer.country).flagUri!,
+                      package: 'country_code_picker',
+                      width: 25,
+                    ),
+                    const SizedBox(width: kSmallPadding),
+                    Expanded(child: Text(healer.name, style: context.textTheme.headline6)),
+                  ],
+                ),
                 Text(store.specialities[healer.job] ?? '', style: context.textTheme.subtitle2),
                 const SizedBox(height: kNormalPadding),
                 Text(healer.address),

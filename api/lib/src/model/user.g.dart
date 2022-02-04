@@ -54,7 +54,7 @@ class _$User extends User {
   @override
   final String zipCode;
   @override
-  final String? country;
+  final String country;
   @override
   final String city;
   @override
@@ -93,7 +93,7 @@ class _$User extends User {
       this.street,
       this.street2,
       required this.zipCode,
-      this.country,
+      required this.country,
       required this.city,
       this.avatar,
       required this.email,
@@ -113,6 +113,7 @@ class _$User extends User {
     BuiltValueNullFieldError.checkNotNull(
         calendarSettings, 'User', 'calendarSettings');
     BuiltValueNullFieldError.checkNotNull(zipCode, 'User', 'zipCode');
+    BuiltValueNullFieldError.checkNotNull(country, 'User', 'country');
     BuiltValueNullFieldError.checkNotNull(city, 'User', 'city');
     BuiltValueNullFieldError.checkNotNull(email, 'User', 'email');
   }
@@ -450,7 +451,8 @@ class UserBuilder implements Builder<User, UserBuilder> {
               street2: street2,
               zipCode: BuiltValueNullFieldError.checkNotNull(
                   zipCode, 'User', 'zipCode'),
-              country: country,
+              country: BuiltValueNullFieldError.checkNotNull(
+                  country, 'User', 'country'),
               city: BuiltValueNullFieldError.checkNotNull(city, 'User', 'city'),
               avatar: avatar,
               email:

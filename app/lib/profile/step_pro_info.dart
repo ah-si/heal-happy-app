@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,6 +9,57 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+class _CountryWidget extends StatelessWidget {
+  final String country;
+  final Function(String country) onSelected;
+
+  const _CountryWidget({required this.country, required this.onSelected, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final localizations = context.l10n;
+    return HookBuilder(
+      builder: (context) {
+        final controller = useTextEditingController(text: CountryCode.fromCountryCode(country).name!);
+        return CountryCodePicker(
+          showCountryOnly: true,
+          onChanged: (value) {
+            onSelected(value.code!);
+            controller.text = value.name!;
+          },
+          builder: (CountryCode? selectedCountry) {
+            return IgnorePointer(
+              child: TextField(
+                controller: controller,
+                autofocus: false,
+                readOnly: true,
+                decoration: InputDecoration(
+                  prefix: Padding(
+                    padding: const EdgeInsets.only(right: kSmallPadding),
+                    child: selectedCountry != null
+                        ? Image.asset(
+                            selectedCountry.flagUri!,
+                            package: 'country_code_picker',
+                            width: 25,
+                          )
+                        : const SizedBox(height: 0, width: 0),
+                  ),
+                  labelText: localizations.countryField,
+                ),
+                keyboardType: TextInputType.phone,
+              ),
+            );
+          },
+          // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+          initialSelection: country,
+          // Same for favorites
+          favorite: const ['FR', 'CH', 'BE'],
+        );
+      },
+    );
+  }
+}
 
 class StepInfoPro extends HookConsumerWidget {
   final VoidCallback? onContinue;
@@ -127,6 +179,7 @@ class StepAddress extends HookConsumerWidget {
     final controllerStreet2 = useTextEditingController(text: userInfo.street2);
     final controllerCity = useTextEditingController(text: userInfo.city);
     final controllerZipCode = useTextEditingController(text: userInfo.zipCode);
+    final controllerCountry = useTextEditingController(text: userInfo.country);
     final isAddressValid = useState(userInfo.isAddressVisible ?? false);
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() {
@@ -136,9 +189,11 @@ class StepAddress extends HookConsumerWidget {
         userInfo.street2 = controllerStreet2.text;
         userInfo.city = controllerCity.text;
         userInfo.zipCode = controllerZipCode.text;
+        userInfo.country = controllerCountry.text;
         onContinue?.call();
       }
     }
+
     return Form(
       key: formKey,
       child: Column(
@@ -149,10 +204,11 @@ class StepAddress extends HookConsumerWidget {
               context.l10n.addressIntro,
               style: context.textTheme.headline5,
             ),
-          if (!headless) Padding(
-            padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-            child: Text(context.l10n.addressDescription),
-          ),
+          if (!headless)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
+              child: Text(context.l10n.addressDescription),
+            ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -195,8 +251,11 @@ class StepAddress extends HookConsumerWidget {
                 autofillHints: const [AutofillHints.postalCode],
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: InputDecoration(label: Text(context.l10n.zipField)),
-                onFieldSubmitted: (_) {
-                  submitForm();
+              ),
+              _CountryWidget(
+                country: controllerCountry.text,
+                onSelected: (selected) {
+                  controllerCountry.text = selected;
                 },
               ),
             ],

@@ -31,7 +31,7 @@ Name | Type | Description | Notes
 **street** | **String** |  | [optional] 
 **street2** | **String** |  | [optional] 
 **zipCode** | **String** |  | 
-**country** | **String** |  | [optional] 
+**country** | **String** |  | 
 **city** | **String** |  | 
 **avatar** | **String** |  | [optional] 
 

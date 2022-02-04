@@ -16,6 +16,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   file_picker: ^4.2.8
+  country_code_picker: ^2.0.2
   collection: ^1.15.0
   syncfusion_flutter_charts: ^19.3.59
   url_launcher: ^6.0.17
