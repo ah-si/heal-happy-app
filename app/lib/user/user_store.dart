@@ -259,4 +259,8 @@ class UserStore extends ChangeNotifier {
     }
     await init();
   }
+
+  void acceptEvent(String id) {
+    _apiProvider.api.getUserApi().acceptEvent(eventId: id);
+  }
 }

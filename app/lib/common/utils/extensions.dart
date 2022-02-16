@@ -6,6 +6,7 @@ import 'package:heal_happy/common/l10n/error_localizations.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/diacritic_replacement_map.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 extension HealerStatsExtension on HealerStats {
   String get name => '$firstName $lastName';
@@ -60,7 +61,7 @@ extension UserExtension on User {
 
   String get telegramUrl => isDoctor ? kUrlTelegramHealer : kUrlTelegramPara;
 
-  String get adminAddress {
+  String get address {
     String address = '';
     address = street.isNullOrEmpty ? '' : '$street\n';
     address += street2.isNullOrEmpty ? '' : '$street2\n';
@@ -101,14 +102,35 @@ extension ContextExtension on BuildContext {
 
   Color get primaryColor => kPrimaryColor;
 
-  Color get accentColor => kAccentColor;
-
   bool isRelevant() {
     try {
       navigator;
       return true;
     } catch (_) {
       return false;
+    }
+  }
+}
+
+extension WeekDaysExtension on WeekDays {
+  static WeekDays from(DateTime date) {
+    final weekDay = date.weekday;
+    switch(weekDay) {
+      case DateTime.monday:
+        return WeekDays.monday;
+      case DateTime.tuesday:
+        return WeekDays.tuesday;
+      case DateTime.wednesday:
+        return WeekDays.wednesday;
+      case DateTime.thursday:
+        return WeekDays.thursday;
+      case DateTime.friday:
+        return WeekDays.friday;
+      case DateTime.saturday:
+        return WeekDays.saturday;
+      case DateTime.sunday:
+        return WeekDays.sunday;
+      default: return WeekDays.monday;
     }
   }
 }

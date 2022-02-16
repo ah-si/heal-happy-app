@@ -13,6 +13,7 @@ Name | Type | Description | Notes
 **healer** | [**Healer**](Healer.md) |  | 
 **isUrgent** | **bool** |  | 
 **isCancelled** | **bool** |  | 
+**type** | [**HealerEventType**](HealerEventType.md) |  | 
 **createdAt** | [**DateTime**](DateTime.md) |  | 
 **start** | [**DateTime**](DateTime.md) |  | 
 **end** | [**DateTime**](DateTime.md) |  | 

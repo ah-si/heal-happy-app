@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
+import 'package:heal_happy/common/presentation/calendar_legend.dart';
+import 'package:heal_happy/common/presentation/datetime_button.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
@@ -17,7 +19,10 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+part 'healer_calendar.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
   final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
@@ -33,7 +38,7 @@ class MobileHealerHome extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(healerStoreProvider);
-    final controller = useTabController(initialLength: 4, initialIndex: store.selectedTab.index);
+    final controller = useTabController(initialLength: 3, initialIndex: store.selectedTab.index);
     useEffect(() {
       controller.addListener(() {
         if (controller.index != controller.previousIndex) {
@@ -64,9 +69,6 @@ class MobileHealerHome extends HookConsumerWidget {
               text: context.l10n.profile,
             ),
             Tab(
-              text: context.l10n.eventsHistory,
-            ),
-            Tab(
               text: context.l10n.help,
             ),
           ],
@@ -77,20 +79,10 @@ class MobileHealerHome extends HookConsumerWidget {
         child: ColoredBox(
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
-            children: [
-              const _HealerHomePage(),
-              const UserProfile(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(kNormalPadding),
-                    child: Text(context.l10n.eventHistoryIntro),
-                  ),
-                  const Expanded(child: SingleChildScrollView(child: _HealerEvents(showHistory: true))),
-                ],
-              ),
-              const SingleChildScrollView(child: _Help()),
+            children: const [
+              _HealerHomePage(),
+              UserProfile(),
+              SingleChildScrollView(child: _Help()),
             ],
             controller: controller,
           ),
@@ -126,18 +118,6 @@ class DesktopHealerHome extends HookConsumerWidget {
       case HomeTabs.profile:
         child = const UserProfile();
         break;
-      case HomeTabs.history:
-        child = Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(kNormalPadding),
-              child: Text(context.l10n.eventHistoryIntro),
-            ),
-            const Expanded(child: SingleChildScrollView(child: _HealerEvents(showHistory: true))),
-          ],
-        );
-        break;
       case HomeTabs.help:
         child = const SingleChildScrollView(child: _Help());
         break;
@@ -166,14 +146,6 @@ class DesktopHealerHome extends HookConsumerWidget {
                                   store.selectedTab = HomeTabs.home;
                                 },
                                 selected: store.selectedTab == HomeTabs.home,
-                              ),
-                              const SizedBox(width: 2),
-                              MenuItem(
-                                label: context.l10n.eventsHistory,
-                                onTap: () {
-                                  store.selectedTab = HomeTabs.history;
-                                },
-                                selected: store.selectedTab == HomeTabs.history,
                               ),
                               const SizedBox(width: 2),
                               MenuItem(
@@ -333,315 +305,38 @@ class _HealerHomePage extends HookConsumerWidget {
 
     final needFileUpload = !(userStore.user?.isVerified ?? false);
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (needFileUpload)
-            Padding(
-              padding: const EdgeInsets.all(kSmallPadding),
-              child: Wrap(
-                children: [
-                  Card(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(kNormalPadding),
-                          child: SelectableText(context.l10n.sendHealerProof),
-                        ),
-                        ButtonBar(
-                          children: [
-                            TextButton(
-                                onPressed: () {
-                                  launch('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
-                                },
-                                child: Text(context.l10n.downloadHealerTerms))
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(kNormalPadding),
-            child: Text(context.l10n.eventsDescription),
-          ),
-          const _HealerEvents(),
-        ],
-      ),
-    );
-  }
-}
-
-class _HealerEvents extends HookConsumerWidget {
-  final bool showHistory;
-
-  const _HealerEvents({this.showHistory = false, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.watch(healerStoreProvider);
-    final hideCancelled = useState(false);
-
-    useEffect(() {
-      store.loadEvents(showHistory);
-    }, const []);
-
-    if (store.eventsResults == null || store.isLoading) {
-      return SizedBox(
-        child: const Loading(),
-        height: MediaQuery.of(context).size.height,
-      );
-    }
-
-    if (store.eventsResults?.error != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(kNormalPadding),
-          child: Text(
-            store.eventsResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
-    if (store.eventsResults!.events.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(kNormalPadding),
-          child: Text(
-            showHistory ? context.l10n.noEventHistory : context.l10n.noEvents,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (store.eventUrgent > 0)
-          CheckboxListTile(
-            value: store.seeOnlyUrgency,
-            onChanged: (value) {
-              store.seeOnlyUrgency = value!;
-            },
-            title: Text(
-              context.l10n.seeOnlyUrgencies(store.eventUrgent),
-            ),
-          ),
-        if (showHistory)
-          CheckboxListTile(
-            value: hideCancelled.value,
-            onChanged: (value) {
-              hideCancelled.value = value!;
-            },
-            title: Text(context.l10n.hideCancelled),
-          ),
-        Padding(
-          padding: const EdgeInsets.all(kNormalPadding),
-          child: Wrap(
-            children: store.eventsResults!.events
-                .where((element) {
-                  if (hideCancelled.value && element.isCancelled) {
-                    return false;
-                  }
-
-                  return store.seeOnlyUrgency ? element.isUrgent : true;
-                })
-                .map((e) => _HealerEventDetails(event: e))
-                .toList(growable: false),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _HealerEventDetails extends HookConsumerWidget {
-  final UserEvent event;
-
-  static final DateFormat _dateFormat = DateFormat('EEE dd MMM à HH:mm');
-  static final DateFormat _dateFormatCreation = DateFormat('EEE dd MMM');
-
-  const _HealerEventDetails({Key? key, required this.event}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final content = Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(kNormalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+        if (needFileUpload)
+          Padding(
+            padding: const EdgeInsets.all(kSmallPadding),
+            child: Wrap(
               children: [
-                Row(
-                  children: [
-                    Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
-                    if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
-                      IconButton(
-                        onPressed: () async {
-                          final now = DateTime.now();
-                          var date = await showDatePicker(
-                            context: context,
-                            initialDate: event.start.toLocal(),
-                            firstDate: now.subtract(Duration(days: now.day - 1)),
-                            lastDate: now.add(
-                              const Duration(days: 15),
-                            ),
-                          );
-                          if (date != null) {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(event.start.toLocal()),
-                            );
-                            if (time != null) {
-                              date = date.toLocal().copyWith(hour: time.hour, minute: time.minute);
-                              final message = await showPrompt(context, context.l10n.updateEventMessage);
-                              if (message != null) {
-                                final store = ref.read(healerStoreProvider);
-                                showLoadingDialog(
-                                  context,
-                                  (_) => Text(context.l10n.sending),
-                                  () => store.updateEvent(event, date!, message),
-                                );
-                              }
-                            }
-                          }
-                        },
-                        icon: const Icon(Icons.edit),
+                Card(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(kNormalPadding),
+                        child: SelectableText(context.l10n.sendHealerProof),
                       ),
-                  ],
-                ),
-                const SizedBox(height: kSmallPadding),
-                Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(event.patient.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                    Text(context.l10n.eventCreatedAt(_dateFormatCreation.format(event.createdAt.toLocal()))),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-                      child: InkWell(
-                        onTap: () {
-                          launch('mailto:${event.patient.email}');
-                        },
-                        onLongPress: () {
-                          Clipboard.setData(ClipboardData(text: event.patient.email));
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.email_outlined),
-                            const SizedBox(width: kSmallPadding),
-                            Expanded(child: Text(event.patient.email)),
-                          ],
-                        ),
-                      ),
-                    ),
-                    if (!event.patient.mobile.isNullOrEmpty)
-                      InkWell(
-                        onTap: () {
-                          launch('tel:${event.patient.mobile}');
-                        },
-                        onLongPress: () {
-                          Clipboard.setData(ClipboardData(text: event.patient.mobile));
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Téléphone'))));
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.call_outlined),
-                            const SizedBox(width: kSmallPadding),
-                            Text(event.patient.mobile!),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: kSmallPadding),
-                if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
-                if (!event.isCancelled && !event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
-                if (!event.description.isNullOrEmpty || !event.cancelledDescription.isNullOrEmpty)
-                  InkWell(
-                    onTap: () {
-                      showAlert(
-                        context,
-                        event.isCancelled ? context.l10n.patientCancelledMessage : context.l10n.patientMessage,
-                        (context) => ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 300),
-                          child: SingleChildScrollView(
-                            child: Text(event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!),
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                      ButtonBar(
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                launch('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
+                              },
+                              child: Text(context.l10n.downloadHealerTerms))
+                        ],
+                      )
+                    ],
                   ),
+                ),
               ],
             ),
           ),
-        ),
-        ButtonBar(
-          children: [
-            if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
-              TextButton(
-                onPressed: () async {
-                  final message = await showPrompt(context, context.l10n.cancelConsultation,
-                      validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.patient.name));
-                  if (!message.isNullOrEmpty) {
-                    final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
-                      await ref.read(healerStoreProvider).cancelEvent(event.id, message!);
-                    });
-                    if (cancelled) {
-                      showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
-                    }
-                  }
-                },
-                child: Text(context.l10n.cancelButton),
-              ),
-            TextButton(
-              onPressed: () {
-                if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                  launch(event.link);
-                } else {
-                  var options = JitsiMeetingOptions(
-                    roomNameOrUrl: event.link,
-                    userDisplayName: event.healer.firstName,
-                    subject: 'Consultation Soignez Heureux',
-                  );
-                  JitsiMeetWrapper.joinMeeting(options: options);
-                }
-              },
-              child: Text(context.l10n.joinVisioButton),
-            ),
-          ],
-        )
+        const Expanded(child: _HealerEvents()),
       ],
-    );
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 320),
-      child: Card(
-        margin: const EdgeInsets.all(kSmallPadding),
-        child: event.isUrgent || event.isCancelled
-            ? Banner(
-                location: BannerLocation.topEnd,
-                message: event.isUrgent ? 'Urgent' : 'Annulée',
-                child: content,
-              )
-            : content,
-      ),
     );
   }
 }

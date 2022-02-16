@@ -213,7 +213,6 @@ class _DateTimeField extends HookWidget {
   final DateTime? firstDate;
   final String label;
   final Function(DateTime date) onDateSelected;
-  static final _dateFormatter = DateFormat('dd/MM/yyyy');
 
   const _DateTimeField({
     Key? key,
@@ -226,7 +225,7 @@ class _DateTimeField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: value == null ? '' : _dateFormatter.format(value!));
+    final controller = useTextEditingController(text: value == null ? '' : kDateFormat.format(value!));
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 200),
@@ -241,7 +240,7 @@ class _DateTimeField extends HookWidget {
               initialDate: DateTime.now(),
             );
             if (date != null) {
-              controller.text = _dateFormatter.format(date);
+              controller.text = kDateFormat.format(date);
               onDateSelected(date);
             }
           },

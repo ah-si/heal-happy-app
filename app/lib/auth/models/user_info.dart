@@ -171,6 +171,7 @@ class UserInfo extends ChangeNotifier {
       b.zipCode = zipCode ?? '';
       b.city = city ?? '';
       b.country = country;
+      b.isAddressPublic = isAddressVisible;
     }
 
     return existingUser?.rebuild(builder) ?? User(builder);
@@ -203,7 +204,7 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool? _isAddressVisible;
+  bool? _isAddressVisible = false;
 
   bool? get isAddressVisible => _isAddressVisible;
 

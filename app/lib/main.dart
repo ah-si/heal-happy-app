@@ -48,9 +48,7 @@ void main() {
 }
 
 FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
-  if (!kIsProductionMode) {
-    return null;
-  } else if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
+  if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
     return null;
   } else if (event.throwable is DioError && event.throwable.statusCode == 401) {
     return null;
@@ -71,7 +69,7 @@ void app({Config? config}) async {
   }
   await SentryFlutter.init(
     (options) {
-      options.dsn = 'https://d1b98d382c394a9f81b17537a84f9b35@sentry.ah2020.org/2';
+      options.dsn = kIsProductionMode ? 'https://1827c477584d403dacf3ba82fb437c39@sentry.ah-si.org/2' : '';
       options.beforeSend = beforeSend;
     },
     appRunner: () => runApp(const MyApp()),

@@ -7,17 +7,19 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/patient/stores/healer_availabilities_store.dart';
 import 'package:heal_happy/user/user_store.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HealerAvailability extends HookConsumerWidget {
   final String id;
   final String healerName;
+  final HealerEventType eventType;
 
-  const HealerAvailability({Key? key, required this.id, required this.healerName}) : super(key: key);
+  const HealerAvailability({Key? key, required this.id, required this.eventType, required this.healerName}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final info = useMemoized(() => StoreInfo(id, context.isMobile), [id]);
+    final info = useMemoized(() => StoreInfo(id, eventType, context.isMobile), [id, eventType]);
     final store = ref.watch(availabilitiesStoreProvider(info));
     final controller = useScrollController();
     late Widget child;
@@ -196,7 +198,7 @@ class HealerAvailability extends HookConsumerWidget {
             }
             final userStore = ref.read(userStoreProvider);
             final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-              await store.createEvent(userStore.user!.id!, slot.dateTime, controller.text, isUrgent);
+              await store.createEvent(userStore.user!.id!, eventType, slot.dateTime, controller.text, isUrgent);
             });
             if (success) {
               Navigator.of(context).pop();

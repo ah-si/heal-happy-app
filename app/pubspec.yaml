@@ -21,6 +21,7 @@ dependencies:
   syncfusion_flutter_charts: ^19.3.59
   url_launcher: ^6.0.17
   dio:
+  syncfusion_flutter_calendar: ^19.4.50
   built_value:
   intl: ^0.17.0
   pubspec_parse: ^1.2.0
@@ -32,9 +33,9 @@ dependencies:
   flutter_riverpod: ^1.0.3
   hooks_riverpod: ^1.0.3
   flutter_hooks: ^0.18.1
-  sentry_flutter: ^6.2.2
+  sentry_flutter: ^6.3.0
   logging: ^1.0.2
-  jitsi_meet_wrapper: ^0.0.1
+  jitsi_meet_wrapper: ^0.0.2
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

@@ -80,11 +80,17 @@ Class | Method | HTTP request | Description
 [*AuthApi*](doc/AuthApi.md) | [**resetPassword**](doc/AuthApi.md#resetpassword) | **POST** /api/v1/auth/resetPassword | 
 [*SettingsApi*](doc/SettingsApi.md) | [**getSettings**](doc/SettingsApi.md#getsettings) | **GET** /api/v1/settings | 
 [*SettingsApi*](doc/SettingsApi.md) | [**updateSettings**](doc/SettingsApi.md#updatesettings) | **PATCH** /api/v1/admin/settings | 
+[*UserApi*](doc/UserApi.md) | [**acceptEvent**](doc/UserApi.md#acceptevent) | **POST** /api/v1/users/me/events/{eventId}/accept | 
 [*UserApi*](doc/UserApi.md) | [**createEvent**](doc/UserApi.md#createevent) | **POST** /api/v1/healers/{id}/events | 
+[*UserApi*](doc/UserApi.md) | [**createInviteEvent**](doc/UserApi.md#createinviteevent) | **POST** /api/v1/healers/{id}/inviteToEvent | 
+[*UserApi*](doc/UserApi.md) | [**createOpening**](doc/UserApi.md#createopening) | **POST** /api/v1/users/me/openings | 
 [*UserApi*](doc/UserApi.md) | [**deleteEvent**](doc/UserApi.md#deleteevent) | **DELETE** /api/v1/users/me/events/{eventId} | 
+[*UserApi*](doc/UserApi.md) | [**deleteOpening**](doc/UserApi.md#deleteopening) | **DELETE** /api/v1/users/me/openings/{openingId} | 
 [*UserApi*](doc/UserApi.md) | [**getEvents**](doc/UserApi.md#getevents) | **GET** /api/v1/users/me/events | 
 [*UserApi*](doc/UserApi.md) | [**getHealerAvailabilities**](doc/UserApi.md#gethealeravailabilities) | **GET** /api/v1/healers/{id}/availabilities | 
 [*UserApi*](doc/UserApi.md) | [**getHealerProfile**](doc/UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} | 
+[*UserApi*](doc/UserApi.md) | [**getLocalities**](doc/UserApi.md#getlocalities) | **GET** /api/v1/healers/localities | 
+[*UserApi*](doc/UserApi.md) | [**getOpenings**](doc/UserApi.md#getopenings) | **GET** /api/v1/users/me/openings | 
 [*UserApi*](doc/UserApi.md) | [**getProfile**](doc/UserApi.md#getprofile) | **GET** /api/v1/users/me | 
 [*UserApi*](doc/UserApi.md) | [**getSpecialities**](doc/UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
 [*UserApi*](doc/UserApi.md) | [**putAvatar**](doc/UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
@@ -94,6 +100,7 @@ Class | Method | HTTP request | Description
 [*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
 [*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
 [*UserApi*](doc/UserApi.md) | [**updateEvent**](doc/UserApi.md#updateevent) | **PATCH** /api/v1/users/me/events/{eventId} | 
+[*UserApi*](doc/UserApi.md) | [**updateOpening**](doc/UserApi.md#updateopening) | **PATCH** /api/v1/users/me/openings/{openingId} | 
 
 
 ## Documentation For Models
@@ -104,6 +111,7 @@ Class | Method | HTTP request | Description
  - [CalendarDaySettings](doc/CalendarDaySettings.md)
  - [CalendarSettings](doc/CalendarSettings.md)
  - [CreateEventRequest](doc/CreateEventRequest.md)
+ - [CreateInviteEventRequest](doc/CreateInviteEventRequest.md)
  - [Dashboard](doc/Dashboard.md)
  - [DashboardEvent](doc/DashboardEvent.md)
  - [DashboardUser](doc/DashboardUser.md)
@@ -111,9 +119,13 @@ Class | Method | HTTP request | Description
  - [FileData](doc/FileData.md)
  - [Healer](doc/Healer.md)
  - [HealerAvailabilities](doc/HealerAvailabilities.md)
+ - [HealerEventType](doc/HealerEventType.md)
+ - [HealerOpening](doc/HealerOpening.md)
  - [HealerStats](doc/HealerStats.md)
  - [LoginRequest](doc/LoginRequest.md)
  - [LoginResponse](doc/LoginResponse.md)
+ - [OpeningRepeatType](doc/OpeningRepeatType.md)
+ - [OpeningType](doc/OpeningType.md)
  - [PaginatedEvents](doc/PaginatedEvents.md)
  - [PaginatedHealers](doc/PaginatedHealers.md)
  - [PaginatedUsers](doc/PaginatedUsers.md)

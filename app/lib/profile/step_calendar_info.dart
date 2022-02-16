@@ -2,31 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
+import 'package:heal_happy/common/errors.dart';
+import 'package:heal_happy/common/l10n/common_localizations.dart';
+import 'package:heal_happy/common/presentation/datetime_button.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/profile/store/opening_store.dart';
+import 'package:heal_happy/user/user_store.dart';
+import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-class StepCalendarInfoForm extends HookConsumerWidget {
-  final String? saveButtonLabel;
-  final VoidCallback? onContinue;
-  final bool enableBackButton;
-  final ScrollController? controller;
+class StepCalendarInfo extends HookConsumerWidget {
+  final VoidCallback onSave;
 
-  const StepCalendarInfoForm({Key? key, this.controller, this.saveButtonLabel, this.onContinue, this.enableBackButton = true}) : super(key: key);
+  const StepCalendarInfo({required this.onSave, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final openingStore = ref.watch(openingStoreProvider);
+    final userStore = ref.watch(userStoreProvider);
     final userInfo = ref.watch(userInfoProvider);
     final controllerConsultation = useTextEditingController(text: userInfo.consultationDuration?.toString() ?? '');
     final formKey = useMemoized(() => GlobalKey<FormState>());
+    final dataSource = useMemoized(() => _CalendarDataSource(openingStore.results?.slots ?? [], context.l10n), [openingStore.results]);
 
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          TextFormField(
+    useEffect(() {
+      openingStore.loadOpenings();
+    }, const []);
+
+    if (openingStore.results == null) {
+      return const Loading();
+    }
+
+    if (openingStore.results?.error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(kNormalPadding),
+          child: Text(
+            openingStore.results!.error!.cause.twoLiner(context),
+            style: TextStyle(color: context.theme.errorColor),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Form(
+          key: formKey,
+          child: TextFormField(
             controller: controllerConsultation,
             validator: (value) {
               final result = isRequired(value, context);
@@ -37,353 +67,285 @@ class StepCalendarInfoForm extends HookConsumerWidget {
             },
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             keyboardType: const TextInputType.numberWithOptions(),
-            decoration: InputDecoration(label: Text(context.l10n.consultationDurationField), hintText: context.l10n.consultationDurationHint),
+            decoration: InputDecoration(
+              label: Text(context.l10n.consultationDurationField),
+              hintText: context.l10n.consultationDurationHint,
+              suffix: ElevatedButton(
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
+                    onSave();
+                  }
+                },
+                child: Text(context.l10n.saveButton),
+              ),
+            ),
           ),
-          const SizedBox(height: kSmallPadding),
-          Text(context.l10n.calendarLegend, style: context.textTheme.caption),
-          _CalendarDaySetting(
-            label: 'Lundi',
-            settings: userInfo.calendarSettings.monday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(monday: value);
-            },
-          ),
-          _CalendarDaySetting(
-            label: 'Mardi',
-            settings: userInfo.calendarSettings.tuesday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(tuesday: value);
-            },
-          ),
-          _CalendarDaySetting(
-            label: 'Mercredi',
-            settings: userInfo.calendarSettings.wednesday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(wednesday: value);
-            },
-          ),
-          _CalendarDaySetting(
-            label: 'Jeudi',
-            settings: userInfo.calendarSettings.thursday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(thursday: value);
-            },
-          ),
-          _CalendarDaySetting(
-            label: 'Vendredi',
-            settings: userInfo.calendarSettings.friday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(friday: value);
-            },
-          ),
-          _CalendarDaySetting(
-            label: 'Samedi',
-            settings: userInfo.calendarSettings.saturday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(saturday: value);
-            },
-          ),
-          _CalendarDaySetting(
-            label: 'Dimanche',
-            settings: userInfo.calendarSettings.sunday,
-            onChange: (value) {
-              userInfo.calendarSettings = userInfo.calendarSettings.copyWith(sunday: value);
-            },
-          ),
-          Row(
+        ),
+        const SizedBox(height: kSmallPadding),
+        Text(
+          context.l10n.calendarIntro,
+          style: context.textTheme.subtitle2,
+        ),
+        const SizedBox(height: kSmallPadding),
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (enableBackButton)
-                Padding(
-                  padding: const EdgeInsets.all(kNormalPadding),
-                  child: TextButton(
-                    onPressed: () async {
-                      Navigator.of(context).maybePop();
-                    },
-                    child: Text(MaterialLocalizations.of(context).backButtonTooltip),
+              Expanded(
+                child: SfCalendar(
+                  firstDayOfWeek: 1,
+                  cellEndPadding: 0,
+                  dataSource: dataSource,
+                  timeSlotViewSettings: const TimeSlotViewSettings(
+                    timeFormat: 'H:mm',
+                    timeInterval: Duration(hours: 2),
                   ),
-                ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(kNormalPadding),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
-
-                      if (userInfo.consultationDuration == null) {
-                        return;
+                  allowViewNavigation: false,
+                  showNavigationArrow: true,
+                  showDatePickerButton: true,
+                  view: CalendarView.week,
+                  onTap: (details) {
+                    if (details.targetElement == CalendarElement.calendarCell) {
+                      showOpeningDialog(context, userStore, openingStore, details.date!, null);
+                    } else if (details.targetElement == CalendarElement.appointment) {
+                      final appointment = details.appointments!.first;
+                      late HealerOpening opening;
+                      if (appointment is Appointment) {
+                        opening = openingStore.results!.slots.firstWhere((element) => element.id == appointment.id);
+                      } else {
+                        opening = appointment;
                       }
-
-                      showDayError(String day) {
-                        showAlert(
-                          context,
-                          context.el10n.dialogErrorTitle,
-                          (context) => Padding(
-                            padding: const EdgeInsets.symmetric(vertical: kNormalPadding),
-                            child: Text(context.l10n.calendarDayError(day)),
-                          ),
-                        );
-                      }
-
-                      if (!userInfo.calendarSettings.monday.isValid()) {
-                        showDayError('Lundi');
-                        return;
-                      } else if (!userInfo.calendarSettings.tuesday.isValid()) {
-                        showDayError('Mardi');
-                        return;
-                      } else if (!userInfo.calendarSettings.wednesday.isValid()) {
-                        showDayError('Mercredi');
-                        return;
-                      } else if (!userInfo.calendarSettings.thursday.isValid()) {
-                        showDayError('Jeudi');
-                        return;
-                      } else if (!userInfo.calendarSettings.friday.isValid()) {
-                        showDayError('Vendredi');
-                        return;
-                      } else if (!userInfo.calendarSettings.saturday.isValid()) {
-                        showDayError('Samedi');
-                        return;
-                      } else if (!userInfo.calendarSettings.sunday.isValid()) {
-                        showDayError('Dimanche');
-                        return;
-                      }
-                      onContinue?.call();
-                    } else {
-                      controller?.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                      showOpeningDialog(context, userStore, openingStore, details.date!, opening);
                     }
                   },
-                  child: Text(saveButtonLabel ?? context.l10n.continueButton),
                 ),
               ),
             ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
-}
 
-class StepCalendarInfo extends HookWidget {
-  final VoidCallback onContinue;
-  final ScrollController? controller;
-
-  const StepCalendarInfo({Key? key, this.controller, required this.onContinue}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          context.l10n.calendarIntro,
-          style: context.textTheme.headline5,
+  void showOpeningDialog(
+    BuildContext context,
+    UserStore userStore,
+    OpeningStore store,
+    DateTime date,
+    HealerOpening? opening,
+  ) {
+    OpeningType type = opening?.type ?? OpeningType.visio;
+    OpeningRepeatType? repeat = opening?.repeat;
+    DateTime start = opening?.start ?? date;
+    DateTime end = opening?.end ?? date.add(const Duration(hours: 4));
+    showAppDialog(
+      context,
+      (_) => Text(context.l10n.openingPopupTitle),
+      (context) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(context.l10n.startDate),
+            DateTimeButton(
+              initialDate: start,
+              firstDate: start.copyWith(day: 1),
+              lastDate: start.add(const Duration(days: 25)),
+              onDateChanged: (newDate) {
+                start = newDate;
+              },
+            ),
+            const SizedBox(height: kSmallPadding),
+            Text(context.l10n.endDate),
+            DateTimeButton(
+              initialDate: end,
+              firstDate: end.copyWith(day: 1),
+              lastDate: end.add(const Duration(days: 25)),
+              onDateChanged: (newDate) {
+                end = newDate;
+              },
+            ),
+            DropdownButtonFormField<OpeningType>(
+              items: OpeningType.values
+                  .map(
+                    (e) => DropdownMenuItem(
+                      child: Text(context.l10n.openingLabel(e)),
+                      value: e,
+                    ),
+                  )
+                  .toList(growable: false),
+              decoration: InputDecoration(labelText: context.l10n.openingType),
+              isExpanded: true,
+              value: type,
+              onChanged: (value) {
+                type = value!;
+              },
+            ),
+            DropdownButtonFormField<OpeningRepeatType>(
+              items: [
+                DropdownMenuItem(
+                  child: Text(context.l10n.openingRepeatLabel(null)),
+                  value: null,
+                ),
+                ...OpeningRepeatType.values
+                    .map((e) => DropdownMenuItem(
+                          child: Text(context.l10n.openingRepeatLabel(e)),
+                          value: e,
+                        ))
+                    .toList(growable: false)
+              ],
+              decoration: InputDecoration(labelText: context.l10n.openingRepeat),
+              isExpanded: true,
+              value: repeat,
+              onChanged: (value) {
+                repeat = value;
+              },
+            ),
+          ],
+        );
+      },
+      actions: [
+        DialogAction(
+          text: MaterialLocalizations.of(context).cancelButtonLabel,
+          callback: (BuildContext context) {
+            Navigator.of(context).pop();
+          },
         ),
-        const SizedBox(height: kNormalPadding),
-        StepCalendarInfoForm(onContinue: onContinue, controller: controller),
+        if (opening != null)
+          DialogAction(
+            text: MaterialLocalizations.of(context).deleteButtonTooltip.toUpperCase(),
+            callback: (BuildContext context) async {
+              final confirm = await showConfirm(context, context.l10n.deleteOpening, context.l10n.deleteOpeningMessage);
+              if (confirm) {
+                final success = await showLoadingDialog(
+                  context,
+                  (_) => Text(context.l10n.deleting),
+                  () async {
+                    await store.deleteOpening(opening.id!);
+                  },
+                );
+                if (success) {
+                  Navigator.of(context).pop();
+                }
+              }
+            },
+          ),
+        DialogAction(
+          text: MaterialLocalizations.of(context).okButtonLabel,
+          callback: (BuildContext context) async {
+            if (start.isAfter(end)) {
+              showErrorDialog(context, ErrorResult.dateStartAfterEnd, null);
+              return;
+            }
+
+            final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
+              if (opening == null) {
+                await store.createOpening(userStore.user!.id!, type, repeat, start, end);
+              } else {
+                await store.updateOpening(opening.rebuild((HealerOpeningBuilder b) {
+                  b.repeat = repeat;
+                  b.type = type;
+                  b.start = start.toUtc();
+                  b.end = end.toUtc();
+                  b.userId = userStore.user!.id!;
+                  return b;
+                }));
+              }
+            });
+            if (success) {
+              Navigator.of(context).pop();
+              showAlert(context, context.l10n.openingCreated, (_) => Text(context.l10n.openingCreatedDescription));
+            }
+          },
+        ),
       ],
     );
   }
 }
 
-class _CalendarDaySetting extends HookConsumerWidget {
-  final String label;
-  final CalendarTimeOfDaySettings settings;
-  final Function(CalendarTimeOfDaySettings settings) onChange;
+class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
+  final CommonLocalizations localizations;
 
-  const _CalendarDaySetting({Key? key, required this.settings, required this.onChange, required this.label}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final amStartHour = useState<TimeOfDay?>(settings.start);
-    final amEndHour = useState<TimeOfDay?>(settings.end);
-    final pmStartHour = useState<TimeOfDay?>(settings.start2);
-    final pmEndHour = useState<TimeOfDay?>(settings.end2);
-
-    checkTime() {
-      if (amStartHour.value == null) {
-        amEndHour.value = null;
-      } else {
-        if (amStartHour.value!.isAfter(amEndHour.value)) {
-          amEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(context.l10n.dayHourError),
-          ));
-        } else if (amStartHour.value!.isAfter(pmStartHour.value)) {
-          pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(context.l10n.dayHourError),
-          ));
-        } else if (amStartHour.value!.isAfter(pmEndHour.value)) {
-          pmEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(context.l10n.dayHourError),
-          ));
-        }
-      }
-
-      if (pmStartHour.value == null) {
-        pmEndHour.value = null;
-      } else {
-        if (pmStartHour.value!.isAfter(pmEndHour.value)) {
-          pmEndHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(context.l10n.dayHourError),
-          ));
-        } else if (pmStartHour.value!.isBefore(amStartHour.value)) {
-          pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(context.l10n.dayHourError),
-          ));
-        } else if (pmStartHour.value!.isBefore(amEndHour.value)) {
-          pmStartHour.value = null;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(context.l10n.dayHourError),
-          ));
-        }
-      }
-
-      onChange(CalendarTimeOfDaySettings(
-        start: amStartHour.value,
-        end: amEndHour.value,
-        start2: pmStartHour.value,
-        end2: pmEndHour.value,
-      ));
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            label,
-            style: context.textTheme.subtitle2?.copyWith(
-              decoration: TextDecoration.underline,
-              decorationColor: context.primaryColor,
-            ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: _TimePickerField(
-                  label: 'M. début:',
-                  value: amStartHour.value,
-                  defaultValue: const TimeOfDay(hour: 10, minute: 0),
-                  onHourChange: (time) {
-                    amStartHour.value = time;
-                    checkTime();
-                  },
-                ),
-              ),
-              const SizedBox(width: kNormalPadding),
-              Expanded(
-                  child: _TimePickerField(
-                onHourChange: (time) {
-                  amEndHour.value = time;
-                  checkTime();
-                },
-                value: amEndHour.value,
-                defaultValue: const TimeOfDay(hour: 12, minute: 0),
-                disabled: amStartHour.value == null,
-                label: 'M. fin:',
-              )),
-              const SizedBox(width: kNormalPadding),
-              Expanded(
-                child: _TimePickerField(
-                  onHourChange: (time) {
-                    pmStartHour.value = time;
-                    checkTime();
-                  },
-                  value: pmStartHour.value,
-                  defaultValue: const TimeOfDay(hour: 14, minute: 0),
-                  label: 'AM. début:',
-                ),
-              ),
-              const SizedBox(width: kNormalPadding),
-              Expanded(
-                child: _TimePickerField(
-                  onHourChange: (time) {
-                    pmEndHour.value = time;
-                    checkTime();
-                  },
-                  value: pmEndHour.value,
-                  defaultValue: const TimeOfDay(hour: 19, minute: 0),
-                  disabled: pmStartHour.value == null,
-                  label: 'AM. fin:',
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  _CalendarDataSource(List<HealerOpening> items, this.localizations) {
+    appointments = items;
   }
-}
-
-class _TimePickerField extends HookWidget {
-  final String label;
-  final bool disabled;
-  final TimeOfDay? value;
-  final TimeOfDay defaultValue;
-  final Function(TimeOfDay?) onHourChange;
-
-  const _TimePickerField({
-    Key? key,
-    this.value,
-    required this.onHourChange,
-    required this.label,
-    required this.defaultValue,
-    this.disabled = false,
-  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final controller = useTextEditingController();
-    final focusNode = useFocusNode();
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    useEffect(() {
-      if (value != null) {
-        controller.text = localizations.formatTimeOfDay(
-          value!,
-          alwaysUse24HourFormat: mediaQuery.alwaysUse24HourFormat,
+  Object? getId(int index) {
+    return appointments![index].id;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].start.toLocal();
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].end.toLocal();
+  }
+
+  @override
+  Color getColor(int index) {
+    final HealerOpening opening = appointments![index];
+    switch (opening.type){
+      case OpeningType.faceToFace:
+        return kEventColorFaceToFace;
+      case OpeningType.unavailable:
+        return kEventColorCancelled;
+      case OpeningType.visio:
+        return kEventColorVisio;
+    }
+    return Colors.yellow.shade700;
+  }
+
+  @override
+  String getSubject(int index) {
+    final HealerOpening opening = appointments![index];
+    switch (opening.type) {
+      case OpeningType.faceToFace:
+        return localizations.openingFaceToFace;
+      case OpeningType.unavailable:
+        return localizations.openingUnavailable;
+      case OpeningType.visio:
+        return localizations.openingVisio;
+    }
+    return super.getSubject(index);
+  }
+
+  @override
+  String? getRecurrenceRule(int index) {
+    final HealerOpening event = appointments![index];
+    final start = event.start;
+    if (event.repeat == null) {
+      return null;
+    }
+    RecurrenceProperties recurrenceProperty;
+
+    switch (event.repeat) {
+      case OpeningRepeatType.weekly:
+        recurrenceProperty = RecurrenceProperties(startDate: start, recurrenceType: RecurrenceType.weekly, weekDays: [WeekDaysExtension.from(start)]);
+        break;
+      case OpeningRepeatType.monthly:
+        recurrenceProperty = RecurrenceProperties(
+          startDate: start,
+          recurrenceType: RecurrenceType.monthly,
+          dayOfMonth: start.day,
         );
-      } else {
-        controller.text = '';
-      }
-    }, [value]);
-    showPopup(TimeOfDay? current) async {
-      final result = await showTimePicker(
-        context: context,
-        initialTime: current ?? TimeOfDay.now(),
-        cancelText: context.l10n.eraseButton,
-        helpText: MaterialLocalizations.of(context).timePickerDialHelpText + '\n$label',
-      );
-      onHourChange(result);
+        break;
+      default:
+        recurrenceProperty = RecurrenceProperties(
+          startDate: start,
+          recurrenceType: RecurrenceType.daily,
+        );
+        break;
     }
 
-    useEffect(() {
-      var opened = false;
-      focusNode.addListener(() async {
-        if (focusNode.hasFocus && !opened) {
-          opened = true;
-          showPopup(value ?? defaultValue);
-        } else if (!focusNode.hasFocus) {
-          opened = false;
-        }
-      });
-    }, const []);
-    return InkWell(
-      onTap: disabled ? null : () => showPopup(value ?? defaultValue),
-      child: IgnorePointer(
-        child: TextField(
-          readOnly: true,
-          focusNode: focusNode,
-          enabled: !disabled,
-          controller: controller,
-          decoration: InputDecoration(label: Text(label)),
-        ),
-      ),
+    return SfCalendar.generateRRule(
+      recurrenceProperty,
+      start,
+      start,
     );
   }
 }

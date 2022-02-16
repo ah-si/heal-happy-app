@@ -11,8 +11,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DesktopHealerProfile extends HookConsumerWidget {
   final String id;
+  final HealerEventType eventType;
 
-  const DesktopHealerProfile({required this.id, Key? key}) : super(key: key);
+  const DesktopHealerProfile({required this.id, required this.eventType, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,6 +47,7 @@ class DesktopHealerProfile extends HookConsumerWidget {
                         children: [
                           HealerAvailability(
                             id: id,
+                            eventType: eventType,
                             healerName: store.healerProfile?.profile?.name ?? '',
                           ),
                           if (store.healerProfile?.profile != null) _HealerInfo(healer: store.healerProfile!.profile!),
@@ -61,13 +63,13 @@ class DesktopHealerProfile extends HookConsumerWidget {
       ),
     );
   }
-
 }
 
 class MobileHealerProfile extends HookConsumerWidget {
   final String id;
+  final HealerEventType eventType;
 
-  const MobileHealerProfile({required this.id, Key? key}) : super(key: key);
+  const MobileHealerProfile({required this.id, required this.eventType, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,6 +84,7 @@ class MobileHealerProfile extends HookConsumerWidget {
               children: [
                 HealerAvailability(
                   id: id,
+                  eventType: eventType,
                   healerName: store.healerProfile?.profile?.name ?? '',
                 ),
                 if (store.healerProfile?.profile != null) _HealerInfo(healer: store.healerProfile!.profile!),
@@ -95,19 +98,18 @@ class MobileHealerProfile extends HookConsumerWidget {
       ),
     );
   }
-
 }
 
 class HealerProfileScreen extends HookConsumerWidget {
   static const route = '/healers/:id';
   final String id;
+  final HealerEventType eventType;
 
-  const HealerProfileScreen({Key? key, required this.id}) : super(key: key);
+  const HealerProfileScreen({Key? key, required this.eventType, required this.id}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-    return context.isMobile ? MobileHealerProfile(id: id): DesktopHealerProfile(id: id);
+    return context.isMobile ? MobileHealerProfile(id: id, eventType: eventType) : DesktopHealerProfile(id: id, eventType: eventType);
   }
 }
 

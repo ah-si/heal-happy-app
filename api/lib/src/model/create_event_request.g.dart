@@ -14,6 +14,8 @@ class _$CreateEventRequest extends CreateEventRequest {
   @override
   final String patientId;
   @override
+  final HealerEventType? type;
+  @override
   final String? message;
 
   factory _$CreateEventRequest(
@@ -24,6 +26,7 @@ class _$CreateEventRequest extends CreateEventRequest {
       {required this.slot,
       this.isUrgent,
       required this.patientId,
+      this.type,
       this.message})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(slot, 'CreateEventRequest', 'slot');
@@ -47,13 +50,17 @@ class _$CreateEventRequest extends CreateEventRequest {
         slot == other.slot &&
         isUrgent == other.isUrgent &&
         patientId == other.patientId &&
+        type == other.type &&
         message == other.message;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, slot.hashCode), isUrgent.hashCode), patientId.hashCode),
+        $jc(
+            $jc($jc($jc(0, slot.hashCode), isUrgent.hashCode),
+                patientId.hashCode),
+            type.hashCode),
         message.hashCode));
   }
 
@@ -63,6 +70,7 @@ class _$CreateEventRequest extends CreateEventRequest {
           ..add('slot', slot)
           ..add('isUrgent', isUrgent)
           ..add('patientId', patientId)
+          ..add('type', type)
           ..add('message', message))
         .toString();
   }
@@ -84,6 +92,10 @@ class CreateEventRequestBuilder
   String? get patientId => _$this._patientId;
   set patientId(String? patientId) => _$this._patientId = patientId;
 
+  HealerEventType? _type;
+  HealerEventType? get type => _$this._type;
+  set type(HealerEventType? type) => _$this._type = type;
+
   String? _message;
   String? get message => _$this._message;
   set message(String? message) => _$this._message = message;
@@ -98,6 +110,7 @@ class CreateEventRequestBuilder
       _slot = $v.slot;
       _isUrgent = $v.isUrgent;
       _patientId = $v.patientId;
+      _type = $v.type;
       _message = $v.message;
       _$v = null;
     }
@@ -124,6 +137,7 @@ class CreateEventRequestBuilder
             isUrgent: isUrgent,
             patientId: BuiltValueNullFieldError.checkNotNull(
                 patientId, 'CreateEventRequest', 'patientId'),
+            type: type,
             message: message);
     replace(_$result);
     return _$result;

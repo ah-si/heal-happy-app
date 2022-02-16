@@ -253,7 +253,7 @@ class _UserItem extends HookConsumerWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 const SizedBox(height: kSmallPadding),
-                Text(user.adminAddress),
+                Text(user.address),
                 InkWell(
                   onTap: () {
                     launch('mailto:${user.email}');

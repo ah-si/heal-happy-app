@@ -68,12 +68,9 @@ class UserProfile extends HookConsumerWidget {
             if (isHealer)
               ExpansionTile(
                 title: Text(context.l10n.calendar),
+                initiallyExpanded: true,
                 children: [
-                  StepCalendarInfoForm(
-                    enableBackButton: false,
-                    saveButtonLabel: context.l10n.saveButton,
-                    onContinue: save,
-                  ),
+                  StepCalendarInfo(onSave: save),
                 ],
               ),
             ExpansionTile(

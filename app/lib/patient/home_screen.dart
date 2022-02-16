@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/common/presentation/autocomplete_field.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/donate.dart';
@@ -453,6 +454,7 @@ class _HealerListItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(userStoreProvider);
+    final patientStore = ref.read(patientStoreProvider);
     return Padding(
       padding: const EdgeInsets.all(kNormalPadding),
       child: Row(
@@ -487,7 +489,7 @@ class _HealerListItem extends HookConsumerWidget {
                 const SizedBox(height: kNormalPadding),
                 ElevatedButton(
                   onPressed: () {
-                    context.push(HealerProfileScreen.route.replaceAll(':id', healer.id!));
+                    context.push(HealerProfileScreen.route.replaceAll(':id', healer.id!), extra: patientStore.lastTypeSearch);
                   },
                   child: const Text('En savoir plus', textAlign: TextAlign.center),
                 ),
@@ -498,7 +500,14 @@ class _HealerListItem extends HookConsumerWidget {
           if (!context.isMobile)
             Expanded(
               flex: 3,
-              child: Align(alignment: Alignment.centerRight, child: HealerAvailability(id: healer.id!, healerName: healer.name)),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: HealerAvailability(
+                  id: healer.id!,
+                  eventType: patientStore.lastTypeSearch,
+                  healerName: healer.name,
+                ),
+              ),
             ),
         ],
       ),
@@ -587,19 +596,50 @@ class _PatientEventDetails extends HookConsumerWidget {
                 Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
                 const SizedBox(height: kSmallPadding),
                 Text(context.l10n.yourHealer),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Icon(Icons.healing, size: 50),
-                    const SizedBox(width: kNormalPadding),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(event.healer.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Text(event.healer.address, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
+                    const SizedBox(height: kSmallPadding),
+                    Text(
+                      event.healer.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
+                    if (event.type == HealerEventType.visio)
+                      Text(
+                        event.healer.zipCode + ' ' + event.healer.city,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    const SizedBox(height: kNormalPadding),
+                    if (event.type == HealerEventType.visio && !event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 4))))
+                      TextButton(
+                        onPressed: () {
+                          ref.read(userStoreProvider).acceptEvent(event.id);
+                          if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
+                            launch(event.link);
+                          } else {
+                            var options = JitsiMeetingOptions(
+                              roomNameOrUrl: event.link,
+                              userDisplayName: event.patient.firstName,
+                              subject: 'Consultation Soignez Heureux',
+                            );
+                            JitsiMeetWrapper.joinMeeting(options: options);
+                          }
+                        },
+                        child: Text(context.l10n.joinVisioButton),
+                      ),
+                    if (event.type == HealerEventType.faceToFace)
+                      TextButton(
+                        onPressed: () {
+                          launch(Uri.encodeFull('https://www.google.com/maps/search/?api=1&query=' + event.healer.address));
+                        },
+                        child: Text(
+                          event.healer.address,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                   ],
                 ),
                 if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
@@ -631,28 +671,12 @@ class _PatientEventDetails extends HookConsumerWidget {
                 },
                 child: Text(context.l10n.cancelButton),
               ),
-            if (!event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 4))))
-              TextButton(
-                onPressed: () {
-                  if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                    launch(event.link);
-                  } else {
-                    var options = JitsiMeetingOptions(
-                      roomNameOrUrl: event.link,
-                      userDisplayName: event.patient.firstName,
-                      subject: 'Consultation Soignez Heureux',
-                    );
-                    JitsiMeetWrapper.joinMeeting(options: options);
-                  }
-                },
-                child: Text(context.l10n.joinVisioButton),
-              ),
           ],
         )
       ],
     );
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 250),
+      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 280),
       child: Card(
         margin: const EdgeInsets.all(kSmallPadding),
         child: event.isUrgent || event.isCancelled
@@ -673,13 +697,14 @@ class _SearchBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final jobChoice = useState<MapEntry<String, String>?>(null);
+    final typeChoice = useState<HealerEventType>(HealerEventType.visio);
     final controllerJob = useTextEditingController();
     final controllerLocalization = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
     submitForm() {
       FocusScope.of(context).requestFocus(FocusNode());
       if (formKey.currentState!.validate()) {
-        ref.read(patientStoreProvider).searchHealers(jobChoice.value!.key, controllerLocalization.text, 0);
+        ref.read(patientStoreProvider).searchHealers(jobChoice.value!.key, typeChoice.value, controllerLocalization.text, 0);
       }
     }
 
@@ -689,77 +714,164 @@ class _SearchBar extends HookConsumerWidget {
         padding: const EdgeInsets.only(left: kSmallPadding),
         child: Form(
           key: formKey,
-          child: SizedBox(
-            height: 60,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const Icon(Icons.search),
-                const SizedBox(width: kNormalPadding),
-                Expanded(
-                  child: Center(
-                    child: JobSearchFormField(
-                      decoration: InputDecoration(
-                        hintText: context.l10n.specialityField,
-                        border: InputBorder.none,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 60,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    const Icon(Icons.search),
+                    const SizedBox(width: kNormalPadding),
+                    Expanded(
+                      child: Center(
+                        child: JobSearchFormField(
+                          decoration: InputDecoration(
+                            hintText: context.l10n.specialityField,
+                            border: InputBorder.none,
+                          ),
+                          nbVisibleResults: 10,
+                          controller: controllerJob,
+                          validator: (value) {
+                            final result = isRequired(value, context);
+                            if (result == null && jobChoice.value == null) {
+                              return isRequired(null, context); //force required message
+                            }
+                            return result;
+                          },
+                          onItemSelected: (MapEntry<String, String> selected) {
+                            jobChoice.value = selected;
+                          },
+                          loadData: () {
+                            return ref.read(patientStoreProvider).getSpecialities();
+                          },
+                        ),
                       ),
-                      nbVisibleResults: 10,
-                      controller: controllerJob,
-                      validator: (value) {
-                        final result = isRequired(value, context);
-                        if (result == null && jobChoice.value == null) {
-                          return isRequired(null, context); //force required message
-                        }
-                        return result;
-                      },
-                      onItemSelected: (MapEntry<String, String> selected) {
-                        jobChoice.value = selected;
-                      },
-                      loadData: () {
-                        return ref.read(patientStoreProvider).getSpecialities();
-                      },
+                      flex: 2,
                     ),
-                  ),
-                  flex: 5,
-                ),
-                if (false) const Icon(Icons.location_on_outlined),
-                if (false) const SizedBox(width: kNormalPadding),
-                if (false)
-                  Expanded(
-                    flex: 3,
-                    child: Center(
-                      child: TextFormField(
+                    const SizedBox(
+                      width: kSmallPadding,
+                    ),
+                    Expanded(
+                      child: DropdownButtonFormField<HealerEventType>(
+                        items: HealerEventType.values
+                            .map((e) => DropdownMenuItem(
+                                  child: Text(
+                                    context.l10n.consultationLabel(e),
+                                    maxLines: 1,
+                                  ),
+                                  value: e,
+                                ))
+                            .toList(growable: false),
                         decoration: InputDecoration(
-                          hintText: context.l10n.localizationField,
+                          labelText: context.l10n.consultationType,
                           border: InputBorder.none,
                         ),
-                        controller: controllerLocalization,
-                        onFieldSubmitted: (_) => submitForm(),
+                        value: typeChoice.value,
+                        isExpanded: true,
+                        onChanged: (value) {
+                          typeChoice.value = value!;
+                          if (value == HealerEventType.visio) {
+                            controllerLocalization.text = '';
+                          }
+                        },
                       ),
                     ),
-                  ),
-                ColoredBox(
-                  color: context.primaryColor,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: submitForm,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(kNormalPadding),
-                          child: Text(
-                            context.l10n.searchButton,
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    if (typeChoice.value == HealerEventType.visio)
+                      ColoredBox(
+                        color: context.primaryColor,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: submitForm,
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(kNormalPadding),
+                                child: Text(
+                                  context.l10n.searchButton,
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                  ],
+                ),
+              ),
+              if (typeChoice.value == HealerEventType.faceToFace)
+                SizedBox(
+                  height: 60,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      const Icon(Icons.location_on_outlined),
+                      const SizedBox(width: kNormalPadding),
+                      Expanded(
+                        flex: 3,
+                        child: Center(
+                          child: AutocompleteFormField<MapEntry<String, String>>(
+                            decoration: InputDecoration(
+                              hintText: context.l10n.localizationField,
+                              border: InputBorder.none,
+                            ),
+                            characterThreshold: 0,
+                            nbVisibleResults: 10,
+                            controller: controllerLocalization,
+                            delegate: (String query) async {
+                              final localities = await ref.read(patientStoreProvider).searchLocalities();
+                              if (query.isEmpty) {
+                                return localities.entries.toList(growable: false);
+                              }
+                              return localities.entries.where((element) {
+                                final key = element.key.toLowerCase().removeDiacritic();
+                                final value = element.value.toLowerCase().removeDiacritic();
+                                final queryTrimmed = query.trim().toLowerCase().removeDiacritic();
+                                return key.contains(queryTrimmed) || value.contains(queryTrimmed);
+                              }).toList(growable: false);
+                            },
+                            validator: (value) {
+                              final result = isRequired(value, context);
+                              if (result == null && jobChoice.value == null) {
+                                return isRequired(null, context); //force required message
+                              }
+                              return result;
+                            },
+                            itemBuilder: (BuildContext context, MapEntry<String, String> entry) {
+                              return ListTile(title: Text(entry.value.capitalized));
+                            },
+                            onItemSelected: (MapEntry<String, String> entry) {
+                              controllerLocalization.text = entry.value;
+                            },
+                          ),
+                        ),
+                      ),
+                      ColoredBox(
+                        color: context.primaryColor,
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: submitForm,
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(kNormalPadding),
+                                child: Text(
+                                  context.l10n.searchButton,
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+            ],
           ),
         ),
       ),

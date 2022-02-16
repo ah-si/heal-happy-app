@@ -91,6 +91,19 @@ class ErrorLocalizations {
   String get termsRequiredHint => Intl.message('Merci d\'aller dans vos informations personnelles et accepté le traitement de vos données.', name: 'termsRequiredHint');
 
   String get adminTermsRequiredHint => Intl.message('L\'utilisateur n\'a pas accepté le traitement de ses données (RGPD), il est donc impossible de modifier ses données.\nIl doit aller dans ses informations personnelles et accepter le traitement de ses données.', name: 'adminTermsRequiredHint');
+
+  String get noUser => Intl.message('Aucun compte patient avec cet email.', name: 'noUser');
+
+  String get noUserHint => Intl.message('Le patient doit être inscrit afin de pouvoir créer une consultation avec lui.', name: 'noUserHint');
+
+  String get accountNotVerified => Intl.message('Compte non vérifié.', name: 'accountNotVerified');
+  String get accountNotVerifiedHint => Intl.message('Une fois votre compte vérifié par un administrateur, vous pourrez pleinement utiliser cette fonctionnalité.', name: 'noUserHint');
+
+  String get noPastOpening => Intl.message('Création impossible dans le passé', name: 'noPastOpening');
+  String get noPastOpeningHint => Intl.message('Merci de choisir un autre horaire pour votre disponibilité', name: 'noPastOpeningHint');
+
+  String get dateStartAfterEnd => Intl.message('Date de fin après date de début', name: 'dateStartAfterEnd');
+  String get dateStartAfterEndHint => Intl.message('La date de fin ne peut être après la date de début, merci de corriger.', name: 'dateStartAfterEndHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

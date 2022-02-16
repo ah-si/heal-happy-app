@@ -4,6 +4,7 @@
 
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/user.dart';
+import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
@@ -17,6 +18,7 @@ part 'user_event.g.dart';
 /// * [healer] 
 /// * [isUrgent] 
 /// * [isCancelled] 
+/// * [type] 
 /// * [createdAt] 
 /// * [start] 
 /// * [end] 
@@ -39,6 +41,10 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
 
     @BuiltValueField(wireName: r'isCancelled')
     bool get isCancelled;
+
+    @BuiltValueField(wireName: r'type')
+    HealerEventType get type;
+    // enum typeEnum {  visio,  faceToFace,  };
 
     @BuiltValueField(wireName: r'createdAt')
     DateTime get createdAt;
@@ -104,6 +110,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(serializers.serialize(object.isCancelled,
                 specifiedType: const FullType(bool)));
         result
+            ..add(r'type')
+            ..add(serializers.serialize(object.type,
+                specifiedType: const FullType(HealerEventType)));
+        result
             ..add(r'createdAt')
             ..add(serializers.serialize(object.createdAt,
                 specifiedType: const FullType(DateTime)));
@@ -168,6 +178,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                 case r'isCancelled':
                     result.isCancelled = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'type':
+                    result.type = serializers.deserialize(value,
+                        specifiedType: const FullType(HealerEventType)) as HealerEventType;
                     break;
                 case r'createdAt':
                     result.createdAt = serializers.deserialize(value,

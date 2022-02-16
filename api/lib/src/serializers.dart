@@ -18,6 +18,7 @@ import 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
 import 'package:heal_happy_sdk/src/model/calendar_day_settings.dart';
 import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
+import 'package:heal_happy_sdk/src/model/create_invite_event_request.dart';
 import 'package:heal_happy_sdk/src/model/dashboard.dart';
 import 'package:heal_happy_sdk/src/model/dashboard_event.dart';
 import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
@@ -25,9 +26,13 @@ import 'package:heal_happy_sdk/src/model/delete_event_request.dart';
 import 'package:heal_happy_sdk/src/model/file_data.dart';
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/healer_availabilities.dart';
+import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
+import 'package:heal_happy_sdk/src/model/healer_opening.dart';
 import 'package:heal_happy_sdk/src/model/healer_stats.dart';
 import 'package:heal_happy_sdk/src/model/login_request.dart';
 import 'package:heal_happy_sdk/src/model/login_response.dart';
+import 'package:heal_happy_sdk/src/model/opening_repeat_type.dart';
+import 'package:heal_happy_sdk/src/model/opening_type.dart';
 import 'package:heal_happy_sdk/src/model/paginated_events.dart';
 import 'package:heal_happy_sdk/src/model/paginated_healers.dart';
 import 'package:heal_happy_sdk/src/model/paginated_users.dart';
@@ -48,6 +53,7 @@ part 'serializers.g.dart';
   CalendarDaySettings,
   CalendarSettings,
   CreateEventRequest,
+  CreateInviteEventRequest,
   Dashboard,
   DashboardEvent,
   DashboardUser,
@@ -55,9 +61,13 @@ part 'serializers.g.dart';
   FileData,
   Healer,
   HealerAvailabilities,
+  HealerEventType,
+  HealerOpening,
   HealerStats,
   LoginRequest,
   LoginResponse,
+  OpeningRepeatType,
+  OpeningType,
   PaginatedEvents,
   PaginatedHealers,
   PaginatedUsers,
@@ -77,6 +87,10 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltMap, [FullType(String), FullType(String)]),
         () => MapBuilder<String, String>(),
+      )
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(HealerOpening)]),
+        () => ListBuilder<HealerOpening>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(UserEvent)]),

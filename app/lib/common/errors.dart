@@ -10,7 +10,9 @@ FutureOr<dynamic> handleCaughtError(error, stackTrace) {
 }
 
 ErrorResultException handleError(error, stackTrace) {
-  if (error is ErrorResultException) {
+  if (error is ErrorResult) {
+    return ErrorResultException(error);
+  } else if (error is ErrorResultException) {
     return error;
   } else {
     var result = ErrorResultException(ErrorResult.internal);
@@ -20,6 +22,18 @@ ErrorResultException handleError(error, stackTrace) {
       result = ErrorResultException(ErrorResult.noNetwork);
     } else if (error is DioError && error.response?.statusCode == 401) {
       result = ErrorResultException(ErrorResult.notLogged);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('meeting_exist_already')) {
+      result = ErrorResultException(ErrorResult.meetingAlreadyExist);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('account_not_activated')) {
+      result = ErrorResultException(ErrorResult.accountNotActivated);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('account_not_verified')) {
+      result = ErrorResultException(ErrorResult.accountNotVerified);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('no_past_event')) {
+      result = ErrorResultException(ErrorResult.noPastEvent);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('no_past_opening')) {
+      result = ErrorResultException(ErrorResult.noPastOpening);
+    } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('slot_taken')) {
+      result = ErrorResultException(ErrorResult.meetingAlreadyBooked);
     } else if (error is DioError && error.response?.statusCode == 403) {
       result = ErrorResultException(ErrorResult.forbidden);
     } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data.toString().contains('terms_required')) {
@@ -58,6 +72,7 @@ class ErrorResult {
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
   static const linkExpired = ErrorResult(_ErrorType.linkExpired);
   static const fileTooBig = ErrorResult(_ErrorType.fileTooBig);
+  static const noUser = ErrorResult(_ErrorType.noUser);
 
   // generic
   static const internal = ErrorResult(_ErrorType.internal);
@@ -65,7 +80,10 @@ class ErrorResult {
   static const fieldRequired = ErrorResult(_ErrorType.fieldRequired);
   static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
   static const accountNotActivated = ErrorResult(_ErrorType.accountNotActivated);
+  static const dateStartAfterEnd = ErrorResult(_ErrorType.dateStartAfterEnd);
+  static const accountNotVerified = ErrorResult(_ErrorType.accountNotVerified);
   static const noPastEvent = ErrorResult(_ErrorType.noPastEvent);
+  static const noPastOpening = ErrorResult(_ErrorType.noPastOpening);
   static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyBooked);
 
   final _ErrorType _type;
@@ -111,6 +129,14 @@ class ErrorResult {
         return localizations.termsRequired;
       case _ErrorType.adminTermsRequired:
         return localizations.termsRequired;
+      case _ErrorType.noUser:
+        return localizations.noUser;
+      case _ErrorType.accountNotVerified:
+        return localizations.accountNotVerified;
+      case _ErrorType.noPastOpening:
+        return localizations.noPastOpening;
+      case _ErrorType.dateStartAfterEnd:
+        return localizations.dateStartAfterEnd;
     }
   }
 
@@ -156,6 +182,14 @@ class ErrorResult {
         return localizations.termsRequiredHint;
       case _ErrorType.adminTermsRequired:
         return localizations.adminTermsRequiredHint;
+      case _ErrorType.noUser:
+        return localizations.noUserHint;
+      case _ErrorType.accountNotVerified:
+        return localizations.accountNotVerifiedHint;
+      case _ErrorType.noPastOpening:
+        return localizations.noPastOpeningHint;
+      case _ErrorType.dateStartAfterEnd:
+        return localizations.dateStartAfterEndHint;
     }
   }
 
@@ -180,13 +214,17 @@ enum _ErrorType {
   wrongCredentials,
   linkExpired,
   fileTooBig,
+  noUser,
   internal,
   wrongEmail,
   emailAlreadyUsed,
   fieldRequired,
   meetingAlreadyExist,
   noPastEvent,
+  noPastOpening,
   accountNotActivated,
+  dateStartAfterEnd,
+  accountNotVerified,
   meetingAlreadyBooked,
   noAppForActionError,
 }

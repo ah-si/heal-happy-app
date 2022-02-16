@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -13,24 +14,17 @@ class PatientEventResults {
   PatientEventResults(this.events, {this.error});
 }
 
-enum HomeTabs { home, profile, history, help }
+enum HomeTabs { home, profile, help }
 
 class HealerStore extends ChangeNotifier {
   final UserApi _userApi;
   PatientEventResults? eventsResults;
   bool isLoading = false;
-  bool _seeOnlyUrgency = false;
   int eventUrgent = 0;
+  int eventCancelled = 0;
   HomeTabs _selectedTab = HomeTabs.home;
 
   HealerStore({UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi();
-
-  bool get seeOnlyUrgency => _seeOnlyUrgency;
-
-  set seeOnlyUrgency(bool value) {
-    _seeOnlyUrgency = value;
-    notifyListeners();
-  }
 
   HomeTabs get selectedTab => _selectedTab;
 
@@ -43,19 +37,21 @@ class HealerStore extends ChangeNotifier {
 
   Future<void> cancelEvent(String eventId, String message) async {
     await _userApi.deleteEvent(eventId: eventId, deleteEventRequest: DeleteEventRequest((b) => b.message = message));
-    await loadEvents(false);
+    await loadEvents();
   }
 
-  Future<void> loadEvents(bool showHistory) async {
+  Future<void> loadEvents() async {
     isLoading = true;
     try {
-      final events = await _userApi.getEvents(includePastEvents: showHistory);
-      eventUrgent = events.data!.where((p0) => p0.isUrgent).length;
+      final events = await _userApi.getEvents(includePastEvents: true);
+      eventUrgent = events.data!.where((p0) => p0.isUrgent && !p0.isCancelled).length;
+      eventCancelled = events.data!.where((p0) => p0.isCancelled).length;
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();
     } catch (error, stackTrace) {
       eventUrgent = 0;
+      eventCancelled = 0;
       eventsResults = PatientEventResults([], error: handleError(error, stackTrace));
       isLoading = false;
       notifyListeners();
@@ -63,18 +59,37 @@ class HealerStore extends ChangeNotifier {
   }
 
   Future<void> updateEvent(UserEvent event, DateTime date, String? message) async {
-    final updatedEvent = await _userApi.updateEvent(eventId: event.id, updateEventRequest: UpdateEventRequest((b) {
-      b.start = date.toUtc();
-      b.message = message;
-    }));
+    final updatedEvent = await _userApi.updateEvent(
+        eventId: event.id,
+        updateEventRequest: UpdateEventRequest((b) {
+          b.start = date.toUtc();
+          b.message = message;
+        }));
     final index = eventsResults!.events.indexOf(event);
     if (date.isBefore(DateTime.now())) {
-      eventsResults = PatientEventResults(List.from(eventsResults!.events)
-        ..removeAt(index));
+      eventsResults = PatientEventResults(List.from(eventsResults!.events)..removeAt(index));
     } else {
-      eventsResults = PatientEventResults(List.from(eventsResults!.events)
-        ..replaceRange(index, index + 1, [updatedEvent.data!]));
+      eventsResults = PatientEventResults(List.from(eventsResults!.events)..replaceRange(index, index + 1, [updatedEvent.data!]));
     }
     notifyListeners();
+  }
+
+  Future<void> createEvent(String userId, HealerEventType type, DateTime date, String email, String message) async {
+    try {
+      await _userApi.createInviteEvent(
+          id: userId,
+          createInviteEventRequest: CreateInviteEventRequest((b) {
+            b.message = message;
+            b.email = email;
+            b.slot = date.toUtc();
+            b.type = type;
+          }));
+    } on DioError catch (ex) {
+      if (ex.response?.statusCode == 404) {
+        throw ErrorResultException(ErrorResult.noUser);
+      }
+      rethrow;
+    }
+    await loadEvents();
   }
 }

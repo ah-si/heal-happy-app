@@ -5,8 +5,10 @@ import 'package:heal_happy/admin/user_details_screen.dart';
 import 'package:heal_happy/auth/change_password.dart';
 import 'package:heal_happy/auth/login_screen.dart';
 import 'package:heal_happy/auth/register/register_screen.dart';
+import 'package:heal_happy/common/presentation/account_activated_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/common/presentation/invite_accepted_screen.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/main.dart';
@@ -31,6 +33,8 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               '/404',
               '/500',
               RegisterScreen.name,
+              InviteAcceptedScreen.name,
+              AccountActivatedScreen.name,
               LoginScreen.name,
               ChangePasswordScreen.name,
               '/${LoginScreen.name}',
@@ -133,6 +137,7 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
             },
             child: HealerProfileScreen(
               id: state.params['id']!,
+              eventType: state.extra as HealerEventType,
             ),
           ),
         ),
@@ -145,6 +150,28 @@ GoRouter createRouter(UserStore userStore) => _router = GoRouter(
               return FadeTransition(opacity: animation, child: child);
             },
             child: const RegisterScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/${AccountActivatedScreen.name}',
+          name: AccountActivatedScreen.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: const AccountActivatedScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/${InviteAcceptedScreen.name}',
+          name: InviteAcceptedScreen.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return FadeTransition(opacity: animation, child: child);
+            },
+            child: const InviteAcceptedScreen(),
           ),
         ),
       ],
