@@ -52,14 +52,20 @@ class ErrorLocalizations {
 
   String get wrongCredentials => Intl.message('Erreur de connexion', name: 'wrongCredentials', desc: 'When login credentials are wrong');
 
-  String get wrongCredentialsHint =>
-      Intl.message('Merci de vérifier votre email et mot de passe avant nouvelle tentative', name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
+  String get wrongCredentialsHint => Intl.message('Merci de vérifier votre email et mot de passe avant nouvelle tentative',
+      name: 'wrongCredentialsHint', desc: 'When login credentials are wrong');
 
   String get meetingAlreadyExist => Intl.message('Réservation impossible', name: 'meetingAlreadyExist');
 
   String get meetingAlreadyExistHint =>
       Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consultation passée.',
           name: 'meetingAlreadyExistHint');
+
+  String get healerMeetingAlreadyExist => Intl.message('Réservation impossible', name: 'healerMeetingAlreadyExist');
+
+  String get healerMeetingAlreadyExistHint =>
+      Intl.message('Vous avez déjà une consultation planifiée avec ce patient, vous pourrez reprendre rendez-vous une fois la consultation passée.',
+          name: 'healerMeetingAlreadyExistHint');
 
   String get emailAlreadyUsed => Intl.message('Email déjà enregistré', name: 'emailAlreadyUsed');
 
@@ -94,16 +100,45 @@ class ErrorLocalizations {
 
   String get noUser => Intl.message('Aucun compte patient avec cet email.', name: 'noUser');
 
-  String get noUserHint => Intl.message('Le patient doit être inscrit afin de pouvoir créer une consultation avec lui.', name: 'noUserHint');
+  String get noUserHint => Intl.message('Merci de remplir les informations du patient afin de créé cette consultation.', name: 'noUserHint');
 
   String get accountNotVerified => Intl.message('Compte non vérifié.', name: 'accountNotVerified');
-  String get accountNotVerifiedHint => Intl.message('Une fois votre compte vérifié par un administrateur, vous pourrez pleinement utiliser cette fonctionnalité.', name: 'noUserHint');
+
+  String get accountNotVerifiedHint =>
+      Intl.message('Une fois votre compte vérifié par un administrateur, vous pourrez pleinement utiliser cette fonctionnalité.', name: 'noUserHint');
 
   String get noPastOpening => Intl.message('Création impossible dans le passé', name: 'noPastOpening');
+
   String get noPastOpeningHint => Intl.message('Merci de choisir un autre horaire pour votre disponibilité', name: 'noPastOpeningHint');
 
+  String get noOpeningOverlap => Intl.message('Chevauchement des horaires', name: 'noOpeningOverlap');
+
+  String get noOpeningOverlapHint =>
+      Intl.message('Les horaires ne peuvent se chevaucher, merci de choisir un autre horaire pour votre disponibilité', name: 'noOpeningOverlapHint');
+
   String get dateStartAfterEnd => Intl.message('Date de fin après date de début', name: 'dateStartAfterEnd');
+
   String get dateStartAfterEndHint => Intl.message('La date de fin ne peut être après la date de début, merci de corriger.', name: 'dateStartAfterEndHint');
+
+  String get faceToFaceNotAllowed => Intl.message('Présentiel pas encore autorisé', name: 'faceToFaceNotAllowed');
+
+  String get faceToFaceNotAllowedHint =>
+      Intl.message('Afin de pouvoir réaliser des consultations en présentiel, merci de nous contacter à contact@ah-si.org afin de connaitre les modalitées.',
+          name: 'faceToFaceNotAllowedHint');
+
+  String get patientAlreadyBusy => Intl.message('Créneau indisponible', name: 'patientAlreadyBusy');
+
+  String get patientAlreadyBusyHint =>
+      Intl.message('Vous avez déjà un rendez vous à cet horaire, merci de choisir un horaire différent.', name: 'patientAlreadyBusyHint');
+
+  String get healerPatientAlreadyBusy => Intl.message('Patient indisponible', name: 'healerPatientAlreadyBusy');
+
+  String get healerPatientAlreadyBusyHint =>
+      Intl.message('Votre patient n\'est pas disponible à cet horaire, merci d\'en choisir un autre.', name: 'healerPatientAlreadyBusyHint');
+
+  String get noAccount => Intl.message('Aucun compte avec cet email', name: 'noAccount');
+
+  String get noAccountHint => Intl.message('Cet email n\'est relié à aucun compte Soignez Heureux.', name: 'noAccountHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

@@ -65,7 +65,7 @@ class UserStore extends ChangeNotifier {
   Future<void> saveUser(String id, User user) async {
     try {
       await _apiProvider.api.getAdminApi().updateUser(id: id, user: user);
-    } on DioError catch(error) {
+    } on DioError catch (error) {
       if (error.response?.statusCode == 400 && error.response!.data.toString().contains('terms_required')) {
         throw ErrorResultException(ErrorResult.adminTermsRequired);
       }
@@ -90,7 +90,7 @@ class UserStore extends ChangeNotifier {
 
     try {
       appSettings = (await _apiProvider.api.getSettingsApi().getSettings()).data!;
-    } catch(ex) {
+    } catch (ex) {
       appSettings = AppSettings((b) => b.enableUrgencyButton = true);
     }
     if (force) {
@@ -175,13 +175,19 @@ class UserStore extends ChangeNotifier {
   }
 
   Future<void> askResetPassword(String email) async {
-    await _apiProvider.api.getAuthApi().askResetPassword(
-      askResetPassword: AskResetPassword(
-        (b) {
-          b.email = email;
-        },
-      ),
-    );
+    try {
+      await _apiProvider.api.getAuthApi().askResetPassword(
+        askResetPassword: AskResetPassword(
+          (b) {
+            b.email = email;
+          },
+        ),
+      );
+    } on DioError catch (error) {
+      if (error.response?.statusCode == 404) {
+        throw ErrorResultException(ErrorResult.noAccount);
+      }
+    }
   }
 
   Future<void> register(User user) async {

@@ -52,6 +52,8 @@ FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
     return null;
   } else if (event.throwable is DioError && event.throwable.statusCode == 401) {
     return null;
+  } else if (event.throwable is DioError && event.throwable.statusCode == 403) {
+    return null;
   }
 
   return event;

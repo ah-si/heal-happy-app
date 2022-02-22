@@ -123,10 +123,14 @@ class AutocompleteBloc<T> {
   }
 
   void _search(String query) async {
-    final results = await delegate(query);
+    final results = await delegate(query.trim());
     if (!_results.isClosed) {
       _results.add(results);
     }
+  }
+
+  void refresh(String query) async {
+    _search(query);
   }
 
   Sink<String> get query => _query.sink;
@@ -193,8 +197,10 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         if (_controller.text.length >= widget.characterThreshold) {
-          _bloc.query.add(_controller.text);
           _showOverlay();
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            _bloc.refresh(_controller.text);
+          });
         }
       } else {
         _hideOverlay();

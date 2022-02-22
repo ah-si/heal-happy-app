@@ -68,71 +68,102 @@ Class | Method | HTTP request | Description
 [*AdminApi*](doc/AdminApi.md) | [**deleteUser**](doc/AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**getDashboard**](doc/AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
 [*AdminApi*](doc/AdminApi.md) | [**getHealerStats**](doc/AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
-[*AdminApi*](doc/AdminApi.md) | [**getUser**](doc/AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
-[*AdminApi*](doc/AdminApi.md) | [**searchEvents**](doc/AdminApi.md#searchevents) | **GET** /api/v1/admin/events | 
-[*AdminApi*](doc/AdminApi.md) | [**searchUsers**](doc/AdminApi.md#searchusers) | **GET** /api/v1/admin/users | 
-[*AdminApi*](doc/AdminApi.md) | [**updateUser**](doc/AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
-[*AdminApi*](doc/AdminApi.md) | [**verifyUser**](doc/AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
-[*AuthApi*](doc/AuthApi.md) | [**askResetPassword**](doc/AuthApi.md#askresetpassword) | **POST** /api/v1/auth/askResetPassword | 
-[*AuthApi*](doc/AuthApi.md) | [**login**](doc/AuthApi.md#login) | **POST** /api/v1/auth/login | 
-[*AuthApi*](doc/AuthApi.md) | [**refreshToken**](doc/AuthApi.md#refreshtoken) | **POST** /api/v1/auth/token/refresh | 
-[*AuthApi*](doc/AuthApi.md) | [**register**](doc/AuthApi.md#register) | **POST** /api/v1/auth/register | 
-[*AuthApi*](doc/AuthApi.md) | [**resetPassword**](doc/AuthApi.md#resetpassword) | **POST** /api/v1/auth/resetPassword | 
-[*SettingsApi*](doc/SettingsApi.md) | [**getSettings**](doc/SettingsApi.md#getsettings) | **GET** /api/v1/settings | 
-[*SettingsApi*](doc/SettingsApi.md) | [**updateSettings**](doc/SettingsApi.md#updatesettings) | **PATCH** /api/v1/admin/settings | 
-[*UserApi*](doc/UserApi.md) | [**acceptEvent**](doc/UserApi.md#acceptevent) | **POST** /api/v1/users/me/events/{eventId}/accept | 
-[*UserApi*](doc/UserApi.md) | [**createEvent**](doc/UserApi.md#createevent) | **POST** /api/v1/healers/{id}/events | 
-[*UserApi*](doc/UserApi.md) | [**createInviteEvent**](doc/UserApi.md#createinviteevent) | **POST** /api/v1/healers/{id}/inviteToEvent | 
-[*UserApi*](doc/UserApi.md) | [**createOpening**](doc/UserApi.md#createopening) | **POST** /api/v1/users/me/openings | 
-[*UserApi*](doc/UserApi.md) | [**deleteEvent**](doc/UserApi.md#deleteevent) | **DELETE** /api/v1/users/me/events/{eventId} | 
-[*UserApi*](doc/UserApi.md) | [**deleteOpening**](doc/UserApi.md#deleteopening) | **DELETE** /api/v1/users/me/openings/{openingId} | 
-[*UserApi*](doc/UserApi.md) | [**getEvents**](doc/UserApi.md#getevents) | **GET** /api/v1/users/me/events | 
-[*UserApi*](doc/UserApi.md) | [**getHealerAvailabilities**](doc/UserApi.md#gethealeravailabilities) | **GET** /api/v1/healers/{id}/availabilities | 
-[*UserApi*](doc/UserApi.md) | [**getHealerProfile**](doc/UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} | 
-[*UserApi*](doc/UserApi.md) | [**getLocalities**](doc/UserApi.md#getlocalities) | **GET** /api/v1/healers/localities | 
-[*UserApi*](doc/UserApi.md) | [**getOpenings**](doc/UserApi.md#getopenings) | **GET** /api/v1/users/me/openings | 
-[*UserApi*](doc/UserApi.md) | [**getProfile**](doc/UserApi.md#getprofile) | **GET** /api/v1/users/me | 
-[*UserApi*](doc/UserApi.md) | [**getSpecialities**](doc/UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
-[*UserApi*](doc/UserApi.md) | [**putAvatar**](doc/UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
-[*UserApi*](doc/UserApi.md) | [**putDiploma**](doc/UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
-[*UserApi*](doc/UserApi.md) | [**putTerms**](doc/UserApi.md#putterms) | **PUT** /api/v1/users/me/terms | 
-[*UserApi*](doc/UserApi.md) | [**resendActivationLink**](doc/UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
-[*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
-[*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
-[*UserApi*](doc/UserApi.md) | [**updateEvent**](doc/UserApi.md#updateevent) | **PATCH** /api/v1/users/me/events/{eventId} | 
-[*UserApi*](doc/UserApi.md) | [**updateOpening**](doc/UserApi.md#updateopening) | **PATCH** /api/v1/users/me/openings/{openingId} | 
-
+[*AdminApi*](doc/AdminApi.md) | [**getUser**](doc/AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} |
+[*AdminApi*](doc/AdminApi.md) | [**searchEvents**](doc/AdminApi.md#searchevents) | **GET** /api/v1/admin/events |
+[*AdminApi*](doc/AdminApi.md) | [**searchUsers**](doc/AdminApi.md#searchusers) | **GET** /api/v1/admin/users |
+[*AdminApi*](doc/AdminApi.md) | [**updateUser**](doc/AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} |
+[*AdminApi*](doc/AdminApi.md) | [**verifyUser**](doc/AdminApi.md#verifyuser) | **
+POST** /api/v1/admin/users/{id}/verify |
+[*AuthApi*](doc/AuthApi.md) | [**askResetPassword**](doc/AuthApi.md#askresetpassword) | **
+POST** /api/v1/auth/askResetPassword |
+[*AuthApi*](doc/AuthApi.md) | [**login**](doc/AuthApi.md#login) | **POST** /api/v1/auth/login |
+[*AuthApi*](doc/AuthApi.md) | [**refreshToken**](doc/AuthApi.md#refreshtoken) | **POST** /api/v1/auth/token/refresh |
+[*AuthApi*](doc/AuthApi.md) | [**register**](doc/AuthApi.md#register) | **POST** /api/v1/auth/register |
+[*AuthApi*](doc/AuthApi.md) | [**resetPassword**](doc/AuthApi.md#resetpassword) | **POST** /api/v1/auth/resetPassword |
+[*OfficesApi*](doc/OfficesApi.md) | [**addRoom**](doc/OfficesApi.md#addroom) | **POST** /api/v1/offices/{id}/rooms |
+[*OfficesApi*](doc/OfficesApi.md) | [**createOffice**](doc/OfficesApi.md#createoffice) | **POST** /api/v1/offices |
+[*OfficesApi*](doc/OfficesApi.md) | [**deleteRoom**](doc/OfficesApi.md#deleteroom) | **
+DELETE** /api/v1/offices/rooms/{id} |
+[*OfficesApi*](doc/OfficesApi.md) | [**getOffices**](doc/OfficesApi.md#getoffices) | **GET** /api/v1/offices |
+[*OfficesApi*](doc/OfficesApi.md) | [**updateOffice**](doc/OfficesApi.md#updateoffice) | **PUT** /api/v1/offices/{id} |
+[*OfficesApi*](doc/OfficesApi.md) | [**updateRoom**](doc/OfficesApi.md#updateroom) | **
+PUT** /api/v1/offices/rooms/{id} |
+[*SettingsApi*](doc/SettingsApi.md) | [**getSettings**](doc/SettingsApi.md#getsettings) | **GET** /api/v1/settings |
+[*SettingsApi*](doc/SettingsApi.md) | [**updateSettings**](doc/SettingsApi.md#updatesettings) | **
+PATCH** /api/v1/admin/settings |
+[*UserApi*](doc/UserApi.md) | [**acceptEvent**](doc/UserApi.md#acceptevent) | **
+POST** /api/v1/users/me/events/{eventId}/accept |
+[*UserApi*](doc/UserApi.md) | [**createEvent**](doc/UserApi.md#createevent) | **POST** /api/v1/healers/{id}/events |
+[*UserApi*](doc/UserApi.md) | [**createInviteEvent**](doc/UserApi.md#createinviteevent) | **
+POST** /api/v1/healers/{id}/inviteToEvent |
+[*UserApi*](doc/UserApi.md) | [**createOpening**](doc/UserApi.md#createopening) | **POST** /api/v1/users/me/openings |
+[*UserApi*](doc/UserApi.md) | [**createUserOpening**](doc/UserApi.md#createuseropening) | **
+POST** /api/v1/users/{userId}/openings |
+[*UserApi*](doc/UserApi.md) | [**deleteEvent**](doc/UserApi.md#deleteevent) | **
+DELETE** /api/v1/users/me/events/{eventId} |
+[*UserApi*](doc/UserApi.md) | [**deleteOpening**](doc/UserApi.md#deleteopening) | **
+DELETE** /api/v1/users/me/openings/{openingId} |
+[*UserApi*](doc/UserApi.md) | [**deleteUserOpening**](doc/UserApi.md#deleteuseropening) | **
+DELETE** /api/v1/users/{userId}/openings/{openingId} |
+[*UserApi*](doc/UserApi.md) | [**getEvents**](doc/UserApi.md#getevents) | **GET** /api/v1/users/me/events |
+[*UserApi*](doc/UserApi.md) | [**getHealerAvailabilities**](doc/UserApi.md#gethealeravailabilities) | **
+GET** /api/v1/healers/{id}/availabilities |
+[*UserApi*](doc/UserApi.md) | [**getHealerProfile**](doc/UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} |
+[*UserApi*](doc/UserApi.md) | [**getLocalities**](doc/UserApi.md#getlocalities) | **GET** /api/v1/healers/localities |
+[*UserApi*](doc/UserApi.md) | [**getOpenings**](doc/UserApi.md#getopenings) | **GET** /api/v1/users/me/openings |
+[*UserApi*](doc/UserApi.md) | [**getProfile**](doc/UserApi.md#getprofile) | **GET** /api/v1/users/me |
+[*UserApi*](doc/UserApi.md) | [**getSpecialities**](doc/UserApi.md#getspecialities) | **
+GET** /api/v1/healers/specialities |
+[*UserApi*](doc/UserApi.md) | [**getUserOpenings**](doc/UserApi.md#getuseropenings) | **
+GET** /api/v1/users/{userId}/openings |
+[*UserApi*](doc/UserApi.md) | [**putAvatar**](doc/UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar |
+[*UserApi*](doc/UserApi.md) | [**putDiploma**](doc/UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma |
+[*UserApi*](doc/UserApi.md) | [**putTerms**](doc/UserApi.md#putterms) | **PUT** /api/v1/users/me/terms |
+[*UserApi*](doc/UserApi.md) | [**resendActivationLink**](doc/UserApi.md#resendactivationlink) | **
+GET** /api/v1/users/me/resendActivationLink |
+[*UserApi*](doc/UserApi.md) | [**saveProfile**](doc/UserApi.md#saveprofile) | **PUT** /api/v1/users/me |
+[*UserApi*](doc/UserApi.md) | [**searchHealers**](doc/UserApi.md#searchhealers) | **GET** /api/v1/healers/search |
+[*UserApi*](doc/UserApi.md) | [**updateEvent**](doc/UserApi.md#updateevent) | **
+PATCH** /api/v1/users/me/events/{eventId} |
+[*UserApi*](doc/UserApi.md) | [**updateOpening**](doc/UserApi.md#updateopening) | **
+PATCH** /api/v1/users/me/openings/{openingId} |
+[*UserApi*](doc/UserApi.md) | [**updateUserOpening**](doc/UserApi.md#updateuseropening) | **
+PATCH** /api/v1/users/{userId}/openings/{openingId} |
 
 ## Documentation For Models
 
- - [AdminUserEvent](doc/AdminUserEvent.md)
- - [AppSettings](doc/AppSettings.md)
- - [AskResetPassword](doc/AskResetPassword.md)
- - [CalendarDaySettings](doc/CalendarDaySettings.md)
- - [CalendarSettings](doc/CalendarSettings.md)
- - [CreateEventRequest](doc/CreateEventRequest.md)
+- [AdminUserEvent](doc/AdminUserEvent.md)
+- [AppSettings](doc/AppSettings.md)
+- [AskResetPassword](doc/AskResetPassword.md)
+- [CalendarDaySettings](doc/CalendarDaySettings.md)
+- [CalendarSettings](doc/CalendarSettings.md)
+- [CreateEventRequest](doc/CreateEventRequest.md)
  - [CreateInviteEventRequest](doc/CreateInviteEventRequest.md)
  - [Dashboard](doc/Dashboard.md)
  - [DashboardEvent](doc/DashboardEvent.md)
- - [DashboardUser](doc/DashboardUser.md)
- - [DeleteEventRequest](doc/DeleteEventRequest.md)
- - [FileData](doc/FileData.md)
- - [Healer](doc/Healer.md)
- - [HealerAvailabilities](doc/HealerAvailabilities.md)
- - [HealerEventType](doc/HealerEventType.md)
- - [HealerOpening](doc/HealerOpening.md)
- - [HealerStats](doc/HealerStats.md)
- - [LoginRequest](doc/LoginRequest.md)
- - [LoginResponse](doc/LoginResponse.md)
- - [OpeningRepeatType](doc/OpeningRepeatType.md)
- - [OpeningType](doc/OpeningType.md)
- - [PaginatedEvents](doc/PaginatedEvents.md)
- - [PaginatedHealers](doc/PaginatedHealers.md)
- - [PaginatedUsers](doc/PaginatedUsers.md)
- - [RefreshTokenRequest](doc/RefreshTokenRequest.md)
- - [ResetPassword](doc/ResetPassword.md)
- - [UpdateEventRequest](doc/UpdateEventRequest.md)
- - [User](doc/User.md)
+- [DashboardUser](doc/DashboardUser.md)
+- [DeleteEventRequest](doc/DeleteEventRequest.md)
+- [FileData](doc/FileData.md)
+- [Healer](doc/Healer.md)
+- [HealerAvailabilities](doc/HealerAvailabilities.md)
+- [HealerEventType](doc/HealerEventType.md)
+- [HealerOpening](doc/HealerOpening.md)
+- [HealerStats](doc/HealerStats.md)
+- [LoginRequest](doc/LoginRequest.md)
+- [LoginResponse](doc/LoginResponse.md)
+- [MinimalUser](doc/MinimalUser.md)
+- [Office](doc/Office.md)
+- [OfficeRoom](doc/OfficeRoom.md)
+- [OpeningRepeatType](doc/OpeningRepeatType.md)
+- [OpeningType](doc/OpeningType.md)
+- [PaginatedEvents](doc/PaginatedEvents.md)
+- [PaginatedHealers](doc/PaginatedHealers.md)
+- [PaginatedOffices](doc/PaginatedOffices.md)
+- [PaginatedUsers](doc/PaginatedUsers.md)
+- [RefreshTokenRequest](doc/RefreshTokenRequest.md)
+- [ResetPassword](doc/ResetPassword.md)
+- [UpdateEventRequest](doc/UpdateEventRequest.md)
+- [User](doc/User.md)
  - [UserAllOf](doc/UserAllOf.md)
  - [UserEvent](doc/UserEvent.md)
  - [UserTypeEnum](doc/UserTypeEnum.md)

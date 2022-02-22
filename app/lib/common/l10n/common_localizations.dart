@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:heal_happy/common/utils/constants.dart';
-import 'package:heal_happy/healer/stores/healer_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -30,13 +29,15 @@ class CommonLocalizations {
 
   String get healerDescription => Intl.message('Description:', name: 'healerDescription');
 
-  String get healerDiploma => Intl.message('Diploma:', name: 'healerDiploma');
+  String get healerDiploma => Intl.message('Diplomes:', name: 'healerDiploma');
 
   String get healerExperiences => Intl.message('Expériences:', name: 'healerExperiences');
 
   String get adminUsersMenu => Intl.message('Utilisateurs', name: 'adminUsersMenu');
 
   String get adminEventsMenu => Intl.message('Consultations', name: 'adminEventsMenu');
+
+  String get adminOfficesMenu => Intl.message('Cabinets', name: 'adminOfficesMenu');
 
   String get adminHealerStatsMenu => Intl.message('Compta', name: 'adminHealerStatsMenu');
 
@@ -59,6 +60,8 @@ class CommonLocalizations {
   String get emptyUsers => Intl.message('Aucun utilisateur ne correspond à votre recherche.', name: 'emptyUsers');
 
   String get emptyEvents => Intl.message('Aucune consultation ne correspond à votre recherche.', name: 'emptyEvents');
+
+  String get emptyOffices => Intl.message('Aucun cabinet ne correspond à votre recherche.', name: 'emptyOffices');
 
   String get pendingHealer => Intl.message('Voici la liste des soignants en attente de validation:', name: 'pendingHealer');
 
@@ -94,6 +97,15 @@ class CommonLocalizations {
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
+  String get allowFaceToFace => Intl.message('Activer le présentiel', name: 'allowFaceToFace');
+
+  String get allowFaceToFaceConfirm => Intl.message('Etes vous sur de vouloir autoriser se soignant à faire du présentiel?', name: 'allowFaceToFaceConfirm');
+
+  String get disallowFaceToFace => Intl.message('Désactiver le présentiel', name: 'disallowFaceToFace');
+
+  String get disallowFaceToFaceConfirm =>
+      Intl.message('Etes vous sur de vouloir supprimer l\'autoriser de se soignant à faire du présentiel?', name: 'disallowFaceToFaceConfirm');
+
   String get editButton => Intl.message('Modifier', name: 'editButton');
 
   String get acceptConfirm => Intl.message(
@@ -124,9 +136,13 @@ class CommonLocalizations {
 
   String get confirmPasswordField => Intl.message('Confirmation du mot de passe*:', name: 'confirmPasswordField');
 
-  String get acceptTerms => Intl.message('Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par l\'Alliance Humaine Santé Internationale pour nous permettre de traiter votre demande. Elles sont conservées pendant toute la durée de notre relation. En soumettant ce formulaire, j’accepte que mes informations soient utilisées exclusivement dans le cadre de ma demande et de la relation personnalisée qui pourrait en découler si je le souhaite.', name: 'acceptTerms');
+  String get acceptTerms => Intl.message(
+      'Les informations recueillies sur ce formulaire sont enregistrées dans un fichier informatisé par l\'Alliance Humaine Santé Internationale pour nous permettre de traiter votre demande. Elles sont conservées pendant toute la durée de notre relation. En soumettant ce formulaire, j’accepte que mes informations soient utilisées exclusivement dans le cadre de ma demande et de la relation personnalisée qui pourrait en découler si je le souhaite.',
+      name: 'acceptTerms');
 
-  String get goToTerms => Intl.message('Pour connaître et exercer mes droits, notamment pour annuler mon consentement, je consulte la politique de vie privée en cliquant ici.', name: 'goToTerms');
+  String get goToTerms =>
+      Intl.message('Pour connaître et exercer mes droits, notamment pour annuler mon consentement, je consulte la politique de vie privée en cliquant ici.',
+          name: 'goToTerms');
 
   String get passwordChanged => Intl.message('Votre mot de passe a été mis à jour.', name: 'passwordChanged');
 
@@ -134,7 +150,15 @@ class CommonLocalizations {
 
   String get emailField => Intl.message('Email*:', name: 'emailField');
 
+  String get captchaField => Intl.message('Recopier le texte de l\'image*:', name: 'captchaField');
+
   String get patientEmailField => Intl.message('Email du patient*:', name: 'patientEmailField');
+
+  String get patientPhoneField => Intl.message('Mobile du patient*:', name: 'patientPhoneField');
+
+  String get patientNameField => Intl.message('Nom du patient*:', name: 'patientNameField');
+
+  String get patientFirstNameField => Intl.message('Prénom du patient*:', name: 'patientFirstNameField');
 
   String get consultationType => Intl.message('Type de consultation*:', name: 'consultationType');
 
@@ -393,7 +417,9 @@ class CommonLocalizations {
 
   String get resendActivationLink => Intl.message('Renvoyer le lien', name: 'resendActivationLink');
 
-  String get eventsDescription => Intl.message('Vos consultations à venir son affichées ici, pour voir vos anciennes consultations, consultez votre historique.', name: 'eventsDescription');
+  String get eventsDescription =>
+      Intl.message('Vos consultations à venir sont affichées ici, pour voir vos anciennes consultations, consultez votre historique.',
+          name: 'eventsDescription');
 
   String get resendActivationLinkTitle => Intl.message('Activation du compte', name: 'resendActivationLinkTitle');
 
@@ -466,13 +492,15 @@ class CommonLocalizations {
 
   String get rdvCreatedDescription => Intl.message('Vous allez recevoir un email de confirmation.', name: 'rdvCreatedDescription');
 
-  String get openingCreatedDescription => Intl.message('Les patients pourrons maintenant prendre (ou non si vous avez créé une indisponibilité) rendez-vous avec vous sur se créneau.', name: 'openingCreatedDescription');
+  String get openingCreatedDescription =>
+      Intl.message('Les patients pourront maintenant prendre (ou non si vous avez créé une indisponibilité) rendez-vous avec vous sur ce créneau.',
+          name: 'openingCreatedDescription');
 
   String get messageForHealer => Intl.message('Motif du rendez-vous:', name: 'messageForHealer');
 
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
-  String get wrongConsultationDuration => Intl.message('30 minutes minimum', name: 'wrongConsultationDuration');
+  String get wrongConsultationDuration => Intl.message('entre 30 et 120 minutes uniquement', name: 'wrongConsultationDuration');
 
   String get hintReasonConsultation => Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');
 

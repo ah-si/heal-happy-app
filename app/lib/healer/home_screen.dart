@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/config.dart';
+import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/calendar_legend.dart';
 import 'package:heal_happy/common/presentation/datetime_button.dart';
@@ -45,6 +47,7 @@ class MobileHealerHome extends HookConsumerWidget {
           store.selectedTab = HomeTabs.values[controller.index];
         }
       });
+      return null;
     }, [controller]);
 
     return BgContainer(

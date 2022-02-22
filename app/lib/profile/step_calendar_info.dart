@@ -18,12 +18,13 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class StepCalendarInfo extends HookConsumerWidget {
   final VoidCallback onSave;
+  final String? userId;
 
-  const StepCalendarInfo({required this.onSave, Key? key}) : super(key: key);
+  const StepCalendarInfo({required this.onSave, this.userId, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final openingStore = ref.watch(openingStoreProvider);
+    final openingStore = ref.watch(openingStoreProvider(userId));
     final userStore = ref.watch(userStoreProvider);
     final userInfo = ref.watch(userInfoProvider);
     final controllerConsultation = useTextEditingController(text: userInfo.consultationDuration?.toString() ?? '');
@@ -32,6 +33,7 @@ class StepCalendarInfo extends HookConsumerWidget {
 
     useEffect(() {
       openingStore.loadOpenings();
+      return null;
     }, const []);
 
     if (openingStore.results == null) {
@@ -60,7 +62,8 @@ class StepCalendarInfo extends HookConsumerWidget {
             controller: controllerConsultation,
             validator: (value) {
               final result = isRequired(value, context);
-              if (result == null && (int.tryParse(value!) ?? 0) < 30) {
+              final intValue = int.tryParse(value!) ?? 0;
+              if (result == null && (intValue < 30 || intValue > 120)) {
                 return context.l10n.wrongConsultationDuration;
               }
               return result;
@@ -189,6 +192,7 @@ class StepCalendarInfo extends HookConsumerWidget {
                   value: null,
                 ),
                 ...OpeningRepeatType.values
+                    .where((p0) => p0 != OpeningRepeatType.daily)
                     .map((e) => DropdownMenuItem(
                           child: Text(context.l10n.openingRepeatLabel(e)),
                           value: e,

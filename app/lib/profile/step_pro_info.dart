@@ -277,7 +277,7 @@ class StepAddress extends HookConsumerWidget {
                 padding: const EdgeInsets.all(kNormalPadding),
                 child: ElevatedButton(
                   onPressed: submitForm,
-                  child: Text(saveButtonLabel ?? context.l10n.continueButton),
+                  child: Text(saveButtonLabel ?? context.l10n.sendButton),
                 ),
               ),
             ],

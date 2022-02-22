@@ -4,10 +4,9 @@
 
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-
-import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/api_util.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
 import 'package:heal_happy_sdk/src/model/create_invite_event_request.dart';
@@ -31,10 +30,10 @@ class UserApi {
   const UserApi(this._dio, this._serializers);
 
   /// acceptEvent
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [eventId] 
+  /// * [eventId]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -44,7 +43,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> acceptEvent({ 
+  Future<Response<void>> acceptEvent({
     required String eventId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -85,11 +84,11 @@ class UserApi {
   }
 
   /// createEvent
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
-  /// * [createEventRequest] 
+  /// * [id]
+  /// * [createEventRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -99,7 +98,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> createEvent({ 
+  Future<Response<void>> createEvent({
     required String id,
     CreateEventRequest? createEventRequest,
     CancelToken? cancelToken,
@@ -160,11 +159,11 @@ class UserApi {
   }
 
   /// createInviteEvent
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
-  /// * [createInviteEventRequest] 
+  /// * [id]
+  /// * [createInviteEventRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -174,7 +173,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> createInviteEvent({ 
+  Future<Response<void>> createInviteEvent({
     required String id,
     CreateInviteEventRequest? createInviteEventRequest,
     CancelToken? cancelToken,
@@ -235,10 +234,10 @@ class UserApi {
   }
 
   /// createOpening
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [healerOpening] 
+  /// * [healerOpening]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -248,7 +247,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerOpening>> createOpening({ 
+  Future<Response<HealerOpening>> createOpening({
     HealerOpening? healerOpening,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -283,10 +282,9 @@ class UserApi {
     try {
       const _type = FullType(HealerOpening);
       _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -312,7 +310,106 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as HealerOpening;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
 
+    return Response<HealerOpening>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// createUserOpening
+  ///
+  ///
+  /// Parameters:
+  /// * [userId]
+  /// * [healerOpening]
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
+  /// Throws [DioError] if API call or serialization fails
+  Future<Response<HealerOpening>> createUserOpening({
+    required String userId,
+    HealerOpening? healerOpening,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/api/v1/users/{userId}/openings'.replaceAll('{' r'userId' '}', userId.toString());
+    final _options = Options(
+      method: r'POST',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'application/json',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(HealerOpening);
+      _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    HealerOpening _responseData;
+
+    try {
+      const _responseType = FullType(HealerOpening);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as HealerOpening;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -335,11 +432,11 @@ class UserApi {
   }
 
   /// deleteEvent
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [eventId] 
-  /// * [deleteEventRequest] 
+  /// * [eventId]
+  /// * [deleteEventRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -349,7 +446,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteEvent({ 
+  Future<Response<void>> deleteEvent({
     required String eventId,
     required DeleteEventRequest deleteEventRequest,
     CancelToken? cancelToken,
@@ -410,10 +507,10 @@ class UserApi {
   }
 
   /// deleteOpening
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [openingId] 
+  /// * [openingId]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -423,7 +520,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteOpening({ 
+  Future<Response<void>> deleteOpening({
     required String openingId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -463,11 +560,68 @@ class UserApi {
     return _response;
   }
 
-  /// getEvents
-  /// 
+  /// deleteUserOpening
+  ///
   ///
   /// Parameters:
-  /// * [includePastEvents] 
+  /// * [openingId]
+  /// * [userId]
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future]
+  /// Throws [DioError] if API call or serialization fails
+  Future<Response<void>> deleteUserOpening({
+    required String openingId,
+    required String userId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path =
+        r'/api/v1/users/{userId}/openings/{openingId}'.replaceAll('{' r'openingId' '}', openingId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _options = Options(
+      method: r'DELETE',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    return _response;
+  }
+
+  /// getEvents
+  ///
+  ///
+  /// Parameters:
+  /// * [includePastEvents]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -477,7 +631,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<UserEvent>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<UserEvent>>> getEvents({ 
+  Future<Response<BuiltList<UserEvent>>> getEvents({
     bool? includePastEvents,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -550,12 +704,12 @@ class UserApi {
   }
 
   /// getHealerAvailabilities
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
-  /// * [from] 
-  /// * [type] 
+  /// * [id]
+  /// * [from]
+  /// * [type]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -565,7 +719,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerAvailabilities] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerAvailabilities>> getHealerAvailabilities({ 
+  Future<Response<HealerAvailabilities>> getHealerAvailabilities({
     required String id,
     required DateTime from,
     required HealerEventType type,
@@ -641,10 +795,10 @@ class UserApi {
   }
 
   /// getHealerProfile
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -654,7 +808,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Healer] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<Healer>> getHealerProfile({ 
+  Future<Response<Healer>> getHealerProfile({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -722,7 +876,7 @@ class UserApi {
   }
 
   /// getLocalities
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -734,7 +888,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltMap<String, String>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltMap<String, String>>> getLocalities({ 
+  Future<Response<BuiltMap<String, String>>> getLocalities({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -794,7 +948,7 @@ class UserApi {
   }
 
   /// getOpenings
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -806,7 +960,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<HealerOpening>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<HealerOpening>>> getOpenings({ 
+  Future<Response<BuiltList<HealerOpening>>> getOpenings({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -873,7 +1027,7 @@ class UserApi {
   }
 
   /// getProfile
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -885,7 +1039,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> getProfile({ 
+  Future<Response<User>> getProfile({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -952,10 +1106,10 @@ class UserApi {
   }
 
   /// getSpecialities
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [onlyExisting] 
+  /// * [onlyExisting]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -965,7 +1119,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltMap<String, String>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltMap<String, String>>> getSpecialities({ 
+  Future<Response<BuiltMap<String, String>>> getSpecialities({
     bool? onlyExisting,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1030,11 +1184,91 @@ class UserApi {
     );
   }
 
-  /// putAvatar
-  /// 
+  /// getUserOpenings
+  ///
   ///
   /// Parameters:
-  /// * [avatar] 
+  /// * [userId]
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [BuiltList<HealerOpening>] as data
+  /// Throws [DioError] if API call or serialization fails
+  Future<Response<BuiltList<HealerOpening>>> getUserOpenings({
+    required String userId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/api/v1/users/{userId}/openings'.replaceAll('{' r'userId' '}', userId.toString());
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    BuiltList<HealerOpening> _responseData;
+
+    try {
+      const _responseType = FullType(BuiltList, [FullType(HealerOpening)]);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as BuiltList<HealerOpening>;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<BuiltList<HealerOpening>>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// putAvatar
+  ///
+  ///
+  /// Parameters:
+  /// * [avatar]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1044,7 +1278,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putAvatar({ 
+  Future<Response<FileData>> putAvatar({
     MultipartFile? avatar,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1132,10 +1366,10 @@ class UserApi {
   }
 
   /// putDiploma
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [diploma] 
+  /// * [diploma]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1145,7 +1379,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putDiploma({ 
+  Future<Response<FileData>> putDiploma({
     MultipartFile? diploma,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1233,10 +1467,10 @@ class UserApi {
   }
 
   /// putTerms
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [terms] 
+  /// * [terms]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1246,7 +1480,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putTerms({ 
+  Future<Response<FileData>> putTerms({
     MultipartFile? terms,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1334,7 +1568,7 @@ class UserApi {
   }
 
   /// resendActivationLink
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1346,7 +1580,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> resendActivationLink({ 
+  Future<Response<void>> resendActivationLink({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1386,10 +1620,10 @@ class UserApi {
   }
 
   /// saveProfile
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [user] 
+  /// * [user]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1399,7 +1633,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> saveProfile({ 
+  Future<Response<User>> saveProfile({
     User? user,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1486,13 +1720,13 @@ class UserApi {
   }
 
   /// searchHealers
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [job] 
-  /// * [type] 
-  /// * [page] 
-  /// * [localization] 
+  /// * [job]
+  /// * [type]
+  /// * [page]
+  /// * [localization]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1502,7 +1736,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PaginatedHealers] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PaginatedHealers>> searchHealers({ 
+  Future<Response<PaginatedHealers>> searchHealers({
     required String job,
     required HealerEventType type,
     required int page,
@@ -1581,11 +1815,11 @@ class UserApi {
   }
 
   /// updateEvent
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [eventId] 
-  /// * [updateEventRequest] 
+  /// * [eventId]
+  /// * [updateEventRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1595,7 +1829,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserEvent] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<UserEvent>> updateEvent({ 
+  Future<Response<UserEvent>> updateEvent({
     required String eventId,
     UpdateEventRequest? updateEventRequest,
     CancelToken? cancelToken,
@@ -1683,11 +1917,11 @@ class UserApi {
   }
 
   /// updateOpening
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [openingId] 
-  /// * [healerOpening] 
+  /// * [openingId]
+  /// * [healerOpening]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1697,7 +1931,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerOpening>> updateOpening({ 
+  Future<Response<HealerOpening>> updateOpening({
     required String openingId,
     HealerOpening? healerOpening,
     CancelToken? cancelToken,
@@ -1733,10 +1967,9 @@ class UserApi {
     try {
       const _type = FullType(HealerOpening);
       _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -1762,7 +1995,109 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as HealerOpening;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
 
+    return Response<HealerOpening>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// updateUserOpening
+  ///
+  ///
+  /// Parameters:
+  /// * [openingId]
+  /// * [userId]
+  /// * [healerOpening]
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
+  /// Throws [DioError] if API call or serialization fails
+  Future<Response<HealerOpening>> updateUserOpening({
+    required String openingId,
+    required String userId,
+    HealerOpening? healerOpening,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path =
+        r'/api/v1/users/{userId}/openings/{openingId}'.replaceAll('{' r'openingId' '}', openingId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _options = Options(
+      method: r'PATCH',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      contentType: 'application/json',
+      validateStatus: validateStatus,
+    );
+
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(HealerOpening);
+      _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
+    } catch(error, stackTrace) {
+      throw DioError(
+        requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    final _response = await _dio.request<Object>(
+      _path,
+      data: _bodyData,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    HealerOpening _responseData;
+
+    try {
+      const _responseType = FullType(HealerOpening);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as HealerOpening;
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,

@@ -78,8 +78,8 @@ class _Events extends HookConsumerWidget {
 class _EventsSearch extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final startState = useState<DateTime?>(null);
-    final endState = useState<DateTime?>(null);
+    final startState = useState<DateTime>(DateTime.now().copyWith(day: 1));
+    final endState = useState<DateTime>(DateTime.now().add(const Duration(days: 1)));
     final urgent = useState<bool?>(null);
     final cancelled = useState<bool?>(null);
     return SizedBox(
@@ -99,7 +99,7 @@ class _EventsSearch extends HookConsumerWidget {
             onDateSelected: (DateTime date) {
               endState.value = date;
             },
-            value: endState.value ?? DateTime.now().add(const Duration(days: 1)),
+            value: endState.value,
           ),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 140),
@@ -125,10 +125,8 @@ class _EventsSearch extends HookConsumerWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              if (startState.value != null && endState.value != null) {
-                final store = ref.read(adminEventsSearchStoreProvider);
-                store.getEvents(0, startState.value!, endState.value!, urgent.value, cancelled.value);
-              }
+              final store = ref.read(adminEventsSearchStoreProvider);
+              store.getEvents(0, startState.value, endState.value, urgent.value, cancelled.value);
             },
             child: Text(context.l10n.searchButton),
           ),
@@ -163,38 +161,38 @@ class _EventItem extends HookConsumerWidget {
                 Row(
                   children: [
                     Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
-                      IconButton(
-                        onPressed: () async {
-                          final now = DateTime.now();
-                          var date = await showDatePicker(
+                    IconButton(
+                      onPressed: () async {
+                        final now = DateTime.now();
+                        var date = await showDatePicker(
+                          context: context,
+                          initialDate: event.start.toLocal(),
+                          firstDate: now.subtract(Duration(days: now.day - 1)),
+                          lastDate: now.add(
+                            const Duration(days: 15),
+                          ),
+                        );
+                        if (date != null) {
+                          final time = await showTimePicker(
                             context: context,
-                            initialDate: event.start.toLocal(),
-                            firstDate: now.subtract(Duration(days: now.day - 1)),
-                            lastDate: now.add(
-                              const Duration(days: 15),
-                            ),
+                            initialTime: TimeOfDay.fromDateTime(event.start.toLocal()),
                           );
-                          if (date != null) {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(event.start.toLocal()),
-                            );
-                            if (time != null) {
-                              date = date.toLocal().copyWith(hour: time.hour, minute: time.minute);
-                              final message = await showPrompt(context, context.l10n.updateEventMessage);
-                              if (message != null) {
-                                final store = ref.read(adminEventsSearchStoreProvider);
-                                showLoadingDialog(
-                                  context,
-                                  (_) => Text(context.l10n.sending),
-                                  () => store.updateEvent(event, date!, message),
-                                );
-                              }
+                          if (time != null) {
+                            date = date.toLocal().copyWith(hour: time.hour, minute: time.minute);
+                            final message = await showPrompt(context, context.l10n.updateEventMessage);
+                            if (message != null) {
+                              final store = ref.read(adminEventsSearchStoreProvider);
+                              showLoadingDialog(
+                                context,
+                                (_) => Text(context.l10n.sending),
+                                () => store.updateEvent(event, date!, message),
+                              );
                             }
                           }
-                        },
-                        icon: const Icon(Icons.edit),
-                      ),
+                        }
+                      },
+                      icon: const Icon(Icons.edit),
+                    ),
                   ],
                 ),
                 Text(context.l10n.eventCreatedAt(_dateFormatCreation.format(event.createdAt.toLocal()))),
@@ -323,8 +321,13 @@ class _EventItem extends HookConsumerWidget {
             if (!event.isCancelled)
               TextButton(
                 onPressed: () async {
-                  final message = await showPrompt(context, context.l10n.cancelConsultation,
-                      validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.patient.name));
+                  final message = await showPrompt(
+                    context,
+                    context.l10n.cancelConsultation,
+                    validator: (value) => isRequired(value, context),
+                    description: context.l10n.cancelConsultationConfirm(event.patient.name),
+                    label: context.l10n.patientCancelledMessage,
+                  );
                   if (!message.isNullOrEmpty) {
                     final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
                       await ref.read(adminEventsSearchStoreProvider).cancelEvent(event.id, message!);

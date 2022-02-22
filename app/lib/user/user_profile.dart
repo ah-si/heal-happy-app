@@ -29,6 +29,7 @@ class UserProfile extends HookConsumerWidget {
           store.fromUser(userStore.user!);
         }
       });
+      return null;
     }, [userStore.user]);
     useEffect(() {
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
@@ -36,6 +37,7 @@ class UserProfile extends HookConsumerWidget {
           userStore.getUser(id!).then(store.fromUser);
         }
       });
+      return null;
     }, [id]);
 
     if (id != null && userStore.currentEditedUser == null || store.email == null) {
@@ -70,7 +72,7 @@ class UserProfile extends HookConsumerWidget {
                 title: Text(context.l10n.calendar),
                 initiallyExpanded: true,
                 children: [
-                  StepCalendarInfo(onSave: save),
+                  StepCalendarInfo(onSave: save, userId: id),
                 ],
               ),
             ExpansionTile(

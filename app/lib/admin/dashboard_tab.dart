@@ -12,6 +12,7 @@ class Dashboard extends HookConsumerWidget {
       scheduleMicrotask(() {
         store.getDashboard();
       });
+      return null;
     }, const []);
 
     if (store.usersChart == null) {

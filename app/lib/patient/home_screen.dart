@@ -48,6 +48,7 @@ class MobilePatientHome extends HookConsumerWidget {
           store.selectedTab = HomeTabs.values[controller.index];
         }
       });
+      return null;
     }, [controller]);
 
     return BgContainer(
@@ -530,6 +531,7 @@ class _PlannedConsultations extends HookConsumerWidget {
 
     useEffect(() {
       store.loadEvents(showHistory);
+      return null;
     }, const []);
 
     if (store.eventsResults == null || store.isLoading) {
@@ -658,8 +660,13 @@ class _PatientEventDetails extends HookConsumerWidget {
             if (!event.isCancelled && event.start.isAfter(DateTime.now()))
               TextButton(
                 onPressed: () async {
-                  final message = await showPrompt(context, context.l10n.cancelConsultation,
-                      validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.healer.name));
+                  final message = await showPrompt(
+                    context,
+                    context.l10n.cancelConsultation,
+                    validator: (value) => isRequired(value, context),
+                    description: context.l10n.cancelConsultationConfirm(event.healer.name),
+                    label: context.l10n.patientCancelledMessage,
+                  );
                   if (!message.isNullOrEmpty) {
                     final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
                       await ref.read(patientStoreProvider).cancelEvent(event.id, message!);
@@ -681,8 +688,8 @@ class _PatientEventDetails extends HookConsumerWidget {
         margin: const EdgeInsets.all(kSmallPadding),
         child: event.isUrgent || event.isCancelled
             ? Banner(
-                location: BannerLocation.topEnd,
-                message: event.isUrgent ? 'Urgent' : 'Annulée',
+          location: BannerLocation.topEnd,
+                message: event.isCancelled ? 'Annulée' : 'Urgent',
                 child: content,
               )
             : content,

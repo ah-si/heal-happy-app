@@ -9,6 +9,7 @@ import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/admin/stores/dashboard_store.dart';
 import 'package:heal_happy/admin/stores/events_search_store.dart';
 import 'package:heal_happy/admin/stores/healer_stats_store.dart';
+import 'package:heal_happy/admin/stores/offices_store.dart';
 import 'package:heal_happy/admin/stores/users_search_store.dart';
 import 'package:heal_happy/admin/user_details_screen.dart';
 import 'package:heal_happy/common/config.dart';
@@ -32,7 +33,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
 part 'events_tab.dart';
+
 part 'healer_reports_tab.dart';
+
+part 'offices_tab.dart';
+
 part 'users_tab.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
@@ -58,7 +63,7 @@ class MobileAdminHome extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(adminStoreProvider);
-    final controller = useTabController(initialLength: 5, initialIndex: store.selectedTab.index);
+    final controller = useTabController(initialLength: 6, initialIndex: store.selectedTab.index);
 
     useEffect(() {
       controller.addListener(() {
@@ -66,6 +71,7 @@ class MobileAdminHome extends HookConsumerWidget {
           store.selectedTab = HomeTabs.values[controller.index];
         }
       });
+      return null;
     }, [controller]);
 
     return BgContainer(
@@ -90,6 +96,9 @@ class MobileAdminHome extends HookConsumerWidget {
               text: context.l10n.adminUsersMenu,
             ),
             Tab(
+              text: context.l10n.adminOfficesMenu,
+            ),
+            Tab(
               text: context.l10n.adminEventsMenu,
             ),
             Tab(
@@ -109,6 +118,7 @@ class MobileAdminHome extends HookConsumerWidget {
             children: const [
               Dashboard(),
               _Users(),
+              _Offices(),
               _Events(),
               HealerReports(),
               UserProfile(),
@@ -147,6 +157,9 @@ class DesktopAdminHome extends HookConsumerWidget {
       case HomeTabs.profile:
         child = const SizedBox(height: double.infinity, child: SingleChildScrollView(child: UserProfile()));
         break;
+      case HomeTabs.offices:
+        child = const _Offices();
+        break;
     }
 
     return BgContainer(
@@ -179,6 +192,14 @@ class DesktopAdminHome extends HookConsumerWidget {
                                 store.selectedTab = HomeTabs.users;
                               },
                               selected: store.selectedTab == HomeTabs.users,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.adminOfficesMenu,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.offices;
+                              },
+                              selected: store.selectedTab == HomeTabs.offices,
                             ),
                             const SizedBox(width: 2),
                             MenuItem(

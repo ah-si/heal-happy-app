@@ -13,6 +13,6 @@ ags="$@ generate -i api.yml -g dart-dio-next --skip-validate-spec -o ${WORKDIR} 
 java ${JAVA_OPTS} -jar ${executable} ${ags}
 
 cd ${WORKDIR}
-pub get
-pub run build_runner build --delete-conflicting-outputs
+dart pub get
+dart run build_runner build --delete-conflicting-outputs
 rm -R ${WORKDIR}/test/

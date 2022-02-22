@@ -69,15 +69,21 @@ class AdminUsersStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> saveHealer(User healer) async {
+    await _adminApi.updateUser(id: healer.id!, user: healer);
+    await search(searchResults!.currentPage);
+    notifyListeners();
+  }
+
   Future<void> deleteHealer(User healer) async {
     await _adminApi.deleteUser(id: healer.id!);
-    searchResults = SearchResults(searchResults!.users..remove(healer), searchResults!.totalPages, searchResults!.currentPage);
+    searchResults = SearchResults(searchResults!.users..remove(healer), searchResults!.currentPage, searchResults!.totalPages);
     notifyListeners();
   }
 
   Future<void> deleteUser(User user) async {
     await _adminApi.deleteUser(id: user.id!);
-    searchResults = SearchResults(searchResults!.users..remove(user), searchResults!.totalPages, searchResults!.currentPage);
+    searchResults = SearchResults(searchResults!.users..remove(user), searchResults!.currentPage, searchResults!.totalPages);
     notifyListeners();
   }
 }

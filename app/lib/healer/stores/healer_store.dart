@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/network/api_provider.dart';
+import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 final healerStoreProvider = ChangeNotifierProvider((_) => HealerStore());
@@ -59,34 +60,60 @@ class HealerStore extends ChangeNotifier {
   }
 
   Future<void> updateEvent(UserEvent event, DateTime date, String? message) async {
-    final updatedEvent = await _userApi.updateEvent(
-        eventId: event.id,
-        updateEventRequest: UpdateEventRequest((b) {
-          b.start = date.toUtc();
-          b.message = message;
-        }));
-    final index = eventsResults!.events.indexOf(event);
-    if (date.isBefore(DateTime.now())) {
-      eventsResults = PatientEventResults(List.from(eventsResults!.events)..removeAt(index));
-    } else {
-      eventsResults = PatientEventResults(List.from(eventsResults!.events)..replaceRange(index, index + 1, [updatedEvent.data!]));
+    try {
+      final updatedEvent = await _userApi.updateEvent(
+          eventId: event.id,
+          updateEventRequest: UpdateEventRequest((b) {
+            b.start = date.toUtc();
+            b.message = message;
+          }));
+      final index = eventsResults!.events.indexOf(event);
+      if (date.isBefore(DateTime.now())) {
+        eventsResults = PatientEventResults(List.from(eventsResults!.events)..removeAt(index));
+      } else {
+        eventsResults = PatientEventResults(List.from(eventsResults!.events)..replaceRange(index, index + 1, [updatedEvent.data!]));
+      }
+    } on DioError catch (error) {
+      if (error.response?.statusCode == 403 && error.response!.data!.toString().contains('healer_already_booked')) {
+        throw ErrorResultException(ErrorResult.meetingAlreadyBooked);
+      } else if (error.response?.statusCode == 403 && error.response!.data!.toString().contains('patient_slot_taken')) {
+        throw ErrorResultException(ErrorResult.healerPatientAlreadyBusy);
+      }
     }
     notifyListeners();
   }
 
-  Future<void> createEvent(String userId, HealerEventType type, DateTime date, String email, String message) async {
+  Future<void> createEvent(
+    String userId,
+    HealerEventType type,
+    DateTime date,
+    String email,
+    String mobile,
+    String firstName,
+    String lastName,
+    String message,
+  ) async {
     try {
       await _userApi.createInviteEvent(
           id: userId,
           createInviteEventRequest: CreateInviteEventRequest((b) {
             b.message = message;
             b.email = email;
+            if (!mobile.isNullOrEmpty) {
+              b.mobile = mobile;
+              b.firstName = firstName;
+              b.lastName = lastName;
+            }
             b.slot = date.toUtc();
             b.type = type;
           }));
     } on DioError catch (ex) {
       if (ex.response?.statusCode == 404) {
         throw ErrorResultException(ErrorResult.noUser);
+      } else if (ex.response?.statusCode == 403 && ex.response!.data!.toString().contains('meeting_exist_already')) {
+        throw ErrorResultException(ErrorResult.healerMeetingAlreadyExist);
+      } else if (ex.response?.statusCode == 403 && ex.response!.data!.toString().contains('patient_slot_taken')) {
+        throw ErrorResultException(ErrorResult.healerPatientAlreadyBusy);
       }
       rethrow;
     }

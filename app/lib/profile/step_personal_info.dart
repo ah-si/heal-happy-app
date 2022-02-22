@@ -27,6 +27,7 @@ class StepPersonalInfo extends HookConsumerWidget {
     final controllerMobile = useTextEditingController(text: userInfo.mobile);
     final controllerLastName = useTextEditingController(text: userInfo.lastName);
     final controllerFirstName = useTextEditingController(text: userInfo.firstName);
+    final controllerCaptcha = useTextEditingController(text: userInfo.captcha);
     final controller = useTextEditingController(text: userInfo.email);
     final controllerPass = useTextEditingController(text: userInfo.password ?? '');
     final controllerConfirm = useTextEditingController();
@@ -97,18 +98,36 @@ class StepPersonalInfo extends HookConsumerWidget {
                 decoration: InputDecoration(label: Text(context.l10n.emailField)),
               ),
               if (!headless || kIsWeb)
-                TextFormField(
-                  controller: controllerPass,
-                  obscureText: true,
-                  validator: (value) => isPasswordValid(value, !headless, context),
-                  autofillHints: const [AutofillHints.newPassword],
-                  keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) => userInfo.password = value,
-                  onFieldSubmitted: (_) {
-                    submitForm();
-                  },
-                  decoration: InputDecoration(label: Text(context.l10n.passwordField)),
-                ),
+                HookBuilder(builder: (context) {
+                  final showPassword = useState(false);
+                  return TextFormField(
+                    controller: controllerPass,
+                    obscureText: !showPassword.value,
+                    validator: (value) => isPasswordValid(value, !headless, context),
+                    autofillHints: const [AutofillHints.newPassword],
+                    keyboardType: TextInputType.visiblePassword,
+                    onChanged: (value) => userInfo.password = value,
+                    onFieldSubmitted: (_) {
+                      submitForm();
+                    },
+                    decoration: InputDecoration(
+                      label: Text(context.l10n.passwordField),
+                      suffix: IconButton(
+                        onPressed: () {
+                          showPassword.value = !showPassword.value;
+                        },
+                        constraints: const BoxConstraints(
+                          minWidth: 30,
+                          minHeight: 30,
+                        ),
+                        padding: EdgeInsets.zero,
+                        iconSize: 18,
+                        icon: showPassword.value ? const Icon(Icons.visibility_off_outlined) : const Icon(Icons.visibility_outlined),
+                        color: Colors.grey,
+                      ),
+                    ),
+                  );
+                }),
               if (!headless || kIsWeb)
                 TextFormField(
                   controller: controllerConfirm,
@@ -123,6 +142,26 @@ class StepPersonalInfo extends HookConsumerWidget {
                   autofillHints: const [AutofillHints.password],
                   onFieldSubmitted: (_) => submitForm(),
                   decoration: InputDecoration(label: Text(context.l10n.confirmPasswordField)),
+                ),
+              if (!headless && false)
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: controllerCaptcha,
+                        validator: (value) => isRequired(value, context),
+                        keyboardType: const TextInputType.numberWithOptions(),
+                        onChanged: (value) => userInfo.captcha = value,
+                        decoration: InputDecoration(label: Text(context.l10n.captchaField)),
+                      ),
+                    ),
+                    Center(
+                      child: Image.network(
+                        Config().baseUrl + "/captcha",
+                        width: 150,
+                      ),
+                    ),
+                  ],
                 ),
               if ((!headless || !(userStore.user?.isTermsAccepted ?? false)) && showTerms)
                 Padding(

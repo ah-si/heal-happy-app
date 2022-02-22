@@ -275,6 +275,15 @@ class UserInfo extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? _captcha;
+
+  String? get captcha => _captcha;
+
+  set captcha(value) {
+    _captcha = value;
+    notifyListeners();
+  }
+
   String? _mobile;
 
   String? get mobile => _mobile;

@@ -105,6 +105,7 @@ class _UsersSearch extends HookConsumerWidget {
             verifiedState.value,
           ));
     }
+
     return Padding(
       padding: const EdgeInsets.all(kNormalPadding),
       child: Wrap(
@@ -289,9 +290,8 @@ class _UserItem extends HookConsumerWidget {
                       ],
                     ),
                   ),
-                user.isActivated ? Text(context.l10n.userActivated):Text(context.l10n.userUnActivated),
-                if (user.type == UserTypeEnum.healer)
-                  user.isVerified ? Text(context.l10n.userVerified):Text(context.l10n.userUnVerified),
+                user.isActivated ? Text(context.l10n.userActivated) : Text(context.l10n.userUnActivated),
+                if (user.type == UserTypeEnum.healer) user.isVerified ? Text(context.l10n.userVerified) : Text(context.l10n.userUnVerified),
                 if (!user.isTermsAccepted) Text(context.l10n.userRgpdKo),
               ],
             ),
@@ -312,6 +312,20 @@ class _UserItem extends HookConsumerWidget {
                     }
                   },
                   child: Text(context.l10n.acceptButton),
+                ),
+              if (user.type == UserTypeEnum.healer && user.isVerified)
+                TextButton(
+                  onPressed: () async {
+                    final title = user.canDoFaceToFace! ? context.l10n.disallowFaceToFace : context.l10n.allowFaceToFace;
+                    final text = user.canDoFaceToFace! ? context.l10n.disallowFaceToFaceConfirm : context.l10n.allowFaceToFaceConfirm;
+                    final success = await showConfirm(context, title, text);
+                    if (success) {
+                      final store = ref.read(adminUsersStoreProvider);
+                      showLoadingDialog(context, (_) => Text(context.l10n.sending),
+                          () => store.saveHealer(user.rebuild((p0) => p0.canDoFaceToFace = !user.canDoFaceToFace!)));
+                    }
+                  },
+                  child: Text(user.canDoFaceToFace! ? context.l10n.disallowFaceToFace : context.l10n.allowFaceToFace),
                 ),
               TextButton(
                 onPressed: () async {

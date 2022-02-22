@@ -12,17 +12,20 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
   @override
   final String email;
   @override
+  final String? mobile;
+  @override
+  final String? firstName;
+  @override
+  final String? lastName;
+  @override
   final HealerEventType type;
   @override
   final String? message;
 
-  factory _$CreateInviteEventRequest(
-          [void Function(CreateInviteEventRequestBuilder)? updates]) =>
+  factory _$CreateInviteEventRequest([void Function(CreateInviteEventRequestBuilder)? updates]) =>
       (new CreateInviteEventRequestBuilder()..update(updates)).build();
 
-  _$CreateInviteEventRequest._(
-      {this.slot, required this.email, required this.type, this.message})
-      : super._() {
+  _$CreateInviteEventRequest._({this.slot, required this.email, this.mobile, this.firstName, this.lastName, required this.type, this.message}) : super._() {
     BuiltValueNullFieldError.checkNotNull(
         email, 'CreateInviteEventRequest', 'email');
     BuiltValueNullFieldError.checkNotNull(
@@ -44,14 +47,16 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
     return other is CreateInviteEventRequest &&
         slot == other.slot &&
         email == other.email &&
+        mobile == other.mobile &&
+        firstName == other.firstName &&
+        lastName == other.lastName &&
         type == other.type &&
         message == other.message;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(
-        $jc($jc($jc(0, slot.hashCode), email.hashCode), type.hashCode),
+    return $jf($jc($jc($jc($jc($jc($jc($jc(0, slot.hashCode), email.hashCode), mobile.hashCode), firstName.hashCode), lastName.hashCode), type.hashCode),
         message.hashCode));
   }
 
@@ -60,6 +65,9 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
     return (newBuiltValueToStringHelper('CreateInviteEventRequest')
           ..add('slot', slot)
           ..add('email', email)
+          ..add('mobile', mobile)
+          ..add('firstName', firstName)
+          ..add('lastName', lastName)
           ..add('type', type)
           ..add('message', message))
         .toString();
@@ -72,19 +80,45 @@ class CreateInviteEventRequestBuilder
   _$CreateInviteEventRequest? _$v;
 
   DateTime? _slot;
+
   DateTime? get slot => _$this._slot;
+
   set slot(DateTime? slot) => _$this._slot = slot;
 
   String? _email;
+
   String? get email => _$this._email;
+
   set email(String? email) => _$this._email = email;
 
+  String? _mobile;
+
+  String? get mobile => _$this._mobile;
+
+  set mobile(String? mobile) => _$this._mobile = mobile;
+
+  String? _firstName;
+
+  String? get firstName => _$this._firstName;
+
+  set firstName(String? firstName) => _$this._firstName = firstName;
+
+  String? _lastName;
+
+  String? get lastName => _$this._lastName;
+
+  set lastName(String? lastName) => _$this._lastName = lastName;
+
   HealerEventType? _type;
+
   HealerEventType? get type => _$this._type;
+
   set type(HealerEventType? type) => _$this._type = type;
 
   String? _message;
+
   String? get message => _$this._message;
+
   set message(String? message) => _$this._message = message;
 
   CreateInviteEventRequestBuilder() {
@@ -96,6 +130,9 @@ class CreateInviteEventRequestBuilder
     if ($v != null) {
       _slot = $v.slot;
       _email = $v.email;
+      _mobile = $v.mobile;
+      _firstName = $v.firstName;
+      _lastName = $v.lastName;
       _type = $v.type;
       _message = $v.message;
       _$v = null;
@@ -119,10 +156,11 @@ class CreateInviteEventRequestBuilder
     final _$result = _$v ??
         new _$CreateInviteEventRequest._(
             slot: slot,
-            email: BuiltValueNullFieldError.checkNotNull(
-                email, 'CreateInviteEventRequest', 'email'),
-            type: BuiltValueNullFieldError.checkNotNull(
-                type, 'CreateInviteEventRequest', 'type'),
+            email: BuiltValueNullFieldError.checkNotNull(email, 'CreateInviteEventRequest', 'email'),
+            mobile: mobile,
+            firstName: firstName,
+            lastName: lastName,
+            type: BuiltValueNullFieldError.checkNotNull(type, 'CreateInviteEventRequest', 'type'),
             message: message);
     replace(_$result);
     return _$result;

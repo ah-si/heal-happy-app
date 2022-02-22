@@ -157,6 +157,7 @@ Future<String?> showPrompt<T>(
   String? Function(String? value)? validator,
   bool barrierDismissible = true,
   String? hint,
+  String? label,
 }) {
   controller ??= TextEditingController(text: initialValue ?? '');
   final formKey = GlobalKey<FormState>();
@@ -190,6 +191,7 @@ Future<String?> showPrompt<T>(
                   validator: validator,
                   decoration: InputDecoration(
                     filled: true,
+                    labelText: label,
                     fillColor: Colors.transparent,
                     hintText: hint,
                   ),

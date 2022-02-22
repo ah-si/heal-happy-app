@@ -10,7 +10,7 @@ class _$UserEvent extends UserEvent {
   @override
   final String id;
   @override
-  final User patient;
+  final MinimalUser patient;
   @override
   final Healer healer;
   @override
@@ -144,19 +144,27 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   _$UserEvent? _$v;
 
   String? _id;
+
   String? get id => _$this._id;
+
   set id(String? id) => _$this._id = id;
 
-  UserBuilder? _patient;
-  UserBuilder get patient => _$this._patient ??= new UserBuilder();
-  set patient(UserBuilder? patient) => _$this._patient = patient;
+  MinimalUserBuilder? _patient;
+
+  MinimalUserBuilder get patient => _$this._patient ??= new MinimalUserBuilder();
+
+  set patient(MinimalUserBuilder? patient) => _$this._patient = patient;
 
   HealerBuilder? _healer;
+
   HealerBuilder get healer => _$this._healer ??= new HealerBuilder();
+
   set healer(HealerBuilder? healer) => _$this._healer = healer;
 
   bool? _isUrgent;
+
   bool? get isUrgent => _$this._isUrgent;
+
   set isUrgent(bool? isUrgent) => _$this._isUrgent = isUrgent;
 
   bool? _isCancelled;

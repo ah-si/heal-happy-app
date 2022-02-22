@@ -164,8 +164,8 @@ import 'package:heal_happy_sdk/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = HealHappySdk().getAdminApi();
-final Date start = ; // Date | 
-final Date end = ; // Date | 
+final Date start = 2013-10-20; // Date | 
+final Date end = 2013-10-20; // Date | 
 
 try { 
     final response = api.getHealerStats(start, end);
@@ -179,8 +179,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **start** | [**Date**](.md)|  | 
- **end** | [**Date**](.md)|  | 
+**start** | **Date**|  |
+**end** | **Date**|  |
 
 ### Return type
 
@@ -248,6 +248,7 @@ Name | Type | Description  | Notes
 
 
 ### Example 
+
 ```dart
 import 'package:heal_happy_sdk/api.dart';
 // TODO Configure API key authorization: Bearer
@@ -256,8 +257,8 @@ import 'package:heal_happy_sdk/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = HealHappySdk().getAdminApi();
-final Date start = ; // Date | 
-final Date end = ; // Date | 
+final Date start = 2013-10-20; // Date | 
+final Date end = 2013-10-20; // Date | 
 final bool isUrgent = true; // bool | 
 final bool isCancelled = true; // bool | 
 
@@ -273,10 +274,10 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **start** | [**Date**](.md)|  | 
- **end** | [**Date**](.md)|  | 
- **isUrgent** | **bool**|  | [optional] 
- **isCancelled** | **bool**|  | [optional] 
+**start** | **Date**|  |
+**end** | **Date**|  |
+**isUrgent** | **bool**|  | [optional]
+**isCancelled** | **bool**|  | [optional]
 
 ### Return type
 

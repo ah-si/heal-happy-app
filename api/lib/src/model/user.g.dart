@@ -14,6 +14,8 @@ class _$User extends User {
   @override
   final bool isActivated;
   @override
+  final bool? canDoFaceToFace;
+  @override
   final String? job;
   @override
   final String firstName;
@@ -73,6 +75,7 @@ class _$User extends User {
       {this.id,
       required this.isVerified,
       required this.isActivated,
+      this.canDoFaceToFace,
       this.job,
       required this.firstName,
       this.consultationDuration,
@@ -132,6 +135,7 @@ class _$User extends User {
         id == other.id &&
         isVerified == other.isVerified &&
         isActivated == other.isActivated &&
+        canDoFaceToFace == other.canDoFaceToFace &&
         job == other.job &&
         firstName == other.firstName &&
         consultationDuration == other.consultationDuration &&
@@ -180,7 +184,27 @@ class _$User extends User {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode), lang.hashCode),
+                                                                            $jc(
+                                                                                $jc(
+                                                                                    $jc(
+                                                                                        $jc(
+                                                                                            $jc(
+                                                                                                $jc(
+                                                                                                    $jc(
+                                                                                                        $jc(
+                                                                                                            $jc(
+                                                                                                                $jc(
+                                                                                                                    $jc($jc(0, id.hashCode),
+                                                                                                                        isVerified.hashCode),
+                                                                                                                    isActivated.hashCode),
+                                                                                                                canDoFaceToFace.hashCode),
+                                                                                                            job.hashCode),
+                                                                                                        firstName.hashCode),
+                                                                                                    consultationDuration.hashCode),
+                                                                                                isAddressPublic.hashCode),
+                                                                                            isTermsAccepted.hashCode),
+                                                                                        versionTermsAccepted.hashCode),
+                                                                                    lang.hashCode),
                                                                                 type.hashCode),
                                                                             experiences.hashCode),
                                                                         description.hashCode),
@@ -208,6 +232,7 @@ class _$User extends User {
           ..add('id', id)
           ..add('isVerified', isVerified)
           ..add('isActivated', isActivated)
+          ..add('canDoFaceToFace', canDoFaceToFace)
           ..add('job', job)
           ..add('firstName', firstName)
           ..add('consultationDuration', consultationDuration)
@@ -243,22 +268,37 @@ class UserBuilder implements Builder<User, UserBuilder> {
 
   String? _id;
   String? get id => _$this._id;
+
   set id(String? id) => _$this._id = id;
 
   bool? _isVerified;
+
   bool? get isVerified => _$this._isVerified;
+
   set isVerified(bool? isVerified) => _$this._isVerified = isVerified;
 
   bool? _isActivated;
+
   bool? get isActivated => _$this._isActivated;
+
   set isActivated(bool? isActivated) => _$this._isActivated = isActivated;
 
+  bool? _canDoFaceToFace;
+
+  bool? get canDoFaceToFace => _$this._canDoFaceToFace;
+
+  set canDoFaceToFace(bool? canDoFaceToFace) => _$this._canDoFaceToFace = canDoFaceToFace;
+
   String? _job;
+
   String? get job => _$this._job;
+
   set job(String? job) => _$this._job = job;
 
   String? _firstName;
+
   String? get firstName => _$this._firstName;
+
   set firstName(String? firstName) => _$this._firstName = firstName;
 
   int? _consultationDuration;
@@ -373,6 +413,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _id = $v.id;
       _isVerified = $v.isVerified;
       _isActivated = $v.isActivated;
+      _canDoFaceToFace = $v.canDoFaceToFace;
       _job = $v.job;
       _firstName = $v.firstName;
       _consultationDuration = $v.consultationDuration;
@@ -422,18 +463,14 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _$result = _$v ??
           new _$User._(
               id: id,
-              isVerified: BuiltValueNullFieldError.checkNotNull(
-                  isVerified, 'User', 'isVerified'),
-              isActivated: BuiltValueNullFieldError.checkNotNull(
-                  isActivated, 'User', 'isActivated'),
+              isVerified: BuiltValueNullFieldError.checkNotNull(isVerified, 'User', 'isVerified'),
+              isActivated: BuiltValueNullFieldError.checkNotNull(isActivated, 'User', 'isActivated'),
+              canDoFaceToFace: canDoFaceToFace,
               job: job,
-              firstName: BuiltValueNullFieldError.checkNotNull(
-                  firstName, 'User', 'firstName'),
+              firstName: BuiltValueNullFieldError.checkNotNull(firstName, 'User', 'firstName'),
               consultationDuration: consultationDuration,
-              isAddressPublic: BuiltValueNullFieldError.checkNotNull(
-                  isAddressPublic, 'User', 'isAddressPublic'),
-              isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
-                  isTermsAccepted, 'User', 'isTermsAccepted'),
+              isAddressPublic: BuiltValueNullFieldError.checkNotNull(isAddressPublic, 'User', 'isAddressPublic'),
+              isTermsAccepted: BuiltValueNullFieldError.checkNotNull(isTermsAccepted, 'User', 'isTermsAccepted'),
               versionTermsAccepted: versionTermsAccepted,
               lang: BuiltValueNullFieldError.checkNotNull(lang, 'User', 'lang'),
               type: BuiltValueNullFieldError.checkNotNull(type, 'User', 'type'),

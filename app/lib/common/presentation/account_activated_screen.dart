@@ -1,18 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:heal_happy/auth/register/register_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
-import 'package:heal_happy/common/utils/form_validators.dart';
-import 'package:heal_happy/common/utils/preferences_provider.dart';
-import 'package:heal_happy/main.dart';
-import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AccountActivatedScreen extends HookConsumerWidget {
   static const name = 'accountActivated';

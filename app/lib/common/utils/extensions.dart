@@ -70,6 +70,15 @@ extension UserExtension on User {
   }
 }
 
+extension OfficeExtension on Office {
+  String get address {
+    String address = street.isNullOrEmpty ? '' : '$street\n';
+    address += street2.isNullOrEmpty ? '' : '$street2\n';
+    address += '$zipCode $city';
+    return address;
+  }
+}
+
 extension HealerExtension on Healer {
   String get address {
     String address = '';
@@ -81,6 +90,10 @@ extension HealerExtension on Healer {
     return address;
   }
 
+  String get name => '$firstName $lastName.';
+}
+
+extension MinimalUserExtension on MinimalUser {
   String get name => '$firstName $lastName.';
 }
 
@@ -115,7 +128,7 @@ extension ContextExtension on BuildContext {
 extension WeekDaysExtension on WeekDays {
   static WeekDays from(DateTime date) {
     final weekDay = date.weekday;
-    switch(weekDay) {
+    switch (weekDay) {
       case DateTime.monday:
         return WeekDays.monday;
       case DateTime.tuesday:
@@ -130,7 +143,8 @@ extension WeekDaysExtension on WeekDays {
         return WeekDays.saturday;
       case DateTime.sunday:
         return WeekDays.sunday;
-      default: return WeekDays.monday;
+      default:
+        return WeekDays.monday;
     }
   }
 }

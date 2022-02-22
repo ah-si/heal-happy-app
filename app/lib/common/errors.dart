@@ -32,6 +32,12 @@ ErrorResultException handleError(error, stackTrace) {
       result = ErrorResultException(ErrorResult.noPastEvent);
     } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('no_past_opening')) {
       result = ErrorResultException(ErrorResult.noPastOpening);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('no_face_to_face_allowed')) {
+      result = ErrorResultException(ErrorResult.faceToFaceNotAllowed);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('patient_slot_taken')) {
+      result = ErrorResultException(ErrorResult.patientAlreadyBusy);
+    } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('opening_overlap')) {
+      result = ErrorResultException(ErrorResult.noOpeningOverlap);
     } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('slot_taken')) {
       result = ErrorResultException(ErrorResult.meetingAlreadyBooked);
     } else if (error is DioError && error.response?.statusCode == 403) {
@@ -71,20 +77,26 @@ class ErrorResult {
   static const adminTermsRequired = ErrorResult(_ErrorType.adminTermsRequired);
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
   static const linkExpired = ErrorResult(_ErrorType.linkExpired);
+  static const noAccount = ErrorResult(_ErrorType.noAccount);
   static const fileTooBig = ErrorResult(_ErrorType.fileTooBig);
   static const noUser = ErrorResult(_ErrorType.noUser);
+  static const faceToFaceNotAllowed = ErrorResult(_ErrorType.faceToFaceNotAllowed);
 
   // generic
   static const internal = ErrorResult(_ErrorType.internal);
   static const noAppForActionError = ErrorResult(_ErrorType.noAppForActionError);
   static const fieldRequired = ErrorResult(_ErrorType.fieldRequired);
   static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
+  static const healerMeetingAlreadyExist = ErrorResult(_ErrorType.healerMeetingAlreadyExist);
   static const accountNotActivated = ErrorResult(_ErrorType.accountNotActivated);
   static const dateStartAfterEnd = ErrorResult(_ErrorType.dateStartAfterEnd);
   static const accountNotVerified = ErrorResult(_ErrorType.accountNotVerified);
   static const noPastEvent = ErrorResult(_ErrorType.noPastEvent);
   static const noPastOpening = ErrorResult(_ErrorType.noPastOpening);
+  static const noOpeningOverlap = ErrorResult(_ErrorType.noOpeningOverlap);
   static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyBooked);
+  static const patientAlreadyBusy = ErrorResult(_ErrorType.patientAlreadyBusy);
+  static const healerPatientAlreadyBusy = ErrorResult(_ErrorType.healerPatientAlreadyBusy);
 
   final _ErrorType _type;
 
@@ -113,6 +125,8 @@ class ErrorResult {
         return localizations.wrongCredentials;
       case _ErrorType.meetingAlreadyExist:
         return localizations.meetingAlreadyExist;
+      case _ErrorType.healerMeetingAlreadyExist:
+        return localizations.healerMeetingAlreadyExist;
       case _ErrorType.emailAlreadyUsed:
         return localizations.emailAlreadyUsed;
       case _ErrorType.meetingAlreadyBooked:
@@ -135,8 +149,18 @@ class ErrorResult {
         return localizations.accountNotVerified;
       case _ErrorType.noPastOpening:
         return localizations.noPastOpening;
+      case _ErrorType.noOpeningOverlap:
+        return localizations.noOpeningOverlap;
       case _ErrorType.dateStartAfterEnd:
         return localizations.dateStartAfterEnd;
+      case _ErrorType.faceToFaceNotAllowed:
+        return localizations.faceToFaceNotAllowed;
+      case _ErrorType.patientAlreadyBusy:
+        return localizations.patientAlreadyBusy;
+      case _ErrorType.healerPatientAlreadyBusy:
+        return localizations.healerPatientAlreadyBusy;
+      case _ErrorType.noAccount:
+        return localizations.noAccount;
     }
   }
 
@@ -166,6 +190,8 @@ class ErrorResult {
         return localizations.wrongCredentialsHint;
       case _ErrorType.meetingAlreadyExist:
         return localizations.meetingAlreadyExistHint;
+      case _ErrorType.healerMeetingAlreadyExist:
+        return localizations.healerMeetingAlreadyExistHint;
       case _ErrorType.emailAlreadyUsed:
         return localizations.emailAlreadyUsedHint;
       case _ErrorType.meetingAlreadyBooked:
@@ -188,8 +214,18 @@ class ErrorResult {
         return localizations.accountNotVerifiedHint;
       case _ErrorType.noPastOpening:
         return localizations.noPastOpeningHint;
+      case _ErrorType.noOpeningOverlap:
+        return localizations.noOpeningOverlapHint;
       case _ErrorType.dateStartAfterEnd:
         return localizations.dateStartAfterEndHint;
+      case _ErrorType.faceToFaceNotAllowed:
+        return localizations.faceToFaceNotAllowedHint;
+      case _ErrorType.patientAlreadyBusy:
+        return localizations.patientAlreadyBusyHint;
+      case _ErrorType.healerPatientAlreadyBusy:
+        return localizations.healerPatientAlreadyBusyHint;
+      case _ErrorType.noAccount:
+        return localizations.noAccountHint;
     }
   }
 
@@ -213,18 +249,24 @@ enum _ErrorType {
   adminTermsRequired,
   wrongCredentials,
   linkExpired,
+  noAccount,
   fileTooBig,
   noUser,
+  faceToFaceNotAllowed,
   internal,
   wrongEmail,
   emailAlreadyUsed,
   fieldRequired,
   meetingAlreadyExist,
+  healerMeetingAlreadyExist,
   noPastEvent,
   noPastOpening,
+  noOpeningOverlap,
   accountNotActivated,
   dateStartAfterEnd,
   accountNotVerified,
   meetingAlreadyBooked,
+  patientAlreadyBusy,
+  healerPatientAlreadyBusy,
   noAppForActionError,
 }

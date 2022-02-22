@@ -27,6 +27,7 @@ class _HealerEvents extends HookConsumerWidget {
 
     useEffect(() {
       store.loadEvents();
+      return null;
     }, const []);
 
     if (store.eventsResults == null || store.isLoading) {
@@ -151,54 +152,86 @@ class _HealerEvents extends HookConsumerWidget {
     HealerEventType type = HealerEventType.visio;
     final email = TextEditingController();
     final message = TextEditingController();
+    final firstName = TextEditingController();
+    final lastName = TextEditingController();
+    final mobile = TextEditingController();
+    var showPatientForm = false;
+    final listener = ChangeNotifier();
     showAppDialog(
       context,
       (_) => Text(context.l10n.createRdv),
-      (context) => Form(
-        key: formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DateTimeButton(
-              initialDate: date,
-              firstDate: date.copyWith(day: 1),
-              lastDate: date.add(const Duration(days: 25)),
-              onDateChanged: (newDate) {
-                date = newDate;
-              },
-            ),
-            DropdownButtonFormField<HealerEventType>(
-              items: HealerEventType.values
-                  .map((e) => DropdownMenuItem(
-                        child: Text(context.l10n.consultationLabel(e)),
-                        value: e,
-                      ))
-                  .toList(growable: false),
-              decoration: InputDecoration(labelText: context.l10n.consultationType),
-              isExpanded: true,
-              value: type,
-              onChanged: (value) {
-                type = value!;
-              },
-            ),
-            TextFormField(
-              controller: email,
-              validator: (value) => isRequired(value, context),
-              decoration: InputDecoration(
-                labelText: context.l10n.patientEmailField,
+      (context) => HookBuilder(builder: (context) {
+        useListenable(listener);
+        return Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              DateTimeButton(
+                initialDate: date,
+                firstDate: date.copyWith(day: 1),
+                lastDate: date.add(const Duration(days: 25)),
+                onDateChanged: (newDate) {
+                  date = newDate;
+                },
               ),
-            ),
-            TextFormField(
-              controller: message,
-              validator: (value) => isRequired(value, context),
-              decoration: InputDecoration(
-                labelText: context.l10n.messageForPatient,
+              DropdownButtonFormField<HealerEventType>(
+                items: HealerEventType.values
+                    .map((e) => DropdownMenuItem(
+                          child: Text(context.l10n.consultationLabel(e)),
+                          value: e,
+                        ))
+                    .toList(growable: false),
+                decoration: InputDecoration(labelText: context.l10n.consultationType),
+                isExpanded: true,
+                value: type,
+                onChanged: (value) {
+                  type = value!;
+                },
               ),
-              maxLines: 3,
-            ),
-          ],
-        ),
-      ),
+              TextFormField(
+                controller: email,
+                validator: (value) => isRequired(value, context),
+                decoration: InputDecoration(
+                  labelText: context.l10n.patientEmailField,
+                ),
+              ),
+              if (showPatientForm)
+                TextFormField(
+                  controller: firstName,
+                  validator: (value) => isRequired(value, context),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.patientFirstNameField,
+                  ),
+                ),
+              if (showPatientForm)
+                TextFormField(
+                  controller: lastName,
+                  validator: (value) => isRequired(value, context),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.patientNameField,
+                  ),
+                ),
+              if (showPatientForm)
+                TextFormField(
+                  controller: mobile,
+                  validator: (value) => isRequired(value, context),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.patientPhoneField,
+                  ),
+                ),
+              TextFormField(
+                controller: message,
+                validator: (value) => isRequired(value, context),
+                decoration: InputDecoration(
+                  labelText: context.l10n.messageForPatient,
+                ),
+                maxLines: 3,
+              ),
+            ],
+          ),
+        );
+      }),
       actions: [
         DialogAction(
           text: MaterialLocalizations.of(context).cancelButtonLabel,
@@ -213,7 +246,19 @@ class _HealerEvents extends HookConsumerWidget {
               return;
             }
             final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-              await store.createEvent(userStore.user!.id!, type, date, email.text, message.text);
+              await store.createEvent(userStore.user!.id!, type, date, email.text, mobile.text, firstName.text, lastName.text, message.text);
+            }, onError: (err, stack) {
+              if (err is ErrorResultException && err.cause == ErrorResult.noUser) {
+                showPatientForm = true;
+                // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                listener.notifyListeners();
+                WidgetsBinding.instance?.addPostFrameCallback((_) {
+                  formKey.currentState?.validate();
+                });
+                showAlert(context, context.el10n.noUser, (_) => Text(context.el10n.noUserHint));
+              } else {
+                showErrorDialog(context, err, stack);
+              }
             });
             if (success) {
               Navigator.of(context).pop();
@@ -294,7 +339,7 @@ class _ConsultationDataSource extends CalendarDataSource<UserEvent> {
 
   @override
   String getSubject(int index) {
-    return (appointments![index].patient as User).name;
+    return (appointments![index].patient as MinimalUser).name;
   }
 }
 
@@ -342,11 +387,14 @@ class _HealerEventDetails extends HookConsumerWidget {
                                 final message = await showPrompt(context, context.l10n.updateEventMessage);
                                 if (message != null) {
                                   final store = ref.read(healerStoreProvider);
-                                  showLoadingDialog(
+                                  final success = await showLoadingDialog(
                                     context,
                                     (_) => Text(context.l10n.sending),
                                     () => store.updateEvent(event, date!, message),
                                   );
+                                  if (success) {
+                                    context.pop();
+                                  }
                                 }
                               }
                             }
@@ -405,7 +453,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                             children: [
                               const Icon(Icons.call_outlined),
                               const SizedBox(width: kSmallPadding),
-                              Text(event.patient.mobile!),
+                              Text(event.patient.mobile),
                             ],
                           ),
                         ),
@@ -443,8 +491,13 @@ class _HealerEventDetails extends HookConsumerWidget {
               if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
                 TextButton(
                   onPressed: () async {
-                    final message = await showPrompt(context, context.l10n.cancelConsultation,
-                        validator: (value) => isRequired(value, context), description: context.l10n.cancelConsultationConfirm(event.patient.name));
+                    final message = await showPrompt(
+                      context,
+                      context.l10n.cancelConsultation,
+                      validator: (value) => isRequired(value, context),
+                      description: context.l10n.cancelConsultationConfirm(event.patient.name),
+                      label: context.l10n.patientCancelledMessage,
+                    );
                     if (!message.isNullOrEmpty) {
                       final cancelled = await showLoadingDialog(context, (_) => Text(context.l10n.canceling), () async {
                         await ref.read(healerStoreProvider).cancelEvent(event.id, message!);

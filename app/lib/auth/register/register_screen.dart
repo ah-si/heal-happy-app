@@ -11,7 +11,6 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/main.dart';
 import 'package:heal_happy/profile/step_personal_info.dart';
 import 'package:heal_happy/profile/step_pro_info.dart';
-import 'package:heal_happy/profile/step_social_info.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -87,17 +86,14 @@ class RegisterScreen extends HookConsumerWidget {
                           case 2:
                             return StepInfoPro(onContinue: next);
                           case 3:
-                            //return StepCalendarInfo(onContinue: next, controller: scrollController);
-                            return StepAddress(onContinue: next);
-                          case 4:
-                            return StepSocial(onContinue: register);
+                            return StepAddress(onContinue: register);
                           case 5:
                         }
                         return _StepType(
                           onContinue: next,
                         );
                       },
-                      itemCount: userInfo.type == UserTypeEnum.patient ? 2 : 5,
+                      itemCount: userInfo.type == UserTypeEnum.patient ? 2 : 4,
                     ),
                   ),
                 ],
