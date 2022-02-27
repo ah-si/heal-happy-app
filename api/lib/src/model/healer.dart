@@ -2,66 +2,66 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
+import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
-import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
 part 'healer.g.dart';
 
 /// Healer
 ///
 /// Properties:
-/// * [id]
-/// * [isVerified]
-/// * [isActivated]
-/// * [canDoFaceToFace]
-/// * [job]
-/// * [firstName]
-/// * [consultationDuration]
-/// * [isAddressPublic]
-/// * [isTermsAccepted]
-/// * [versionTermsAccepted]
-/// * [lang]
-/// * [type]
-/// * [experiences]
-/// * [description]
-/// * [diploma]
-/// * [website]
-/// * [social1]
-/// * [social2]
-/// * [social3]
-/// * [lastName]
-/// * [calendarSettings]
-/// * [street]
-/// * [street2]
-/// * [zipCode]
-/// * [country]
-/// * [city]
-/// * [avatar]
+/// * [id] 
+/// * [isVerified] 
+/// * [isActivated] 
+/// * [canDoFaceToFace] 
+/// * [job] 
+/// * [firstName] 
+/// * [consultationDuration] 
+/// * [isAddressPublic] 
+/// * [isTermsAccepted] 
+/// * [versionTermsAccepted] 
+/// * [lang] 
+/// * [type] 
+/// * [experiences] 
+/// * [description] 
+/// * [diploma] 
+/// * [website] 
+/// * [social1] 
+/// * [social2] 
+/// * [social3] 
+/// * [lastName] 
+/// * [calendarSettings] 
+/// * [street] 
+/// * [street2] 
+/// * [zipCode] 
+/// * [country] 
+/// * [city] 
+/// * [avatar] 
 abstract class Healer implements Built<Healer, HealerBuilder> {
-  @BuiltValueField(wireName: r'id')
-  String? get id;
+    @BuiltValueField(wireName: r'id')
+    String? get id;
 
-  @BuiltValueField(wireName: r'isVerified')
-  bool get isVerified;
+    @BuiltValueField(wireName: r'isVerified')
+    bool get isVerified;
 
-  @BuiltValueField(wireName: r'isActivated')
-  bool get isActivated;
+    @BuiltValueField(wireName: r'isActivated')
+    bool get isActivated;
 
-  @BuiltValueField(wireName: r'canDoFaceToFace')
-  bool? get canDoFaceToFace;
+    @BuiltValueField(wireName: r'canDoFaceToFace')
+    bool? get canDoFaceToFace;
 
-  @BuiltValueField(wireName: r'job')
-  String? get job;
+    @BuiltValueField(wireName: r'job')
+    String? get job;
 
-  @BuiltValueField(wireName: r'firstName')
-  String get firstName;
+    @BuiltValueField(wireName: r'firstName')
+    String get firstName;
 
-  @BuiltValueField(wireName: r'consultationDuration')
-  int? get consultationDuration;
+    @BuiltValueField(wireName: r'consultationDuration')
+    int? get consultationDuration;
 
-  @BuiltValueField(wireName: r'isAddressPublic')
+    @BuiltValueField(wireName: r'isAddressPublic')
     bool get isAddressPublic;
 
     @BuiltValueField(wireName: r'isTermsAccepted')
@@ -148,28 +148,34 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
         if (object.id != null) {
             result
                 ..add(r'id')
-                ..add(serializers.serialize(object.id, specifiedType: const FullType(String)));
-    }
-    result
-      ..add(r'isVerified')
-      ..add(serializers.serialize(object.isVerified, specifiedType: const FullType(bool)));
-    result
-      ..add(r'isActivated')
-      ..add(serializers.serialize(object.isActivated, specifiedType: const FullType(bool)));
-    if (object.canDoFaceToFace != null) {
-      result
-        ..add(r'canDoFaceToFace')
-        ..add(serializers.serialize(object.canDoFaceToFace, specifiedType: const FullType(bool)));
-    }
-    if (object.job != null) {
-      result
-        ..add(r'job')
-        ..add(serializers.serialize(object.job, specifiedType: const FullType(String)));
-    }
-    result
-      ..add(r'firstName')
-      ..add(serializers.serialize(object.firstName, specifiedType: const FullType(String)));
-    result
+                ..add(serializers.serialize(object.id,
+                    specifiedType: const FullType(String)));
+        }
+        result
+            ..add(r'isVerified')
+            ..add(serializers.serialize(object.isVerified,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isActivated')
+            ..add(serializers.serialize(object.isActivated,
+                specifiedType: const FullType(bool)));
+        if (object.canDoFaceToFace != null) {
+            result
+                ..add(r'canDoFaceToFace')
+                ..add(serializers.serialize(object.canDoFaceToFace,
+                    specifiedType: const FullType(bool)));
+        }
+        if (object.job != null) {
+            result
+                ..add(r'job')
+                ..add(serializers.serialize(object.job,
+                    specifiedType: const FullType(String)));
+        }
+        result
+            ..add(r'firstName')
+            ..add(serializers.serialize(object.firstName,
+                specifiedType: const FullType(String)));
+        result
             ..add(r'consultationDuration')
             ..add(object.consultationDuration == null ? null : serializers.serialize(object.consultationDuration,
                 specifiedType: const FullType(int)));
@@ -287,25 +293,31 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
             iterator.moveNext();
             final Object? value = iterator.current;
             switch (key) {
-        case r'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
-          break;
-        case r'isVerified':
-          result.isVerified = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool;
-          break;
-        case r'isActivated':
-          result.isActivated = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool;
-          break;
-        case r'canDoFaceToFace':
-          result.canDoFaceToFace = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool;
-          break;
-        case r'job':
-          result.job = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
-          break;
-        case r'firstName':
-          result.firstName = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
-          break;
-        case r'consultationDuration':
+                case r'id':
+                    result.id = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'isVerified':
+                    result.isVerified = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isActivated':
+                    result.isActivated = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'canDoFaceToFace':
+                    result.canDoFaceToFace = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'job':
+                    result.job = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'firstName':
+                    result.firstName = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'consultationDuration':
                     result.consultationDuration = serializers.deserialize(value,
                         specifiedType: const FullType(int)) as int;
                     break;

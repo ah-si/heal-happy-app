@@ -11,7 +11,11 @@ String _getBaseUrl() {
   if (baseUri.scheme.contains('file')) {
     return HealHappySdk.basePath;
   }
-  return baseUri.scheme + '://' + baseUri.host + ':' + baseUri.port.toString();
+  var port = '';
+  if (baseUri.port != 443) {
+    port = ':${baseUri.port}';
+  }
+  return baseUri.scheme + '://' + baseUri.host + port;
 }
 
 class Config {

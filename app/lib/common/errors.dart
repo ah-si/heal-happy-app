@@ -36,12 +36,20 @@ ErrorResultException handleError(error, stackTrace) {
       result = ErrorResultException(ErrorResult.faceToFaceNotAllowed);
     } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('patient_slot_taken')) {
       result = ErrorResultException(ErrorResult.patientAlreadyBusy);
+    } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('opening_room_overlap')) {
+      result = ErrorResultException(ErrorResult.noOpeningRoomOverlap);
     } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('opening_overlap')) {
       result = ErrorResultException(ErrorResult.noOpeningOverlap);
     } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('slot_taken')) {
       result = ErrorResultException(ErrorResult.meetingAlreadyBooked);
     } else if (error is DioError && error.response?.statusCode == 403) {
       result = ErrorResultException(ErrorResult.forbidden);
+    } else if (error is DioError && error.response?.statusCode == 404 && error.response!.data!.toString().contains('no_healer')) {
+      result = ErrorResultException(ErrorResult.noHealer);
+    } else if (error is DioError && error.response?.statusCode == 404 && error.response!.data!.toString().contains('no_user')) {
+      result = ErrorResultException(ErrorResult.noAccount);
+    } else if (error is DioError && error.response?.statusCode == 404) {
+      result = ErrorResultException(ErrorResult.notFound);
     } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data.toString().contains('terms_required')) {
       result = ErrorResultException(ErrorResult.termsRequired);
     }
@@ -78,6 +86,8 @@ class ErrorResult {
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
   static const linkExpired = ErrorResult(_ErrorType.linkExpired);
   static const noAccount = ErrorResult(_ErrorType.noAccount);
+  static const noHealer = ErrorResult(_ErrorType.noHealer);
+  static const notFound = ErrorResult(_ErrorType.notFound);
   static const fileTooBig = ErrorResult(_ErrorType.fileTooBig);
   static const noUser = ErrorResult(_ErrorType.noUser);
   static const faceToFaceNotAllowed = ErrorResult(_ErrorType.faceToFaceNotAllowed);
@@ -94,6 +104,7 @@ class ErrorResult {
   static const noPastEvent = ErrorResult(_ErrorType.noPastEvent);
   static const noPastOpening = ErrorResult(_ErrorType.noPastOpening);
   static const noOpeningOverlap = ErrorResult(_ErrorType.noOpeningOverlap);
+  static const noOpeningRoomOverlap = ErrorResult(_ErrorType.noOpeningRoomOverlap);
   static const meetingAlreadyBooked = ErrorResult(_ErrorType.meetingAlreadyBooked);
   static const patientAlreadyBusy = ErrorResult(_ErrorType.patientAlreadyBusy);
   static const healerPatientAlreadyBusy = ErrorResult(_ErrorType.healerPatientAlreadyBusy);
@@ -161,6 +172,12 @@ class ErrorResult {
         return localizations.healerPatientAlreadyBusy;
       case _ErrorType.noAccount:
         return localizations.noAccount;
+      case _ErrorType.notFound:
+        return localizations.notFound;
+      case _ErrorType.noHealer:
+        return localizations.noHealer;
+      case _ErrorType.noOpeningRoomOverlap:
+        return localizations.noOpeningRoomOverlap;
     }
   }
 
@@ -226,6 +243,12 @@ class ErrorResult {
         return localizations.healerPatientAlreadyBusyHint;
       case _ErrorType.noAccount:
         return localizations.noAccountHint;
+      case _ErrorType.notFound:
+        return localizations.notFoundHint;
+      case _ErrorType.noHealer:
+        return localizations.noHealerHint;
+      case _ErrorType.noOpeningRoomOverlap:
+        return localizations.noOpeningRoomOverlapHint;
     }
   }
 
@@ -250,6 +273,8 @@ enum _ErrorType {
   wrongCredentials,
   linkExpired,
   noAccount,
+  noHealer,
+  notFound,
   fileTooBig,
   noUser,
   faceToFaceNotAllowed,
@@ -262,6 +287,7 @@ enum _ErrorType {
   noPastEvent,
   noPastOpening,
   noOpeningOverlap,
+  noOpeningRoomOverlap,
   accountNotActivated,
   dateStartAfterEnd,
   accountNotVerified,

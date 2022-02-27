@@ -89,7 +89,7 @@ class PatientStore extends ChangeNotifier {
   Future<void> loadEvents(bool showHistory) async {
     isLoading = true;
     try {
-      final events = await _userApi.getEvents(includePastEvents: showHistory);
+      final events = await _userApi.getEvents(includePastEvents: showHistory, modeHealer: false);
       eventsResults = PatientEventResults(events.data!.toList());
       isLoading = false;
       notifyListeners();

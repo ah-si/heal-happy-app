@@ -155,6 +155,7 @@ class _HealerEvents extends HookConsumerWidget {
     final firstName = TextEditingController();
     final lastName = TextEditingController();
     final mobile = TextEditingController();
+    String? roomId;
     var showPatientForm = false;
     final listener = ChangeNotifier();
     showAppDialog(
@@ -175,20 +176,40 @@ class _HealerEvents extends HookConsumerWidget {
                   date = newDate;
                 },
               ),
-              DropdownButtonFormField<HealerEventType>(
-                items: HealerEventType.values
-                    .map((e) => DropdownMenuItem(
-                          child: Text(context.l10n.consultationLabel(e)),
-                          value: e,
-                        ))
-                    .toList(growable: false),
-                decoration: InputDecoration(labelText: context.l10n.consultationType),
-                isExpanded: true,
-                value: type,
-                onChanged: (value) {
-                  type = value!;
-                },
-              ),
+              if (userStore.user?.canDoFaceToFace ?? false)
+                DropdownButtonFormField<HealerEventType>(
+                  items: HealerEventType.values
+                      .map((e) => DropdownMenuItem(
+                            child: Text(context.l10n.consultationLabel(e)),
+                            value: e,
+                          ))
+                      .toList(growable: false),
+                  decoration: InputDecoration(labelText: context.l10n.consultationType),
+                  isExpanded: true,
+                  value: type,
+                  onChanged: (value) {
+                    type = value!;
+                    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                    listener.notifyListeners();
+                  },
+                ),
+              if (type == HealerEventType.faceToFace && store.rooms.isNotEmpty)
+                DropdownButtonFormField<String>(
+                  items: store.rooms
+                      .map(
+                        (e) => DropdownMenuItem(
+                          child: Text(e.room.name + ' (${e.office.name})'),
+                          value: e.room.id,
+                        ),
+                      )
+                      .toList(growable: false),
+                  decoration: InputDecoration(labelText: context.l10n.consultationAddress),
+                  isExpanded: true,
+                  value: null,
+                  onChanged: (value) {
+                    roomId = value;
+                  },
+                ),
               TextFormField(
                 controller: email,
                 validator: (value) => isRequired(value, context),
@@ -246,7 +267,17 @@ class _HealerEvents extends HookConsumerWidget {
               return;
             }
             final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-              await store.createEvent(userStore.user!.id!, type, date, email.text, mobile.text, firstName.text, lastName.text, message.text);
+              await store.createEvent(
+                userStore.user!.id!,
+                roomId,
+                type,
+                date,
+                email.text,
+                mobile.text,
+                firstName.text,
+                lastName.text,
+                message.text,
+              );
             }, onError: (err, stack) {
               if (err is ErrorResultException && err.cause == ErrorResult.noUser) {
                 showPatientForm = true;
@@ -503,6 +534,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                         await ref.read(healerStoreProvider).cancelEvent(event.id, message!);
                       });
                       if (cancelled) {
+                        context.navigator.pop();
                         showAlert(context, context.l10n.cancelTitle, (_) => Text(context.l10n.consultationCanceled(event.healer.name)));
                       }
                     }

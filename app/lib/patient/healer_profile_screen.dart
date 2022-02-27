@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
@@ -34,7 +35,11 @@ class DesktopHealerProfile extends HookConsumerWidget {
                         MenuItem(
                           label: context.l10n.backButton,
                           onTap: () {
-                            context.navigator.pop();
+                            try {
+                              context.pop();
+                            } catch (e) {
+                              context.go('/');
+                            }
                           },
                           selected: false,
                         ),

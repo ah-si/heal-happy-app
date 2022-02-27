@@ -24,6 +24,7 @@ doc/LoginRequest.md
 doc/LoginResponse.md
 doc/MinimalUser.md
 doc/Office.md
+doc/OfficeInfo.md
 doc/OfficeRoom.md
 doc/OfficesApi.md
 doc/OpeningRepeatType.md
@@ -35,10 +36,12 @@ doc/PaginatedUsers.md
 doc/RefreshTokenRequest.md
 doc/ResetPassword.md
 doc/SettingsApi.md
+doc/Slot.md
 doc/UpdateEventRequest.md
 doc/User.md
 doc/UserAllOf.md
 doc/UserApi.md
+doc/UserEmail.md
 doc/UserEvent.md
 doc/UserTypeEnum.md
 lib/heal_happy_sdk.dart
@@ -77,6 +80,7 @@ lib/src/model/login_request.dart
 lib/src/model/login_response.dart
 lib/src/model/minimal_user.dart
 lib/src/model/office.dart
+lib/src/model/office_info.dart
 lib/src/model/office_room.dart
 lib/src/model/opening_repeat_type.dart
 lib/src/model/opening_type.dart
@@ -86,9 +90,11 @@ lib/src/model/paginated_offices.dart
 lib/src/model/paginated_users.dart
 lib/src/model/refresh_token_request.dart
 lib/src/model/reset_password.dart
+lib/src/model/slot.dart
 lib/src/model/update_event_request.dart
 lib/src/model/user.dart
 lib/src/model/user_all_of.dart
+lib/src/model/user_email.dart
 lib/src/model/user_event.dart
 lib/src/model/user_type_enum.dart
 lib/src/serializers.dart
@@ -114,6 +120,7 @@ test/healer_test.dart
 test/login_request_test.dart
 test/login_response_test.dart
 test/minimal_user_test.dart
+test/office_info_test.dart
 test/office_room_test.dart
 test/office_test.dart
 test/offices_api_test.dart
@@ -126,9 +133,11 @@ test/paginated_users_test.dart
 test/refresh_token_request_test.dart
 test/reset_password_test.dart
 test/settings_api_test.dart
+test/slot_test.dart
 test/update_event_request_test.dart
 test/user_all_of_test.dart
 test/user_api_test.dart
+test/user_email_test.dart
 test/user_event_test.dart
 test/user_test.dart
 test/user_type_enum_test.dart

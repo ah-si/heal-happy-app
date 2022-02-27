@@ -10,9 +10,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | [optional] 
 **isVerified** | **bool** |  | 
-**isActivated** | **bool** |  |
-**canDoFaceToFace** | **bool** |  | [optional]
-**job** | **String** |  | [optional]
+**isActivated** | **bool** |  | 
+**canDoFaceToFace** | **bool** |  | [optional] 
+**job** | **String** |  | [optional] 
 **firstName** | **String** |  | 
 **consultationDuration** | **int** |  | 
 **isAddressPublic** | **bool** |  | [default to false]
@@ -36,7 +36,7 @@ Name | Type | Description | Notes
 **city** | **String** |  | 
 **avatar** | **String** |  | [optional] 
 **email** | **String** |  | 
-**mobile** | **String** |  | [optional] 
+**mobile** | **String** |  | 
 **password** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

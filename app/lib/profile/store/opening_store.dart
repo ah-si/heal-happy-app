@@ -40,13 +40,15 @@ class OpeningStore extends ChangeNotifier {
   Future<void> createOpening(
     String userId,
     OpeningType type,
+    String? roomId,
     OpeningRepeatType? repeat,
     DateTime start,
     DateTime end,
   ) async {
     final opening = HealerOpening((b) {
       b.repeat = repeat;
-      b.userId = userId;
+      b.userId = _userId ?? userId;
+      b.roomId = roomId;
       b.start = start.toUtc();
       b.type = type;
       b.end = end.toUtc();

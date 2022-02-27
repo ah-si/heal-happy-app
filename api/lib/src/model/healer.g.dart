@@ -171,19 +171,7 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc(
-                                                                                $jc(
-                                                                                    $jc(
-                                                                                        $jc(
-                                                                                            $jc(
-                                                                                                $jc(
-                                                                                                    $jc($jc($jc(0, id.hashCode), isVerified.hashCode),
-                                                                                                        isActivated.hashCode),
-                                                                                                    canDoFaceToFace.hashCode),
-                                                                                                job.hashCode),
-                                                                                            firstName.hashCode),
-                                                                                        consultationDuration.hashCode),
-                                                                                    isAddressPublic.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode),
                                                                                 isTermsAccepted.hashCode),
                                                                             versionTermsAccepted.hashCode),
                                                                         lang.hashCode),
@@ -244,37 +232,27 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
 
   String? _id;
   String? get id => _$this._id;
-
   set id(String? id) => _$this._id = id;
 
   bool? _isVerified;
-
   bool? get isVerified => _$this._isVerified;
-
   set isVerified(bool? isVerified) => _$this._isVerified = isVerified;
 
   bool? _isActivated;
-
   bool? get isActivated => _$this._isActivated;
-
   set isActivated(bool? isActivated) => _$this._isActivated = isActivated;
 
   bool? _canDoFaceToFace;
-
   bool? get canDoFaceToFace => _$this._canDoFaceToFace;
-
-  set canDoFaceToFace(bool? canDoFaceToFace) => _$this._canDoFaceToFace = canDoFaceToFace;
+  set canDoFaceToFace(bool? canDoFaceToFace) =>
+      _$this._canDoFaceToFace = canDoFaceToFace;
 
   String? _job;
-
   String? get job => _$this._job;
-
   set job(String? job) => _$this._job = job;
 
   String? _firstName;
-
   String? get firstName => _$this._firstName;
-
   set firstName(String? firstName) => _$this._firstName = firstName;
 
   int? _consultationDuration;
@@ -424,16 +402,22 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
       _$result = _$v ??
           new _$Healer._(
               id: id,
-              isVerified: BuiltValueNullFieldError.checkNotNull(isVerified, 'Healer', 'isVerified'),
-              isActivated: BuiltValueNullFieldError.checkNotNull(isActivated, 'Healer', 'isActivated'),
+              isVerified: BuiltValueNullFieldError.checkNotNull(
+                  isVerified, 'Healer', 'isVerified'),
+              isActivated: BuiltValueNullFieldError.checkNotNull(
+                  isActivated, 'Healer', 'isActivated'),
               canDoFaceToFace: canDoFaceToFace,
               job: job,
-              firstName: BuiltValueNullFieldError.checkNotNull(firstName, 'Healer', 'firstName'),
+              firstName: BuiltValueNullFieldError.checkNotNull(
+                  firstName, 'Healer', 'firstName'),
               consultationDuration: consultationDuration,
-              isAddressPublic: BuiltValueNullFieldError.checkNotNull(isAddressPublic, 'Healer', 'isAddressPublic'),
-              isTermsAccepted: BuiltValueNullFieldError.checkNotNull(isTermsAccepted, 'Healer', 'isTermsAccepted'),
+              isAddressPublic: BuiltValueNullFieldError.checkNotNull(
+                  isAddressPublic, 'Healer', 'isAddressPublic'),
+              isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
+                  isTermsAccepted, 'Healer', 'isTermsAccepted'),
               versionTermsAccepted: versionTermsAccepted,
-              lang: BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang'),
+              lang:
+                  BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang'),
               type:
                   BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type'),
               experiences: experiences,

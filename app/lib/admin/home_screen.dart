@@ -9,7 +9,6 @@ import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/admin/stores/dashboard_store.dart';
 import 'package:heal_happy/admin/stores/events_search_store.dart';
 import 'package:heal_happy/admin/stores/healer_stats_store.dart';
-import 'package:heal_happy/admin/stores/offices_store.dart';
 import 'package:heal_happy/admin/stores/users_search_store.dart';
 import 'package:heal_happy/admin/user_details_screen.dart';
 import 'package:heal_happy/common/config.dart';
@@ -23,6 +22,8 @@ import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/offices/presentation/offices_tab.dart';
+import 'package:heal_happy/patient/home_screen.dart';
 import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
@@ -33,11 +34,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
 part 'events_tab.dart';
-
 part 'healer_reports_tab.dart';
-
-part 'offices_tab.dart';
-
 part 'users_tab.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
@@ -49,6 +46,7 @@ void _disconnect(BuildContext context, WidgetRef ref) async {
 }
 
 class AdminHomeScreen extends StatelessWidget {
+  static const name = 'admin';
   const AdminHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -78,6 +76,13 @@ class MobileAdminHome extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(context.l10n.appTitle),
         actions: [
+          IconButton(
+            onPressed: () {
+              context.pushNamed(PatientHomeScreen.name);
+            },
+            tooltip: context.l10n.patientMode,
+            icon: const Icon(Icons.local_hospital_outlined),
+          ),
           IconButton(
             onPressed: () {
               _disconnect(context, ref);
@@ -118,7 +123,7 @@ class MobileAdminHome extends HookConsumerWidget {
             children: const [
               Dashboard(),
               _Users(),
-              _Offices(),
+              Offices(),
               _Events(),
               HealerReports(),
               UserProfile(),
@@ -158,7 +163,7 @@ class DesktopAdminHome extends HookConsumerWidget {
         child = const SizedBox(height: double.infinity, child: SingleChildScrollView(child: UserProfile()));
         break;
       case HomeTabs.offices:
-        child = const _Offices();
+        child = const Offices();
         break;
     }
 
@@ -225,7 +230,13 @@ class DesktopAdminHome extends HookConsumerWidget {
                               },
                               selected: store.selectedTab == HomeTabs.profile,
                             ),
-                            const SizedBox(width: 2),
+                            const SizedBox(width: kNormalPadding),
+                            MenuItem(
+                              label: context.l10n.patientMode,
+                              onTap: () {
+                                context.pushNamed(PatientHomeScreen.name);
+                              },
+                            ),
                           ],
                         ),
                       ),

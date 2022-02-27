@@ -9,38 +9,39 @@ All URIs are relative to *https://soignez-heureux.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**acceptEvent**](UserApi.md#acceptevent) | **POST** /api/v1/users/me/events/{eventId}/accept |
-[**createEvent**](UserApi.md#createevent) | **POST** /api/v1/healers/{id}/events |
-[**createInviteEvent**](UserApi.md#createinviteevent) | **POST** /api/v1/healers/{id}/inviteToEvent |
-[**createOpening**](UserApi.md#createopening) | **POST** /api/v1/users/me/openings |
-[**createUserOpening**](UserApi.md#createuseropening) | **POST** /api/v1/users/{userId}/openings |
-[**deleteEvent**](UserApi.md#deleteevent) | **DELETE** /api/v1/users/me/events/{eventId} |
-[**deleteOpening**](UserApi.md#deleteopening) | **DELETE** /api/v1/users/me/openings/{openingId} |
-[**deleteUserOpening**](UserApi.md#deleteuseropening) | **DELETE** /api/v1/users/{userId}/openings/{openingId} |
-[**getEvents**](UserApi.md#getevents) | **GET** /api/v1/users/me/events |
-[**getHealerAvailabilities**](UserApi.md#gethealeravailabilities) | **GET** /api/v1/healers/{id}/availabilities |
-[**getHealerProfile**](UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} |
-[**getLocalities**](UserApi.md#getlocalities) | **GET** /api/v1/healers/localities |
-[**getOpenings**](UserApi.md#getopenings) | **GET** /api/v1/users/me/openings |
-[**getProfile**](UserApi.md#getprofile) | **GET** /api/v1/users/me |
-[**getSpecialities**](UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities |
-[**getUserOpenings**](UserApi.md#getuseropenings) | **GET** /api/v1/users/{userId}/openings |
-[**putAvatar**](UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar |
-[**putDiploma**](UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma |
-[**putTerms**](UserApi.md#putterms) | **PUT** /api/v1/users/me/terms |
-[**resendActivationLink**](UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink |
-[**saveProfile**](UserApi.md#saveprofile) | **PUT** /api/v1/users/me |
-[**searchHealers**](UserApi.md#searchhealers) | **GET** /api/v1/healers/search |
-[**updateEvent**](UserApi.md#updateevent) | **PATCH** /api/v1/users/me/events/{eventId} |
-[**updateOpening**](UserApi.md#updateopening) | **PATCH** /api/v1/users/me/openings/{openingId} |
-[**updateUserOpening**](UserApi.md#updateuseropening) | **PATCH** /api/v1/users/{userId}/openings/{openingId} |
+[**acceptEvent**](UserApi.md#acceptevent) | **POST** /api/v1/users/me/events/{eventId}/accept | 
+[**createEvent**](UserApi.md#createevent) | **POST** /api/v1/healers/{id}/events | 
+[**createInviteEvent**](UserApi.md#createinviteevent) | **POST** /api/v1/healers/{id}/inviteToEvent | 
+[**createOpening**](UserApi.md#createopening) | **POST** /api/v1/users/me/openings | 
+[**createUserOpening**](UserApi.md#createuseropening) | **POST** /api/v1/users/{userId}/openings | 
+[**deleteEvent**](UserApi.md#deleteevent) | **DELETE** /api/v1/users/me/events/{eventId} | 
+[**deleteOpening**](UserApi.md#deleteopening) | **DELETE** /api/v1/users/me/openings/{openingId} | 
+[**deleteUserOpening**](UserApi.md#deleteuseropening) | **DELETE** /api/v1/users/{userId}/openings/{openingId} | 
+[**getEvents**](UserApi.md#getevents) | **GET** /api/v1/users/me/events | 
+[**getHealerAvailabilities**](UserApi.md#gethealeravailabilities) | **GET** /api/v1/healers/{id}/availabilities | 
+[**getHealerProfile**](UserApi.md#gethealerprofile) | **GET** /api/v1/healers/{id} | 
+[**getLocalities**](UserApi.md#getlocalities) | **GET** /api/v1/healers/localities | 
+[**getOpenings**](UserApi.md#getopenings) | **GET** /api/v1/users/me/openings | 
+[**getProfile**](UserApi.md#getprofile) | **GET** /api/v1/users/me | 
+[**getSpecialities**](UserApi.md#getspecialities) | **GET** /api/v1/healers/specialities | 
+[**getUserOpenings**](UserApi.md#getuseropenings) | **GET** /api/v1/users/{userId}/openings | 
+[**putAvatar**](UserApi.md#putavatar) | **PUT** /api/v1/users/me/avatar | 
+[**putDiploma**](UserApi.md#putdiploma) | **PUT** /api/v1/users/me/diploma | 
+[**putTerms**](UserApi.md#putterms) | **PUT** /api/v1/users/me/terms | 
+[**resendActivationLink**](UserApi.md#resendactivationlink) | **GET** /api/v1/users/me/resendActivationLink | 
+[**saveProfile**](UserApi.md#saveprofile) | **PUT** /api/v1/users/me | 
+[**searchHealers**](UserApi.md#searchhealers) | **GET** /api/v1/healers/search | 
+[**updateEvent**](UserApi.md#updateevent) | **PATCH** /api/v1/users/me/events/{eventId} | 
+[**updateOpening**](UserApi.md#updateopening) | **PATCH** /api/v1/users/me/openings/{openingId} | 
+[**updateUserOpening**](UserApi.md#updateuseropening) | **PATCH** /api/v1/users/{userId}/openings/{openingId} | 
+
 
 # **acceptEvent**
-
 > acceptEvent(eventId)
 
-### Example
 
+
+### Example 
 ```dart
 import 'package:heal_happy_sdk/api.dart';
 // TODO Configure API key authorization: Bearer
@@ -199,7 +200,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional]
+ **healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional] 
 
 ### Return type
 
@@ -211,17 +212,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **createUserOpening**
-
 > HealerOpening createUserOpening(userId, healerOpening)
 
-### Example
 
+
+### Example 
 ```dart
 import 'package:heal_happy_sdk/api.dart';
 // TODO Configure API key authorization: Bearer
@@ -245,8 +246,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**userId** | **String**|  |
-**healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional]
+ **userId** | **String**|  | 
+ **healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional] 
 
 ### Return type
 
@@ -336,7 +337,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**openingId** | **String**|  |
+ **openingId** | **String**|  | 
 
 ### Return type
 
@@ -348,17 +349,17 @@ void (empty response body)
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: Not defined
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **deleteUserOpening**
-
 > deleteUserOpening(openingId, userId)
 
-### Example
 
+
+### Example 
 ```dart
 import 'package:heal_happy_sdk/api.dart';
 // TODO Configure API key authorization: Bearer
@@ -381,8 +382,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**openingId** | **String**|  |
-**userId** | **String**|  |
+ **openingId** | **String**|  | 
+ **userId** | **String**|  | 
 
 ### Return type
 
@@ -400,7 +401,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getEvents**
-> BuiltList<UserEvent> getEvents(includePastEvents)
+> BuiltList<UserEvent> getEvents(modeHealer, includePastEvents)
 
 
 
@@ -413,10 +414,11 @@ import 'package:heal_happy_sdk/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = HealHappySdk().getUserApi();
+final bool modeHealer = true; // bool | 
 final bool includePastEvents = true; // bool | 
 
 try { 
-    final response = api.getEvents(includePastEvents);
+    final response = api.getEvents(modeHealer, includePastEvents);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling UserApi->getEvents: $e\n');
@@ -427,6 +429,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **modeHealer** | **bool**|  | 
  **includePastEvents** | **bool**|  | [optional] 
 
 ### Return type
@@ -693,20 +696,19 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getUserOpenings**
-
 > BuiltList<HealerOpening> getUserOpenings(userId)
 
-### Example
 
+
+### Example 
 ```dart
 import 'package:heal_happy_sdk/api.dart';
-
 // TODO Configure API key authorization: Bearer
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -715,13 +717,11 @@ import 'package:heal_happy_sdk/api.dart';
 final api = HealHappySdk().getUserApi();
 final String userId = userId_example; // String | 
 
-try {
-final response = api.getUserOpenings(userId);
-print(response);
-} catch
-
-on DioError(e) {
-  print('Exception when calling UserApi->getUserOpenings: $e\n');
+try { 
+    final response = api.getUserOpenings(userId);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling UserApi->getUserOpenings: $e\n');
 }
 ```
 
@@ -729,7 +729,7 @@ on DioError(e) {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**userId** | **String**|  |
+ **userId** | **String**|  | 
 
 ### Return type
 
@@ -741,20 +741,19 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
-- **Accept**: application/json
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **putAvatar**
-
 > FileData putAvatar(avatar)
 
-### Example
 
+
+### Example 
 ```dart
 import 'package:heal_happy_sdk/api.dart';
-
 // TODO Configure API key authorization: Bearer
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
 // uncomment below to setup prefix (e.g. Bearer) for API key, if needed
@@ -1094,8 +1093,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**openingId** | **String**|  |
-**healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional]
+ **openingId** | **String**|  | 
+ **healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional] 
 
 ### Return type
 
@@ -1107,17 +1106,17 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **updateUserOpening**
-
 > HealerOpening updateUserOpening(openingId, userId, healerOpening)
 
-### Example
 
+
+### Example 
 ```dart
 import 'package:heal_happy_sdk/api.dart';
 // TODO Configure API key authorization: Bearer
@@ -1142,9 +1141,9 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**openingId** | **String**|  |
-**userId** | **String**|  |
-**healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional]
+ **openingId** | **String**|  | 
+ **userId** | **String**|  | 
+ **healerOpening** | [**HealerOpening**](HealerOpening.md)|  | [optional] 
 
 ### Return type
 
@@ -1156,8 +1155,8 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
-- **Content-Type**: application/json
-- **Accept**: application/json
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

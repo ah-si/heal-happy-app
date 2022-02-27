@@ -319,7 +319,14 @@ Future<T?> showAppDialog<T>(BuildContext context, WidgetBuilder title, WidgetBui
     {bool barrierDismissible = true, List<DialogAction> actions = const [], RouteSettings? settings}) {
   return context.navigator.push(
     ModalPageRoute(
-      builder: (context) => getAppDialog(context, title, content, actions: actions),
+      builder: (context) => Center(
+        child: Scrollbar(
+          isAlwaysShown: true,
+          child: SingleChildScrollView(
+            child: getAppDialog(context, title, content, actions: actions),
+          ),
+        ),
+      ),
       settings: settings,
       barrierDismissible: barrierDismissible,
     ),

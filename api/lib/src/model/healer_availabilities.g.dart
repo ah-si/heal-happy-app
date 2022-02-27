@@ -8,7 +8,7 @@ part of 'healer_availabilities.dart';
 
 class _$HealerAvailabilities extends HealerAvailabilities {
   @override
-  final BuiltList<DateTime> slots;
+  final BuiltList<Slot> slots;
   @override
   final String until;
 
@@ -59,10 +59,9 @@ class HealerAvailabilitiesBuilder
     implements Builder<HealerAvailabilities, HealerAvailabilitiesBuilder> {
   _$HealerAvailabilities? _$v;
 
-  ListBuilder<DateTime>? _slots;
-  ListBuilder<DateTime> get slots =>
-      _$this._slots ??= new ListBuilder<DateTime>();
-  set slots(ListBuilder<DateTime>? slots) => _$this._slots = slots;
+  ListBuilder<Slot>? _slots;
+  ListBuilder<Slot> get slots => _$this._slots ??= new ListBuilder<Slot>();
+  set slots(ListBuilder<Slot>? slots) => _$this._slots = slots;
 
   String? _until;
   String? get until => _$this._until;

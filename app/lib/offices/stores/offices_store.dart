@@ -4,7 +4,9 @@ import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/network/api_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
-final adminOfficeStoreProvider = ChangeNotifierProvider((_) => AdminOfficeStore());
+final officesStoreProvider = ChangeNotifierProvider((_) => AdminOfficeStore());
+
+final officeFormStoreProvider = ChangeNotifierProvider((_) => OfficeFormStore());
 
 class OfficeResults {
   final List<Office> offices;
@@ -25,8 +27,6 @@ class AdminOfficeStore extends ChangeNotifier {
       : _officesApi = officesApi ?? BackendApiProvider().api.getOfficesApi(),
         _userApi = userApi ?? BackendApiProvider().api.getUserApi();
 
-  void loadOfficesPage(int selectedPage) {}
-
   void loadOffices(int page) async {
     try {
       final resultsRequest = await _officesApi.getOffices();
@@ -36,5 +36,24 @@ class AdminOfficeStore extends ChangeNotifier {
       isLoading = false;
     }
     notifyListeners();
+  }
+
+  void reload() {
+    loadOffices(results?.currentPage ?? 0);
+  }
+}
+
+class OfficeFormStore extends ChangeNotifier {
+  final OfficesApi _officesApi;
+
+  OfficeFormStore({OfficesApi? officesApi, UserApi? userApi})
+      : _officesApi = officesApi ?? BackendApiProvider().api.getOfficesApi();
+
+  Future<void> save(OfficeInfo office) async {
+    if (office.id == null) {
+      await _officesApi.createOffice(officeInfo: office);
+    } else {
+      await _officesApi.updateOffice(id: office.id!, officeInfo: office);
+    }
   }
 }

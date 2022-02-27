@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | [optional] 
 **userId** | **String** |  | 
+**roomId** | **String** |  | [optional] 
 **type** | [**OpeningType**](OpeningType.md) |  | 
 **repeat** | [**OpeningRepeatType**](OpeningRepeatType.md) |  | [optional] 
 **start** | [**DateTime**](DateTime.md) |  | 

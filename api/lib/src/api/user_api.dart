@@ -282,9 +282,10 @@ class UserApi {
     try {
       const _type = FullType(HealerOpening);
       _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
-    } catch (error, stackTrace) {
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -310,6 +311,7 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as HealerOpening;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -382,9 +384,10 @@ class UserApi {
     try {
       const _type = FullType(HealerOpening);
       _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
-    } catch (error, stackTrace) {
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -410,6 +413,7 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as HealerOpening;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -585,8 +589,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path =
-        r'/api/v1/users/{userId}/openings/{openingId}'.replaceAll('{' r'openingId' '}', openingId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/api/v1/users/{userId}/openings/{openingId}'.replaceAll('{' r'openingId' '}', openingId.toString()).replaceAll('{' r'userId' '}', userId.toString());
     final _options = Options(
       method: r'DELETE',
       headers: <String, dynamic>{
@@ -621,6 +624,7 @@ class UserApi {
   ///
   ///
   /// Parameters:
+  /// * [modeHealer]
   /// * [includePastEvents]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
@@ -632,6 +636,7 @@ class UserApi {
   /// Returns a [Future] containing a [Response] with a [BuiltList<UserEvent>] as data
   /// Throws [DioError] if API call or serialization fails
   Future<Response<BuiltList<UserEvent>>> getEvents({
+    required bool modeHealer,
     bool? includePastEvents,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -662,6 +667,7 @@ class UserApi {
 
     final _queryParameters = <String, dynamic>{
       if (includePastEvents != null) r'includePastEvents': encodeQueryParameter(_serializers, includePastEvents, const FullType(bool)),
+      r'modeHealer': encodeQueryParameter(_serializers, modeHealer, const FullType(bool)),
     };
 
     final _response = await _dio.request<Object>(
@@ -1243,6 +1249,7 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as BuiltList<HealerOpening>;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -1967,9 +1974,10 @@ class UserApi {
     try {
       const _type = FullType(HealerOpening);
       _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
-    } catch (error, stackTrace) {
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -1995,6 +2003,7 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as HealerOpening;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -2043,8 +2052,7 @@ class UserApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path =
-        r'/api/v1/users/{userId}/openings/{openingId}'.replaceAll('{' r'openingId' '}', openingId.toString()).replaceAll('{' r'userId' '}', userId.toString());
+    final _path = r'/api/v1/users/{userId}/openings/{openingId}'.replaceAll('{' r'openingId' '}', openingId.toString()).replaceAll('{' r'userId' '}', userId.toString());
     final _options = Options(
       method: r'PATCH',
       headers: <String, dynamic>{
@@ -2070,9 +2078,10 @@ class UserApi {
     try {
       const _type = FullType(HealerOpening);
       _bodyData = healerOpening == null ? null : _serializers.serialize(healerOpening, specifiedType: _type);
+
     } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -2098,6 +2107,7 @@ class UserApi {
         _response.data!,
         specifiedType: _responseType,
       ) as HealerOpening;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,

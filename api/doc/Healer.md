@@ -10,9 +10,9 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | [optional] 
 **isVerified** | **bool** |  | 
-**isActivated** | **bool** |  |
-**canDoFaceToFace** | **bool** |  | [optional]
-**job** | **String** |  | [optional]
+**isActivated** | **bool** |  | 
+**canDoFaceToFace** | **bool** |  | [optional] 
+**job** | **String** |  | [optional] 
 **firstName** | **String** |  | 
 **consultationDuration** | **int** |  | 
 **isAddressPublic** | **bool** |  | [default to false]

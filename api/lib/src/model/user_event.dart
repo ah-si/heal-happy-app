@@ -27,16 +27,16 @@ part 'user_event.g.dart';
 /// * [cancelledDescription]
 /// * [link]
 abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
-  @BuiltValueField(wireName: r'id')
-  String get id;
+    @BuiltValueField(wireName: r'id')
+    String get id;
 
-  @BuiltValueField(wireName: r'patient')
-  MinimalUser get patient;
+    @BuiltValueField(wireName: r'patient')
+    MinimalUser get patient;
 
-  @BuiltValueField(wireName: r'healer')
-  Healer get healer;
+    @BuiltValueField(wireName: r'healer')
+    Healer get healer;
 
-  @BuiltValueField(wireName: r'isUrgent')
+    @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
 
     @BuiltValueField(wireName: r'isCancelled')
@@ -88,22 +88,26 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
     @override
     Iterable<Object?> serialize(Serializers serializers, UserEvent object,
         {FullType specifiedType = FullType.unspecified}) {
-      final result = <Object?>[];
-    result
-      ..add(r'id')
-      ..add(serializers.serialize(object.id, specifiedType: const FullType(String)));
-    result
-      ..add(r'patient')
-      ..add(serializers.serialize(object.patient, specifiedType: const FullType(MinimalUser)));
-    result
-      ..add(r'healer')
-      ..add(serializers.serialize(object.healer, specifiedType: const FullType(Healer)));
-    result
-      ..add(r'isUrgent')
-      ..add(serializers.serialize(object.isUrgent, specifiedType: const FullType(bool)));
-    result
-      ..add(r'isCancelled')
-      ..add(serializers.serialize(object.isCancelled,
+        final result = <Object?>[];
+        result
+            ..add(r'id')
+            ..add(serializers.serialize(object.id,
+                specifiedType: const FullType(String)));
+        result
+            ..add(r'patient')
+            ..add(serializers.serialize(object.patient,
+                specifiedType: const FullType(MinimalUser)));
+        result
+            ..add(r'healer')
+            ..add(serializers.serialize(object.healer,
+                specifiedType: const FullType(Healer)));
+        result
+            ..add(r'isUrgent')
+            ..add(serializers.serialize(object.isUrgent,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isCancelled')
+            ..add(serializers.serialize(object.isCancelled,
                 specifiedType: const FullType(bool)));
         result
             ..add(r'type')
@@ -160,9 +164,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                         specifiedType: const FullType(String)) as String;
                     break;
                 case r'patient':
-                  result.patient.replace(serializers.deserialize(value, specifiedType: const FullType(MinimalUser)) as MinimalUser);
-          break;
-        case r'healer':
+                    result.patient.replace(serializers.deserialize(value,
+                        specifiedType: const FullType(MinimalUser)) as MinimalUser);
+                    break;
+                case r'healer':
                     result.healer.replace(serializers.deserialize(value,
                         specifiedType: const FullType(Healer)) as Healer);
                     break;

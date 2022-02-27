@@ -34,7 +34,3 @@ const double kMediumPadding = 12.0;
 const double kNormalPadding = 15.0;
 const double kBigPadding = 32.0;
 const double kHugePadding = 54.0;
-
-const kGradient1Color = Color(0xFF101f34);
-const kGradient2Color = Color(0xFF4d8c3f);
-const kGradient3Color = Color(0xFF6aa842);

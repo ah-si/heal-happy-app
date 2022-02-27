@@ -32,6 +32,7 @@ import 'package:heal_happy_sdk/src/model/login_request.dart';
 import 'package:heal_happy_sdk/src/model/login_response.dart';
 import 'package:heal_happy_sdk/src/model/minimal_user.dart';
 import 'package:heal_happy_sdk/src/model/office.dart';
+import 'package:heal_happy_sdk/src/model/office_info.dart';
 import 'package:heal_happy_sdk/src/model/office_room.dart';
 import 'package:heal_happy_sdk/src/model/opening_repeat_type.dart';
 import 'package:heal_happy_sdk/src/model/opening_type.dart';
@@ -41,9 +42,11 @@ import 'package:heal_happy_sdk/src/model/paginated_offices.dart';
 import 'package:heal_happy_sdk/src/model/paginated_users.dart';
 import 'package:heal_happy_sdk/src/model/refresh_token_request.dart';
 import 'package:heal_happy_sdk/src/model/reset_password.dart';
+import 'package:heal_happy_sdk/src/model/slot.dart';
 import 'package:heal_happy_sdk/src/model/update_event_request.dart';
 import 'package:heal_happy_sdk/src/model/user.dart';
 import 'package:heal_happy_sdk/src/model/user_all_of.dart';
+import 'package:heal_happy_sdk/src/model/user_email.dart';
 import 'package:heal_happy_sdk/src/model/user_event.dart';
 import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
@@ -71,6 +74,7 @@ part 'serializers.g.dart';
   LoginResponse,
   MinimalUser,
   Office,
+  OfficeInfo,
   OfficeRoom,
   OpeningRepeatType,
   OpeningType,
@@ -80,9 +84,11 @@ part 'serializers.g.dart';
   PaginatedUsers,
   RefreshTokenRequest,
   ResetPassword,
+  Slot,
   UpdateEventRequest,
   User,
   UserAllOf,
+  UserEmail,
   UserEvent,
   UserTypeEnum,
 ])

@@ -179,8 +179,8 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**start** | **Date**|  |
-**end** | **Date**|  |
+ **start** | **Date**|  | 
+ **end** | **Date**|  | 
 
 ### Return type
 
@@ -248,7 +248,6 @@ Name | Type | Description  | Notes
 
 
 ### Example 
-
 ```dart
 import 'package:heal_happy_sdk/api.dart';
 // TODO Configure API key authorization: Bearer
@@ -274,10 +273,10 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**start** | **Date**|  |
-**end** | **Date**|  |
-**isUrgent** | **bool**|  | [optional]
-**isCancelled** | **bool**|  | [optional]
+ **start** | **Date**|  | 
+ **end** | **Date**|  | 
+ **isUrgent** | **bool**|  | [optional] 
+ **isCancelled** | **bool**|  | [optional] 
 
 ### Return type
 

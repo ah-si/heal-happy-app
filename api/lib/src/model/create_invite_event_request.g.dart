@@ -10,6 +10,8 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
   @override
   final DateTime? slot;
   @override
+  final String? roomId;
+  @override
   final String email;
   @override
   final String? mobile;
@@ -22,10 +24,20 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
   @override
   final String? message;
 
-  factory _$CreateInviteEventRequest([void Function(CreateInviteEventRequestBuilder)? updates]) =>
+  factory _$CreateInviteEventRequest(
+          [void Function(CreateInviteEventRequestBuilder)? updates]) =>
       (new CreateInviteEventRequestBuilder()..update(updates)).build();
 
-  _$CreateInviteEventRequest._({this.slot, required this.email, this.mobile, this.firstName, this.lastName, required this.type, this.message}) : super._() {
+  _$CreateInviteEventRequest._(
+      {this.slot,
+      this.roomId,
+      required this.email,
+      this.mobile,
+      this.firstName,
+      this.lastName,
+      required this.type,
+      this.message})
+      : super._() {
     BuiltValueNullFieldError.checkNotNull(
         email, 'CreateInviteEventRequest', 'email');
     BuiltValueNullFieldError.checkNotNull(
@@ -46,6 +58,7 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
     if (identical(other, this)) return true;
     return other is CreateInviteEventRequest &&
         slot == other.slot &&
+        roomId == other.roomId &&
         email == other.email &&
         mobile == other.mobile &&
         firstName == other.firstName &&
@@ -56,7 +69,17 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc($jc($jc($jc($jc(0, slot.hashCode), email.hashCode), mobile.hashCode), firstName.hashCode), lastName.hashCode), type.hashCode),
+    return $jf($jc(
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, slot.hashCode), roomId.hashCode),
+                            email.hashCode),
+                        mobile.hashCode),
+                    firstName.hashCode),
+                lastName.hashCode),
+            type.hashCode),
         message.hashCode));
   }
 
@@ -64,6 +87,7 @@ class _$CreateInviteEventRequest extends CreateInviteEventRequest {
   String toString() {
     return (newBuiltValueToStringHelper('CreateInviteEventRequest')
           ..add('slot', slot)
+          ..add('roomId', roomId)
           ..add('email', email)
           ..add('mobile', mobile)
           ..add('firstName', firstName)
@@ -80,45 +104,35 @@ class CreateInviteEventRequestBuilder
   _$CreateInviteEventRequest? _$v;
 
   DateTime? _slot;
-
   DateTime? get slot => _$this._slot;
-
   set slot(DateTime? slot) => _$this._slot = slot;
 
+  String? _roomId;
+  String? get roomId => _$this._roomId;
+  set roomId(String? roomId) => _$this._roomId = roomId;
+
   String? _email;
-
   String? get email => _$this._email;
-
   set email(String? email) => _$this._email = email;
 
   String? _mobile;
-
   String? get mobile => _$this._mobile;
-
   set mobile(String? mobile) => _$this._mobile = mobile;
 
   String? _firstName;
-
   String? get firstName => _$this._firstName;
-
   set firstName(String? firstName) => _$this._firstName = firstName;
 
   String? _lastName;
-
   String? get lastName => _$this._lastName;
-
   set lastName(String? lastName) => _$this._lastName = lastName;
 
   HealerEventType? _type;
-
   HealerEventType? get type => _$this._type;
-
   set type(HealerEventType? type) => _$this._type = type;
 
   String? _message;
-
   String? get message => _$this._message;
-
   set message(String? message) => _$this._message = message;
 
   CreateInviteEventRequestBuilder() {
@@ -129,6 +143,7 @@ class CreateInviteEventRequestBuilder
     final $v = _$v;
     if ($v != null) {
       _slot = $v.slot;
+      _roomId = $v.roomId;
       _email = $v.email;
       _mobile = $v.mobile;
       _firstName = $v.firstName;
@@ -156,11 +171,14 @@ class CreateInviteEventRequestBuilder
     final _$result = _$v ??
         new _$CreateInviteEventRequest._(
             slot: slot,
-            email: BuiltValueNullFieldError.checkNotNull(email, 'CreateInviteEventRequest', 'email'),
+            roomId: roomId,
+            email: BuiltValueNullFieldError.checkNotNull(
+                email, 'CreateInviteEventRequest', 'email'),
             mobile: mobile,
             firstName: firstName,
             lastName: lastName,
-            type: BuiltValueNullFieldError.checkNotNull(type, 'CreateInviteEventRequest', 'type'),
+            type: BuiltValueNullFieldError.checkNotNull(
+                type, 'CreateInviteEventRequest', 'type'),
             message: message);
     replace(_$result);
     return _$result;

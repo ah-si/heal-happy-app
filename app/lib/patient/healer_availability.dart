@@ -198,7 +198,7 @@ class HealerAvailability extends HookConsumerWidget {
             }
             final userStore = ref.read(userStoreProvider);
             final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
-              await store.createEvent(userStore.user!.id!, eventType, slot.dateTime, controller.text, isUrgent);
+              await store.createEvent(userStore.user!.id!, slot.roomId, eventType, slot.dateTime, controller.text, isUrgent);
             });
             if (success) {
               Navigator.of(context).pop();

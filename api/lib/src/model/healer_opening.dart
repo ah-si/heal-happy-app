@@ -14,6 +14,7 @@ part 'healer_opening.g.dart';
 /// Properties:
 /// * [id] 
 /// * [userId] 
+/// * [roomId] 
 /// * [type] 
 /// * [repeat] 
 /// * [start] 
@@ -24,6 +25,9 @@ abstract class HealerOpening implements Built<HealerOpening, HealerOpeningBuilde
 
     @BuiltValueField(wireName: r'userId')
     String get userId;
+
+    @BuiltValueField(wireName: r'roomId')
+    String? get roomId;
 
     @BuiltValueField(wireName: r'type')
     OpeningType get type;
@@ -71,6 +75,12 @@ class _$HealerOpeningSerializer implements StructuredSerializer<HealerOpening> {
             ..add(r'userId')
             ..add(serializers.serialize(object.userId,
                 specifiedType: const FullType(String)));
+        if (object.roomId != null) {
+            result
+                ..add(r'roomId')
+                ..add(serializers.serialize(object.roomId,
+                    specifiedType: const FullType(String)));
+        }
         result
             ..add(r'type')
             ..add(serializers.serialize(object.type,
@@ -109,6 +119,10 @@ class _$HealerOpeningSerializer implements StructuredSerializer<HealerOpening> {
                     break;
                 case r'userId':
                     result.userId = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'roomId':
+                    result.roomId = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
                     break;
                 case r'type':

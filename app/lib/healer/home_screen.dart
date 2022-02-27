@@ -15,6 +15,8 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/healer/stores/healer_store.dart';
+import 'package:heal_happy/patient/healer_profile_screen.dart';
+import 'package:heal_happy/patient/home_screen.dart';
 import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
@@ -39,7 +41,7 @@ class MobileHealerHome extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final store = ref.read(healerStoreProvider);
+    final store = ref.watch(healerStoreProvider);
     final controller = useTabController(initialLength: 3, initialIndex: store.selectedTab.index);
     useEffect(() {
       controller.addListener(() {
@@ -54,6 +56,13 @@ class MobileHealerHome extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(context.l10n.appTitle),
         actions: [
+          IconButton(
+            onPressed: () {
+              context.pushNamed(PatientHomeScreen.name);
+            },
+            tooltip: context.l10n.patientMode,
+            icon: const Icon(Icons.local_hospital_outlined),
+          ),
           IconButton(
             onPressed: () {
               _disconnect(context, ref);
@@ -96,6 +105,8 @@ class MobileHealerHome extends HookConsumerWidget {
 }
 
 class HealerHomeScreen extends StatelessWidget {
+  static const name = 'healer';
+
   const HealerHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -165,6 +176,13 @@ class DesktopHealerHome extends HookConsumerWidget {
                                   store.selectedTab = HomeTabs.help;
                                 },
                                 selected: store.selectedTab == HomeTabs.help,
+                              ),
+                              const SizedBox(width: kNormalPadding),
+                              MenuItem(
+                                label: context.l10n.patientMode,
+                                onTap: () {
+                                  context.pushNamed(PatientHomeScreen.name);
+                                },
                               ),
                             ],
                           ),
@@ -292,6 +310,15 @@ class _Help extends HookConsumerWidget {
                 launch('${Config().baseUrl}/assets/assets/files/ordo.doc');
               },
               child: Text(context.l10n.helpDownloadOrdo),
+            ),
+          const SizedBox(height: kNormalPadding),
+          Text(context.l10n.healerUrl),
+          const SizedBox(height: kSmallPadding),
+          if (userStore.user != null)
+            SelectableText(
+              Config.instance!.baseUrl + HealerProfileScreen.route.replaceAll(':id', userStore.user!.id!)+'/visio',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
         ],
       ),

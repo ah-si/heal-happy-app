@@ -10,6 +10,8 @@ class _$CreateEventRequest extends CreateEventRequest {
   @override
   final DateTime slot;
   @override
+  final String? roomId;
+  @override
   final bool? isUrgent;
   @override
   final String patientId;
@@ -24,6 +26,7 @@ class _$CreateEventRequest extends CreateEventRequest {
 
   _$CreateEventRequest._(
       {required this.slot,
+      this.roomId,
       this.isUrgent,
       required this.patientId,
       this.type,
@@ -48,6 +51,7 @@ class _$CreateEventRequest extends CreateEventRequest {
     if (identical(other, this)) return true;
     return other is CreateEventRequest &&
         slot == other.slot &&
+        roomId == other.roomId &&
         isUrgent == other.isUrgent &&
         patientId == other.patientId &&
         type == other.type &&
@@ -58,7 +62,9 @@ class _$CreateEventRequest extends CreateEventRequest {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, slot.hashCode), isUrgent.hashCode),
+            $jc(
+                $jc($jc($jc(0, slot.hashCode), roomId.hashCode),
+                    isUrgent.hashCode),
                 patientId.hashCode),
             type.hashCode),
         message.hashCode));
@@ -68,6 +74,7 @@ class _$CreateEventRequest extends CreateEventRequest {
   String toString() {
     return (newBuiltValueToStringHelper('CreateEventRequest')
           ..add('slot', slot)
+          ..add('roomId', roomId)
           ..add('isUrgent', isUrgent)
           ..add('patientId', patientId)
           ..add('type', type)
@@ -83,6 +90,10 @@ class CreateEventRequestBuilder
   DateTime? _slot;
   DateTime? get slot => _$this._slot;
   set slot(DateTime? slot) => _$this._slot = slot;
+
+  String? _roomId;
+  String? get roomId => _$this._roomId;
+  set roomId(String? roomId) => _$this._roomId = roomId;
 
   bool? _isUrgent;
   bool? get isUrgent => _$this._isUrgent;
@@ -108,6 +119,7 @@ class CreateEventRequestBuilder
     final $v = _$v;
     if ($v != null) {
       _slot = $v.slot;
+      _roomId = $v.roomId;
       _isUrgent = $v.isUrgent;
       _patientId = $v.patientId;
       _type = $v.type;
@@ -134,6 +146,7 @@ class CreateEventRequestBuilder
         new _$CreateEventRequest._(
             slot: BuiltValueNullFieldError.checkNotNull(
                 slot, 'CreateEventRequest', 'slot'),
+            roomId: roomId,
             isUrgent: isUrgent,
             patientId: BuiltValueNullFieldError.checkNotNull(
                 patientId, 'CreateEventRequest', 'patientId'),

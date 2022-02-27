@@ -61,6 +61,16 @@ class CommonLocalizations {
 
   String get emptyEvents => Intl.message('Aucune consultation ne correspond à votre recherche.', name: 'emptyEvents');
 
+  String get addOffice => Intl.message('Ajout d\'un cabinet médicale', name: 'addOffice');
+
+  String get addRoom => Intl.message('Ajout d\'une salle de soin', name: 'addRoom');
+
+  String get renameRoom => Intl.message('Renommer la salle de soin', name: 'renameRoom');
+
+  String get deleteRoom => Intl.message('Supprimer la salle de soin', name: 'deleteRoom');
+
+  String get deleteRoomConfirm => Intl.message('Êtes vous sur de vouloir supprimer cette salle de soins? Assurez vous qu\'il n\'y ait plus de consultation prévu dans cette salle avant suppression.', name: 'deleteRoomConfirm');
+
   String get emptyOffices => Intl.message('Aucun cabinet ne correspond à votre recherche.', name: 'emptyOffices');
 
   String get pendingHealer => Intl.message('Voici la liste des soignants en attente de validation:', name: 'pendingHealer');
@@ -76,12 +86,17 @@ class CommonLocalizations {
   String get downloadDiploma => Intl.message('Télécharger le diplôme', name: 'downloadDiploma');
 
   String get userActivated => Intl.message('L\'utilisateur a validé son email', name: 'userActivated');
-  String get userUnActivated => Intl.message('L\'utilisateur n\'a pas validé son email, si il est soignant, il n\'est pas visible pour les patients', name: 'userUnActivated');
+
+  String get userUnActivated =>
+      Intl.message('L\'utilisateur n\'a pas validé son email, si il est soignant, il n\'est pas visible pour les patients', name: 'userUnActivated');
 
   String get userVerified => Intl.message('L\'utilisateur est vérifié', name: 'userVerified');
+
   String get userUnVerified => Intl.message('L\'utilisateur n\'a pas été vérifié et donc n\'est pas visible pour les patients', name: 'userUnVerified');
 
-  String get userRgpdKo => Intl.message('L\'utilisateur n\'a pas accepté la politique de confidentialité RGPD, il doit aller sur son profil, partie "informations personnelles", cocher la case de confidentialité et cliquer "enregistrer"', name: 'userRgpdKo');
+  String get userRgpdKo => Intl.message(
+      'L\'utilisateur n\'a pas accepté la politique de confidentialité RGPD, il doit aller sur son profil, partie "informations personnelles", cocher la case de confidentialité et cliquer "enregistrer"',
+      name: 'userRgpdKo');
 
   String get downloadTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
 
@@ -91,9 +106,19 @@ class CommonLocalizations {
 
   String delete(String name) => Intl.message('Supprimer $name?', args: [name], name: 'delete');
 
+  String get deleteOfficePermission => Intl.message('Enlever les accès?', name: 'deleteOfficePermission');
+
   String get deleteHealerConfirm =>
       Intl.message('Êtes-vous sûr de vouloir supprimer ce soignant?\nCette action ne peut être annulée et le soignant devra se réinscrire.',
           name: 'deleteHealerConfirm');
+
+  String get deleteManagerConfirm =>
+      Intl.message('Êtes-vous sûr de vouloir supprimer cette secrétaire médicale?\nCette personne ne pourra plus gérer ce cabinet.',
+          name: 'deleteManagerConfirm');
+
+  String get deleteOfficeHealerConfirm => Intl.message(
+      'Êtes-vous sûr de vouloir supprimer ce soignant de cette salle de soins?\nCette personne ne pourra plus faire de présentiel dans cette salle.',
+      name: 'deleteOfficeHealerConfirm');
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
@@ -154,13 +179,15 @@ class CommonLocalizations {
 
   String get patientEmailField => Intl.message('Email du patient*:', name: 'patientEmailField');
 
-  String get patientPhoneField => Intl.message('Mobile du patient*:', name: 'patientPhoneField');
+  String get patientPhoneField => Intl.message('Téléphone du patient*:', name: 'patientPhoneField');
 
   String get patientNameField => Intl.message('Nom du patient*:', name: 'patientNameField');
 
   String get patientFirstNameField => Intl.message('Prénom du patient*:', name: 'patientFirstNameField');
 
   String get consultationType => Intl.message('Type de consultation*:', name: 'consultationType');
+
+  String get consultationAddress => Intl.message('Adresse du cabinet*:', name: 'consultationAddress');
 
   String get consultationVisio => Intl.message('Téléconsultation', name: 'consultationVisio');
 
@@ -169,13 +196,17 @@ class CommonLocalizations {
   String get legendMessage => Intl.message('Voici le code couleur pour vous retrouver rapidement dans votre calendrier.', name: 'legendMessage');
 
   String get legendUrgency => Intl.message('Urgences', name: 'legendUrgency');
+
   String get legendVisio => Intl.message('Téléconsultations', name: 'legendVisio');
+
   String get legendConsultation => Intl.message('Consultations présentielles', name: 'legendConsultation');
+
   String get legendPending => Intl.message('Consultations en attente de confirmation par le patient', name: 'legendPending');
+
   String get legendCancelled => Intl.message('Consultations annulées', name: 'legendCancelled');
 
   String consultationLabel(HealerEventType type) {
-    switch(type) {
+    switch (type) {
       case HealerEventType.visio:
         return consultationVisio;
       case HealerEventType.faceToFace:
@@ -185,7 +216,7 @@ class CommonLocalizations {
   }
 
   String openingLabel(OpeningType type) {
-    switch(type) {
+    switch (type) {
       //case OpeningType.available:
       //  return openingAvailable;
       case OpeningType.faceToFace:
@@ -199,7 +230,7 @@ class CommonLocalizations {
   }
 
   String openingRepeatLabel(OpeningRepeatType? repeat) {
-    switch(repeat) {
+    switch (repeat) {
       case OpeningRepeatType.daily:
         return openingRepeatDaily;
       case OpeningRepeatType.monthly:
@@ -211,10 +242,15 @@ class CommonLocalizations {
   }
 
   String get openingRepeat => Intl.message('Répétition:', name: 'openingRepeat');
+
   String get openingType => Intl.message('Type de disponibilité:', name: 'openingType');
+
   String get openingAvailable => Intl.message('Disponible', name: 'openingAvailable');
+
   String get openingVisio => Intl.message('Téléconsultation', name: 'openingVisio');
+
   String get openingFaceToFace => Intl.message('Présentielle', name: 'openingFaceToFace');
+
   String get openingUnavailable => Intl.message('Indisponible', name: 'openingUnavailable');
 
   String get openingRepeatNever => Intl.message('Jamais', name: 'openingRepeatNever');
@@ -229,7 +265,9 @@ class CommonLocalizations {
 
   String get downloadHealerTerms => Intl.message('Télécharger la charte', name: 'downloadTerms');
 
-  String get sendHealerProof => Intl.message('Afin de valider votre compte soignant, merci de nous fournir votre carte d\'identité, la charte Soignez Heureux signé ainsi une preuve de votre spécialité (diplôme, attestation de formation...) par email à contact@ah-si.org.', name: 'sendHealerProof');
+  String get sendHealerProof => Intl.message(
+      'Afin de valider votre compte soignant, merci de nous fournir votre carte d\'identité, la charte Soignez Heureux signé ainsi une preuve de votre spécialité (diplôme, attestation de formation...) par email à contact@ah-si.org.',
+      name: 'sendHealerProof');
 
   String get noAvailabilities => Intl.message('Aucune disponibilité pour le moment', name: 'noAvailabilities');
 
@@ -261,7 +299,9 @@ class CommonLocalizations {
 
   String get yourPatient => Intl.message('Votre patient:', name: 'yourPatient');
 
-  String get eventPendingWarning => Intl.message('Le patient n\'a pas validé cette consultation, elle ne sera donc pas comptabilisé à la fin du mois. La patient doit cliquer sur le lien qu\'il a reçu par email.', name: 'eventPendingWarning');
+  String get eventPendingWarning => Intl.message(
+      'Le patient n\'a pas validé cette consultation, elle ne sera donc pas comptabilisé à la fin du mois. La patient doit cliquer sur le lien qu\'il a reçu par email.',
+      name: 'eventPendingWarning');
 
   String get patientMessage => Intl.message('Motif du rendez-vous:', name: 'patientMessage');
 
@@ -355,6 +395,8 @@ class CommonLocalizations {
 
   String get zipField => Intl.message('Code postal*:', name: 'zipField');
 
+  String get generalNameField => Intl.message('Nom*:', name: 'generalNameField');
+
   String get streetField => Intl.message('Numéro et rue:', name: 'streetField');
 
   String get street2Field => Intl.message('Complément:', name: 'street2Field');
@@ -391,7 +433,8 @@ class CommonLocalizations {
 
   String get noEvents => Intl.message('Vous n\'avez aucune consultation planifiée pour le moment.', name: 'noEvents');
 
-  String get eventHistoryIntro => Intl.message('Voici l\'historique de vos consultations, seul l\'historique à 30 jours est affiché ici.', name: 'eventHistoryIntro');
+  String get eventHistoryIntro =>
+      Intl.message('Voici l\'historique de vos consultations, seul l\'historique à 30 jours est affiché ici.', name: 'eventHistoryIntro');
 
   String get noEventHistory => Intl.message('Vous n\'avez aucune consultation dans votre historique.', name: 'noEventHistory');
 
@@ -403,15 +446,38 @@ class CommonLocalizations {
 
   String get help => Intl.message('Aide', name: 'help');
 
-  String get helpIntro => Intl.message('Si vous avez besoin d\'aide, rejoignez d\'autres soignants sur le réseau Telegram dédié de Soignez Heureux en cliquant sur le lien suivant:', name: 'helpIntro');
+  String get patientMode => Intl.message('Mode patient', name: 'patientMode');
+
+  String get healerMode => Intl.message('Mode soignant', name: 'healerMode');
+
+  String get adminMode => Intl.message('Mode admin', name: 'adminMode');
+
+  String get helpIntro => Intl.message(
+      'Si vous avez besoin d\'aide, rejoignez d\'autres soignants sur le réseau Telegram dédié de Soignez Heureux en cliquant sur le lien suivant:',
+      name: 'helpIntro');
 
   String get helpOrdo => Intl.message('Pour vos prescriptions, vous pouvez utiliser l\'ordonnance de l\'ONG:', name: 'helpOrdo');
 
   String get helpDownloadOrdo => Intl.message('Télécharger l\'ordonnance', name: 'helpDownloadOrdo');
 
+  String get healerUrl => Intl.message(
+      'Vous pouvez partager le lien de votre compte soignant afin que des patients prenne rendez-vous directement avec vous. Votre lien soignant est:',
+      name: 'healerUrl');
+
+  String get manageOfficeRooms => Intl.message('Gestion des salles de soin', name: 'manageOfficeRooms');
+
+  String get officeManagers => Intl.message('Gestion des secrétaires médical', name: 'officeManagers');
+
+  String get officeHealers => Intl.message('Gestion des soignants', name: 'officeHealers');
+
+  String get addManager => Intl.message('Ajouter une secrétaire médical', name: 'addManager');
+
+  String get addOfficeHealer => Intl.message('Ajouter un soignant', name: 'addOfficeHealer');
+
   String get helpYoutube => Intl.message('Une série de tutoriels sont disponibles sur notre chaine Youtube officiel:', name: 'helpYoutube');
 
-  String get helpCall => Intl.message('Pour appeler les patients de manière anonyme (numéro masqué), vous pouvez rajouter #31# avant le numéro du patient.', name: 'helpCall');
+  String get helpCall =>
+      Intl.message('Pour appeler les patients de manière anonyme (numéro masqué), vous pouvez rajouter #31# avant le numéro du patient.', name: 'helpCall');
 
   String get eventsHistory => Intl.message('Historique', name: 'eventsHistory');
 
@@ -447,15 +513,20 @@ class CommonLocalizations {
 
   String get donateDescription => Intl.message('Nous fonctionnons uniquement grâce aux dons, cliquez ici pour nous soutenir.', name: 'donateDescription');
 
-  String get mentionLegal => Intl.message('Aucune donnée médicale n\'est demandée ni diffusée. Les données personnelles sont protégées. Les praticiens médicaux et para médicaux de « soignez heureux » se sont engagés à respecter le secret médical.', name: 'mentionLegal');
+  String get mentionLegal => Intl.message(
+      'Aucune donnée médicale n\'est demandée ni diffusée. Les données personnelles sont protégées. Les praticiens médicaux et para médicaux de « soignez heureux » se sont engagés à respecter le secret médical.',
+      name: 'mentionLegal');
 
-  String get addressLegal => Intl.message('Alliance Humaine Santé Internationale - AHSI\nHuman Alliance International Health – HAIH\nCH-1202 Genève – Suisse', name: 'addressLegal');
+  String get addressLegal =>
+      Intl.message('Alliance Humaine Santé Internationale - AHSI\nHuman Alliance International Health – HAIH\nCH-1202 Genève – Suisse', name: 'addressLegal');
 
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
 
-  String get urgencyContact => Intl.message('En cas d\'urgence, et si vous ne trouvez pas de médecin disponible, merci de nous contacter à urgence@ah-si.org en précisant votre problème et vos informations de contact.', name: 'urgencyContact');
+  String get urgencyContact => Intl.message(
+      'En cas d\'urgence, et si vous ne trouvez pas de médecin disponible, merci de nous contacter à urgence@ah-si.org en précisant votre problème et vos informations de contact.',
+      name: 'urgencyContact');
 
-  String eventCreatedAt(String date) => Intl.message('Consultation prise le $date', args: [date],name: 'eventCreatedAt');
+  String eventCreatedAt(String date) => Intl.message('Consultation prise le $date', args: [date], name: 'eventCreatedAt');
 
   String get donateInstructions =>
       Intl.message('Si vous faites un don, merci de préciser votre destination de don dans le champ information :', name: 'donateInstructions');
@@ -478,11 +549,14 @@ class CommonLocalizations {
 
   String get inviteEventAccepted => Intl.message('Merci d\'avoir validé la consultation.\nSoyez Heureux!', name: 'inviteEventAccepted');
 
-  String get accountActivated => Intl.message('Merci d\'avoir activé votre compte, vous pouvez maintenant utiliser Soignez Heureux.\nSoyez Heureux!', name: 'accountActivated');
+  String get accountActivated =>
+      Intl.message('Merci d\'avoir activé votre compte, vous pouvez maintenant utiliser Soignez Heureux.\nSoyez Heureux!', name: 'accountActivated');
 
   String get eventUrgencyTitle => Intl.message('Rendez-vous urgent', name: 'eventUrgencyTitle');
 
-  String get eventUrgencyDesc => Intl.message('Si votre cas est grave et que vous avez besoin d\'une consultation urgente, ceci alertera le soignant. Si il peut vous prendre plus tôt il vous contactera directement par téléphone.\n\nVérifiez que vos informations de contact soient correctes dans votre profil.\n\nMerci d\'utiliser ceci uniquement en cas d\'urgence.', name: 'eventUrgencyDesc');
+  String get eventUrgencyDesc => Intl.message(
+      'Si votre cas est grave et que vous avez besoin d\'une consultation urgente, ceci alertera le soignant. Si il peut vous prendre plus tôt il vous contactera directement par téléphone.\n\nVérifiez que vos informations de contact soient correctes dans votre profil.\n\nMerci d\'utiliser ceci uniquement en cas d\'urgence.',
+      name: 'eventUrgencyDesc');
 
   String get hideCancelled => Intl.message('Cacher les annulations', name: 'hideCancelled');
 
@@ -502,7 +576,8 @@ class CommonLocalizations {
 
   String get wrongConsultationDuration => Intl.message('entre 30 et 120 minutes uniquement', name: 'wrongConsultationDuration');
 
-  String get hintReasonConsultation => Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');
+  String get hintReasonConsultation =>
+      Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');
 
   String takeRdvConfirm(String name, String when) => Intl.message('Voulez-vous prendre rendez-vous avec $name à $when?', name: 'takeRdvConfirm');
 

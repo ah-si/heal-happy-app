@@ -100,7 +100,7 @@ class ErrorLocalizations {
 
   String get noUser => Intl.message('Aucun compte patient avec cet email.', name: 'noUser');
 
-  String get noUserHint => Intl.message('Merci de remplir les informations du patient afin de créé cette consultation.', name: 'noUserHint');
+  String get noUserHint => Intl.message('Merci de remplir les informations complètes du patient afin de créer cette consultation.', name: 'noUserHint');
 
   String get accountNotVerified => Intl.message('Compte non vérifié.', name: 'accountNotVerified');
 
@@ -139,6 +139,18 @@ class ErrorLocalizations {
   String get noAccount => Intl.message('Aucun compte avec cet email', name: 'noAccount');
 
   String get noAccountHint => Intl.message('Cet email n\'est relié à aucun compte Soignez Heureux.', name: 'noAccountHint');
+
+  String get notFound => Intl.message('Resource introuvable', name: 'notFound');
+
+  String get notFoundHint => Intl.message('La resource demandé n\'existe pas ou plus.' , name: 'notFoundHint');
+
+  String get noHealer => Intl.message('Aucun soignant avec cet email', name: 'noHealer');
+
+  String get noHealerHint => Intl.message('Aucun compte soignant avec cet email, il n\'y a pas de compte ou c\'est un compte patient.' , name: 'noHealerHint');
+
+  String get noOpeningRoomOverlap => Intl.message('Chevauchement des horaires', name: 'noOpeningRoomOverlap');
+
+  String get noOpeningRoomOverlapHint => Intl.message('Un autre soignant a déjà pris ce créneau dans cette salle, merci d\'en choisir un autre.' , name: 'noOpeningRoomOverlapHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -10,6 +11,7 @@ import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/healer/stores/healer_store.dart';
 import 'package:heal_happy/profile/store/opening_store.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
@@ -26,10 +28,12 @@ class StepCalendarInfo extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final openingStore = ref.watch(openingStoreProvider(userId));
     final userStore = ref.watch(userStoreProvider);
+    final healerStore = ref.watch(healerStoreProvider);
     final userInfo = ref.watch(userInfoProvider);
     final controllerConsultation = useTextEditingController(text: userInfo.consultationDuration?.toString() ?? '');
     final formKey = useMemoized(() => GlobalKey<FormState>());
-    final dataSource = useMemoized(() => _CalendarDataSource(openingStore.results?.slots ?? [], context.l10n), [openingStore.results]);
+    final dataSource = useMemoized(() => _CalendarDataSource(openingStore.results?.slots ?? [], healerStore.rooms, userStore.user?.id ?? '', context.l10n),
+        [openingStore.results, healerStore.rooms]);
 
     useEffect(() {
       openingStore.loadOpenings();
@@ -99,7 +103,7 @@ class StepCalendarInfo extends HookConsumerWidget {
               Expanded(
                 child: SfCalendar(
                   firstDayOfWeek: 1,
-                  cellEndPadding: 0,
+                  //cellEndPadding: 0,
                   dataSource: dataSource,
                   timeSlotViewSettings: const TimeSlotViewSettings(
                     timeFormat: 'H:mm',
@@ -110,8 +114,9 @@ class StepCalendarInfo extends HookConsumerWidget {
                   showDatePickerButton: true,
                   view: CalendarView.week,
                   onTap: (details) {
+                    final healerStore = ref.read(healerStoreProvider);
                     if (details.targetElement == CalendarElement.calendarCell) {
-                      showOpeningDialog(context, userStore, openingStore, details.date!, null);
+                      showOpeningDialog(context, userStore, healerStore, openingStore, details.date!, null);
                     } else if (details.targetElement == CalendarElement.appointment) {
                       final appointment = details.appointments!.first;
                       late HealerOpening opening;
@@ -120,7 +125,10 @@ class StepCalendarInfo extends HookConsumerWidget {
                       } else {
                         opening = appointment;
                       }
-                      showOpeningDialog(context, userStore, openingStore, details.date!, opening);
+                      final canBeEdited = opening.userId == (userId ?? userStore.user?.id);
+                      if (canBeEdited) {
+                        showOpeningDialog(context, userStore, healerStore, openingStore, details.date!, opening);
+                      }
                     }
                   },
                 ),
@@ -135,79 +143,105 @@ class StepCalendarInfo extends HookConsumerWidget {
   void showOpeningDialog(
     BuildContext context,
     UserStore userStore,
+    HealerStore healerStore,
     OpeningStore store,
     DateTime date,
     HealerOpening? opening,
   ) {
     OpeningType type = opening?.type ?? OpeningType.visio;
     OpeningRepeatType? repeat = opening?.repeat;
+    String? roomId = opening?.roomId;
     DateTime start = opening?.start ?? date;
     DateTime end = opening?.end ?? date.add(const Duration(hours: 4));
+    final listener = ChangeNotifier();
     showAppDialog(
       context,
       (_) => Text(context.l10n.openingPopupTitle),
       (context) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(context.l10n.startDate),
-            DateTimeButton(
-              initialDate: start,
-              firstDate: start.copyWith(day: 1),
-              lastDate: start.add(const Duration(days: 25)),
-              onDateChanged: (newDate) {
-                start = newDate;
-              },
-            ),
-            const SizedBox(height: kSmallPadding),
-            Text(context.l10n.endDate),
-            DateTimeButton(
-              initialDate: end,
-              firstDate: end.copyWith(day: 1),
-              lastDate: end.add(const Duration(days: 25)),
-              onDateChanged: (newDate) {
-                end = newDate;
-              },
-            ),
-            DropdownButtonFormField<OpeningType>(
-              items: OpeningType.values
-                  .map(
-                    (e) => DropdownMenuItem(
-                      child: Text(context.l10n.openingLabel(e)),
-                      value: e,
-                    ),
-                  )
-                  .toList(growable: false),
-              decoration: InputDecoration(labelText: context.l10n.openingType),
-              isExpanded: true,
-              value: type,
-              onChanged: (value) {
-                type = value!;
-              },
-            ),
-            DropdownButtonFormField<OpeningRepeatType>(
-              items: [
-                DropdownMenuItem(
-                  child: Text(context.l10n.openingRepeatLabel(null)),
-                  value: null,
-                ),
-                ...OpeningRepeatType.values
-                    .where((p0) => p0 != OpeningRepeatType.daily)
-                    .map((e) => DropdownMenuItem(
-                          child: Text(context.l10n.openingRepeatLabel(e)),
+        return HookBuilder(builder: (context) {
+          useListenable(listener);
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(context.l10n.startDate),
+              DateTimeButton(
+                initialDate: start,
+                firstDate: start.copyWith(day: 1),
+                lastDate: start.add(const Duration(days: 25)),
+                onDateChanged: (newDate) {
+                  start = newDate;
+                },
+              ),
+              const SizedBox(height: kSmallPadding),
+              Text(context.l10n.endDate),
+              DateTimeButton(
+                initialDate: end,
+                firstDate: end.copyWith(day: 1),
+                lastDate: end.add(const Duration(days: 25)),
+                onDateChanged: (newDate) {
+                  end = newDate;
+                },
+              ),
+              if (userStore.user?.canDoFaceToFace ?? false)
+                DropdownButtonFormField<OpeningType>(
+                  items: OpeningType.values
+                      .map(
+                        (e) => DropdownMenuItem(
+                          child: Text(context.l10n.openingLabel(e)),
                           value: e,
-                        ))
-                    .toList(growable: false)
-              ],
-              decoration: InputDecoration(labelText: context.l10n.openingRepeat),
-              isExpanded: true,
-              value: repeat,
-              onChanged: (value) {
-                repeat = value;
-              },
-            ),
-          ],
-        );
+                        ),
+                      )
+                      .toList(growable: false),
+                  decoration: InputDecoration(labelText: context.l10n.openingType),
+                  isExpanded: true,
+                  value: type,
+                  onChanged: (value) {
+                    type = value!;
+                    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+                    listener.notifyListeners();
+                  },
+                ),
+              if (type == OpeningType.faceToFace && healerStore.rooms.isNotEmpty)
+                DropdownButtonFormField<String>(
+                  items: healerStore.rooms
+                      .map(
+                        (e) => DropdownMenuItem(
+                          child: Text(e.room.name + ' (${e.office.name})'),
+                          value: e.room.id,
+                        ),
+                      )
+                      .toList(growable: false),
+                  decoration: InputDecoration(labelText: context.l10n.consultationAddress),
+                  isExpanded: true,
+                  value: roomId,
+                  onChanged: (value) {
+                    roomId = value;
+                  },
+                ),
+              DropdownButtonFormField<OpeningRepeatType>(
+                items: [
+                  DropdownMenuItem(
+                    child: Text(context.l10n.openingRepeatLabel(null)),
+                    value: null,
+                  ),
+                  ...OpeningRepeatType.values
+                      .where((p0) => p0 != OpeningRepeatType.daily)
+                      .map((e) => DropdownMenuItem(
+                            child: Text(context.l10n.openingRepeatLabel(e)),
+                            value: e,
+                          ))
+                      .toList(growable: false)
+                ],
+                decoration: InputDecoration(labelText: context.l10n.openingRepeat),
+                isExpanded: true,
+                value: repeat,
+                onChanged: (value) {
+                  repeat = value;
+                },
+              ),
+            ],
+          );
+        });
       },
       actions: [
         DialogAction(
@@ -245,11 +279,12 @@ class StepCalendarInfo extends HookConsumerWidget {
 
             final success = await showLoadingDialog(context, (_) => Text(context.l10n.creatingRdv), () async {
               if (opening == null) {
-                await store.createOpening(userStore.user!.id!, type, repeat, start, end);
+                await store.createOpening(userStore.user!.id!, type, roomId, repeat, start, end);
               } else {
                 await store.updateOpening(opening.rebuild((HealerOpeningBuilder b) {
                   b.repeat = repeat;
                   b.type = type;
+                  b.roomId = roomId;
                   b.start = start.toUtc();
                   b.end = end.toUtc();
                   b.userId = userStore.user!.id!;
@@ -270,8 +305,10 @@ class StepCalendarInfo extends HookConsumerWidget {
 
 class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
   final CommonLocalizations localizations;
+  final List<HealerRoom> rooms;
+  final String currentUserId;
 
-  _CalendarDataSource(List<HealerOpening> items, this.localizations) {
+  _CalendarDataSource(List<HealerOpening> items, this.rooms, this.currentUserId, this.localizations) {
     appointments = items;
   }
 
@@ -293,7 +330,7 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
   @override
   Color getColor(int index) {
     final HealerOpening opening = appointments![index];
-    switch (opening.type){
+    switch (opening.type) {
       case OpeningType.faceToFace:
         return kEventColorFaceToFace;
       case OpeningType.unavailable:
@@ -307,6 +344,11 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
   @override
   String getSubject(int index) {
     final HealerOpening opening = appointments![index];
+    if (opening.userId != currentUserId && opening.roomId != null) {
+      final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId)?.room;
+      final healer = room?.healers.firstWhereOrNull((element) => element.id == opening.userId);
+      return healer?.name ?? 'Autre soignant';
+    }
     switch (opening.type) {
       case OpeningType.faceToFace:
         return localizations.openingFaceToFace;

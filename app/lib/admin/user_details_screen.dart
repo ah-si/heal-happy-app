@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
@@ -7,7 +8,7 @@ import 'package:heal_happy/user/user_profile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class UserDetailsScreen extends HookConsumerWidget {
-  static const route = '/admin/healer/:id';
+  static const route = '/admin/users/:id';
   final String id;
 
   const UserDetailsScreen({required this.id, Key? key}) : super(key: key);
@@ -33,7 +34,11 @@ class UserDetailsScreen extends HookConsumerWidget {
                       MenuItem(
                         label: context.l10n.backButton,
                         onTap: () {
-                          context.navigator.pop();
+                          try {
+                            context.pop();
+                          } catch (e) {
+                            context.go('/');
+                          }
                         },
                         selected: false,
                       ),

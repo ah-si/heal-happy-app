@@ -43,28 +43,28 @@ part 'user.g.dart';
 /// * [mobile]
 /// * [password]
 abstract class User implements Built<User, UserBuilder> {
-  @BuiltValueField(wireName: r'id')
-  String? get id;
+    @BuiltValueField(wireName: r'id')
+    String? get id;
 
-  @BuiltValueField(wireName: r'isVerified')
-  bool get isVerified;
+    @BuiltValueField(wireName: r'isVerified')
+    bool get isVerified;
 
-  @BuiltValueField(wireName: r'isActivated')
-  bool get isActivated;
+    @BuiltValueField(wireName: r'isActivated')
+    bool get isActivated;
 
-  @BuiltValueField(wireName: r'canDoFaceToFace')
-  bool? get canDoFaceToFace;
+    @BuiltValueField(wireName: r'canDoFaceToFace')
+    bool? get canDoFaceToFace;
 
-  @BuiltValueField(wireName: r'job')
-  String? get job;
+    @BuiltValueField(wireName: r'job')
+    String? get job;
 
-  @BuiltValueField(wireName: r'firstName')
-  String get firstName;
+    @BuiltValueField(wireName: r'firstName')
+    String get firstName;
 
-  @BuiltValueField(wireName: r'consultationDuration')
-  int? get consultationDuration;
+    @BuiltValueField(wireName: r'consultationDuration')
+    int? get consultationDuration;
 
-  @BuiltValueField(wireName: r'isAddressPublic')
+    @BuiltValueField(wireName: r'isAddressPublic')
     bool get isAddressPublic;
 
     @BuiltValueField(wireName: r'isTermsAccepted')
@@ -129,7 +129,7 @@ abstract class User implements Built<User, UserBuilder> {
     String get email;
 
     @BuiltValueField(wireName: r'mobile')
-    String? get mobile;
+    String get mobile;
 
     @BuiltValueField(wireName: r'password')
     String? get password;
@@ -160,28 +160,34 @@ class _$UserSerializer implements StructuredSerializer<User> {
         if (object.id != null) {
             result
                 ..add(r'id')
-                ..add(serializers.serialize(object.id, specifiedType: const FullType(String)));
-    }
-    result
-      ..add(r'isVerified')
-      ..add(serializers.serialize(object.isVerified, specifiedType: const FullType(bool)));
-    result
-      ..add(r'isActivated')
-      ..add(serializers.serialize(object.isActivated, specifiedType: const FullType(bool)));
-    if (object.canDoFaceToFace != null) {
-      result
-        ..add(r'canDoFaceToFace')
-        ..add(serializers.serialize(object.canDoFaceToFace, specifiedType: const FullType(bool)));
-    }
-    if (object.job != null) {
-      result
-        ..add(r'job')
-        ..add(serializers.serialize(object.job, specifiedType: const FullType(String)));
-    }
-    result
-      ..add(r'firstName')
-      ..add(serializers.serialize(object.firstName, specifiedType: const FullType(String)));
-    result
+                ..add(serializers.serialize(object.id,
+                    specifiedType: const FullType(String)));
+        }
+        result
+            ..add(r'isVerified')
+            ..add(serializers.serialize(object.isVerified,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isActivated')
+            ..add(serializers.serialize(object.isActivated,
+                specifiedType: const FullType(bool)));
+        if (object.canDoFaceToFace != null) {
+            result
+                ..add(r'canDoFaceToFace')
+                ..add(serializers.serialize(object.canDoFaceToFace,
+                    specifiedType: const FullType(bool)));
+        }
+        if (object.job != null) {
+            result
+                ..add(r'job')
+                ..add(serializers.serialize(object.job,
+                    specifiedType: const FullType(String)));
+        }
+        result
+            ..add(r'firstName')
+            ..add(serializers.serialize(object.firstName,
+                specifiedType: const FullType(String)));
+        result
             ..add(r'consultationDuration')
             ..add(object.consultationDuration == null ? null : serializers.serialize(object.consultationDuration,
                 specifiedType: const FullType(int)));
@@ -289,12 +295,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
             ..add(r'email')
             ..add(serializers.serialize(object.email,
                 specifiedType: const FullType(String)));
-        if (object.mobile != null) {
-            result
-                ..add(r'mobile')
-                ..add(serializers.serialize(object.mobile,
-                    specifiedType: const FullType(String)));
-        }
+        result
+            ..add(r'mobile')
+            ..add(serializers.serialize(object.mobile,
+                specifiedType: const FullType(String)));
         if (object.password != null) {
             result
                 ..add(r'password')
@@ -315,25 +319,31 @@ class _$UserSerializer implements StructuredSerializer<User> {
             iterator.moveNext();
             final Object? value = iterator.current;
             switch (key) {
-        case r'id':
-          result.id = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
-          break;
-        case r'isVerified':
-          result.isVerified = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool;
-          break;
-        case r'isActivated':
-          result.isActivated = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool;
-          break;
-        case r'canDoFaceToFace':
-          result.canDoFaceToFace = serializers.deserialize(value, specifiedType: const FullType(bool)) as bool;
-          break;
-        case r'job':
-          result.job = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
-          break;
-        case r'firstName':
-          result.firstName = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
-          break;
-        case r'consultationDuration':
+                case r'id':
+                    result.id = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'isVerified':
+                    result.isVerified = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isActivated':
+                    result.isActivated = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'canDoFaceToFace':
+                    result.canDoFaceToFace = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'job':
+                    result.job = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'firstName':
+                    result.firstName = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
+                case r'consultationDuration':
                     result.consultationDuration = serializers.deserialize(value,
                         specifiedType: const FullType(int)) as int;
                     break;

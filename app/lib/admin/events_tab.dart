@@ -236,7 +236,7 @@ class _EventItem extends HookConsumerWidget {
                           children: [
                             const Icon(Icons.call_outlined),
                             const SizedBox(width: kSmallPadding),
-                            Text(event.healer.mobile!),
+                            Text(event.healer.mobile),
                           ],
                         ),
                       ),
@@ -283,7 +283,7 @@ class _EventItem extends HookConsumerWidget {
                           children: [
                             const Icon(Icons.call_outlined),
                             const SizedBox(width: kSmallPadding),
-                            Text(event.patient.mobile!),
+                            Text(event.patient.mobile),
                           ],
                         ),
                       ),

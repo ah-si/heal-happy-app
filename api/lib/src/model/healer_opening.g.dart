@@ -12,6 +12,8 @@ class _$HealerOpening extends HealerOpening {
   @override
   final String userId;
   @override
+  final String? roomId;
+  @override
   final OpeningType type;
   @override
   final OpeningRepeatType? repeat;
@@ -26,6 +28,7 @@ class _$HealerOpening extends HealerOpening {
   _$HealerOpening._(
       {this.id,
       required this.userId,
+      this.roomId,
       required this.type,
       this.repeat,
       required this.start,
@@ -50,6 +53,7 @@ class _$HealerOpening extends HealerOpening {
     return other is HealerOpening &&
         id == other.id &&
         userId == other.userId &&
+        roomId == other.roomId &&
         type == other.type &&
         repeat == other.repeat &&
         start == other.start &&
@@ -60,7 +64,11 @@ class _$HealerOpening extends HealerOpening {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc($jc(0, id.hashCode), userId.hashCode), type.hashCode),
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, id.hashCode), userId.hashCode),
+                        roomId.hashCode),
+                    type.hashCode),
                 repeat.hashCode),
             start.hashCode),
         end.hashCode));
@@ -71,6 +79,7 @@ class _$HealerOpening extends HealerOpening {
     return (newBuiltValueToStringHelper('HealerOpening')
           ..add('id', id)
           ..add('userId', userId)
+          ..add('roomId', roomId)
           ..add('type', type)
           ..add('repeat', repeat)
           ..add('start', start)
@@ -90,6 +99,10 @@ class HealerOpeningBuilder
   String? _userId;
   String? get userId => _$this._userId;
   set userId(String? userId) => _$this._userId = userId;
+
+  String? _roomId;
+  String? get roomId => _$this._roomId;
+  set roomId(String? roomId) => _$this._roomId = roomId;
 
   OpeningType? _type;
   OpeningType? get type => _$this._type;
@@ -116,6 +129,7 @@ class HealerOpeningBuilder
     if ($v != null) {
       _id = $v.id;
       _userId = $v.userId;
+      _roomId = $v.roomId;
       _type = $v.type;
       _repeat = $v.repeat;
       _start = $v.start;
@@ -143,6 +157,7 @@ class HealerOpeningBuilder
             id: id,
             userId: BuiltValueNullFieldError.checkNotNull(
                 userId, 'HealerOpening', 'userId'),
+            roomId: roomId,
             type: BuiltValueNullFieldError.checkNotNull(
                 type, 'HealerOpening', 'type'),
             repeat: repeat,

@@ -19,9 +19,10 @@ class StoreInfo {
 
 class SlotInfo {
   final String label;
+  final String? roomId;
   final DateTime dateTime;
 
-  SlotInfo(this.label, this.dateTime);
+  SlotInfo(this.label, this.dateTime, this.roomId);
 }
 
 class DaySlots {
@@ -53,12 +54,13 @@ class AvailabilitiesStore extends ChangeNotifier {
     getAvailabilitiesHealers();
   }
 
-  Future<void> createEvent(String patientId, HealerEventType type, DateTime slot, String message, bool isUrgent) async {
+  Future<void> createEvent(String patientId, String? roomId, HealerEventType type, DateTime slot, String message, bool isUrgent) async {
     await _userApi.createEvent(
         id: healerId,
         createEventRequest: CreateEventRequest((b) {
           b.patientId = patientId;
           b.slot = slot.toUtc();
+          b.roomId = roomId;
           b.type = type;
           b.isUrgent = isUrgent;
           b.message = message;
@@ -88,12 +90,14 @@ class AvailabilitiesStore extends ChangeNotifier {
         final dateStr = (mobileFormat ? _mobileUiFormat : _uiFormat).format(date);
         dates[dateStr] = [];
       }
-      for (var slot in slots) {
-        if (now.isAfter(slot.toLocal())) {
-          continue;
+      for (var info in slots) {
+        for (var slot in info.slots) {
+          if (now.isAfter(slot.toLocal())) {
+            continue;
+          }
+          final date = (mobileFormat ? _mobileUiFormat : _uiFormat).format(slot.toLocal());
+          dates[date]!.add(SlotInfo(kHourFormat.format(slot.toLocal()), slot.toLocal(), info.roomId));
         }
-        final date = (mobileFormat ? _mobileUiFormat : _uiFormat).format(slot.toLocal());
-        dates[date]!.add(SlotInfo(kHourFormat.format(slot.toLocal()), slot.toLocal()));
       }
       availabilities = AvailabilitiesResults(dates.keys.map((e) => DaySlots(e, dates[e] ?? [])).toList(growable: false));
       isLoading = false;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:heal_happy/admin/home_screen.dart';
 import 'package:heal_happy/common/presentation/autocomplete_field.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
@@ -15,6 +16,7 @@ import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/healer/home_screen.dart';
 import 'package:heal_happy/patient/healer_availability.dart';
 import 'package:heal_happy/patient/healer_profile_screen.dart';
 import 'package:heal_happy/patient/stores/patient_store.dart';
@@ -40,7 +42,8 @@ class MobilePatientHome extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(patientStoreProvider);
-    final controller = useTabController(initialLength: 4, initialIndex: store.selectedTab.index);
+    final userStore = ref.read(userStoreProvider);
+    final controller = useTabController(initialLength: userStore.user?.type == UserTypeEnum.patient ? 4:3, initialIndex: store.selectedTab.index);
 
     useEffect(() {
       controller.addListener(() {
@@ -55,6 +58,22 @@ class MobilePatientHome extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(context.l10n.appTitle),
         actions: [
+          if (userStore.user?.type == UserTypeEnum.admin)
+            IconButton(
+              onPressed: () {
+                context.pushNamed(AdminHomeScreen.name);
+              },
+              tooltip: context.l10n.adminMode,
+              icon: const Icon(Icons.admin_panel_settings_outlined),
+            ),
+          if (userStore.user?.type == UserTypeEnum.healer)
+            IconButton(
+              onPressed: () {
+                context.pushNamed(HealerHomeScreen.name);
+              },
+              tooltip: context.l10n.healerMode,
+              icon: const Icon(Icons.masks_outlined),
+            ),
           IconButton(
             onPressed: () {
               _disconnect(context, ref);
@@ -72,6 +91,7 @@ class MobilePatientHome extends HookConsumerWidget {
             Tab(
               text: context.l10n.search,
             ),
+            if (userStore.user?.type == UserTypeEnum.patient)
             Tab(
               text: context.l10n.profile,
             ),
@@ -86,13 +106,14 @@ class MobilePatientHome extends HookConsumerWidget {
         child: ColoredBox(
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
-            children: const [
-              _PlannedConsultations(
+            children: [
+              const _PlannedConsultations(
                 key: Key('consultations'),
               ),
-              _SearchTab(),
-              UserProfile(),
-              Scrollbar(child: Center(child: _PlannedConsultations(showHistory: true))),
+              const _SearchTab(),
+              if (userStore.user?.type == UserTypeEnum.patient)
+                const UserProfile(),
+              const Scrollbar(child: Center(child: _PlannedConsultations(showHistory: true))),
             ],
             controller: controller,
           ),
@@ -375,6 +396,8 @@ class _HealerList extends HookConsumerWidget {
 }
 
 class PatientHomeScreen extends StatelessWidget {
+  static const name = 'patient';
+
   const PatientHomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -391,6 +414,7 @@ class _MenuBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(patientStoreProvider);
+    final userStore = ref.watch(userStoreProvider);
     return Row(
       children: [
         Expanded(
@@ -414,7 +438,9 @@ class _MenuBar extends HookConsumerWidget {
                     },
                     selected: store.selectedTab == HomeTabs.search,
                   ),
-                const SizedBox(width: 2),
+                if (userStore.user?.type == UserTypeEnum.patient)
+                  const SizedBox(width: 2),
+                if (userStore.user?.type == UserTypeEnum.patient)
                 MenuItem(
                   label: context.l10n.profile,
                   onTap: () {
@@ -430,6 +456,21 @@ class _MenuBar extends HookConsumerWidget {
                   },
                   selected: store.selectedTab == HomeTabs.history,
                 ),
+                const SizedBox(width: kNormalPadding),
+                if (userStore.user?.type == UserTypeEnum.healer)
+                  MenuItem(
+                    label: context.l10n.healerMode,
+                    onTap: () {
+                      context.pushNamed(HealerHomeScreen.name);
+                    },
+                  ),
+                if (userStore.user?.type == UserTypeEnum.admin)
+                  MenuItem(
+                    label: context.l10n.adminMode,
+                    onTap: () {
+                      context.pushNamed(AdminHomeScreen.name);
+                    },
+                  ),
               ],
             ),
           ),
@@ -587,6 +628,7 @@ class _PatientEventDetails extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final patientStore = ref.watch(patientStoreProvider);
     final content = Column(
       children: [
         Expanded(
@@ -602,10 +644,15 @@ class _PatientEventDetails extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const SizedBox(height: kSmallPadding),
-                    Text(
-                      event.healer.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                    TextButton(
+                      onPressed: () {
+                        context.push(HealerProfileScreen.route.replaceAll(':id', event.healer.id!), extra: patientStore.lastTypeSearch);
+                      },
+                      child: Text(
+                        event.healer.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     if (event.type == HealerEventType.visio)
                       Text(
@@ -688,7 +735,7 @@ class _PatientEventDetails extends HookConsumerWidget {
         margin: const EdgeInsets.all(kSmallPadding),
         child: event.isUrgent || event.isCancelled
             ? Banner(
-          location: BannerLocation.topEnd,
+                location: BannerLocation.topEnd,
                 message: event.isCancelled ? 'Annulée' : 'Urgent',
                 child: content,
               )
