@@ -286,7 +286,7 @@ class _UserItem extends HookConsumerWidget {
                       children: [
                         const Icon(Icons.call_outlined),
                         const SizedBox(width: kSmallPadding),
-                        Text(user.mobile),
+                        Text(user.mobile!),
                       ],
                     ),
                   ),

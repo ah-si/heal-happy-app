@@ -64,7 +64,7 @@ class _$User extends User {
   @override
   final String email;
   @override
-  final String mobile;
+  final String? mobile;
   @override
   final String? password;
 
@@ -100,7 +100,7 @@ class _$User extends User {
       required this.city,
       this.avatar,
       required this.email,
-      required this.mobile,
+      this.mobile,
       this.password})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(isVerified, 'User', 'isVerified');
@@ -119,7 +119,6 @@ class _$User extends User {
     BuiltValueNullFieldError.checkNotNull(country, 'User', 'country');
     BuiltValueNullFieldError.checkNotNull(city, 'User', 'city');
     BuiltValueNullFieldError.checkNotNull(email, 'User', 'email');
-    BuiltValueNullFieldError.checkNotNull(mobile, 'User', 'mobile');
   }
 
   @override
@@ -470,8 +469,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
               avatar: avatar,
               email:
                   BuiltValueNullFieldError.checkNotNull(email, 'User', 'email'),
-              mobile:
-                  BuiltValueNullFieldError.checkNotNull(mobile, 'User', 'mobile'),
+              mobile: mobile,
               password: password);
     } catch (_) {
       late String _$failedField;

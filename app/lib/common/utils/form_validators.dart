@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 
 String? isRequired(value, BuildContext context) {
-  if (value == null || value.isEmpty) {
+  if (value == null || (value is String && value.isEmpty)) {
     return context.el10n.fieldRequired;
   }
   return null;

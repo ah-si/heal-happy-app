@@ -24,18 +24,34 @@ class HealerAvailability extends HookConsumerWidget {
     final controller = useScrollController();
     late Widget child;
     if (store.isLoading) {
-      child = const Padding(
-        padding: EdgeInsets.all(kNormalPadding),
-        child: Loading(),
+      child = ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 230),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(kNormalPadding),
+              child: Loading(),
+            ),
+          ],
+        ),
       );
     } else if (store.availabilities?.error != null) {
-      child = Center(
+      child = ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 230),
         child: Padding(
           padding: const EdgeInsets.all(kNormalPadding),
-          child: Text(
-            store.availabilities!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                store.availabilities!.error!.cause.twoLiner(context),
+                style: TextStyle(color: context.theme.errorColor),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       );
@@ -66,11 +82,27 @@ class HealerAvailability extends HookConsumerWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: slots
-                        .map(
-                          (e) => SizedBox(width: minWidth, child: Text(e.date, textAlign: TextAlign.center)),
-                        )
-                        .toList(growable: false),
+                    children: [
+                      IconButton(
+                          onPressed: store.currentPage > 0
+                              ? () {
+                                  store.previousAvailabilitiesHealers();
+                                }
+                              : null,
+                          icon: const Icon(Icons.skip_previous_outlined)),
+                      ...slots
+                          .map(
+                            (e) => SizedBox(width: minWidth, child: Text(e.date, textAlign: TextAlign.center)),
+                          )
+                          .toList(growable: false),
+                      IconButton(
+                          onPressed: store.currentPage == 0
+                              ? () {
+                                  store.nextAvailabilitiesHealers();
+                                }
+                              : null,
+                          icon: const Icon(Icons.skip_next_outlined)),
+                    ],
                   ),
                 ),
                 const Divider(height: 1),

@@ -16,25 +16,51 @@ class OpeningResults {
 class OpeningStore extends ChangeNotifier {
   final UserApi _userApi;
   final String? _userId;
+  bool isInMedicalOffice = false;
+  bool _showExternalOpenings = true;
+  bool get showExternalOpenings => _showExternalOpenings;
+  OpeningResults? _results;
   OpeningResults? results;
 
   OpeningStore({UserApi? userApi, String? userId})
       : _userId = userId,
         _userApi = BackendApiProvider().api.getUserApi();
 
+  void filterOpenings(bool showExternalOpenings) {
+    if (_results != null) {
+      _showExternalOpenings = showExternalOpenings;
+      if (_results?.error == null && !showExternalOpenings) {
+        results = OpeningResults(_results!.slots.where((element) => element.user == null).toList(growable: false));
+      } else {
+        results = _results;
+      }
+      notifyListeners();
+    }
+  }
+
   Future<void> loadOpenings() async {
     try {
       if (_userId == null) {
         final openings = await _userApi.getOpenings();
-        results = OpeningResults(openings.data!.toList());
+        _results = OpeningResults(openings.data!.toList());
       } else {
         final openings = await _userApi.getUserOpenings(userId: _userId!);
-        results = OpeningResults(openings.data!.toList());
+        _results = OpeningResults(openings.data!.toList());
       }
+
+      isInMedicalOffice = false;
+
+      for (var element in _results!.slots) {
+        if (element.roomId != null) {
+          isInMedicalOffice = true;
+        }
+      }
+
     } catch (error, stackTrace) {
-      results = OpeningResults([], error: handleError(error, stackTrace));
+      _results = OpeningResults([], error: handleError(error, stackTrace));
+      isInMedicalOffice = false;
     }
-    notifyListeners();
+    filterOpenings(_showExternalOpenings);
   }
 
   Future<void> createOpening(

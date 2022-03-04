@@ -46,6 +46,7 @@ class AvailabilitiesStore extends ChangeNotifier {
   AvailabilitiesResults? availabilities;
   bool isLoading = false;
   DateTime? _from;
+  int currentPage = 0;
   final String healerId;
   final HealerEventType eventType;
   final bool mobileFormat;
@@ -69,16 +70,26 @@ class AvailabilitiesStore extends ChangeNotifier {
     getAvailabilitiesHealers();
   }
 
-  //TODO manage to navigate between date from
+  Future<void> nextAvailabilitiesHealers() async {
+    if (currentPage < 1) {
+      currentPage++;
+      await getAvailabilitiesHealers();
+    }
+  }
+
+  Future<void> previousAvailabilitiesHealers() async {
+    if (currentPage > 0) {
+      currentPage--;
+      await getAvailabilitiesHealers();
+    }
+  }
+
   Future<void> getAvailabilitiesHealers() async {
     isLoading = true;
     notifyListeners();
 
-    if (_from == null) {
-      _from = DateTime.now();
-    } else {
-      _from!.add(const Duration(days: -7));
-    }
+    _from = DateTime.now().add(Duration(days: currentPage * 7));
+
     try {
       final results = await _userApi.getHealerAvailabilities(id: healerId, type: eventType, from: _from!.toUtc());
       final slots = results.data!.slots;

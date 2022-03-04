@@ -221,8 +221,8 @@ class CommonLocalizations {
       //  return openingAvailable;
       case OpeningType.faceToFace:
         return openingFaceToFace;
-      case OpeningType.unavailable:
-        return openingUnavailable;
+      //case OpeningType.unavailable:
+      //  return openingUnavailable;
       case OpeningType.visio:
         return openingVisio;
     }
@@ -310,6 +310,10 @@ class CommonLocalizations {
   String get patientCancelledMessage => Intl.message('Motif de l\'annulation:', name: 'patientCancelledMessage');
 
   String get cancelButton => Intl.message('Annuler', name: 'cancelButton');
+
+  String get showQrCode => Intl.message('Affiche le QR Code', name: 'showQrCode');
+
+  String get qrCodeTitle => Intl.message('QR Code', name: 'qrCodeTitle');
 
   String get joinVisioButton => Intl.message('Rejoindre la visio', name: 'joinVisioButton');
 
@@ -416,6 +420,10 @@ class CommonLocalizations {
   String get dayHourError => Intl.message('L\'heure de début ne peut être avant l\'heure de fin', name: 'dayHourError');
 
   String get calendarIntro => Intl.message('Merci de remplir vos disponibilités:', name: 'calendarIntro');
+
+  String get calendarShowExternalOpenings => Intl.message('Disponibilités cabinets médicaux', name: 'calendarIntro');
+
+  String get calendarShowExternalOpeningsDesc => Intl.message('Afficher les disponibilités de tout les soignants de mes cabinets médicaux', name: 'calendarIntro');
 
   String get consultationDurationField => Intl.message('Durée d\'une consultation*:', name: 'consultationDurationField');
 

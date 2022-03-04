@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **userId** | **String** |  | 
 **roomId** | **String** |  | [optional] 
 **type** | [**OpeningType**](OpeningType.md) |  | 
+**user** | [**Healer**](Healer.md) |  | [optional] 
 **repeat** | [**OpeningRepeatType**](OpeningRepeatType.md) |  | [optional] 
 **start** | [**DateTime**](DateTime.md) |  | 
 **end** | [**DateTime**](DateTime.md) |  | 

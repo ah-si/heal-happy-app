@@ -205,7 +205,7 @@ class _ManagerPanel extends StatelessWidget {
                           children: [
                             Text(manager.name),
                             SelectableText(manager.email),
-                            SelectableText(manager.mobile),
+                            if (!manager.mobile.isNullOrEmpty) SelectableText(manager.mobile!),
                           ],
                         ),
                         onDeleted: () async {
@@ -341,7 +341,7 @@ class _HealerPanel extends StatelessWidget {
                           children: [
                             Text(healer.name),
                             SelectableText(healer.email),
-                            SelectableText(healer.mobile),
+                            if (!healer.mobile.isNullOrEmpty) SelectableText(healer.mobile!),
                           ],
                         ),
                         onDeleted: () async {

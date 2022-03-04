@@ -315,9 +315,14 @@ class _HealerEvents extends HookConsumerWidget {
           minChildSize: size,
           expand: true,
           builder: (context, controller) {
-            return ColoredBox(
-              color: Colors.white,
-              child: _HealerEventDetails(event: event.appointments!.first),
+            return Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: ColoredBox(
+                  color: Colors.white,
+                  child: _HealerEventDetails(event: event.appointments!.first),
+                ),
+              ),
             );
           },
         );
@@ -443,6 +448,9 @@ class _HealerEventDetails extends HookConsumerWidget {
                   const SizedBox(height: kSmallPadding),
                   const Divider(),
                   Text('Type: ' + context.l10n.consultationLabel(event.type), style: context.textTheme.subtitle2),
+                  const SizedBox(height: kSmallPadding),
+                  if (event.office != null) Text('Address: ', style: context.textTheme.subtitle2),
+                  if (event.office != null) Text(event.office!.address),
                   const SizedBox(height: kSmallPadding),
                   Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
                   Column(

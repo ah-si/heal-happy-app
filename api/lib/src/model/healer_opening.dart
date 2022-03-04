@@ -2,23 +2,25 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/opening_type.dart';
-import 'package:heal_happy_sdk/src/model/opening_repeat_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/healer.dart';
+import 'package:heal_happy_sdk/src/model/opening_repeat_type.dart';
+import 'package:heal_happy_sdk/src/model/opening_type.dart';
 
 part 'healer_opening.g.dart';
 
 /// HealerOpening
 ///
 /// Properties:
-/// * [id] 
-/// * [userId] 
-/// * [roomId] 
-/// * [type] 
-/// * [repeat] 
-/// * [start] 
-/// * [end] 
+/// * [id]
+/// * [userId]
+/// * [roomId]
+/// * [type]
+/// * [user]
+/// * [repeat]
+/// * [start]
+/// * [end]
 abstract class HealerOpening implements Built<HealerOpening, HealerOpeningBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;
@@ -31,7 +33,10 @@ abstract class HealerOpening implements Built<HealerOpening, HealerOpeningBuilde
 
     @BuiltValueField(wireName: r'type')
     OpeningType get type;
-    // enum typeEnum {  visio,  faceToFace,  unavailable,  };
+    // enum typeEnum {  visio,  faceToFace,  };
+
+    @BuiltValueField(wireName: r'user')
+    Healer? get user;
 
     @BuiltValueField(wireName: r'repeat')
     OpeningRepeatType? get repeat;
@@ -85,6 +90,12 @@ class _$HealerOpeningSerializer implements StructuredSerializer<HealerOpening> {
             ..add(r'type')
             ..add(serializers.serialize(object.type,
                 specifiedType: const FullType(OpeningType)));
+        if (object.user != null) {
+            result
+                ..add(r'user')
+                ..add(serializers.serialize(object.user,
+                    specifiedType: const FullType(Healer)));
+        }
         if (object.repeat != null) {
             result
                 ..add(r'repeat')
@@ -128,6 +139,10 @@ class _$HealerOpeningSerializer implements StructuredSerializer<HealerOpening> {
                 case r'type':
                     result.type = serializers.deserialize(value,
                         specifiedType: const FullType(OpeningType)) as OpeningType;
+                    break;
+                case r'user':
+                    result.user.replace(serializers.deserialize(value,
+                        specifiedType: const FullType(Healer)) as Healer);
                     break;
                 case r'repeat':
                     result.repeat = serializers.deserialize(value,

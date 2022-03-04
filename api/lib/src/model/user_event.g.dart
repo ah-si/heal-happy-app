@@ -10,9 +10,15 @@ class _$UserEvent extends UserEvent {
   @override
   final String id;
   @override
+  final String? patientToken;
+  @override
   final MinimalUser patient;
   @override
   final Healer healer;
+  @override
+  final OfficeRoom? room;
+  @override
+  final Office? office;
   @override
   final bool isUrgent;
   @override
@@ -39,8 +45,11 @@ class _$UserEvent extends UserEvent {
 
   _$UserEvent._(
       {required this.id,
+      this.patientToken,
       required this.patient,
       required this.healer,
+      this.room,
+      this.office,
       required this.isUrgent,
       required this.isCancelled,
       required this.type,
@@ -78,8 +87,11 @@ class _$UserEvent extends UserEvent {
     if (identical(other, this)) return true;
     return other is UserEvent &&
         id == other.id &&
+        patientToken == other.patientToken &&
         patient == other.patient &&
         healer == other.healer &&
+        room == other.room &&
+        office == other.office &&
         isUrgent == other.isUrgent &&
         isCancelled == other.isCancelled &&
         type == other.type &&
@@ -105,9 +117,20 @@ class _$UserEvent extends UserEvent {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    patient.hashCode),
-                                                healer.hashCode),
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    0,
+                                                                    id
+                                                                        .hashCode),
+                                                                patientToken
+                                                                    .hashCode),
+                                                            patient.hashCode),
+                                                        healer.hashCode),
+                                                    room.hashCode),
+                                                office.hashCode),
                                             isUrgent.hashCode),
                                         isCancelled.hashCode),
                                     type.hashCode),
@@ -124,8 +147,11 @@ class _$UserEvent extends UserEvent {
   String toString() {
     return (newBuiltValueToStringHelper('UserEvent')
           ..add('id', id)
+          ..add('patientToken', patientToken)
           ..add('patient', patient)
           ..add('healer', healer)
+          ..add('room', room)
+          ..add('office', office)
           ..add('isUrgent', isUrgent)
           ..add('isCancelled', isCancelled)
           ..add('type', type)
@@ -147,6 +173,10 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   String? get id => _$this._id;
   set id(String? id) => _$this._id = id;
 
+  String? _patientToken;
+  String? get patientToken => _$this._patientToken;
+  set patientToken(String? patientToken) => _$this._patientToken = patientToken;
+
   MinimalUserBuilder? _patient;
   MinimalUserBuilder get patient =>
       _$this._patient ??= new MinimalUserBuilder();
@@ -155,6 +185,14 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   HealerBuilder? _healer;
   HealerBuilder get healer => _$this._healer ??= new HealerBuilder();
   set healer(HealerBuilder? healer) => _$this._healer = healer;
+
+  OfficeRoomBuilder? _room;
+  OfficeRoomBuilder get room => _$this._room ??= new OfficeRoomBuilder();
+  set room(OfficeRoomBuilder? room) => _$this._room = room;
+
+  OfficeBuilder? _office;
+  OfficeBuilder get office => _$this._office ??= new OfficeBuilder();
+  set office(OfficeBuilder? office) => _$this._office = office;
 
   bool? _isUrgent;
   bool? get isUrgent => _$this._isUrgent;
@@ -205,8 +243,11 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
     final $v = _$v;
     if ($v != null) {
       _id = $v.id;
+      _patientToken = $v.patientToken;
       _patient = $v.patient.toBuilder();
       _healer = $v.healer.toBuilder();
+      _room = $v.room?.toBuilder();
+      _office = $v.office?.toBuilder();
       _isUrgent = $v.isUrgent;
       _isCancelled = $v.isCancelled;
       _type = $v.type;
@@ -240,8 +281,11 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
       _$result = _$v ??
           new _$UserEvent._(
               id: BuiltValueNullFieldError.checkNotNull(id, 'UserEvent', 'id'),
+              patientToken: patientToken,
               patient: patient.build(),
               healer: healer.build(),
+              room: _room?.build(),
+              office: _office?.build(),
               isUrgent: BuiltValueNullFieldError.checkNotNull(
                   isUrgent, 'UserEvent', 'isUrgent'),
               isCancelled: BuiltValueNullFieldError.checkNotNull(
@@ -267,6 +311,10 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
         patient.build();
         _$failedField = 'healer';
         healer.build();
+        _$failedField = 'room';
+        _room?.build();
+        _$failedField = 'office';
+        _office?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'UserEvent', _$failedField, e.toString());

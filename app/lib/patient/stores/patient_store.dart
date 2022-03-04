@@ -100,11 +100,9 @@ class PatientStore extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, String>> searchLocalities() async {
-    if (localities.isEmpty) {
-      final loc = await _userApi.getLocalities();
-      localities = loc.data!.toMap();
-    }
-    return localities;
+  void searchLocalities(String spe) async {
+    final loc = await _userApi.getLocalities(job: spe);
+    localities = loc.data!.toMap();
+    notifyListeners();
   }
 }

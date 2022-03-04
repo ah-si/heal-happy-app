@@ -9,8 +9,11 @@ import 'package:heal_happy_sdk/api.dart';
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | 
+**patientToken** | **String** |  | [optional] 
 **patient** | [**MinimalUser**](MinimalUser.md) |  | 
 **healer** | [**Healer**](Healer.md) |  | 
+**room** | [**OfficeRoom**](OfficeRoom.md) |  | [optional] 
+**office** | [**Office**](Office.md) |  | [optional] 
 **isUrgent** | **bool** |  | 
 **isCancelled** | **bool** |  | 
 **type** | [**HealerEventType**](HealerEventType.md) |  | 

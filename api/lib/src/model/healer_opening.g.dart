@@ -16,6 +16,8 @@ class _$HealerOpening extends HealerOpening {
   @override
   final OpeningType type;
   @override
+  final Healer? user;
+  @override
   final OpeningRepeatType? repeat;
   @override
   final DateTime start;
@@ -30,6 +32,7 @@ class _$HealerOpening extends HealerOpening {
       required this.userId,
       this.roomId,
       required this.type,
+      this.user,
       this.repeat,
       required this.start,
       required this.end})
@@ -55,6 +58,7 @@ class _$HealerOpening extends HealerOpening {
         userId == other.userId &&
         roomId == other.roomId &&
         type == other.type &&
+        user == other.user &&
         repeat == other.repeat &&
         start == other.start &&
         end == other.end;
@@ -66,9 +70,11 @@ class _$HealerOpening extends HealerOpening {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, id.hashCode), userId.hashCode),
-                        roomId.hashCode),
-                    type.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, id.hashCode), userId.hashCode),
+                            roomId.hashCode),
+                        type.hashCode),
+                    user.hashCode),
                 repeat.hashCode),
             start.hashCode),
         end.hashCode));
@@ -81,6 +87,7 @@ class _$HealerOpening extends HealerOpening {
           ..add('userId', userId)
           ..add('roomId', roomId)
           ..add('type', type)
+          ..add('user', user)
           ..add('repeat', repeat)
           ..add('start', start)
           ..add('end', end))
@@ -108,6 +115,10 @@ class HealerOpeningBuilder
   OpeningType? get type => _$this._type;
   set type(OpeningType? type) => _$this._type = type;
 
+  HealerBuilder? _user;
+  HealerBuilder get user => _$this._user ??= new HealerBuilder();
+  set user(HealerBuilder? user) => _$this._user = user;
+
   OpeningRepeatType? _repeat;
   OpeningRepeatType? get repeat => _$this._repeat;
   set repeat(OpeningRepeatType? repeat) => _$this._repeat = repeat;
@@ -131,6 +142,7 @@ class HealerOpeningBuilder
       _userId = $v.userId;
       _roomId = $v.roomId;
       _type = $v.type;
+      _user = $v.user?.toBuilder();
       _repeat = $v.repeat;
       _start = $v.start;
       _end = $v.end;
@@ -152,19 +164,33 @@ class HealerOpeningBuilder
 
   @override
   _$HealerOpening build() {
-    final _$result = _$v ??
-        new _$HealerOpening._(
-            id: id,
-            userId: BuiltValueNullFieldError.checkNotNull(
-                userId, 'HealerOpening', 'userId'),
-            roomId: roomId,
-            type: BuiltValueNullFieldError.checkNotNull(
-                type, 'HealerOpening', 'type'),
-            repeat: repeat,
-            start: BuiltValueNullFieldError.checkNotNull(
-                start, 'HealerOpening', 'start'),
-            end: BuiltValueNullFieldError.checkNotNull(
-                end, 'HealerOpening', 'end'));
+    _$HealerOpening _$result;
+    try {
+      _$result = _$v ??
+          new _$HealerOpening._(
+              id: id,
+              userId: BuiltValueNullFieldError.checkNotNull(
+                  userId, 'HealerOpening', 'userId'),
+              roomId: roomId,
+              type: BuiltValueNullFieldError.checkNotNull(
+                  type, 'HealerOpening', 'type'),
+              user: _user?.build(),
+              repeat: repeat,
+              start: BuiltValueNullFieldError.checkNotNull(
+                  start, 'HealerOpening', 'start'),
+              end: BuiltValueNullFieldError.checkNotNull(
+                  end, 'HealerOpening', 'end'));
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'user';
+        _user?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'HealerOpening', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

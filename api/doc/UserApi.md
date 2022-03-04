@@ -542,7 +542,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **getLocalities**
-> BuiltMap<String, String> getLocalities()
+> BuiltMap<String, String> getLocalities(job)
 
 
 
@@ -551,9 +551,10 @@ Name | Type | Description  | Notes
 import 'package:heal_happy_sdk/api.dart';
 
 final api = HealHappySdk().getUserApi();
+final String job = job_example; // String | 
 
 try { 
-    final response = api.getLocalities();
+    final response = api.getLocalities(job);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling UserApi->getLocalities: $e\n');
@@ -561,7 +562,10 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **job** | **String**|  | 
 
 ### Return type
 

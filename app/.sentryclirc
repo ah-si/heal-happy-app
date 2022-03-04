@@ -1,0 +1,6 @@
+[defaults]
+url=https://sentry.ah-si.org/
+org=ah-si
+project=soignez-heureux-app
+[auth]
+token=39cc8df718d248138de5959faffb047f7e83da824ac245e89add6450596643e2

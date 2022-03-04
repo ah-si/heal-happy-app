@@ -297,7 +297,7 @@ class _Help extends HookConsumerWidget {
               },
               onLongPress: () {
                 Clipboard.setData(ClipboardData(text: userStore.user!.telegramUrl));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Url'))));
               },
               child: Text(userStore.user!.telegramUrl),
             ),

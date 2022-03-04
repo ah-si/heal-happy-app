@@ -72,7 +72,8 @@ extension UserExtension on User {
 
 extension OfficeExtension on Office {
   String get address {
-    String address = street.isNullOrEmpty ? '' : '$street\n';
+    String address = '$name\n';
+    address += street.isNullOrEmpty ? '' : '$street\n';
     address += street2.isNullOrEmpty ? '' : '$street2\n';
     address += '$zipCode $city';
     return address;

@@ -95,6 +95,16 @@ class StepCalendarInfo extends HookConsumerWidget {
           style: context.textTheme.subtitle2,
         ),
         const SizedBox(height: kSmallPadding),
+        if (openingStore.isInMedicalOffice)
+          CheckboxListTile(
+            value: openingStore.showExternalOpenings,
+            onChanged: (value) {
+              openingStore.filterOpenings(value!);
+            },
+            contentPadding: EdgeInsets.zero,
+            title: Text(context.l10n.calendarShowExternalOpenings),
+            subtitle: Text(context.l10n.calendarShowExternalOpeningsDesc),
+          ),
         ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 400),
           child: Column(
@@ -330,11 +340,14 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
   @override
   Color getColor(int index) {
     final HealerOpening opening = appointments![index];
+    if (opening.userId != currentUserId && opening.roomId != null) {
+      return kEventColorCancelled;
+    }
     switch (opening.type) {
       case OpeningType.faceToFace:
         return kEventColorFaceToFace;
-      case OpeningType.unavailable:
-        return kEventColorCancelled;
+      //case OpeningType.unavailable:
+      //  return kEventColorCancelled;
       case OpeningType.visio:
         return kEventColorVisio;
     }
@@ -344,16 +357,21 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
   @override
   String getSubject(int index) {
     final HealerOpening opening = appointments![index];
-    if (opening.userId != currentUserId && opening.roomId != null) {
-      final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId)?.room;
-      final healer = room?.healers.firstWhereOrNull((element) => element.id == opening.userId);
-      return healer?.name ?? 'Autre soignant';
-    }
     switch (opening.type) {
       case OpeningType.faceToFace:
+        if (opening.userId != currentUserId && opening.roomId != null) {
+          final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId);
+          return opening.user!.name + ' ' + room!.office.name + ' (' + room.room.name + ')';
+        } else if (opening.roomId != null) {
+          final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId);
+          if (room == null) {
+            return 'Cabinet supprimé';
+          }
+          return localizations.openingFaceToFace + ' ' + room.office.name + ' (' + room.room.name + ')';
+        }
         return localizations.openingFaceToFace;
-      case OpeningType.unavailable:
-        return localizations.openingUnavailable;
+     // case OpeningType.unavailable:
+     //   return localizations.openingUnavailable;
       case OpeningType.visio:
         return localizations.openingVisio;
     }

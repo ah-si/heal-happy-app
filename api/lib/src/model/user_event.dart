@@ -2,39 +2,53 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/minimal_user.dart';
+import 'package:heal_happy_sdk/src/model/office.dart';
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
-import 'package:heal_happy_sdk/src/model/minimal_user.dart';
+import 'package:heal_happy_sdk/src/model/office_room.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 
 part 'user_event.g.dart';
 
 /// UserEvent
 ///
 /// Properties:
-/// * [id]
-/// * [patient]
-/// * [healer]
-/// * [isUrgent]
-/// * [isCancelled]
-/// * [type]
-/// * [createdAt]
-/// * [start]
-/// * [end]
-/// * [name]
-/// * [description]
-/// * [cancelledDescription]
-/// * [link]
+/// * [id] 
+/// * [patientToken] 
+/// * [patient] 
+/// * [healer] 
+/// * [room] 
+/// * [office] 
+/// * [isUrgent] 
+/// * [isCancelled] 
+/// * [type] 
+/// * [createdAt] 
+/// * [start] 
+/// * [end] 
+/// * [name] 
+/// * [description] 
+/// * [cancelledDescription] 
+/// * [link] 
 abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;
+
+    @BuiltValueField(wireName: r'patientToken')
+    String? get patientToken;
 
     @BuiltValueField(wireName: r'patient')
     MinimalUser get patient;
 
     @BuiltValueField(wireName: r'healer')
     Healer get healer;
+
+    @BuiltValueField(wireName: r'room')
+    OfficeRoom? get room;
+
+    @BuiltValueField(wireName: r'office')
+    Office? get office;
 
     @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
@@ -93,6 +107,12 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(r'id')
             ..add(serializers.serialize(object.id,
                 specifiedType: const FullType(String)));
+        if (object.patientToken != null) {
+            result
+                ..add(r'patientToken')
+                ..add(serializers.serialize(object.patientToken,
+                    specifiedType: const FullType(String)));
+        }
         result
             ..add(r'patient')
             ..add(serializers.serialize(object.patient,
@@ -101,6 +121,18 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(r'healer')
             ..add(serializers.serialize(object.healer,
                 specifiedType: const FullType(Healer)));
+        if (object.room != null) {
+            result
+                ..add(r'room')
+                ..add(serializers.serialize(object.room,
+                    specifiedType: const FullType(OfficeRoom)));
+        }
+        if (object.office != null) {
+            result
+                ..add(r'office')
+                ..add(serializers.serialize(object.office,
+                    specifiedType: const FullType(Office)));
+        }
         result
             ..add(r'isUrgent')
             ..add(serializers.serialize(object.isUrgent,
@@ -163,6 +195,10 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                     result.id = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
                     break;
+                case r'patientToken':
+                    result.patientToken = serializers.deserialize(value,
+                        specifiedType: const FullType(String)) as String;
+                    break;
                 case r'patient':
                     result.patient.replace(serializers.deserialize(value,
                         specifiedType: const FullType(MinimalUser)) as MinimalUser);
@@ -170,6 +206,14 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                 case r'healer':
                     result.healer.replace(serializers.deserialize(value,
                         specifiedType: const FullType(Healer)) as Healer);
+                    break;
+                case r'room':
+                    result.room.replace(serializers.deserialize(value,
+                        specifiedType: const FullType(OfficeRoom)) as OfficeRoom);
+                    break;
+                case r'office':
+                    result.office.replace(serializers.deserialize(value,
+                        specifiedType: const FullType(Office)) as Office);
                     break;
                 case r'isUrgent':
                     result.isUrgent = serializers.deserialize(value,

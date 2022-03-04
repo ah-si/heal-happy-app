@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/admin/home_screen.dart';
-import 'package:heal_happy/common/presentation/autocomplete_field.dart';
+import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/donate.dart';
@@ -26,6 +26,7 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
+import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
@@ -43,7 +44,7 @@ class MobilePatientHome extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(patientStoreProvider);
     final userStore = ref.read(userStoreProvider);
-    final controller = useTabController(initialLength: userStore.user?.type == UserTypeEnum.patient ? 4:3, initialIndex: store.selectedTab.index);
+    final controller = useTabController(initialLength: userStore.user?.type == UserTypeEnum.patient ? 4 : 3, initialIndex: store.selectedTab.index);
 
     useEffect(() {
       controller.addListener(() {
@@ -92,9 +93,9 @@ class MobilePatientHome extends HookConsumerWidget {
               text: context.l10n.search,
             ),
             if (userStore.user?.type == UserTypeEnum.patient)
-            Tab(
-              text: context.l10n.profile,
-            ),
+              Tab(
+                text: context.l10n.profile,
+              ),
             Tab(
               text: context.l10n.eventsHistory,
             ),
@@ -111,8 +112,7 @@ class MobilePatientHome extends HookConsumerWidget {
                 key: Key('consultations'),
               ),
               const _SearchTab(),
-              if (userStore.user?.type == UserTypeEnum.patient)
-                const UserProfile(),
+              if (userStore.user?.type == UserTypeEnum.patient) const UserProfile(),
               const Scrollbar(child: Center(child: _PlannedConsultations(showHistory: true))),
             ],
             controller: controller,
@@ -438,16 +438,15 @@ class _MenuBar extends HookConsumerWidget {
                     },
                     selected: store.selectedTab == HomeTabs.search,
                   ),
+                if (userStore.user?.type == UserTypeEnum.patient) const SizedBox(width: 2),
                 if (userStore.user?.type == UserTypeEnum.patient)
-                  const SizedBox(width: 2),
-                if (userStore.user?.type == UserTypeEnum.patient)
-                MenuItem(
-                  label: context.l10n.profile,
-                  onTap: () {
-                    store.selectedTab = HomeTabs.profile;
-                  },
-                  selected: store.selectedTab == HomeTabs.profile,
-                ),
+                  MenuItem(
+                    label: context.l10n.profile,
+                    onTap: () {
+                      store.selectedTab = HomeTabs.profile;
+                    },
+                    selected: store.selectedTab == HomeTabs.profile,
+                  ),
                 const SizedBox(width: 2),
                 MenuItem(
                   label: context.l10n.eventsHistory,
@@ -519,7 +518,7 @@ class _HealerListItem extends HookConsumerWidget {
                 ),
                 Text(store.specialities[healer.job] ?? '', style: context.textTheme.subtitle2),
                 const SizedBox(height: kNormalPadding),
-                Text(healer.address),
+                //if (patientStore.lastTypeSearch == HealerEventType.visio) Text(healer.address),
                 if (!healer.description.isNullOrEmpty) const SizedBox(height: kNormalPadding),
                 if (!healer.description.isNullOrEmpty)
                   Text(
@@ -684,7 +683,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                           launch(Uri.encodeFull('https://www.google.com/maps/search/?api=1&query=' + event.healer.address));
                         },
                         child: Text(
-                          event.healer.address,
+                          event.office?.address ?? event.healer.address,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
@@ -725,6 +724,20 @@ class _PatientEventDetails extends HookConsumerWidget {
                 },
                 child: Text(context.l10n.cancelButton),
               ),
+            if (event.type == HealerEventType.faceToFace)
+              TextButton(
+                onPressed: () async {
+                  showAppDialog(
+                    context,
+                    (_) => Text(context.l10n.qrCodeTitle),
+                    (_) => SfBarcodeGenerator(
+                      value: Config.instance!.baseUrl + '/acceptInvite/?token=' + event.patientToken!,
+                      symbology: QRCode(),
+                    ),
+                  );
+                },
+                child: Text(context.l10n.showQrCode),
+              ),
           ],
         )
       ],
@@ -750,6 +763,7 @@ class _SearchBar extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final patientStore = ref.watch(patientStoreProvider);
     final jobChoice = useState<MapEntry<String, String>?>(null);
     final typeChoice = useState<HealerEventType>(HealerEventType.visio);
     final controllerJob = useTextEditingController();
@@ -868,40 +882,31 @@ class _SearchBar extends HookConsumerWidget {
                       Expanded(
                         flex: 3,
                         child: Center(
-                          child: AutocompleteFormField<MapEntry<String, String>>(
-                            decoration: InputDecoration(
-                              hintText: context.l10n.localizationField,
-                              border: InputBorder.none,
-                            ),
-                            characterThreshold: 0,
-                            nbVisibleResults: 10,
-                            controller: controllerLocalization,
-                            delegate: (String query) async {
-                              final localities = await ref.read(patientStoreProvider).searchLocalities();
-                              if (query.isEmpty) {
-                                return localities.entries.toList(growable: false);
-                              }
-                              return localities.entries.where((element) {
-                                final key = element.key.toLowerCase().removeDiacritic();
-                                final value = element.value.toLowerCase().removeDiacritic();
-                                final queryTrimmed = query.trim().toLowerCase().removeDiacritic();
-                                return key.contains(queryTrimmed) || value.contains(queryTrimmed);
-                              }).toList(growable: false);
-                            },
-                            validator: (value) {
-                              final result = isRequired(value, context);
-                              if (result == null && jobChoice.value == null) {
-                                return isRequired(null, context); //force required message
-                              }
-                              return result;
-                            },
-                            itemBuilder: (BuildContext context, MapEntry<String, String> entry) {
-                              return ListTile(title: Text(entry.value.capitalized));
-                            },
-                            onItemSelected: (MapEntry<String, String> entry) {
-                              controllerLocalization.text = entry.value;
-                            },
-                          ),
+                          child: HookBuilder(builder: (context) {
+                            useEffect(() {
+                              patientStore.searchLocalities(controllerJob.text);
+                              return null;
+                            }, [controllerJob.text]);
+                            final localities = patientStore.localities;
+
+                            final items = useMemoized(
+                                () => localities.entries
+                                    .map((e) => DropdownMenuItem(
+                                          key: ValueKey(e.key),
+                                          value: e,
+                                          child: Text(e.value),
+                                        ))
+                                    .toList(growable: false),
+                                [localities]);
+
+                            return DropdownButtonFormField<MapEntry<String, String>>(
+                              onChanged: (entry) {
+                                controllerLocalization.text = entry!.key;
+                              },
+                              validator: (value) => isRequired(value, context),
+                              items: items,
+                            );
+                          }),
                         ),
                       ),
                       ColoredBox(
