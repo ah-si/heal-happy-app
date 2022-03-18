@@ -15,6 +15,8 @@ Name | Type | Description | Notes
 **room** | [**OfficeRoom**](OfficeRoom.md) |  | [optional] 
 **office** | [**Office**](Office.md) |  | [optional] 
 **isUrgent** | **bool** |  | 
+**isHealerPresent** | **bool** |  | 
+**isPatientPresent** | **bool** |  | 
 **isCancelled** | **bool** |  | 
 **type** | [**HealerEventType**](HealerEventType.md) |  | 
 **createdAt** | [**DateTime**](DateTime.md) |  | 

@@ -78,6 +78,13 @@ class StepInfoPro extends HookConsumerWidget {
     final controllerSpe = useTextEditingController(text: userInfo.job == null ? '' : (store.specialities[userInfo.job] ?? ''));
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
+    useEffect(() {
+      if (controllerSpe.text.isEmpty && userInfo.job != null) {
+        controllerSpe.text = store.specialities[userInfo.job] ?? '';
+      }
+      return null;
+    }, [store.specialities]);
+
     return Form(
       key: formKey,
       child: Column(

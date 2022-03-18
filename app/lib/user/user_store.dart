@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +13,7 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:logging/logging.dart';
 
 const _fileTypesMap = {
   // mime type
@@ -27,10 +29,20 @@ final userStoreProvider = ChangeNotifierProvider<UserStore>((ref) {
   return UserStore(api, prefs);
 });
 
+class HealerRoom {
+  final OfficeRoom room;
+  final Office office;
+
+  HealerRoom(this.room, this.office);
+}
+
 class UserStore extends ChangeNotifier {
+  final _logger = Logger('UserStore');
   final BackendApiProvider _apiProvider;
   final PreferencesProvider _preferencesProvider;
   Map<String, String> _specialities = {};
+  List<HealerRoom> rooms = [];
+  bool isOfficeManager = false;
 
   bool activationEmailResent = false;
 
@@ -53,6 +65,31 @@ class UserStore extends ChangeNotifier {
       notifyListeners();
     };
     init();
+  }
+
+  Future<void> loadOffices() async {
+    try {
+      final officesResult = await _apiProvider.api.getOfficesApi().getOffices();
+      final rooms = <HealerRoom>[];
+      isOfficeManager = false;
+      for (var office in officesResult.data!.offices) {
+        final manager = office.managers.firstWhereOrNull((p0) => p0.id == user?.id);
+        if (manager != null) {
+          isOfficeManager = true;
+        }
+
+        for (var room in office.rooms) {
+          rooms.add(HealerRoom(room, office));
+        }
+      }
+      this.rooms = rooms;
+      notifyListeners();
+    } catch (ex, stack) {
+      rooms = [];
+      notifyListeners();
+      _logger.severe('Can\'t retrieve offices, $ex', ex, stack);
+    }
+
   }
 
   Future<User> getUser(String id) async {
@@ -200,7 +237,7 @@ class UserStore extends ChangeNotifier {
       }
       await _preferencesProvider.prefs.setString(PreferencesProvider.keyToken, token);
     } on DioError catch (ex) {
-      if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('email must be unique')) {
+      if (ex.response?.statusCode == 400 && ex.response!.data!.toString().contains('duplicate_email')) {
         throw ErrorResultException(ErrorResult.emailAlreadyUsed);
       }
       rethrow;

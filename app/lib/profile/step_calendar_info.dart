@@ -28,15 +28,15 @@ class StepCalendarInfo extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final openingStore = ref.watch(openingStoreProvider(userId));
     final userStore = ref.watch(userStoreProvider);
-    final healerStore = ref.watch(healerStoreProvider);
     final userInfo = ref.watch(userInfoProvider);
     final controllerConsultation = useTextEditingController(text: userInfo.consultationDuration?.toString() ?? '');
     final formKey = useMemoized(() => GlobalKey<FormState>());
-    final dataSource = useMemoized(() => _CalendarDataSource(openingStore.results?.slots ?? [], healerStore.rooms, userStore.user?.id ?? '', context.l10n),
-        [openingStore.results, healerStore.rooms]);
+    final dataSource = useMemoized(() => _CalendarDataSource(openingStore.results?.slots ?? [], userStore.rooms, userStore.user?.id ?? '', context.l10n),
+        [openingStore.results, userStore.rooms]);
 
     useEffect(() {
       openingStore.loadOpenings();
+      userStore.loadOffices();
       return null;
     }, const []);
 
@@ -211,9 +211,9 @@ class StepCalendarInfo extends HookConsumerWidget {
                     listener.notifyListeners();
                   },
                 ),
-              if (type == OpeningType.faceToFace && healerStore.rooms.isNotEmpty)
+              if ((type == OpeningType.faceToFace || type == OpeningType.unavailable) && userStore.rooms.isNotEmpty)
                 DropdownButtonFormField<String>(
-                  items: healerStore.rooms
+                  items: userStore.rooms
                       .map(
                         (e) => DropdownMenuItem(
                           child: Text(e.room.name + ' (${e.office.name})'),
@@ -346,8 +346,8 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
     switch (opening.type) {
       case OpeningType.faceToFace:
         return kEventColorFaceToFace;
-      //case OpeningType.unavailable:
-      //  return kEventColorCancelled;
+      case OpeningType.unavailable:
+        return kEventColorCancelled;
       case OpeningType.visio:
         return kEventColorVisio;
     }
@@ -370,8 +370,8 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
           return localizations.openingFaceToFace + ' ' + room.office.name + ' (' + room.room.name + ')';
         }
         return localizations.openingFaceToFace;
-     // case OpeningType.unavailable:
-     //   return localizations.openingUnavailable;
+      case OpeningType.unavailable:
+        return localizations.openingUnavailable;
       case OpeningType.visio:
         return localizations.openingVisio;
     }

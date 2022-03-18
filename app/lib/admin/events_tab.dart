@@ -81,25 +81,28 @@ class _EventsSearch extends HookConsumerWidget {
     final startState = useState<DateTime>(DateTime.now().copyWith(day: 1));
     final endState = useState<DateTime>(DateTime.now().add(const Duration(days: 1)));
     final urgent = useState<bool?>(null);
+    final emailController = useTextEditingController();
     final cancelled = useState<bool?>(null);
     return SizedBox(
       width: double.infinity,
       child: Wrap(
         children: [
-          _DateTimeField(
-            label: context.l10n.startDate,
-            onDateSelected: (DateTime date) {
-              startState.value = date;
+          _DateTimeRangeField(
+            onDatesSelected: (range) {
+              startState.value = range.start;
+              endState.value = range.end;
             },
-            value: startState.value,
+            lastDate: DateTime.now().add(const Duration(days: 14)),
+            label: context.l10n.rangeDate,
+            start: startState.value,
+            end: endState.value,
           ),
-          _DateTimeField(
-            label: context.l10n.endDate,
-            lastDate: DateTime.now().add(const Duration(days: 1)),
-            onDateSelected: (DateTime date) {
-              endState.value = date;
-            },
-            value: endState.value,
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 220),
+            child: TextFormField(
+              controller: emailController,
+              decoration: InputDecoration(label: Text(context.l10n.emailField)),
+            ),
           ),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 140),
@@ -126,7 +129,7 @@ class _EventsSearch extends HookConsumerWidget {
           ElevatedButton(
             onPressed: () {
               final store = ref.read(adminEventsSearchStoreProvider);
-              store.getEvents(0, startState.value, endState.value, urgent.value, cancelled.value);
+              store.getEvents(0, startState.value, endState.value, emailController.text, urgent.value, cancelled.value);
             },
             child: Text(context.l10n.searchButton),
           ),
@@ -160,6 +163,20 @@ class _EventItem extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
+                    Column(
+                      children: [
+                        CircleAvatar(
+                          maxRadius: 4,
+                          backgroundColor: event.isHealerPresent ? Colors.green : Colors.red,
+                        ),
+                        const SizedBox(height: 2),
+                        CircleAvatar(
+                          maxRadius: 4,
+                          backgroundColor: event.isPatientPresent ? Colors.green : Colors.red,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: kSmallPadding),
                     Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
                     IconButton(
                       onPressed: () async {

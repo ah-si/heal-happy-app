@@ -13,8 +13,6 @@ import 'package:heal_happy_sdk/src/date_serializer.dart';
 import 'package:heal_happy_sdk/src/model/admin_user_event.dart';
 import 'package:heal_happy_sdk/src/model/app_settings.dart';
 import 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
-import 'package:heal_happy_sdk/src/model/calendar_day_settings.dart';
-import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
 import 'package:heal_happy_sdk/src/model/create_invite_event_request.dart';
 import 'package:heal_happy_sdk/src/model/dashboard.dart';
@@ -56,8 +54,6 @@ part 'serializers.g.dart';
   AdminUserEvent,
   AppSettings,
   AskResetPassword,
-  CalendarDaySettings,
-  CalendarSettings,
   CreateEventRequest,
   CreateInviteEventRequest,
   Dashboard,
@@ -96,6 +92,10 @@ Serializers serializers = (_$serializers.toBuilder()
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(HealerStats)]),
         () => ListBuilder<HealerStats>(),
+      )
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(UserEvent)]),
+        () => ListBuilder<UserEvent>(),
       )
       ..addBuilderFactory(
         const FullType(BuiltMap, [FullType(String), FullType(String)]),

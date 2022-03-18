@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +12,7 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/offices/stores/office_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide OfficeInfo;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class OfficeDetailsScreen extends HookConsumerWidget {
   static const route = '/offices/:id';
@@ -44,9 +47,20 @@ class OfficeDetailsScreen extends HookConsumerWidget {
           ),
         ),
       );
-    } else {
-      child = _OfficeDetails(
-        office: store.result!.office!,
+    } else if (store.selectedTab == OfficeTabs.home) {
+      child = Scrollbar(
+        isAlwaysShown: true,
+        controller: controller,
+        child: SingleChildScrollView(
+          controller: controller,
+          child: _OfficeDetails(
+            office: store.result!.office!,
+            store: store,
+          ),
+        ),
+      );
+    } else if (store.selectedTab == OfficeTabs.planing) {
+      child = _OfficePlaning(
         store: store,
       );
     }
@@ -77,8 +91,18 @@ class OfficeDetailsScreen extends HookConsumerWidget {
                       const SizedBox(width: kNormalPadding),
                       MenuItem(
                         label: store.result?.office?.name ?? '',
-                        onTap: () {},
-                        selected: true,
+                        onTap: () {
+                          store.selectedTab = OfficeTabs.home;
+                        },
+                        selected: store.selectedTab == OfficeTabs.home,
+                      ),
+                      const SizedBox(width: kSmallPadding),
+                      MenuItem(
+                        label: context.l10n.officePlaning,
+                        onTap: () {
+                          store.selectedTab = OfficeTabs.planing;
+                        },
+                        selected: store.selectedTab == OfficeTabs.planing,
                       ),
                     ],
                   ),
@@ -86,13 +110,7 @@ class OfficeDetailsScreen extends HookConsumerWidget {
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
-                    child: Scrollbar(
-                      isAlwaysShown: true,
-                      child: SingleChildScrollView(
-                        controller: controller,
-                        child: child,
-                      ),
-                    ),
+                    child: child,
                   ),
                 ),
               ],
@@ -101,6 +119,104 @@ class OfficeDetailsScreen extends HookConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class _OfficePlaning extends HookWidget {
+  final OfficeStore store;
+
+  const _OfficePlaning({Key? key, required this.store}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final dataSource = useMemoized(() => _CalendarDataSource(store.planingResult?.events ?? []), [store.planingResult?.events]);
+    useEffect(() {
+      store.loadPlaning();
+      return null;
+    }, const []);
+
+    late Widget child;
+    if (store.planingResult == null) {
+      child = const Center(child: Loading());
+    } else if (store.planingResult!.error != null) {
+      child = Center(
+        child: Padding(
+          padding: const EdgeInsets.all(kNormalPadding),
+          child: Text(
+            store.planingResult!.error!.cause.twoLiner(context),
+            style: TextStyle(color: context.theme.errorColor),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    } else {
+      child = SfCalendar(
+        firstDayOfWeek: 1,
+        //cellEndPadding: 0,
+        dataSource: dataSource,
+        timeSlotViewSettings: const TimeSlotViewSettings(
+          timeFormat: 'H:mm',
+          timeInterval: Duration(hours: 1),
+        ),
+        allowViewNavigation: false,
+        showNavigationArrow: true,
+        showDatePickerButton: true,
+        view: CalendarView.timelineWeek,
+      );
+    }
+
+    return Center(child: child);
+  }
+}
+
+class _CalendarDataSource extends CalendarDataSource<UserEvent> {
+  final Map<String, Color> colorForRoom = {};
+
+  _CalendarDataSource(List<UserEvent> items) {
+    appointments = items;
+    Set<OfficeRoom> rooms = {};
+    for (var item in items) {
+      if (!rooms.contains(item.room) && item.room != null) {
+        rooms.add(item.room!);
+        colorForRoom[item.room!.id!] = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+      }
+    }
+    resources = rooms.map((e) => CalendarResource(id: e.id!, color: colorForRoom[e.id!]!, displayName: e.name)).toList();
+  }
+
+  @override
+  Object? getId(int index) {
+    return appointments![index].id;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].start.toLocal();
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].end.toLocal();
+  }
+
+  @override
+  Color getColor(int index) {
+    final UserEvent event = appointments![index];
+    return colorForRoom[event.room!.id!]!;
+  }
+
+  @override
+  String getSubject(int index) {
+    final UserEvent event = appointments![index];
+
+    return event.patient.firstName + ' ' + event.patient.lastName;
+  }
+
+  @override
+  List<Object>? getResourceIds(int index) {
+    final UserEvent event = appointments![index];
+
+    return event.room == null ? null : [event.room!.id!];
   }
 }
 
@@ -146,7 +262,7 @@ class _OfficeDetails extends StatelessWidget {
                     ],
                   ),
                   const Divider(),
-                  ...store.result!.office!.rooms.map(
+                  ...(store.result!.office!.rooms.toList()..sort((r1, r2) => r1.name.toLowerCase().compareTo(r2.name.toLowerCase()))).map(
                     (room) => _RoomPanel(store: store, room: room),
                   )
                 ],

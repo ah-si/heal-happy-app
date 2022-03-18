@@ -30,7 +30,8 @@ class AdminOfficeStore extends ChangeNotifier {
   void loadOffices(int page) async {
     try {
       final resultsRequest = await _officesApi.getOffices();
-      results = OfficeResults(resultsRequest.data!.offices.toList(growable: false), page, resultsRequest.data!.totalPages);
+      final offices = resultsRequest.data!.offices.toList(growable: false);
+      results = OfficeResults(offices, page, resultsRequest.data!.totalPages);
     } catch (error, stackTrace) {
       results = OfficeResults([], page, 0, error: handleError(error, stackTrace));
       isLoading = false;

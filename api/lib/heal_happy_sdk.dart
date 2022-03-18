@@ -14,8 +14,6 @@ export 'package:heal_happy_sdk/src/auth/oauth.dart';
 export 'package:heal_happy_sdk/src/model/admin_user_event.dart';
 export 'package:heal_happy_sdk/src/model/app_settings.dart';
 export 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
-export 'package:heal_happy_sdk/src/model/calendar_day_settings.dart';
-export 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 export 'package:heal_happy_sdk/src/model/create_event_request.dart';
 export 'package:heal_happy_sdk/src/model/create_invite_event_request.dart';
 export 'package:heal_happy_sdk/src/model/dashboard.dart';

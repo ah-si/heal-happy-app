@@ -2,43 +2,41 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
-import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
 part 'healer.g.dart';
 
 /// Healer
 ///
 /// Properties:
-/// * [id] 
-/// * [isVerified] 
-/// * [isActivated] 
-/// * [canDoFaceToFace] 
-/// * [job] 
-/// * [firstName] 
-/// * [consultationDuration] 
-/// * [isAddressPublic] 
-/// * [isTermsAccepted] 
-/// * [versionTermsAccepted] 
-/// * [lang] 
-/// * [type] 
-/// * [experiences] 
-/// * [description] 
-/// * [diploma] 
-/// * [website] 
-/// * [social1] 
-/// * [social2] 
-/// * [social3] 
-/// * [lastName] 
-/// * [calendarSettings] 
-/// * [street] 
-/// * [street2] 
-/// * [zipCode] 
-/// * [country] 
-/// * [city] 
-/// * [avatar] 
+/// * [id]
+/// * [isVerified]
+/// * [isActivated]
+/// * [canDoFaceToFace]
+/// * [job]
+/// * [firstName]
+/// * [consultationDuration]
+/// * [isAddressPublic]
+/// * [isTermsAccepted]
+/// * [versionTermsAccepted]
+/// * [lang]
+/// * [type]
+/// * [experiences]
+/// * [description]
+/// * [diploma]
+/// * [website]
+/// * [social1]
+/// * [social2]
+/// * [social3]
+/// * [lastName]
+/// * [street]
+/// * [street2]
+/// * [zipCode]
+/// * [country]
+/// * [city]
+/// * [avatar]
 abstract class Healer implements Built<Healer, HealerBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;
@@ -100,9 +98,6 @@ abstract class Healer implements Built<Healer, HealerBuilder> {
 
     @BuiltValueField(wireName: r'lastName')
     String get lastName;
-
-    @BuiltValueField(wireName: r'calendarSettings')
-    CalendarSettings get calendarSettings;
 
     @BuiltValueField(wireName: r'street')
     String? get street;
@@ -245,10 +240,6 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
             ..add(r'lastName')
             ..add(serializers.serialize(object.lastName,
                 specifiedType: const FullType(String)));
-        result
-            ..add(r'calendarSettings')
-            ..add(serializers.serialize(object.calendarSettings,
-                specifiedType: const FullType(CalendarSettings)));
         if (object.street != null) {
             result
                 ..add(r'street')
@@ -372,10 +363,6 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
                 case r'lastName':
                     result.lastName = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
-                    break;
-                case r'calendarSettings':
-                    result.calendarSettings.replace(serializers.deserialize(value,
-                        specifiedType: const FullType(CalendarSettings)) as CalendarSettings);
                     break;
                 case r'street':
                     result.street = serializers.deserialize(value,

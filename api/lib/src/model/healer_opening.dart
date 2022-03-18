@@ -33,7 +33,7 @@ abstract class HealerOpening implements Built<HealerOpening, HealerOpeningBuilde
 
     @BuiltValueField(wireName: r'type')
     OpeningType get type;
-    // enum typeEnum {  visio,  faceToFace,  };
+    // enum typeEnum {  visio,  faceToFace,  unavailable,  };
 
     @BuiltValueField(wireName: r'user')
     Healer? get user;

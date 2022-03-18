@@ -2,48 +2,44 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/user_all_of.dart';
-import 'package:heal_happy_sdk/src/model/healer.dart';
-import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
-import 'package:heal_happy_sdk/src/model/calendar_settings.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
 part 'user.g.dart';
 
 /// User
 ///
 /// Properties:
-/// * [id] 
-/// * [isVerified] 
-/// * [isActivated] 
-/// * [canDoFaceToFace] 
-/// * [job] 
-/// * [firstName] 
-/// * [consultationDuration] 
-/// * [isAddressPublic] 
-/// * [isTermsAccepted] 
-/// * [versionTermsAccepted] 
-/// * [lang] 
-/// * [type] 
-/// * [experiences] 
-/// * [description] 
-/// * [diploma] 
-/// * [website] 
-/// * [social1] 
-/// * [social2] 
-/// * [social3] 
-/// * [lastName] 
-/// * [calendarSettings] 
-/// * [street] 
-/// * [street2] 
-/// * [zipCode] 
-/// * [country] 
-/// * [city] 
-/// * [avatar] 
-/// * [email] 
-/// * [mobile] 
-/// * [password] 
+/// * [id]
+/// * [isVerified]
+/// * [isActivated]
+/// * [canDoFaceToFace]
+/// * [job]
+/// * [firstName]
+/// * [consultationDuration]
+/// * [isAddressPublic]
+/// * [isTermsAccepted]
+/// * [versionTermsAccepted]
+/// * [lang]
+/// * [type]
+/// * [experiences]
+/// * [description]
+/// * [diploma]
+/// * [website]
+/// * [social1]
+/// * [social2]
+/// * [social3]
+/// * [lastName]
+/// * [street]
+/// * [street2]
+/// * [zipCode]
+/// * [country]
+/// * [city]
+/// * [avatar]
+/// * [email]
+/// * [mobile]
+/// * [password]
 abstract class User implements Built<User, UserBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;
@@ -105,9 +101,6 @@ abstract class User implements Built<User, UserBuilder> {
 
     @BuiltValueField(wireName: r'lastName')
     String get lastName;
-
-    @BuiltValueField(wireName: r'calendarSettings')
-    CalendarSettings get calendarSettings;
 
     @BuiltValueField(wireName: r'street')
     String? get street;
@@ -259,10 +252,6 @@ class _$UserSerializer implements StructuredSerializer<User> {
             ..add(r'lastName')
             ..add(serializers.serialize(object.lastName,
                 specifiedType: const FullType(String)));
-        result
-            ..add(r'calendarSettings')
-            ..add(serializers.serialize(object.calendarSettings,
-                specifiedType: const FullType(CalendarSettings)));
         if (object.street != null) {
             result
                 ..add(r'street')
@@ -400,10 +389,6 @@ class _$UserSerializer implements StructuredSerializer<User> {
                 case r'lastName':
                     result.lastName = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
-                    break;
-                case r'calendarSettings':
-                    result.calendarSettings.replace(serializers.deserialize(value,
-                        specifiedType: const FullType(CalendarSettings)) as CalendarSettings);
                     break;
                 case r'street':
                     result.street = serializers.deserialize(value,

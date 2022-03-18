@@ -88,7 +88,8 @@ class AvailabilitiesStore extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    _from = DateTime.now().add(Duration(days: currentPage * 7));
+    final date = DateTime.now();
+    _from = DateTime(date.year, date.month, date.day).add(Duration(days: currentPage * 7));
 
     try {
       final results = await _userApi.getHealerAvailabilities(id: healerId, type: eventType, from: _from!.toUtc());

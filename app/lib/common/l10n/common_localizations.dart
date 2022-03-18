@@ -43,11 +43,15 @@ class CommonLocalizations {
 
   String get openingPopupTitle => Intl.message('Disponibilité', name: 'openingPopupTitle');
 
-  String get startDate => Intl.message('Date de début', name: 'startDate');
+  String get startDate => Intl.message('Date de début:', name: 'startDate');
 
-  String get endDate => Intl.message('Date de fin', name: 'endDate');
+  String get rangeDate => Intl.message('Dates:', name: 'rangeDate');
 
-  String nbEvents(int events) => Intl.plural(events, args: [events], one: '$events consultation', name: 'nbEvents', other: '$events consultations');
+  String get endDate => Intl.message('Date de fin:', name: 'endDate');
+
+  String nbEvents(int events) => Intl.plural(events, args: [events], one: '$events consultation visio', name: 'nbEvents', other: '$events consultations visio');
+
+  String nbEventsFaceToFace(int events) => Intl.plural(events, args: [events], one: '$events consultation présentielle', name: 'nbEventsFaceToFace', other: '$events consultations présentielles');
 
   String nbDuration(int duration) => Intl.message('$duration minutes', args: [duration], name: 'nbEvents');
 
@@ -175,6 +179,8 @@ class CommonLocalizations {
 
   String get emailField => Intl.message('Email*:', name: 'emailField');
 
+  String get adminEmailField => Intl.message('Email:', name: 'adminEmailField');
+
   String get captchaField => Intl.message('Recopier le texte de l\'image*:', name: 'captchaField');
 
   String get patientEmailField => Intl.message('Email du patient*:', name: 'patientEmailField');
@@ -221,8 +227,8 @@ class CommonLocalizations {
       //  return openingAvailable;
       case OpeningType.faceToFace:
         return openingFaceToFace;
-      //case OpeningType.unavailable:
-      //  return openingUnavailable;
+      case OpeningType.unavailable:
+        return openingUnavailable;
       case OpeningType.visio:
         return openingVisio;
     }
@@ -276,6 +282,8 @@ class CommonLocalizations {
   String get backToLogin => Intl.message('Retour au login', name: 'backToLogin');
 
   String get backButton => Intl.message('Retour', name: 'backButton');
+
+  String get officePlaning => Intl.message('Planing', name: 'officePlaning');
 
   String get login => Intl.message('Connexion en cours...', name: 'login');
 

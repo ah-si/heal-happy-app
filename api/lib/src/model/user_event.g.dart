@@ -22,6 +22,10 @@ class _$UserEvent extends UserEvent {
   @override
   final bool isUrgent;
   @override
+  final bool isHealerPresent;
+  @override
+  final bool isPatientPresent;
+  @override
   final bool isCancelled;
   @override
   final HealerEventType type;
@@ -51,6 +55,8 @@ class _$UserEvent extends UserEvent {
       this.room,
       this.office,
       required this.isUrgent,
+      required this.isHealerPresent,
+      required this.isPatientPresent,
       required this.isCancelled,
       required this.type,
       required this.createdAt,
@@ -65,6 +71,10 @@ class _$UserEvent extends UserEvent {
     BuiltValueNullFieldError.checkNotNull(patient, 'UserEvent', 'patient');
     BuiltValueNullFieldError.checkNotNull(healer, 'UserEvent', 'healer');
     BuiltValueNullFieldError.checkNotNull(isUrgent, 'UserEvent', 'isUrgent');
+    BuiltValueNullFieldError.checkNotNull(
+        isHealerPresent, 'UserEvent', 'isHealerPresent');
+    BuiltValueNullFieldError.checkNotNull(
+        isPatientPresent, 'UserEvent', 'isPatientPresent');
     BuiltValueNullFieldError.checkNotNull(
         isCancelled, 'UserEvent', 'isCancelled');
     BuiltValueNullFieldError.checkNotNull(type, 'UserEvent', 'type');
@@ -93,6 +103,8 @@ class _$UserEvent extends UserEvent {
         room == other.room &&
         office == other.office &&
         isUrgent == other.isUrgent &&
+        isHealerPresent == other.isHealerPresent &&
+        isPatientPresent == other.isPatientPresent &&
         isCancelled == other.isCancelled &&
         type == other.type &&
         createdAt == other.createdAt &&
@@ -122,16 +134,22 @@ class _$UserEvent extends UserEvent {
                                                         $jc(
                                                             $jc(
                                                                 $jc(
-                                                                    0,
-                                                                    id
+                                                                    $jc(
+                                                                        $jc(
+                                                                            0,
+                                                                            id
+                                                                                .hashCode),
+                                                                        patientToken
+                                                                            .hashCode),
+                                                                    patient
                                                                         .hashCode),
-                                                                patientToken
+                                                                healer
                                                                     .hashCode),
-                                                            patient.hashCode),
-                                                        healer.hashCode),
-                                                    room.hashCode),
-                                                office.hashCode),
-                                            isUrgent.hashCode),
+                                                            room.hashCode),
+                                                        office.hashCode),
+                                                    isUrgent.hashCode),
+                                                isHealerPresent.hashCode),
+                                            isPatientPresent.hashCode),
                                         isCancelled.hashCode),
                                     type.hashCode),
                                 createdAt.hashCode),
@@ -153,6 +171,8 @@ class _$UserEvent extends UserEvent {
           ..add('room', room)
           ..add('office', office)
           ..add('isUrgent', isUrgent)
+          ..add('isHealerPresent', isHealerPresent)
+          ..add('isPatientPresent', isPatientPresent)
           ..add('isCancelled', isCancelled)
           ..add('type', type)
           ..add('createdAt', createdAt)
@@ -197,6 +217,16 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   bool? _isUrgent;
   bool? get isUrgent => _$this._isUrgent;
   set isUrgent(bool? isUrgent) => _$this._isUrgent = isUrgent;
+
+  bool? _isHealerPresent;
+  bool? get isHealerPresent => _$this._isHealerPresent;
+  set isHealerPresent(bool? isHealerPresent) =>
+      _$this._isHealerPresent = isHealerPresent;
+
+  bool? _isPatientPresent;
+  bool? get isPatientPresent => _$this._isPatientPresent;
+  set isPatientPresent(bool? isPatientPresent) =>
+      _$this._isPatientPresent = isPatientPresent;
 
   bool? _isCancelled;
   bool? get isCancelled => _$this._isCancelled;
@@ -249,6 +279,8 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
       _room = $v.room?.toBuilder();
       _office = $v.office?.toBuilder();
       _isUrgent = $v.isUrgent;
+      _isHealerPresent = $v.isHealerPresent;
+      _isPatientPresent = $v.isPatientPresent;
       _isCancelled = $v.isCancelled;
       _type = $v.type;
       _createdAt = $v.createdAt;
@@ -288,6 +320,10 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
               office: _office?.build(),
               isUrgent: BuiltValueNullFieldError.checkNotNull(
                   isUrgent, 'UserEvent', 'isUrgent'),
+              isHealerPresent: BuiltValueNullFieldError.checkNotNull(
+                  isHealerPresent, 'UserEvent', 'isHealerPresent'),
+              isPatientPresent: BuiltValueNullFieldError.checkNotNull(
+                  isPatientPresent, 'UserEvent', 'isPatientPresent'),
               isCancelled: BuiltValueNullFieldError.checkNotNull(
                   isCancelled, 'UserEvent', 'isCancelled'),
               type: BuiltValueNullFieldError.checkNotNull(
@@ -298,12 +334,11 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
                   start, 'UserEvent', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(
                   end, 'UserEvent', 'end'),
-              name: BuiltValueNullFieldError.checkNotNull(
-                  name, 'UserEvent', 'name'),
+              name:
+                  BuiltValueNullFieldError.checkNotNull(name, 'UserEvent', 'name'),
               description: description,
               cancelledDescription: cancelledDescription,
-              link: BuiltValueNullFieldError.checkNotNull(
-                  link, 'UserEvent', 'link'));
+              link: BuiltValueNullFieldError.checkNotNull(link, 'UserEvent', 'link'));
     } catch (_) {
       late String _$failedField;
       try {

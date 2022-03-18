@@ -127,6 +127,8 @@ class _HealerStats extends HookConsumerWidget {
             ),
             Column(
               children: [
+                Text(context.l10n.nbEventsFaceToFace(stats.totalEventsFaceToFace), style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(context.l10n.nbDuration(stats.totalDurationFaceToFace), style: const TextStyle(fontWeight: FontWeight.bold)),
                 Text(context.l10n.nbEvents(stats.totalEvents), style: const TextStyle(fontWeight: FontWeight.bold)),
                 Text(context.l10n.nbDuration(stats.totalDuration), style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
@@ -149,19 +151,14 @@ class _SearchStats extends HookConsumerWidget {
       width: double.infinity,
       child: Wrap(
         children: [
-          _DateTimeField(
-            label: context.l10n.startDate,
-            onDateSelected: (DateTime date) {
-              startState.value = date;
+          _DateTimeRangeField(
+            onDatesSelected: (range) {
+              startState.value = range.start;
+              endState.value = range.end;
             },
-            value: startState.value,
-          ),
-          _DateTimeField(
-            label: context.l10n.endDate,
-            onDateSelected: (DateTime date) {
-              endState.value = date;
-            },
-            value: endState.value,
+            label: context.l10n.rangeDate,
+            start: startState.value,
+            end: endState.value,
           ),
           ElevatedButton(
             onPressed: () {
@@ -237,11 +234,63 @@ class _DateTimeField extends HookWidget {
               context: context,
               firstDate: firstDate ?? DateTime.now().subtract(const Duration(days: 365)),
               lastDate: lastDate ?? DateTime.now(),
-              initialDate: DateTime.now(),
+              initialDate: value ?? DateTime.now(),
             );
             if (date != null) {
               controller.text = kDateFormat.format(date);
               onDateSelected(date);
+            }
+          },
+          child: IgnorePointer(
+            child: TextField(
+              readOnly: true,
+              controller: controller,
+              decoration: InputDecoration(label: Text(label)),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DateTimeRangeField extends HookWidget {
+  final DateTime? start;
+  final DateTime? end;
+  final DateTime? lastDate;
+  final DateTime? firstDate;
+  final String label;
+  final Function(DateTimeRange range) onDatesSelected;
+
+  const _DateTimeRangeField({
+    Key? key,
+    this.start,
+    this.end,
+    this.lastDate,
+    this.firstDate,
+    required this.onDatesSelected,
+    required this.label,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = useTextEditingController(text: start == null ? '' : (kDateFormat.format(start!) + ' - ' + kDateFormat.format(end!)));
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 220),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () async {
+            final range = await showDateRangePicker(
+              context: context,
+              firstDate: firstDate ?? DateTime.now().subtract(const Duration(days: 365)),
+              lastDate: lastDate ?? DateTime.now(),
+              initialDateRange: start == null ? null : DateTimeRange(start: start!, end: end!),
+            );
+            if (range != null) {
+              controller.text = (kDateFormat.format(range.start) + ' - ' + kDateFormat.format(range.end));
+              onDatesSelected(range);
             }
           },
           child: IgnorePointer(

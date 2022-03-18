@@ -14,6 +14,8 @@ class OpeningType extends EnumClass {
   static const OpeningType visio = _$visio;
   @BuiltValueEnumConst(wireName: r'faceToFace')
   static const OpeningType faceToFace = _$faceToFace;
+  @BuiltValueEnumConst(wireName: r'unavailable')
+  static const OpeningType unavailable = _$unavailable;
 
   static Serializer<OpeningType> get serializer => _$openingTypeSerializer;
 

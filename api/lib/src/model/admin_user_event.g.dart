@@ -14,6 +14,10 @@ class _$AdminUserEvent extends AdminUserEvent {
   @override
   final User healer;
   @override
+  final bool isHealerPresent;
+  @override
+  final bool isPatientPresent;
+  @override
   final bool isUrgent;
   @override
   final bool isCancelled;
@@ -39,6 +43,8 @@ class _$AdminUserEvent extends AdminUserEvent {
       {required this.id,
       required this.patient,
       required this.healer,
+      required this.isHealerPresent,
+      required this.isPatientPresent,
       required this.isUrgent,
       required this.isCancelled,
       required this.createdAt,
@@ -52,6 +58,10 @@ class _$AdminUserEvent extends AdminUserEvent {
     BuiltValueNullFieldError.checkNotNull(id, 'AdminUserEvent', 'id');
     BuiltValueNullFieldError.checkNotNull(patient, 'AdminUserEvent', 'patient');
     BuiltValueNullFieldError.checkNotNull(healer, 'AdminUserEvent', 'healer');
+    BuiltValueNullFieldError.checkNotNull(
+        isHealerPresent, 'AdminUserEvent', 'isHealerPresent');
+    BuiltValueNullFieldError.checkNotNull(
+        isPatientPresent, 'AdminUserEvent', 'isPatientPresent');
     BuiltValueNullFieldError.checkNotNull(
         isUrgent, 'AdminUserEvent', 'isUrgent');
     BuiltValueNullFieldError.checkNotNull(
@@ -79,6 +89,8 @@ class _$AdminUserEvent extends AdminUserEvent {
         id == other.id &&
         patient == other.patient &&
         healer == other.healer &&
+        isHealerPresent == other.isHealerPresent &&
+        isPatientPresent == other.isPatientPresent &&
         isUrgent == other.isUrgent &&
         isCancelled == other.isCancelled &&
         createdAt == other.createdAt &&
@@ -102,9 +114,13 @@ class _$AdminUserEvent extends AdminUserEvent {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                patient.hashCode),
-                                            healer.hashCode),
+                                            $jc(
+                                                $jc(
+                                                    $jc($jc(0, id.hashCode),
+                                                        patient.hashCode),
+                                                    healer.hashCode),
+                                                isHealerPresent.hashCode),
+                                            isPatientPresent.hashCode),
                                         isUrgent.hashCode),
                                     isCancelled.hashCode),
                                 createdAt.hashCode),
@@ -122,6 +138,8 @@ class _$AdminUserEvent extends AdminUserEvent {
           ..add('id', id)
           ..add('patient', patient)
           ..add('healer', healer)
+          ..add('isHealerPresent', isHealerPresent)
+          ..add('isPatientPresent', isPatientPresent)
           ..add('isUrgent', isUrgent)
           ..add('isCancelled', isCancelled)
           ..add('createdAt', createdAt)
@@ -150,6 +168,16 @@ class AdminUserEventBuilder
   UserBuilder? _healer;
   UserBuilder get healer => _$this._healer ??= new UserBuilder();
   set healer(UserBuilder? healer) => _$this._healer = healer;
+
+  bool? _isHealerPresent;
+  bool? get isHealerPresent => _$this._isHealerPresent;
+  set isHealerPresent(bool? isHealerPresent) =>
+      _$this._isHealerPresent = isHealerPresent;
+
+  bool? _isPatientPresent;
+  bool? get isPatientPresent => _$this._isPatientPresent;
+  set isPatientPresent(bool? isPatientPresent) =>
+      _$this._isPatientPresent = isPatientPresent;
 
   bool? _isUrgent;
   bool? get isUrgent => _$this._isUrgent;
@@ -198,6 +226,8 @@ class AdminUserEventBuilder
       _id = $v.id;
       _patient = $v.patient.toBuilder();
       _healer = $v.healer.toBuilder();
+      _isHealerPresent = $v.isHealerPresent;
+      _isPatientPresent = $v.isPatientPresent;
       _isUrgent = $v.isUrgent;
       _isCancelled = $v.isCancelled;
       _createdAt = $v.createdAt;
@@ -233,6 +263,10 @@ class AdminUserEventBuilder
                   id, 'AdminUserEvent', 'id'),
               patient: patient.build(),
               healer: healer.build(),
+              isHealerPresent: BuiltValueNullFieldError.checkNotNull(
+                  isHealerPresent, 'AdminUserEvent', 'isHealerPresent'),
+              isPatientPresent: BuiltValueNullFieldError.checkNotNull(
+                  isPatientPresent, 'AdminUserEvent', 'isPatientPresent'),
               isUrgent: BuiltValueNullFieldError.checkNotNull(
                   isUrgent, 'AdminUserEvent', 'isUrgent'),
               isCancelled: BuiltValueNullFieldError.checkNotNull(
@@ -243,12 +277,10 @@ class AdminUserEventBuilder
                   start, 'AdminUserEvent', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(
                   end, 'AdminUserEvent', 'end'),
-              name: BuiltValueNullFieldError.checkNotNull(
-                  name, 'AdminUserEvent', 'name'),
+              name: BuiltValueNullFieldError.checkNotNull(name, 'AdminUserEvent', 'name'),
               description: description,
               cancelledDescription: cancelledDescription,
-              link: BuiltValueNullFieldError.checkNotNull(
-                  link, 'AdminUserEvent', 'link'));
+              link: BuiltValueNullFieldError.checkNotNull(link, 'AdminUserEvent', 'link'));
     } catch (_) {
       late String _$failedField;
       try {

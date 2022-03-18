@@ -7,7 +7,7 @@ import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:logging/logging.dart';
 
-final healerStoreProvider = ChangeNotifierProvider((_) => HealerStore()..loadOffices());
+final healerStoreProvider = ChangeNotifierProvider((_) => HealerStore());
 
 class PatientEventResults {
   final List<UserEvent> events;
@@ -16,29 +16,20 @@ class PatientEventResults {
   PatientEventResults(this.events, {this.error});
 }
 
-enum HomeTabs { home, profile, help }
+enum HomeTabs { home, profile, offices, help }
 
-class HealerRoom {
-  final OfficeRoom room;
-  final Office office;
-
-  HealerRoom(this.room, this.office);
-}
 
 class HealerStore extends ChangeNotifier {
   final _logger = Logger('HealerStore');
   final UserApi _userApi;
-  final OfficesApi _officeApi;
   PatientEventResults? eventsResults;
-  List<HealerRoom> rooms = [];
   bool isLoading = false;
   int eventUrgent = 0;
   int eventCancelled = 0;
   HomeTabs _selectedTab = HomeTabs.home;
 
-  HealerStore({UserApi? userApi, OfficesApi? officeApi})
-      : _officeApi = officeApi ?? BackendApiProvider().api.getOfficesApi(),
-        _userApi = userApi ?? BackendApiProvider().api.getUserApi();
+  HealerStore({UserApi? userApi})
+      : _userApi = userApi ?? BackendApiProvider().api.getUserApi();
 
   HomeTabs get selectedTab => _selectedTab;
 
@@ -49,23 +40,6 @@ class HealerStore extends ChangeNotifier {
     }
   }
 
-  Future<void> loadOffices() async {
-    try {
-      final officesResult = await _officeApi.getOffices();
-      final rooms = <HealerRoom>[];
-      for (var office in officesResult.data!.offices) {
-        for (var room in office.rooms) {
-          rooms.add(HealerRoom(room, office));
-        }
-      }
-      this.rooms = rooms;
-    } catch (ex, stack) {
-      rooms = [];
-      _logger.severe('Can\'t retrieve offices, $ex', ex, stack);
-    }
-
-  }
-
   Future<void> cancelEvent(String eventId, String message) async {
     await _userApi.deleteEvent(eventId: eventId, deleteEventRequest: DeleteEventRequest((b) => b.message = message));
     await loadEvents();
@@ -73,9 +47,7 @@ class HealerStore extends ChangeNotifier {
 
   Future<void> loadEvents() async {
     isLoading = true;
-    if (rooms.isEmpty) {
-      await loadOffices();
-    }
+
     try {
       final events = await _userApi.getEvents(includePastEvents: true, modeHealer: true);
       eventUrgent = events.data!.where((p0) => p0.isUrgent && !p0.isCancelled).length;

@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **id** | **String** |  | 
 **totalEvents** | **int** |  | 
 **totalDuration** | **int** |  | 
+**totalEventsFaceToFace** | **int** |  | 
+**totalDurationFaceToFace** | **int** |  | 
 **street** | **String** |  | [optional] 
 **street2** | **String** |  | [optional] 
 **city** | **String** |  | 

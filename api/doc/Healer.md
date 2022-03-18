@@ -28,7 +28,6 @@ Name | Type | Description | Notes
 **social2** | **String** |  | [optional] 
 **social3** | **String** |  | [optional] 
 **lastName** | **String** |  | 
-**calendarSettings** | [**CalendarSettings**](CalendarSettings.md) |  | 
 **street** | **String** |  | [optional] 
 **street2** | **String** |  | [optional] 
 **zipCode** | **String** |  | 

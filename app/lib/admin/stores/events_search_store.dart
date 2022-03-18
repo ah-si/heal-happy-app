@@ -20,6 +20,7 @@ class AdminEventsSearchStore extends ChangeNotifier {
   final UserApi _userApi;
   SearchResults? searchResults;
   bool isLoading = false;
+  String? _email;
   late DateTime _start;
   late DateTime _end;
   bool? _isUrgent;
@@ -30,11 +31,15 @@ class AdminEventsSearchStore extends ChangeNotifier {
         _userApi = userApi ?? BackendApiProvider().api.getUserApi();
 
   Future<void> loadEventsPage(int page) async {
-    return getEvents(page, _start, _end, _isUrgent, _isCancelled);
+    return getEvents(page, _start, _end, _email, _isUrgent, _isCancelled);
   }
 
-  Future<void> getEvents(int page, DateTime start, DateTime end, bool? isUrgent, bool? isCancelled) async {
+  Future<void> getEvents(int page, DateTime start, DateTime end, String? email, bool? isUrgent, bool? isCancelled) async {
     isLoading = true;
+    if ((email ?? '').trim().isEmpty) {
+      email = null;
+    }
+    _email = email;
     _start = start;
     _end = end;
     _isUrgent = isUrgent;
@@ -44,6 +49,7 @@ class AdminEventsSearchStore extends ChangeNotifier {
       final results = await _adminApi.searchEvents(
         start: start.toDate(),
         end: end.toDate(),
+        email: email,
         isCancelled: isCancelled,
         isUrgent: isUrgent,
       );

@@ -15,6 +15,7 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/healer/stores/healer_store.dart';
+import 'package:heal_happy/offices/presentation/offices_tab.dart';
 import 'package:heal_happy/patient/healer_profile_screen.dart';
 import 'package:heal_happy/patient/home_screen.dart';
 import 'package:heal_happy/user/user_profile.dart';
@@ -104,13 +105,16 @@ class MobileHealerHome extends HookConsumerWidget {
   }
 }
 
-class HealerHomeScreen extends StatelessWidget {
+class HealerHomeScreen extends HookConsumerWidget {
   static const name = 'healer';
 
   const HealerHomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    useEffect(() {
+      ref.read(userStoreProvider).loadOffices();
+    }, const[]);
     return context.isMobile ? const MobileHealerHome() : const DesktopHealerHome();
   }
 }
@@ -134,6 +138,9 @@ class DesktopHealerHome extends HookConsumerWidget {
         break;
       case HomeTabs.help:
         child = const SingleChildScrollView(child: _Help());
+        break;
+      case HomeTabs.offices:
+        child = const Offices();
         break;
     }
 
@@ -176,6 +183,15 @@ class DesktopHealerHome extends HookConsumerWidget {
                                   store.selectedTab = HomeTabs.help;
                                 },
                                 selected: store.selectedTab == HomeTabs.help,
+                              ),
+                              const SizedBox(width: 2),
+                              if (userStore.isOfficeManager)
+                              MenuItem(
+                                label: context.l10n.adminOfficesMenu,
+                                onTap: () {
+                                  store.selectedTab = HomeTabs.offices;
+                                },
+                                selected: store.selectedTab == HomeTabs.offices,
                               ),
                               const SizedBox(width: kNormalPadding),
                               MenuItem(

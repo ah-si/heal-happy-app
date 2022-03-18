@@ -84,6 +84,7 @@ Class | Method | HTTP request | Description
 [*OfficesApi*](doc/OfficesApi.md) | [**createOffice**](doc/OfficesApi.md#createoffice) | **POST** /api/v1/offices | 
 [*OfficesApi*](doc/OfficesApi.md) | [**deleteRoom**](doc/OfficesApi.md#deleteroom) | **DELETE** /api/v1/offices/rooms/{id} | 
 [*OfficesApi*](doc/OfficesApi.md) | [**getOffice**](doc/OfficesApi.md#getoffice) | **GET** /api/v1/offices/{id} | 
+[*OfficesApi*](doc/OfficesApi.md) | [**getOfficeEvents**](doc/OfficesApi.md#getofficeevents) | **GET** /api/v1/offices/{id}/events | 
 [*OfficesApi*](doc/OfficesApi.md) | [**getOffices**](doc/OfficesApi.md#getoffices) | **GET** /api/v1/offices | 
 [*OfficesApi*](doc/OfficesApi.md) | [**removeHealerFromRoom**](doc/OfficesApi.md#removehealerfromroom) | **DELETE** /api/v1/offices/rooms/{id}/healers/{healerId} | 
 [*OfficesApi*](doc/OfficesApi.md) | [**removeManager**](doc/OfficesApi.md#removemanager) | **DELETE** /api/v1/offices/{id}/managers/{managerId} | 
@@ -123,8 +124,6 @@ Class | Method | HTTP request | Description
  - [AdminUserEvent](doc/AdminUserEvent.md)
  - [AppSettings](doc/AppSettings.md)
  - [AskResetPassword](doc/AskResetPassword.md)
- - [CalendarDaySettings](doc/CalendarDaySettings.md)
- - [CalendarSettings](doc/CalendarSettings.md)
  - [CreateEventRequest](doc/CreateEventRequest.md)
  - [CreateInviteEventRequest](doc/CreateInviteEventRequest.md)
  - [Dashboard](doc/Dashboard.md)

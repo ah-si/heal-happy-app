@@ -8,6 +8,7 @@ part of 'opening_type.dart';
 
 const OpeningType _$visio = const OpeningType._('visio');
 const OpeningType _$faceToFace = const OpeningType._('faceToFace');
+const OpeningType _$unavailable = const OpeningType._('unavailable');
 
 OpeningType _$valueOf(String name) {
   switch (name) {
@@ -15,6 +16,8 @@ OpeningType _$valueOf(String name) {
       return _$visio;
     case 'faceToFace':
       return _$faceToFace;
+    case 'unavailable':
+      return _$unavailable;
     default:
       throw new ArgumentError(name);
   }
@@ -24,12 +27,14 @@ final BuiltSet<OpeningType> _$values =
     new BuiltSet<OpeningType>(const <OpeningType>[
   _$visio,
   _$faceToFace,
+  _$unavailable,
 ]);
 
 class _$OpeningTypeMeta {
   const _$OpeningTypeMeta();
   OpeningType get visio => _$visio;
   OpeningType get faceToFace => _$faceToFace;
+  OpeningType get unavailable => _$unavailable;
   OpeningType valueOf(String name) => _$valueOf(name);
   BuiltSet<OpeningType> get values => _$values;
 }
@@ -45,10 +50,12 @@ class _$OpeningTypeSerializer implements PrimitiveSerializer<OpeningType> {
   static const Map<String, Object> _toWire = const <String, Object>{
     'visio': 'visio',
     'faceToFace': 'faceToFace',
+    'unavailable': 'unavailable',
   };
   static const Map<Object, String> _fromWire = const <Object, String>{
     'visio': 'visio',
     'faceToFace': 'faceToFace',
+    'unavailable': 'unavailable',
   };
 
   @override

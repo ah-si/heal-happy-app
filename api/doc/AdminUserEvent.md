@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **id** | **String** |  | 
 **patient** | [**User**](User.md) |  | 
 **healer** | [**User**](User.md) |  | 
+**isHealerPresent** | **bool** |  | 
+**isPatientPresent** | **bool** |  | 
 **isUrgent** | **bool** |  | 
 **isCancelled** | **bool** |  | 
 **createdAt** | [**DateTime**](DateTime.md) |  | 

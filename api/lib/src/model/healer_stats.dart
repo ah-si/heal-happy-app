@@ -13,6 +13,8 @@ part 'healer_stats.g.dart';
 /// * [id] 
 /// * [totalEvents] 
 /// * [totalDuration] 
+/// * [totalEventsFaceToFace] 
+/// * [totalDurationFaceToFace] 
 /// * [street] 
 /// * [street2] 
 /// * [city] 
@@ -31,6 +33,12 @@ abstract class HealerStats implements Built<HealerStats, HealerStatsBuilder> {
 
     @BuiltValueField(wireName: r'totalDuration')
     int get totalDuration;
+
+    @BuiltValueField(wireName: r'totalEventsFaceToFace')
+    int get totalEventsFaceToFace;
+
+    @BuiltValueField(wireName: r'totalDurationFaceToFace')
+    int get totalDurationFaceToFace;
 
     @BuiltValueField(wireName: r'street')
     String? get street;
@@ -92,6 +100,14 @@ class _$HealerStatsSerializer implements StructuredSerializer<HealerStats> {
         result
             ..add(r'totalDuration')
             ..add(serializers.serialize(object.totalDuration,
+                specifiedType: const FullType(int)));
+        result
+            ..add(r'totalEventsFaceToFace')
+            ..add(serializers.serialize(object.totalEventsFaceToFace,
+                specifiedType: const FullType(int)));
+        result
+            ..add(r'totalDurationFaceToFace')
+            ..add(serializers.serialize(object.totalDurationFaceToFace,
                 specifiedType: const FullType(int)));
         if (object.street != null) {
             result
@@ -159,6 +175,14 @@ class _$HealerStatsSerializer implements StructuredSerializer<HealerStats> {
                     break;
                 case r'totalDuration':
                     result.totalDuration = serializers.deserialize(value,
+                        specifiedType: const FullType(int)) as int;
+                    break;
+                case r'totalEventsFaceToFace':
+                    result.totalEventsFaceToFace = serializers.deserialize(value,
+                        specifiedType: const FullType(int)) as int;
+                    break;
+                case r'totalDurationFaceToFace':
+                    result.totalDurationFaceToFace = serializers.deserialize(value,
                         specifiedType: const FullType(int)) as int;
                     break;
                 case r'street':

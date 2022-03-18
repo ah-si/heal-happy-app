@@ -2,27 +2,29 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/user.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/user.dart';
 
 part 'admin_user_event.g.dart';
 
 /// AdminUserEvent
 ///
 /// Properties:
-/// * [id] 
-/// * [patient] 
-/// * [healer] 
-/// * [isUrgent] 
-/// * [isCancelled] 
-/// * [createdAt] 
-/// * [start] 
-/// * [end] 
-/// * [name] 
-/// * [description] 
-/// * [cancelledDescription] 
-/// * [link] 
+/// * [id]
+/// * [patient]
+/// * [healer]
+/// * [isHealerPresent]
+/// * [isPatientPresent]
+/// * [isUrgent]
+/// * [isCancelled]
+/// * [createdAt]
+/// * [start]
+/// * [end]
+/// * [name]
+/// * [description]
+/// * [cancelledDescription]
+/// * [link]
 abstract class AdminUserEvent implements Built<AdminUserEvent, AdminUserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;
@@ -32,6 +34,12 @@ abstract class AdminUserEvent implements Built<AdminUserEvent, AdminUserEventBui
 
     @BuiltValueField(wireName: r'healer')
     User get healer;
+
+    @BuiltValueField(wireName: r'isHealerPresent')
+    bool get isHealerPresent;
+
+    @BuiltValueField(wireName: r'isPatientPresent')
+    bool get isPatientPresent;
 
     @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
@@ -94,6 +102,14 @@ class _$AdminUserEventSerializer implements StructuredSerializer<AdminUserEvent>
             ..add(r'healer')
             ..add(serializers.serialize(object.healer,
                 specifiedType: const FullType(User)));
+        result
+            ..add(r'isHealerPresent')
+            ..add(serializers.serialize(object.isHealerPresent,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isPatientPresent')
+            ..add(serializers.serialize(object.isPatientPresent,
+                specifiedType: const FullType(bool)));
         result
             ..add(r'isUrgent')
             ..add(serializers.serialize(object.isUrgent,
@@ -159,6 +175,14 @@ class _$AdminUserEventSerializer implements StructuredSerializer<AdminUserEvent>
                 case r'healer':
                     result.healer.replace(serializers.deserialize(value,
                         specifiedType: const FullType(User)) as User);
+                    break;
+                case r'isHealerPresent':
+                    result.isHealerPresent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isPatientPresent':
+                    result.isPatientPresent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
                     break;
                 case r'isUrgent':
                     result.isUrgent = serializers.deserialize(value,

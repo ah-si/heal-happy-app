@@ -15,6 +15,7 @@ Method | HTTP request | Description
 [**createOffice**](OfficesApi.md#createoffice) | **POST** /api/v1/offices | 
 [**deleteRoom**](OfficesApi.md#deleteroom) | **DELETE** /api/v1/offices/rooms/{id} | 
 [**getOffice**](OfficesApi.md#getoffice) | **GET** /api/v1/offices/{id} | 
+[**getOfficeEvents**](OfficesApi.md#getofficeevents) | **GET** /api/v1/offices/{id}/events | 
 [**getOffices**](OfficesApi.md#getoffices) | **GET** /api/v1/offices | 
 [**removeHealerFromRoom**](OfficesApi.md#removehealerfromroom) | **DELETE** /api/v1/offices/rooms/{id}/healers/{healerId} | 
 [**removeManager**](OfficesApi.md#removemanager) | **DELETE** /api/v1/offices/{id}/managers/{managerId} | 
@@ -283,6 +284,51 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Office**](Office.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getOfficeEvents**
+> BuiltList<UserEvent> getOfficeEvents(id)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getOfficesApi();
+final String id = id_example; // String | 
+
+try { 
+    final response = api.getOfficeEvents(id);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling OfficesApi->getOfficeEvents: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**|  | 
+
+### Return type
+
+[**BuiltList&lt;UserEvent&gt;**](UserEvent.md)
 
 ### Authorization
 

@@ -193,9 +193,9 @@ class _HealerEvents extends HookConsumerWidget {
                     listener.notifyListeners();
                   },
                 ),
-              if (type == HealerEventType.faceToFace && store.rooms.isNotEmpty)
+              if (type == HealerEventType.faceToFace && userStore.rooms.isNotEmpty)
                 DropdownButtonFormField<String>(
-                  items: store.rooms
+                  items: userStore.rooms
                       .map(
                         (e) => DropdownMenuItem(
                           child: Text(e.room.name + ' (${e.office.name})'),
@@ -400,6 +400,20 @@ class _HealerEventDetails extends HookConsumerWidget {
                 children: [
                   Row(
                     children: [
+                      Column(
+                        children: [
+                          CircleAvatar(
+                            maxRadius: 4,
+                            backgroundColor: event.isHealerPresent ? Colors.green : Colors.red,
+                          ),
+                          const SizedBox(height: 2),
+                          CircleAvatar(
+                            maxRadius: 4,
+                            backgroundColor: event.isPatientPresent ? Colors.green : Colors.red,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: kSmallPadding),
                       Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
                       if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
                         IconButton(
@@ -510,7 +524,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                           (context) => ConstrainedBox(
                             constraints: const BoxConstraints(maxHeight: 300),
                             child: SingleChildScrollView(
-                              child: Text(event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!),
+                              child: SelectableText(event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!),
                             ),
                           ),
                         );

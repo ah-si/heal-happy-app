@@ -48,8 +48,6 @@ class _$Healer extends Healer {
   @override
   final String lastName;
   @override
-  final CalendarSettings calendarSettings;
-  @override
   final String? street;
   @override
   final String? street2;
@@ -86,7 +84,6 @@ class _$Healer extends Healer {
       this.social2,
       this.social3,
       required this.lastName,
-      required this.calendarSettings,
       this.street,
       this.street2,
       required this.zipCode,
@@ -104,8 +101,6 @@ class _$Healer extends Healer {
     BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang');
     BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type');
     BuiltValueNullFieldError.checkNotNull(lastName, 'Healer', 'lastName');
-    BuiltValueNullFieldError.checkNotNull(
-        calendarSettings, 'Healer', 'calendarSettings');
     BuiltValueNullFieldError.checkNotNull(zipCode, 'Healer', 'zipCode');
     BuiltValueNullFieldError.checkNotNull(country, 'Healer', 'country');
     BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city');
@@ -142,7 +137,6 @@ class _$Healer extends Healer {
         social2 == other.social2 &&
         social3 == other.social3 &&
         lastName == other.lastName &&
-        calendarSettings == other.calendarSettings &&
         street == other.street &&
         street2 == other.street2 &&
         zipCode == other.zipCode &&
@@ -171,20 +165,20 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode),
-                                                                                isTermsAccepted.hashCode),
-                                                                            versionTermsAccepted.hashCode),
-                                                                        lang.hashCode),
-                                                                    type.hashCode),
-                                                                experiences.hashCode),
-                                                            description.hashCode),
-                                                        diploma.hashCode),
-                                                    website.hashCode),
-                                                social1.hashCode),
-                                            social2.hashCode),
-                                        social3.hashCode),
-                                    lastName.hashCode),
-                                calendarSettings.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode),
+                                                                                isAddressPublic.hashCode),
+                                                                            isTermsAccepted.hashCode),
+                                                                        versionTermsAccepted.hashCode),
+                                                                    lang.hashCode),
+                                                                type.hashCode),
+                                                            experiences.hashCode),
+                                                        description.hashCode),
+                                                    diploma.hashCode),
+                                                website.hashCode),
+                                            social1.hashCode),
+                                        social2.hashCode),
+                                    social3.hashCode),
+                                lastName.hashCode),
                             street.hashCode),
                         street2.hashCode),
                     zipCode.hashCode),
@@ -216,7 +210,6 @@ class _$Healer extends Healer {
           ..add('social2', social2)
           ..add('social3', social3)
           ..add('lastName', lastName)
-          ..add('calendarSettings', calendarSettings)
           ..add('street', street)
           ..add('street2', street2)
           ..add('zipCode', zipCode)
@@ -315,12 +308,6 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   String? get lastName => _$this._lastName;
   set lastName(String? lastName) => _$this._lastName = lastName;
 
-  CalendarSettingsBuilder? _calendarSettings;
-  CalendarSettingsBuilder get calendarSettings =>
-      _$this._calendarSettings ??= new CalendarSettingsBuilder();
-  set calendarSettings(CalendarSettingsBuilder? calendarSettings) =>
-      _$this._calendarSettings = calendarSettings;
-
   String? _street;
   String? get street => _$this._street;
   set street(String? street) => _$this._street = street;
@@ -372,7 +359,6 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
       _social2 = $v.social2;
       _social3 = $v.social3;
       _lastName = $v.lastName;
-      _calendarSettings = $v.calendarSettings.toBuilder();
       _street = $v.street;
       _street2 = $v.street2;
       _zipCode = $v.zipCode;
@@ -397,58 +383,42 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
 
   @override
   _$Healer build() {
-    _$Healer _$result;
-    try {
-      _$result = _$v ??
-          new _$Healer._(
-              id: id,
-              isVerified: BuiltValueNullFieldError.checkNotNull(
-                  isVerified, 'Healer', 'isVerified'),
-              isActivated: BuiltValueNullFieldError.checkNotNull(
-                  isActivated, 'Healer', 'isActivated'),
-              canDoFaceToFace: canDoFaceToFace,
-              job: job,
-              firstName: BuiltValueNullFieldError.checkNotNull(
-                  firstName, 'Healer', 'firstName'),
-              consultationDuration: consultationDuration,
-              isAddressPublic: BuiltValueNullFieldError.checkNotNull(
-                  isAddressPublic, 'Healer', 'isAddressPublic'),
-              isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
-                  isTermsAccepted, 'Healer', 'isTermsAccepted'),
-              versionTermsAccepted: versionTermsAccepted,
-              lang:
-                  BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang'),
-              type:
-                  BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type'),
-              experiences: experiences,
-              description: description,
-              diploma: diploma,
-              website: website,
-              social1: social1,
-              social2: social2,
-              social3: social3,
-              lastName: BuiltValueNullFieldError.checkNotNull(
-                  lastName, 'Healer', 'lastName'),
-              calendarSettings: calendarSettings.build(),
-              street: street,
-              street2: street2,
-              zipCode: BuiltValueNullFieldError.checkNotNull(
-                  zipCode, 'Healer', 'zipCode'),
-              country: BuiltValueNullFieldError.checkNotNull(
-                  country, 'Healer', 'country'),
-              city: BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city'),
-              avatar: avatar);
-    } catch (_) {
-      late String _$failedField;
-      try {
-        _$failedField = 'calendarSettings';
-        calendarSettings.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            'Healer', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+    final _$result = _$v ??
+        new _$Healer._(
+            id: id,
+            isVerified: BuiltValueNullFieldError.checkNotNull(
+                isVerified, 'Healer', 'isVerified'),
+            isActivated: BuiltValueNullFieldError.checkNotNull(
+                isActivated, 'Healer', 'isActivated'),
+            canDoFaceToFace: canDoFaceToFace,
+            job: job,
+            firstName: BuiltValueNullFieldError.checkNotNull(
+                firstName, 'Healer', 'firstName'),
+            consultationDuration: consultationDuration,
+            isAddressPublic: BuiltValueNullFieldError.checkNotNull(
+                isAddressPublic, 'Healer', 'isAddressPublic'),
+            isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
+                isTermsAccepted, 'Healer', 'isTermsAccepted'),
+            versionTermsAccepted: versionTermsAccepted,
+            lang: BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang'),
+            type: BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type'),
+            experiences: experiences,
+            description: description,
+            diploma: diploma,
+            website: website,
+            social1: social1,
+            social2: social2,
+            social3: social3,
+            lastName: BuiltValueNullFieldError.checkNotNull(
+                lastName, 'Healer', 'lastName'),
+            street: street,
+            street2: street2,
+            zipCode: BuiltValueNullFieldError.checkNotNull(
+                zipCode, 'Healer', 'zipCode'),
+            country: BuiltValueNullFieldError.checkNotNull(
+                country, 'Healer', 'country'),
+            city: BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city'),
+            avatar: avatar);
     replace(_$result);
     return _$result;
   }

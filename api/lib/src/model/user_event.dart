@@ -2,35 +2,37 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/minimal_user.dart';
-import 'package:heal_happy_sdk/src/model/office.dart';
-import 'package:heal_happy_sdk/src/model/healer.dart';
-import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
-import 'package:heal_happy_sdk/src/model/office_room.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/healer.dart';
+import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
+import 'package:heal_happy_sdk/src/model/minimal_user.dart';
+import 'package:heal_happy_sdk/src/model/office.dart';
+import 'package:heal_happy_sdk/src/model/office_room.dart';
 
 part 'user_event.g.dart';
 
 /// UserEvent
 ///
 /// Properties:
-/// * [id] 
-/// * [patientToken] 
-/// * [patient] 
-/// * [healer] 
-/// * [room] 
-/// * [office] 
-/// * [isUrgent] 
-/// * [isCancelled] 
-/// * [type] 
-/// * [createdAt] 
-/// * [start] 
-/// * [end] 
-/// * [name] 
-/// * [description] 
-/// * [cancelledDescription] 
-/// * [link] 
+/// * [id]
+/// * [patientToken]
+/// * [patient]
+/// * [healer]
+/// * [room]
+/// * [office]
+/// * [isUrgent]
+/// * [isHealerPresent]
+/// * [isPatientPresent]
+/// * [isCancelled]
+/// * [type]
+/// * [createdAt]
+/// * [start]
+/// * [end]
+/// * [name]
+/// * [description]
+/// * [cancelledDescription]
+/// * [link]
 abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;
@@ -52,6 +54,12 @@ abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
 
     @BuiltValueField(wireName: r'isUrgent')
     bool get isUrgent;
+
+    @BuiltValueField(wireName: r'isHealerPresent')
+    bool get isHealerPresent;
+
+    @BuiltValueField(wireName: r'isPatientPresent')
+    bool get isPatientPresent;
 
     @BuiltValueField(wireName: r'isCancelled')
     bool get isCancelled;
@@ -138,6 +146,14 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
             ..add(serializers.serialize(object.isUrgent,
                 specifiedType: const FullType(bool)));
         result
+            ..add(r'isHealerPresent')
+            ..add(serializers.serialize(object.isHealerPresent,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isPatientPresent')
+            ..add(serializers.serialize(object.isPatientPresent,
+                specifiedType: const FullType(bool)));
+        result
             ..add(r'isCancelled')
             ..add(serializers.serialize(object.isCancelled,
                 specifiedType: const FullType(bool)));
@@ -217,6 +233,14 @@ class _$UserEventSerializer implements StructuredSerializer<UserEvent> {
                     break;
                 case r'isUrgent':
                     result.isUrgent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isHealerPresent':
+                    result.isHealerPresent = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isPatientPresent':
+                    result.isPatientPresent = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     break;
                 case r'isCancelled':

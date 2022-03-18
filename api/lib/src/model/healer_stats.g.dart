@@ -14,6 +14,10 @@ class _$HealerStats extends HealerStats {
   @override
   final int totalDuration;
   @override
+  final int totalEventsFaceToFace;
+  @override
+  final int totalDurationFaceToFace;
+  @override
   final String? street;
   @override
   final String? street2;
@@ -39,6 +43,8 @@ class _$HealerStats extends HealerStats {
       {required this.id,
       required this.totalEvents,
       required this.totalDuration,
+      required this.totalEventsFaceToFace,
+      required this.totalDurationFaceToFace,
       this.street,
       this.street2,
       required this.city,
@@ -54,6 +60,10 @@ class _$HealerStats extends HealerStats {
         totalEvents, 'HealerStats', 'totalEvents');
     BuiltValueNullFieldError.checkNotNull(
         totalDuration, 'HealerStats', 'totalDuration');
+    BuiltValueNullFieldError.checkNotNull(
+        totalEventsFaceToFace, 'HealerStats', 'totalEventsFaceToFace');
+    BuiltValueNullFieldError.checkNotNull(
+        totalDurationFaceToFace, 'HealerStats', 'totalDurationFaceToFace');
     BuiltValueNullFieldError.checkNotNull(city, 'HealerStats', 'city');
     BuiltValueNullFieldError.checkNotNull(zipCode, 'HealerStats', 'zipCode');
     BuiltValueNullFieldError.checkNotNull(
@@ -77,6 +87,8 @@ class _$HealerStats extends HealerStats {
         id == other.id &&
         totalEvents == other.totalEvents &&
         totalDuration == other.totalDuration &&
+        totalEventsFaceToFace == other.totalEventsFaceToFace &&
+        totalDurationFaceToFace == other.totalDurationFaceToFace &&
         street == other.street &&
         street2 == other.street2 &&
         city == other.city &&
@@ -100,9 +112,13 @@ class _$HealerStats extends HealerStats {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                totalEvents.hashCode),
-                                            totalDuration.hashCode),
+                                            $jc(
+                                                $jc(
+                                                    $jc($jc(0, id.hashCode),
+                                                        totalEvents.hashCode),
+                                                    totalDuration.hashCode),
+                                                totalEventsFaceToFace.hashCode),
+                                            totalDurationFaceToFace.hashCode),
                                         street.hashCode),
                                     street2.hashCode),
                                 city.hashCode),
@@ -120,6 +136,8 @@ class _$HealerStats extends HealerStats {
           ..add('id', id)
           ..add('totalEvents', totalEvents)
           ..add('totalDuration', totalDuration)
+          ..add('totalEventsFaceToFace', totalEventsFaceToFace)
+          ..add('totalDurationFaceToFace', totalDurationFaceToFace)
           ..add('street', street)
           ..add('street2', street2)
           ..add('city', city)
@@ -148,6 +166,16 @@ class HealerStatsBuilder implements Builder<HealerStats, HealerStatsBuilder> {
   int? get totalDuration => _$this._totalDuration;
   set totalDuration(int? totalDuration) =>
       _$this._totalDuration = totalDuration;
+
+  int? _totalEventsFaceToFace;
+  int? get totalEventsFaceToFace => _$this._totalEventsFaceToFace;
+  set totalEventsFaceToFace(int? totalEventsFaceToFace) =>
+      _$this._totalEventsFaceToFace = totalEventsFaceToFace;
+
+  int? _totalDurationFaceToFace;
+  int? get totalDurationFaceToFace => _$this._totalDurationFaceToFace;
+  set totalDurationFaceToFace(int? totalDurationFaceToFace) =>
+      _$this._totalDurationFaceToFace = totalDurationFaceToFace;
 
   String? _street;
   String? get street => _$this._street;
@@ -195,6 +223,8 @@ class HealerStatsBuilder implements Builder<HealerStats, HealerStatsBuilder> {
       _id = $v.id;
       _totalEvents = $v.totalEvents;
       _totalDuration = $v.totalDuration;
+      _totalEventsFaceToFace = $v.totalEventsFaceToFace;
+      _totalDurationFaceToFace = $v.totalDurationFaceToFace;
       _street = $v.street;
       _street2 = $v.street2;
       _city = $v.city;
@@ -229,6 +259,10 @@ class HealerStatsBuilder implements Builder<HealerStats, HealerStatsBuilder> {
                 totalEvents, 'HealerStats', 'totalEvents'),
             totalDuration: BuiltValueNullFieldError.checkNotNull(
                 totalDuration, 'HealerStats', 'totalDuration'),
+            totalEventsFaceToFace: BuiltValueNullFieldError.checkNotNull(
+                totalEventsFaceToFace, 'HealerStats', 'totalEventsFaceToFace'),
+            totalDurationFaceToFace: BuiltValueNullFieldError.checkNotNull(
+                totalDurationFaceToFace, 'HealerStats', 'totalDurationFaceToFace'),
             street: street,
             street2: street2,
             city: BuiltValueNullFieldError.checkNotNull(
@@ -239,11 +273,9 @@ class HealerStatsBuilder implements Builder<HealerStats, HealerStatsBuilder> {
                 firstName, 'HealerStats', 'firstName'),
             lastName: BuiltValueNullFieldError.checkNotNull(
                 lastName, 'HealerStats', 'lastName'),
-            email: BuiltValueNullFieldError.checkNotNull(
-                email, 'HealerStats', 'email'),
+            email: BuiltValueNullFieldError.checkNotNull(email, 'HealerStats', 'email'),
             mobile: mobile,
-            job: BuiltValueNullFieldError.checkNotNull(
-                job, 'HealerStats', 'job'));
+            job: BuiltValueNullFieldError.checkNotNull(job, 'HealerStats', 'job'));
     replace(_$result);
     return _$result;
   }

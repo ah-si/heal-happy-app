@@ -523,10 +523,13 @@ class _HealerListItem extends HookConsumerWidget {
                 if (!healer.description.isNullOrEmpty)
                   Text(
                     context.l10n.healerDescription,
-                    maxLines: 3,
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                if (!healer.description.isNullOrEmpty) Text(healer.description!),
+                if (!healer.description.isNullOrEmpty)
+                  Text(
+                    healer.description!,
+                    maxLines: 5,
+                  ),
                 const SizedBox(height: kNormalPadding),
                 ElevatedButton(
                   onPressed: () {
@@ -631,73 +634,75 @@ class _PatientEventDetails extends HookConsumerWidget {
     final content = Column(
       children: [
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(kNormalPadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
-                const SizedBox(height: kSmallPadding),
-                Text(context.l10n.yourHealer),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const SizedBox(height: kSmallPadding),
-                    TextButton(
-                      onPressed: () {
-                        context.push(HealerProfileScreen.route.replaceAll(':id', event.healer.id!), extra: patientStore.lastTypeSearch);
-                      },
-                      child: Text(
-                        event.healer.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    if (event.type == HealerEventType.visio)
-                      Text(
-                        event.healer.zipCode + ' ' + event.healer.city,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                      ),
-                    const SizedBox(height: kNormalPadding),
-                    if (event.type == HealerEventType.visio && !event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 4))))
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(kNormalPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
+                  const SizedBox(height: kSmallPadding),
+                  Text(context.l10n.yourHealer),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: kSmallPadding),
                       TextButton(
                         onPressed: () {
-                          ref.read(userStoreProvider).acceptEvent(event.id);
-                          if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                            launch(event.link);
-                          } else {
-                            var options = JitsiMeetingOptions(
-                              roomNameOrUrl: event.link,
-                              userDisplayName: event.patient.firstName,
-                              subject: 'Consultation Soignez Heureux',
-                            );
-                            JitsiMeetWrapper.joinMeeting(options: options);
-                          }
-                        },
-                        child: Text(context.l10n.joinVisioButton),
-                      ),
-                    if (event.type == HealerEventType.faceToFace)
-                      TextButton(
-                        onPressed: () {
-                          launch(Uri.encodeFull('https://www.google.com/maps/search/?api=1&query=' + event.healer.address));
+                          context.push(HealerProfileScreen.route.replaceAll(':id', event.healer.id!), extra: patientStore.lastTypeSearch);
                         },
                         child: Text(
-                          event.office?.address ?? event.healer.address,
+                          event.healer.name,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
                       ),
-                  ],
-                ),
-                if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
-                if (event.isCancelled)
-                  Text(
-                    event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  )
-              ],
+                      if (event.type == HealerEventType.visio)
+                        Text(
+                          event.healer.zipCode + ' ' + event.healer.city,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center,
+                        ),
+                      const SizedBox(height: kNormalPadding),
+                      if (event.type == HealerEventType.visio && !event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 4))))
+                        TextButton(
+                          onPressed: () {
+                            ref.read(userStoreProvider).acceptEvent(event.id);
+                            if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
+                              launch(event.link);
+                            } else {
+                              var options = JitsiMeetingOptions(
+                                roomNameOrUrl: event.link,
+                                userDisplayName: event.patient.firstName,
+                                subject: 'Consultation Soignez Heureux',
+                              );
+                              JitsiMeetWrapper.joinMeeting(options: options);
+                            }
+                          },
+                          child: Text(context.l10n.joinVisioButton),
+                        ),
+                      if (event.type == HealerEventType.faceToFace)
+                        TextButton(
+                          onPressed: () {
+                            launch(Uri.encodeFull('https://www.google.com/maps/search/?api=1&query=' + event.healer.address));
+                          },
+                          child: Text(
+                            event.office?.address ?? event.healer.address,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                    ],
+                  ),
+                  if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
+                  if (event.isCancelled)
+                    Text(
+                      event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                ],
+              ),
             ),
           ),
         ),
@@ -743,7 +748,7 @@ class _PatientEventDetails extends HookConsumerWidget {
       ],
     );
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 280),
+      constraints: const BoxConstraints(maxWidth: 320, maxHeight: 300),
       child: Card(
         margin: const EdgeInsets.all(kSmallPadding),
         child: event.isUrgent || event.isCancelled

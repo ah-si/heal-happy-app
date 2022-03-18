@@ -20,10 +20,30 @@ class OfficeResult {
   OfficeResult(this.office, {this.error});
 }
 
+class OfficePlaningResult {
+  final List<UserEvent> events;
+  final ErrorResultException? error;
+
+  OfficePlaningResult(this.events, {this.error});
+}
+
+enum OfficeTabs { home, planing }
+
 class OfficeStore extends ChangeNotifier {
   final OfficesApi _officesApi;
   final String id;
+  OfficeTabs _selectedTab = OfficeTabs.home;
+  OfficeTabs get selectedTab => _selectedTab;
+
+  set selectedTab(OfficeTabs value) {
+    if (_selectedTab != value) {
+      _selectedTab = value;
+      notifyListeners();
+    }
+  }
+
   OfficeResult? result;
+  OfficePlaningResult? planingResult;
 
   OfficeStore({required this.id, Office? office, OfficesApi? officesApi})
       : _officesApi = officesApi ?? BackendApiProvider().api.getOfficesApi(),
@@ -38,6 +58,17 @@ class OfficeStore extends ChangeNotifier {
       }
     } catch (error, stackTrace) {
       result = OfficeResult(null, error: handleError(error, stackTrace));
+      notifyListeners();
+    }
+  }
+
+  void loadPlaning() async {
+    final results = await _officesApi.getOfficeEvents(id: id);
+    try {
+      planingResult = OfficePlaningResult(results.data!.toList());
+      notifyListeners();
+    } catch (error, stackTrace) {
+      planingResult = OfficePlaningResult([], error: handleError(error, stackTrace));
       notifyListeners();
     }
   }
