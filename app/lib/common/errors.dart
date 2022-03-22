@@ -22,6 +22,8 @@ ErrorResultException handleError(error, stackTrace) {
       result = ErrorResultException(ErrorResult.noNetwork);
     } else if (error is DioError && error.response?.statusCode == 401) {
       result = ErrorResultException(ErrorResult.notLogged);
+    } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('spe_meeting_exist_already')) {
+      result = ErrorResultException(ErrorResult.speMeetingAlreadyExist);
     } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('meeting_exist_already')) {
       result = ErrorResultException(ErrorResult.meetingAlreadyExist);
     } else if (error is DioError && error.response?.statusCode == 403 && error.response!.data!.toString().contains('account_not_activated')) {
@@ -97,6 +99,7 @@ class ErrorResult {
   static const noAppForActionError = ErrorResult(_ErrorType.noAppForActionError);
   static const fieldRequired = ErrorResult(_ErrorType.fieldRequired);
   static const meetingAlreadyExist = ErrorResult(_ErrorType.meetingAlreadyExist);
+  static const speMeetingAlreadyExist = ErrorResult(_ErrorType.speMeetingAlreadyExist);
   static const healerMeetingAlreadyExist = ErrorResult(_ErrorType.healerMeetingAlreadyExist);
   static const accountNotActivated = ErrorResult(_ErrorType.accountNotActivated);
   static const dateStartAfterEnd = ErrorResult(_ErrorType.dateStartAfterEnd);
@@ -136,6 +139,8 @@ class ErrorResult {
         return localizations.wrongCredentials;
       case _ErrorType.meetingAlreadyExist:
         return localizations.meetingAlreadyExist;
+      case _ErrorType.speMeetingAlreadyExist:
+        return localizations.speMeetingAlreadyExist;
       case _ErrorType.healerMeetingAlreadyExist:
         return localizations.healerMeetingAlreadyExist;
       case _ErrorType.emailAlreadyUsed:
@@ -207,6 +212,8 @@ class ErrorResult {
         return localizations.wrongCredentialsHint;
       case _ErrorType.meetingAlreadyExist:
         return localizations.meetingAlreadyExistHint;
+      case _ErrorType.speMeetingAlreadyExist:
+        return localizations.speMeetingAlreadyExistHint;
       case _ErrorType.healerMeetingAlreadyExist:
         return localizations.healerMeetingAlreadyExistHint;
       case _ErrorType.emailAlreadyUsed:
@@ -283,6 +290,7 @@ enum _ErrorType {
   emailAlreadyUsed,
   fieldRequired,
   meetingAlreadyExist,
+  speMeetingAlreadyExist,
   healerMeetingAlreadyExist,
   noPastEvent,
   noPastOpening,

@@ -58,8 +58,14 @@ class ErrorLocalizations {
   String get meetingAlreadyExist => Intl.message('Réservation impossible', name: 'meetingAlreadyExist');
 
   String get meetingAlreadyExistHint =>
-      Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consultation passée.',
+      Intl.message('Vous avez déjà une consultation planifiée avec ce soignant, vous pourrez reprendre rendez-vous une fois la consultation passée ou annulée.',
           name: 'meetingAlreadyExistHint');
+
+  String get speMeetingAlreadyExist => Intl.message('Réservation impossible', name: 'speMeetingAlreadyExist');
+
+  String get speMeetingAlreadyExistHint =>
+      Intl.message('Vous avez déjà une consultation planifiée pour cette spécialité, vous pourrez reprendre rendez-vous une fois la consultation passée ou annulée.',
+          name: 'speMeetingAlreadyExistHint');
 
   String get healerMeetingAlreadyExist => Intl.message('Réservation impossible', name: 'healerMeetingAlreadyExist');
 

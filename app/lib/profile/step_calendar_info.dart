@@ -361,7 +361,7 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
       case OpeningType.faceToFace:
         if (opening.userId != currentUserId && opening.roomId != null) {
           final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId);
-          return opening.user!.name + ' ' + room!.office.name + ' (' + room.room.name + ')';
+          return (opening.user?.name ?? '') + ' ' + room!.office.name + ' (' + room.room.name + ')';
         } else if (opening.roomId != null) {
           final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId);
           if (room == null) {
