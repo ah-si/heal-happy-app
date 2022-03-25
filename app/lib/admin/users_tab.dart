@@ -92,6 +92,7 @@ class _UsersSearch extends HookConsumerWidget {
     final controllerSpe = useTextEditingController();
     final activatedState = useState<bool?>(null);
     final verifiedState = useState<bool?>(null);
+    final faceToFaceState = useState<bool?>(null);
     final jobState = useState<String?>(null);
     final typeState = useState<UserTypeEnum?>(null);
     search() {
@@ -103,6 +104,7 @@ class _UsersSearch extends HookConsumerWidget {
             controllerSpe.text.isNullOrEmpty ? null : jobState.value,
             activatedState.value,
             verifiedState.value,
+            faceToFaceState.value,
           ));
     }
 
@@ -175,6 +177,17 @@ class _UsersSearch extends HookConsumerWidget {
               title: Text(context.l10n.isVerifiedField, maxLines: 1),
             ),
           ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 160),
+            child: CheckboxListTile(
+              value: faceToFaceState.value,
+              onChanged: (value) {
+                faceToFaceState.value = value;
+              },
+              tristate: true,
+              title: Text(context.l10n.canDoFaceToFaceField, maxLines: 1),
+            ),
+          ),
           ElevatedButton(
             onPressed: search,
             child: Text(context.l10n.searchButton),
@@ -205,6 +218,13 @@ class _UsersSearch extends HookConsumerWidget {
                   specifiedType: const FullType(bool),
                 );
                 url += 'isVerified=$serialized&';
+              }
+              if (faceToFaceState.value != null) {
+                final serialized = serializers.serialize(
+                  faceToFaceState.value as Object,
+                  specifiedType: const FullType(bool),
+                );
+                url += 'canDoFaceToFace=$serialized&';
               }
 
               final token = BackendApiProvider().getToken();

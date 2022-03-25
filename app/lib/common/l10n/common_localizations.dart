@@ -385,6 +385,8 @@ class CommonLocalizations {
 
   String get isVerifiedField => Intl.message('Vérifié:', name: 'isVerifiedField');
 
+  String get canDoFaceToFaceField => Intl.message('Présentiel:', name: 'canDoFaceToFaceField');
+
   String get searchQueryField => Intl.message('Recherche:', name: 'searchQueryField');
 
   String get searchQueryPlaceholder => Intl.message('Nom, prénom, email...', name: 'searchQueryPlaceholder');

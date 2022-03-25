@@ -104,11 +104,12 @@ class AvailabilitiesStore extends ChangeNotifier {
       }
       for (var info in slots) {
         for (var slot in info.slots) {
-          if (now.isAfter(slot.toLocal())) {
+          final localDate = slot.toLocal();
+          if (now.isAfter(localDate)) {
             continue;
           }
-          final date = (mobileFormat ? _mobileUiFormat : _uiFormat).format(slot.toLocal());
-          dates[date]!.add(SlotInfo(kHourFormat.format(slot.toLocal()), slot.toLocal(), info.roomId));
+          final date = (mobileFormat ? _mobileUiFormat : _uiFormat).format(localDate);
+          dates[date]?.add(SlotInfo(kHourFormat.format(localDate), localDate, info.roomId));
         }
       }
       availabilities = AvailabilitiesResults(dates.keys.map((e) => DaySlots(e, dates[e] ?? [])).toList(growable: false));

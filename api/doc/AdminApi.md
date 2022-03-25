@@ -296,7 +296,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **searchUsers**
-> PaginatedUsers searchUsers(page, query, type, job, isActivated, isVerified)
+> PaginatedUsers searchUsers(page, query, type, job, isActivated, canDoFaceToFace, isVerified)
 
 
 
@@ -314,10 +314,11 @@ final String query = query_example; // String |
 final UserTypeEnum type = ; // UserTypeEnum | 
 final String job = job_example; // String | 
 final bool isActivated = true; // bool | 
+final bool canDoFaceToFace = true; // bool | 
 final bool isVerified = true; // bool | 
 
 try { 
-    final response = api.searchUsers(page, query, type, job, isActivated, isVerified);
+    final response = api.searchUsers(page, query, type, job, isActivated, canDoFaceToFace, isVerified);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling AdminApi->searchUsers: $e\n');
@@ -333,6 +334,7 @@ Name | Type | Description  | Notes
  **type** | [**UserTypeEnum**](.md)|  | [optional] 
  **job** | **String**|  | [optional] 
  **isActivated** | **bool**|  | [optional] 
+ **canDoFaceToFace** | **bool**|  | [optional] 
  **isVerified** | **bool**|  | [optional] 
 
 ### Return type

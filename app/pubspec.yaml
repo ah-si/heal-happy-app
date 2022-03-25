@@ -3,7 +3,7 @@ description: Heal happy mobile app
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.0.2+22
+version: 2.0.3+26
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -32,7 +32,9 @@ dependencies:
   flutter_riverpod: ^1.0.3
   hooks_riverpod: ^1.0.3
   flutter_hooks: ^0.18.1
-  sentry_flutter: ^6.3.0
+  sentry_flutter: ^6.4.0
+  sentry_dio: ^6.4.0
+  sentry_logging: ^6.4.0
   logging: ^1.0.2
   jitsi_meet_wrapper: ^0.0.2
   cupertino_icons: ^1.0.2

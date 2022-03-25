@@ -8,6 +8,7 @@ import 'package:heal_happy/common/utils/logging.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:logging/logging.dart';
+import 'package:sentry_dio/sentry_dio.dart';
 
 final apiProvider = Provider<BackendApiProvider>((ref) {
   return BackendApiProvider.setup(
@@ -88,6 +89,10 @@ class BackendApiProvider {
   factory BackendApiProvider() => _singleton;
 
   BackendApiProvider._(List<Interceptor> interceptors, String baseUrl) : api = HealHappySdk(basePathOverride: baseUrl, interceptors: interceptors);
+
+  void addSentry() {
+    api.dio.addSentry();
+  }
 
   String getToken() {
     return (api.dio.interceptors.firstWhere((element) => element is ApiKeyAuthInterceptor) as ApiKeyAuthInterceptor)

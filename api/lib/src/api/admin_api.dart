@@ -534,6 +534,7 @@ class AdminApi {
   /// * [type]
   /// * [job]
   /// * [isActivated]
+  /// * [canDoFaceToFace]
   /// * [isVerified]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
@@ -550,6 +551,7 @@ class AdminApi {
     UserTypeEnum? type,
     String? job,
     bool? isActivated,
+    bool? canDoFaceToFace,
     bool? isVerified,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -584,6 +586,7 @@ class AdminApi {
       if (type != null) r'type': encodeQueryParameter(_serializers, type, const FullType(UserTypeEnum)),
       if (job != null) r'job': encodeQueryParameter(_serializers, job, const FullType(String)),
       if (isActivated != null) r'isActivated': encodeQueryParameter(_serializers, isActivated, const FullType(bool)),
+      if (canDoFaceToFace != null) r'canDoFaceToFace': encodeQueryParameter(_serializers, canDoFaceToFace, const FullType(bool)),
       if (isVerified != null) r'isVerified': encodeQueryParameter(_serializers, isVerified, const FullType(bool)),
     };
 

@@ -2,23 +2,23 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
 
 part 'create_invite_event_request.g.dart';
 
 /// CreateInviteEventRequest
 ///
 /// Properties:
-/// * [slot]
-/// * [roomId]
-/// * [email]
-/// * [mobile]
-/// * [firstName]
-/// * [lastName]
-/// * [type]
-/// * [message]
+/// * [slot] 
+/// * [roomId] 
+/// * [email] 
+/// * [mobile] 
+/// * [firstName] 
+/// * [lastName] 
+/// * [type] 
+/// * [message] 
 abstract class CreateInviteEventRequest implements Built<CreateInviteEventRequest, CreateInviteEventRequestBuilder> {
     @BuiltValueField(wireName: r'slot')
     DateTime? get slot;

@@ -3,24 +3,25 @@
 //
 
 import 'package:built_collection/built_collection.dart';
+import 'package:heal_happy_sdk/src/model/office_info.dart';
+import 'package:heal_happy_sdk/src/model/user.dart';
+import 'package:heal_happy_sdk/src/model/office_room.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/office_room.dart';
-import 'package:heal_happy_sdk/src/model/user.dart';
 
 part 'office.g.dart';
 
 /// Office
 ///
 /// Properties:
-/// * [rooms]
-/// * [managers]
-/// * [id]
-/// * [name]
-/// * [street]
-/// * [street2]
-/// * [city]
-/// * [zipCode]
+/// * [rooms] 
+/// * [managers] 
+/// * [id] 
+/// * [name] 
+/// * [street] 
+/// * [street2] 
+/// * [city] 
+/// * [zipCode] 
 abstract class Office implements Built<Office, OfficeBuilder> {
     @BuiltValueField(wireName: r'rooms')
     BuiltList<OfficeRoom> get rooms;

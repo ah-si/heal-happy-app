@@ -108,8 +108,40 @@ class MobilePatientHome extends HookConsumerWidget {
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
             children: [
-              const _PlannedConsultations(
-                key: Key('consultations'),
+              Column(
+                children: [
+                  if (!(userStore.user?.isActivated ?? true))
+                    ColoredBox(
+                      color: context.theme.errorColor.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kSmallPadding),
+                        child: Column(
+                          children: [
+                            Text(
+                              context.l10n.accountNotVerified,
+                              style: const TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                            if (!userStore.activationEmailResent)
+                              TextButton(
+                                onPressed: () async {
+                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                                  if (success) {
+                                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
+                                  }
+                                },
+                                child: Text(context.l10n.resendActivationLink),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  const Expanded(
+                    child: _PlannedConsultations(
+                      key: Key('consultations'),
+                    ),
+                  ),
+                ],
               ),
               const _SearchTab(),
               if (userStore.user?.type == UserTypeEnum.patient) const UserProfile(),
@@ -199,6 +231,7 @@ class DesktopPatientHome extends HookConsumerWidget {
                           Text(
                             context.l10n.accountNotVerified,
                             style: const TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
                           ),
                           if (!userStore.activationEmailResent)
                             TextButton(

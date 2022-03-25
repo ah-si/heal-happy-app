@@ -22,6 +22,7 @@ import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_logging/sentry_logging.dart';
 
 MaterialColor createMaterialColor(Color color) {
   final strengths = <double>[.05];
@@ -47,17 +48,12 @@ void main() {
   app();
 }
 
-FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) async {
+FutureOr<SentryEvent?> beforeSend(SentryEvent event, {dynamic hint}) {
   if (event.throwable is ErrorResultException && event.throwable.cause != ErrorResult.internal) {
     return null;
-  } else if (event.throwable is DioError && event.throwable.statusCode == 401) {
-    return null;
-  } else if (event.throwable is DioError && event.throwable.statusCode == 403) {
-    return null;
-  } else if (event.throwable is DioError && event.throwable.statusCode == 400) {
+  } else if (event.throwable is DioError && (event.throwable.statusCode == 401 || event.throwable.statusCode == 403 || event.throwable.statusCode == 400)) {
     return null;
   }
-
   return event;
 }
 
@@ -73,7 +69,9 @@ void app({Config? config}) async {
   }
   await SentryFlutter.init(
     (options) {
-      options.dsn = kIsProductionMode ? 'https://1827c477584d403dacf3ba82fb437c39@sentry.ah-si.org/2' : '';
+      options.dsn = !kIsProductionMode ? 'https://1827c477584d403dacf3ba82fb437c39@sentry.ah-si.org/2' : '';
+      options.tracesSampleRate = .1;
+      options.addIntegration(LoggingIntegration());
       options.beforeSend = beforeSend;
     },
     appRunner: () => runApp(const MyApp()),

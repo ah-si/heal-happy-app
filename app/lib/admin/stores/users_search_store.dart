@@ -10,6 +10,7 @@ class SearchQuery {
   final String query;
   final String? job;
   final UserTypeEnum? type;
+  final bool? canDoFaceToFace;
   final bool? isActivated;
   final bool? isVerified;
 
@@ -19,6 +20,7 @@ class SearchQuery {
     this.job,
     this.isActivated,
     this.isVerified,
+    this.canDoFaceToFace,
   );
 }
 
@@ -47,6 +49,7 @@ class AdminUsersStore extends ChangeNotifier {
       final results = await _adminApi.searchUsers(
         isActivated: query.isActivated,
         isVerified: query.isVerified,
+        canDoFaceToFace: query.canDoFaceToFace,
         query: query.query,
         job: query.job,
         type: query.type,

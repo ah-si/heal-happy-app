@@ -42,6 +42,7 @@ class MobileHealerHome extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userStore = ref.watch(userStoreProvider);
     final store = ref.watch(healerStoreProvider);
     final controller = useTabController(initialLength: 3, initialIndex: store.selectedTab.index);
     useEffect(() {
@@ -92,10 +93,52 @@ class MobileHealerHome extends HookConsumerWidget {
         child: ColoredBox(
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
-            children: const [
-              _HealerHomePage(),
-              UserProfile(),
-              SingleChildScrollView(child: _Help()),
+            children: [
+              Column(
+                children: [
+                  if (!(userStore.user?.isActivated ?? true))
+                    ColoredBox(
+                      color: context.theme.errorColor.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kSmallPadding),
+                        child: Column(
+                          children: [
+                            Text(
+                              context.l10n.accountNotVerified,
+                              style: const TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
+                            if (!userStore.activationEmailResent)
+                              TextButton(
+                                onPressed: () async {
+                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                                  if (success) {
+                                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
+                                  }
+                                },
+                                child: Text(context.l10n.resendActivationLink),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  if (!(userStore.user?.isVerified ?? true))
+                    ColoredBox(
+                      color: context.theme.errorColor.withOpacity(0.8),
+                      child: Padding(
+                        padding: const EdgeInsets.all(kSmallPadding),
+                        child: Text(
+                          context.l10n.accountPending,
+                          style: const TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  const Expanded(child: _HealerHomePage()),
+                ],
+              ),
+              const UserProfile(),
+              const SingleChildScrollView(child: _Help()),
             ],
             controller: controller,
           ),

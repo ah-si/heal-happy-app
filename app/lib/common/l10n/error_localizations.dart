@@ -122,9 +122,9 @@ class ErrorLocalizations {
   String get noOpeningOverlapHint =>
       Intl.message('Les horaires ne peuvent se chevaucher, merci de choisir un autre horaire pour votre disponibilité', name: 'noOpeningOverlapHint');
 
-  String get dateStartAfterEnd => Intl.message('Date de fin après date de début', name: 'dateStartAfterEnd');
+  String get dateStartAfterEnd => Intl.message('Date de fin est égale ou après date de début', name: 'dateStartAfterEnd');
 
-  String get dateStartAfterEndHint => Intl.message('La date de fin ne peut être après la date de début, merci de corriger.', name: 'dateStartAfterEndHint');
+  String get dateStartAfterEndHint => Intl.message('La date de fin ne peut être égale ou après la date de début, merci de corriger.', name: 'dateStartAfterEndHint');
 
   String get faceToFaceNotAllowed => Intl.message('Présentiel pas encore autorisé', name: 'faceToFaceNotAllowed');
 

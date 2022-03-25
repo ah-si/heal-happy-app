@@ -106,13 +106,18 @@ class StepCalendarInfo extends HookConsumerWidget {
             subtitle: Text(context.l10n.calendarShowExternalOpeningsDesc),
           ),
         ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 400),
+          constraints: const BoxConstraints(maxHeight: 600),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: SfCalendar(
                   firstDayOfWeek: 1,
+                  monthViewSettings: const MonthViewSettings(showAgenda: true),
+                  allowedViews: const [
+                    CalendarView.week,
+                    CalendarView.month,
+                  ],
                   //cellEndPadding: 0,
                   dataSource: dataSource,
                   timeSlotViewSettings: const TimeSlotViewSettings(
@@ -282,7 +287,7 @@ class StepCalendarInfo extends HookConsumerWidget {
         DialogAction(
           text: MaterialLocalizations.of(context).okButtonLabel,
           callback: (BuildContext context) async {
-            if (start.isAfter(end)) {
+            if (start.isAfter(end) || start == end) {
               showErrorDialog(context, ErrorResult.dateStartAfterEnd, null);
               return;
             }
