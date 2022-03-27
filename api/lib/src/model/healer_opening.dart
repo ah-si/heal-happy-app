@@ -2,25 +2,25 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/opening_type.dart';
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/opening_repeat_type.dart';
-import 'package:heal_happy_sdk/src/model/opening_type.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 
 part 'healer_opening.g.dart';
 
 /// HealerOpening
 ///
 /// Properties:
-/// * [id]
-/// * [userId]
-/// * [roomId]
-/// * [type]
-/// * [user]
-/// * [repeat]
-/// * [start]
-/// * [end]
+/// * [id] 
+/// * [userId] 
+/// * [roomId] 
+/// * [type] 
+/// * [user] 
+/// * [repeat] 
+/// * [start] 
+/// * [end] 
 abstract class HealerOpening implements Built<HealerOpening, HealerOpeningBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;

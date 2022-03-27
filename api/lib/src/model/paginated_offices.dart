@@ -2,18 +2,18 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+import 'package:heal_happy_sdk/src/model/office.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/office.dart';
 
 part 'paginated_offices.g.dart';
 
 /// PaginatedOffices
 ///
 /// Properties:
-/// * [totalPages]
-/// * [offices]
+/// * [totalPages] 
+/// * [offices] 
 abstract class PaginatedOffices implements Built<PaginatedOffices, PaginatedOfficesBuilder> {
     @BuiltValueField(wireName: r'totalPages')
     int get totalPages;

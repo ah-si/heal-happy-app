@@ -4,9 +4,10 @@
 
 import 'dart:async';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
+import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/api_util.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
 import 'package:heal_happy_sdk/src/model/create_invite_event_request.dart';
@@ -30,10 +31,10 @@ class UserApi {
   const UserApi(this._dio, this._serializers);
 
   /// acceptEvent
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [eventId]
+  /// * [eventId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -43,7 +44,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> acceptEvent({
+  Future<Response<void>> acceptEvent({ 
     required String eventId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -84,11 +85,11 @@ class UserApi {
   }
 
   /// createEvent
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [createEventRequest]
+  /// * [id] 
+  /// * [createEventRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -98,7 +99,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> createEvent({
+  Future<Response<void>> createEvent({ 
     required String id,
     CreateEventRequest? createEventRequest,
     CancelToken? cancelToken,
@@ -159,11 +160,11 @@ class UserApi {
   }
 
   /// createInviteEvent
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [createInviteEventRequest]
+  /// * [id] 
+  /// * [createInviteEventRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -173,7 +174,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> createInviteEvent({
+  Future<Response<void>> createInviteEvent({ 
     required String id,
     CreateInviteEventRequest? createInviteEventRequest,
     CancelToken? cancelToken,
@@ -234,10 +235,10 @@ class UserApi {
   }
 
   /// createOpening
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [healerOpening]
+  /// * [healerOpening] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -247,7 +248,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerOpening>> createOpening({
+  Future<Response<HealerOpening>> createOpening({ 
     HealerOpening? healerOpening,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -334,11 +335,11 @@ class UserApi {
   }
 
   /// createUserOpening
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [userId]
-  /// * [healerOpening]
+  /// * [userId] 
+  /// * [healerOpening] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -348,7 +349,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerOpening>> createUserOpening({
+  Future<Response<HealerOpening>> createUserOpening({ 
     required String userId,
     HealerOpening? healerOpening,
     CancelToken? cancelToken,
@@ -436,11 +437,11 @@ class UserApi {
   }
 
   /// deleteEvent
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [eventId]
-  /// * [deleteEventRequest]
+  /// * [eventId] 
+  /// * [deleteEventRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -450,7 +451,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteEvent({
+  Future<Response<void>> deleteEvent({ 
     required String eventId,
     required DeleteEventRequest deleteEventRequest,
     CancelToken? cancelToken,
@@ -511,10 +512,10 @@ class UserApi {
   }
 
   /// deleteOpening
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [openingId]
+  /// * [openingId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -524,7 +525,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteOpening({
+  Future<Response<void>> deleteOpening({ 
     required String openingId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -565,11 +566,11 @@ class UserApi {
   }
 
   /// deleteUserOpening
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [openingId]
-  /// * [userId]
+  /// * [openingId] 
+  /// * [userId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -579,7 +580,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteUserOpening({
+  Future<Response<void>> deleteUserOpening({ 
     required String openingId,
     required String userId,
     CancelToken? cancelToken,
@@ -621,11 +622,11 @@ class UserApi {
   }
 
   /// getEvents
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [modeHealer]
-  /// * [includePastEvents]
+  /// * [modeHealer] 
+  /// * [includePastEvents] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -635,7 +636,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<UserEvent>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<UserEvent>>> getEvents({
+  Future<Response<BuiltList<UserEvent>>> getEvents({ 
     required bool modeHealer,
     bool? includePastEvents,
     CancelToken? cancelToken,
@@ -710,12 +711,12 @@ class UserApi {
   }
 
   /// getHealerAvailabilities
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [from]
-  /// * [type]
+  /// * [id] 
+  /// * [from] 
+  /// * [type] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -725,7 +726,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerAvailabilities] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerAvailabilities>> getHealerAvailabilities({
+  Future<Response<HealerAvailabilities>> getHealerAvailabilities({ 
     required String id,
     required DateTime from,
     required HealerEventType type,
@@ -801,10 +802,10 @@ class UserApi {
   }
 
   /// getHealerProfile
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
+  /// * [id] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -814,7 +815,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Healer] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<Healer>> getHealerProfile({
+  Future<Response<Healer>> getHealerProfile({ 
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -882,10 +883,10 @@ class UserApi {
   }
 
   /// getLocalities
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [job]
+  /// * [job] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -895,7 +896,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltMap<String, String>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltMap<String, String>>> getLocalities({
+  Future<Response<BuiltMap<String, String>>> getLocalities({ 
     required String job,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -961,7 +962,7 @@ class UserApi {
   }
 
   /// getOpenings
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -973,7 +974,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<HealerOpening>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<HealerOpening>>> getOpenings({
+  Future<Response<BuiltList<HealerOpening>>> getOpenings({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1040,7 +1041,7 @@ class UserApi {
   }
 
   /// getProfile
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1052,7 +1053,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> getProfile({
+  Future<Response<User>> getProfile({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1119,10 +1120,10 @@ class UserApi {
   }
 
   /// getSpecialities
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [onlyExisting]
+  /// * [onlyExisting] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1132,7 +1133,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltMap<String, String>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltMap<String, String>>> getSpecialities({
+  Future<Response<BuiltMap<String, String>>> getSpecialities({ 
     bool? onlyExisting,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1198,10 +1199,10 @@ class UserApi {
   }
 
   /// getUserOpenings
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [userId]
+  /// * [userId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1211,7 +1212,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<HealerOpening>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<HealerOpening>>> getUserOpenings({
+  Future<Response<BuiltList<HealerOpening>>> getUserOpenings({ 
     required String userId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1279,10 +1280,10 @@ class UserApi {
   }
 
   /// putAvatar
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [avatar]
+  /// * [avatar] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1292,7 +1293,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putAvatar({
+  Future<Response<FileData>> putAvatar({ 
     MultipartFile? avatar,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1380,10 +1381,10 @@ class UserApi {
   }
 
   /// putDiploma
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [diploma]
+  /// * [diploma] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1393,7 +1394,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putDiploma({
+  Future<Response<FileData>> putDiploma({ 
     MultipartFile? diploma,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1481,10 +1482,10 @@ class UserApi {
   }
 
   /// putTerms
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [terms]
+  /// * [terms] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1494,7 +1495,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [FileData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<FileData>> putTerms({
+  Future<Response<FileData>> putTerms({ 
     MultipartFile? terms,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1582,7 +1583,7 @@ class UserApi {
   }
 
   /// resendActivationLink
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -1594,7 +1595,7 @@ class UserApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> resendActivationLink({
+  Future<Response<void>> resendActivationLink({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -1634,10 +1635,10 @@ class UserApi {
   }
 
   /// saveProfile
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [user]
+  /// * [user] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1647,7 +1648,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> saveProfile({
+  Future<Response<User>> saveProfile({ 
     User? user,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -1734,13 +1735,13 @@ class UserApi {
   }
 
   /// searchHealers
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [job]
-  /// * [type]
-  /// * [page]
-  /// * [localization]
+  /// * [job] 
+  /// * [type] 
+  /// * [page] 
+  /// * [localization] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1750,7 +1751,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PaginatedHealers] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PaginatedHealers>> searchHealers({
+  Future<Response<PaginatedHealers>> searchHealers({ 
     required String job,
     required HealerEventType type,
     required int page,
@@ -1829,11 +1830,11 @@ class UserApi {
   }
 
   /// updateEvent
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [eventId]
-  /// * [updateEventRequest]
+  /// * [eventId] 
+  /// * [updateEventRequest] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1843,7 +1844,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [UserEvent] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<UserEvent>> updateEvent({
+  Future<Response<UserEvent>> updateEvent({ 
     required String eventId,
     UpdateEventRequest? updateEventRequest,
     CancelToken? cancelToken,
@@ -1931,11 +1932,11 @@ class UserApi {
   }
 
   /// updateOpening
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [openingId]
-  /// * [healerOpening]
+  /// * [openingId] 
+  /// * [healerOpening] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -1945,7 +1946,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerOpening>> updateOpening({
+  Future<Response<HealerOpening>> updateOpening({ 
     required String openingId,
     HealerOpening? healerOpening,
     CancelToken? cancelToken,
@@ -2033,12 +2034,12 @@ class UserApi {
   }
 
   /// updateUserOpening
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [openingId]
-  /// * [userId]
-  /// * [healerOpening]
+  /// * [openingId] 
+  /// * [userId] 
+  /// * [healerOpening] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -2048,7 +2049,7 @@ class UserApi {
   ///
   /// Returns a [Future] containing a [Response] with a [HealerOpening] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<HealerOpening>> updateUserOpening({
+  Future<Response<HealerOpening>> updateUserOpening({ 
     required String openingId,
     required String userId,
     HealerOpening? healerOpening,

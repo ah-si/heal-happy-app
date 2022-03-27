@@ -2,29 +2,29 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
+import 'package:heal_happy_sdk/src/model/user.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/user.dart';
 
 part 'admin_user_event.g.dart';
 
 /// AdminUserEvent
 ///
 /// Properties:
-/// * [id]
-/// * [patient]
-/// * [healer]
-/// * [isHealerPresent]
-/// * [isPatientPresent]
-/// * [isUrgent]
-/// * [isCancelled]
-/// * [createdAt]
-/// * [start]
-/// * [end]
-/// * [name]
-/// * [description]
-/// * [cancelledDescription]
-/// * [link]
+/// * [id] 
+/// * [patient] 
+/// * [healer] 
+/// * [isHealerPresent] 
+/// * [isPatientPresent] 
+/// * [isUrgent] 
+/// * [isCancelled] 
+/// * [createdAt] 
+/// * [start] 
+/// * [end] 
+/// * [name] 
+/// * [description] 
+/// * [cancelledDescription] 
+/// * [link] 
 abstract class AdminUserEvent implements Built<AdminUserEvent, AdminUserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;

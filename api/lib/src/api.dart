@@ -2,18 +2,19 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-import 'package:heal_happy_sdk/src/api/admin_api.dart';
-import 'package:heal_happy_sdk/src/api/auth_api.dart';
-import 'package:heal_happy_sdk/src/api/offices_api.dart';
-import 'package:heal_happy_sdk/src/api/settings_api.dart';
-import 'package:heal_happy_sdk/src/api/user_api.dart';
+import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/serializers.dart';
 import 'package:heal_happy_sdk/src/auth/api_key_auth.dart';
 import 'package:heal_happy_sdk/src/auth/basic_auth.dart';
 import 'package:heal_happy_sdk/src/auth/bearer_auth.dart';
 import 'package:heal_happy_sdk/src/auth/oauth.dart';
-import 'package:heal_happy_sdk/src/serializers.dart';
+import 'package:heal_happy_sdk/src/api/admin_api.dart';
+import 'package:heal_happy_sdk/src/api/auth_api.dart';
+import 'package:heal_happy_sdk/src/api/donations_api.dart';
+import 'package:heal_happy_sdk/src/api/offices_api.dart';
+import 'package:heal_happy_sdk/src/api/settings_api.dart';
+import 'package:heal_happy_sdk/src/api/user_api.dart';
 
 class HealHappySdk {
   static const String basePath = r'https://soignez-heureux.com';
@@ -79,6 +80,12 @@ class HealHappySdk {
   /// by doing that all interceptors will not be executed
   AuthApi getAuthApi() {
     return AuthApi(dio, serializers);
+  }
+
+  /// Get DonationsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  DonationsApi getDonationsApi() {
+    return DonationsApi(dio, serializers);
   }
 
   /// Get OfficesApi instance, base route and serializer can be overridden by a given but be careful,

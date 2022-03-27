@@ -12,6 +12,7 @@ doc/Dashboard.md
 doc/DashboardEvent.md
 doc/DashboardUser.md
 doc/DeleteEventRequest.md
+doc/DonationsApi.md
 doc/FileData.md
 doc/Healer.md
 doc/HealerAvailabilities.md
@@ -31,8 +32,10 @@ doc/PaginatedEvents.md
 doc/PaginatedHealers.md
 doc/PaginatedOffices.md
 doc/PaginatedUsers.md
+doc/Product.md
 doc/RefreshTokenRequest.md
 doc/ResetPassword.md
+doc/SessionInfo.md
 doc/SettingsApi.md
 doc/Slot.md
 doc/UpdateEventRequest.md
@@ -46,6 +49,7 @@ lib/heal_happy_sdk.dart
 lib/src/api.dart
 lib/src/api/admin_api.dart
 lib/src/api/auth_api.dart
+lib/src/api/donations_api.dart
 lib/src/api/offices_api.dart
 lib/src/api/settings_api.dart
 lib/src/api/user_api.dart
@@ -84,8 +88,10 @@ lib/src/model/paginated_events.dart
 lib/src/model/paginated_healers.dart
 lib/src/model/paginated_offices.dart
 lib/src/model/paginated_users.dart
+lib/src/model/product.dart
 lib/src/model/refresh_token_request.dart
 lib/src/model/reset_password.dart
+lib/src/model/session_info.dart
 lib/src/model/slot.dart
 lib/src/model/update_event_request.dart
 lib/src/model/user.dart
@@ -105,6 +111,7 @@ test/dashboard_event_test.dart
 test/dashboard_test.dart
 test/dashboard_user_test.dart
 test/delete_event_request_test.dart
+test/donations_api_test.dart
 test/file_data_test.dart
 test/healer_availabilities_test.dart
 test/healer_event_type_test.dart
@@ -124,8 +131,10 @@ test/paginated_events_test.dart
 test/paginated_healers_test.dart
 test/paginated_offices_test.dart
 test/paginated_users_test.dart
+test/product_test.dart
 test/refresh_token_request_test.dart
 test/reset_password_test.dart
+test/session_info_test.dart
 test/settings_api_test.dart
 test/slot_test.dart
 test/update_event_request_test.dart

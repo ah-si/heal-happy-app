@@ -2,37 +2,37 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:heal_happy_sdk/src/model/healer.dart';
-import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
 import 'package:heal_happy_sdk/src/model/minimal_user.dart';
 import 'package:heal_happy_sdk/src/model/office.dart';
+import 'package:heal_happy_sdk/src/model/healer.dart';
+import 'package:heal_happy_sdk/src/model/healer_event_type.dart';
 import 'package:heal_happy_sdk/src/model/office_room.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 
 part 'user_event.g.dart';
 
 /// UserEvent
 ///
 /// Properties:
-/// * [id]
-/// * [patientToken]
-/// * [patient]
-/// * [healer]
-/// * [room]
-/// * [office]
-/// * [isUrgent]
-/// * [isHealerPresent]
-/// * [isPatientPresent]
-/// * [isCancelled]
-/// * [type]
-/// * [createdAt]
-/// * [start]
-/// * [end]
-/// * [name]
-/// * [description]
-/// * [cancelledDescription]
-/// * [link]
+/// * [id] 
+/// * [patientToken] 
+/// * [patient] 
+/// * [healer] 
+/// * [room] 
+/// * [office] 
+/// * [isUrgent] 
+/// * [isHealerPresent] 
+/// * [isPatientPresent] 
+/// * [isCancelled] 
+/// * [type] 
+/// * [createdAt] 
+/// * [start] 
+/// * [end] 
+/// * [name] 
+/// * [description] 
+/// * [cancelledDescription] 
+/// * [link] 
 abstract class UserEvent implements Built<UserEvent, UserEventBuilder> {
     @BuiltValueField(wireName: r'id')
     String get id;

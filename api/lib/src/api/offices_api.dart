@@ -4,9 +4,10 @@
 
 import 'dart:async';
 
-import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
+
+import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/model/office.dart';
 import 'package:heal_happy_sdk/src/model/office_info.dart';
 import 'package:heal_happy_sdk/src/model/office_room.dart';
@@ -23,11 +24,11 @@ class OfficesApi {
   const OfficesApi(this._dio, this._serializers);
 
   /// addHealerToRoom
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [userEmail]
+  /// * [id] 
+  /// * [userEmail] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -37,7 +38,7 @@ class OfficesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> addHealerToRoom({
+  Future<Response<void>> addHealerToRoom({ 
     required String id,
     required UserEmail userEmail,
     CancelToken? cancelToken,
@@ -98,11 +99,11 @@ class OfficesApi {
   }
 
   /// addManager
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [userEmail]
+  /// * [id] 
+  /// * [userEmail] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -112,7 +113,7 @@ class OfficesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> addManager({
+  Future<Response<void>> addManager({ 
     required String id,
     required UserEmail userEmail,
     CancelToken? cancelToken,
@@ -173,11 +174,11 @@ class OfficesApi {
   }
 
   /// addRoom
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [officeRoom]
+  /// * [id] 
+  /// * [officeRoom] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -187,7 +188,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [OfficeRoom] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<OfficeRoom>> addRoom({
+  Future<Response<OfficeRoom>> addRoom({ 
     required String id,
     required OfficeRoom officeRoom,
     CancelToken? cancelToken,
@@ -275,10 +276,10 @@ class OfficesApi {
   }
 
   /// createOffice
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [officeInfo]
+  /// * [officeInfo] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -288,7 +289,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [OfficeInfo] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<OfficeInfo>> createOffice({
+  Future<Response<OfficeInfo>> createOffice({ 
     required OfficeInfo officeInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -375,10 +376,10 @@ class OfficesApi {
   }
 
   /// deleteRoom
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
+  /// * [id] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -388,7 +389,7 @@ class OfficesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteRoom({
+  Future<Response<void>> deleteRoom({ 
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -429,10 +430,10 @@ class OfficesApi {
   }
 
   /// getOffice
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
+  /// * [id] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -442,7 +443,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Office] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<Office>> getOffice({
+  Future<Response<Office>> getOffice({ 
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -510,10 +511,10 @@ class OfficesApi {
   }
 
   /// getOfficeEvents
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
+  /// * [id] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -523,7 +524,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<UserEvent>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<UserEvent>>> getOfficeEvents({
+  Future<Response<BuiltList<UserEvent>>> getOfficeEvents({ 
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -591,7 +592,7 @@ class OfficesApi {
   }
 
   /// getOffices
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -603,7 +604,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PaginatedOffices] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PaginatedOffices>> getOffices({
+  Future<Response<PaginatedOffices>> getOffices({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -670,11 +671,11 @@ class OfficesApi {
   }
 
   /// removeHealerFromRoom
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [healerId]
+  /// * [id] 
+  /// * [healerId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -684,7 +685,7 @@ class OfficesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> removeHealerFromRoom({
+  Future<Response<void>> removeHealerFromRoom({ 
     required String id,
     required String healerId,
     CancelToken? cancelToken,
@@ -726,11 +727,11 @@ class OfficesApi {
   }
 
   /// removeManager
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [managerId]
+  /// * [id] 
+  /// * [managerId] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -740,7 +741,7 @@ class OfficesApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> removeManager({
+  Future<Response<void>> removeManager({ 
     required String id,
     required String managerId,
     CancelToken? cancelToken,
@@ -782,11 +783,11 @@ class OfficesApi {
   }
 
   /// updateOffice
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [officeInfo]
+  /// * [id] 
+  /// * [officeInfo] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -796,7 +797,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [OfficeInfo] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<OfficeInfo>> updateOffice({
+  Future<Response<OfficeInfo>> updateOffice({ 
     required String id,
     required OfficeInfo officeInfo,
     CancelToken? cancelToken,
@@ -884,11 +885,11 @@ class OfficesApi {
   }
 
   /// updateRoom
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [id]
-  /// * [officeRoom]
+  /// * [id] 
+  /// * [officeRoom] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -898,7 +899,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [OfficeRoom] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<OfficeRoom>> updateRoom({
+  Future<Response<OfficeRoom>> updateRoom({ 
     required String id,
     required OfficeRoom officeRoom,
     CancelToken? cancelToken,
