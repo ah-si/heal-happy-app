@@ -126,6 +126,13 @@ class CommonLocalizations {
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
+  String get donateSuccess => Intl.message('Votre don a bien été accepté, merci beaucoup pour votre soutient!\n\nSoyez Heureux!', name: 'donateSuccess');
+
+  String get askToDonate => Intl.message('Nous avons besoin de vous!', name: 'askToDonate');
+  String get askToDonateDesc => Intl.message('Soignez Heureux ne fonctionne que grace aux dons que vous nous faites, et ces dons sont rétrocédé aux soignants. Si vous le pouvez et voulez aider l\'ONG et les soignants, merci de nous faire un dons.', name: 'askToDonateDesc');
+
+  String get donateCancelled => Intl.message('Vous avez annulé votre don ou une erreur est survenue, un souci ou besoin d\'aide? N\'hésitez pas à nous contacter à contact@ah-si.org.\n\nSoyez Heureux!', name: 'donateCancelled');
+
   String get allowFaceToFace => Intl.message('Activer le présentiel', name: 'allowFaceToFace');
 
   String get allowFaceToFaceConfirm => Intl.message('Etes vous sur de vouloir autoriser se soignant à faire du présentiel?', name: 'allowFaceToFaceConfirm');
@@ -280,6 +287,8 @@ class CommonLocalizations {
   String get uploadButton => Intl.message('Envoyer', name: 'uploadButton');
 
   String get backToLogin => Intl.message('Retour au login', name: 'backToLogin');
+
+  String get backToWebsite => Intl.message('Retourner sur mon compte', name: 'backToWebsite');
 
   String get backButton => Intl.message('Retour', name: 'backButton');
 
@@ -516,6 +525,13 @@ class CommonLocalizations {
       Intl.message('Votre compte est en attente de validation. Une fois vérifié, les patients pourront prendre rendez-vous.', name: 'accountPending');
 
   String get donate => Intl.message('Faire un don', name: 'donate');
+  String get donateRefused => Intl.message('Je ne peux pas', name: 'donateRefused');
+
+  String get donateRecurrent => Intl.message('Rendre mon don récurrent tout les mois', name: 'donateRecurrent');
+
+  String get donateByCard => Intl.message('Par carte', name: 'donateByCard');
+
+  String get donateByWire => Intl.message('Par virement', name: 'donateByWire');
 
   String get search => Intl.message('Recherche', name: 'search');
 

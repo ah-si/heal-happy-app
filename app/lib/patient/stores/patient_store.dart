@@ -38,9 +38,9 @@ class PatientStore extends ChangeNotifier {
 
   PatientStore({UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi();
 
-  HomeTabs get selectedTab => _selectedTab;
-
   String get lastJobSearch => _lastJobSearch;
+
+  HomeTabs get selectedTab => _selectedTab;
 
   set selectedTab(HomeTabs value) {
     if (_selectedTab != value) {

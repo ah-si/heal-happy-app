@@ -8,7 +8,6 @@ import 'package:heal_happy/admin/home_screen.dart';
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
-import 'package:heal_happy/common/presentation/donate.dart';
 import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
@@ -16,6 +15,7 @@ import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/donations/donate.dart';
 import 'package:heal_happy/healer/home_screen.dart';
 import 'package:heal_happy/patient/healer_availability.dart';
 import 'package:heal_happy/patient/healer_profile_screen.dart';
@@ -141,6 +141,7 @@ class MobilePatientHome extends HookConsumerWidget {
                       key: Key('consultations'),
                     ),
                   ),
+                  const DonateBanner(),
                 ],
               ),
               const _SearchTab(),
@@ -283,32 +284,7 @@ class DesktopPatientHome extends HookConsumerWidget {
                               ],
                             ),
                           ),
-                        ColoredBox(
-                          color: context.primaryColor,
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                if (kIsWeb) {
-                                  launch('https://www.ah-si.org/dons-soignez-heureux');
-                                } else {
-                                  showAlert(
-                                    context,
-                                    context.l10n.donate,
-                                    (_) => const Donate(),
-                                  );
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: kNormalPadding, vertical: kSmallPadding),
-                                child: Text(
-                                  context.l10n.donateDescription,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        const DonateBanner(),
                       ],
                     ),
                   ),
@@ -697,19 +673,49 @@ class _PatientEventDetails extends HookConsumerWidget {
                           textAlign: TextAlign.center,
                         ),
                       const SizedBox(height: kNormalPadding),
-                      if (event.type == HealerEventType.visio && !event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 4))))
+                      if (event.type == HealerEventType.visio && !event.isCancelled && event.start.isAfter(DateTime.now().subtract(const Duration(days: 2))))
                         TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             ref.read(userStoreProvider).acceptEvent(event.id);
+
+                            askToDonate() async {
+                              final confirm = await showConfirm(
+                                context,
+                                context.l10n.askToDonate,
+                                context.l10n.askToDonateDesc,
+                                okButtonLabel: context.l10n.donate,
+                                cancelButtonLabel: context.l10n.donateRefused,
+                              );
+                              if (confirm) {
+                                showAppDialog(
+                                    context,
+                                    (_) => Text(context.l10n.donate),
+                                    (_) => Donate(
+                                          onCancelled: () {
+                                            context.goNamed(DonateCancelled.name);
+                                          },
+                                          onSuccess: () {
+                                            context.goNamed(DonateSuccess.name);
+                                          },
+                                        ));
+                              }
+                            }
+
                             if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                              launch(event.link);
+                              await launch(event.link);
+                              askToDonate();
                             } else {
                               var options = JitsiMeetingOptions(
                                 roomNameOrUrl: event.link,
                                 userDisplayName: event.patient.firstName,
                                 subject: 'Consultation Soignez Heureux',
                               );
-                              JitsiMeetWrapper.joinMeeting(options: options);
+                              JitsiMeetWrapper.joinMeeting(
+                                options: options,
+                                listener: JitsiMeetingListener(
+                                  onClosed: askToDonate,
+                                ),
+                              );
                             }
                           },
                           child: Text(context.l10n.joinVisioButton),

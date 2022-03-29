@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:heal_happy/common/config.dart';
 import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 
@@ -11,6 +12,20 @@ const String kUrlAppStore = 'org.ahsi.soignez_heureux';
 const String kUrlAppMacStore = 'org.ahsi.soignez_heureux';
 const String kUrlTelegramHealer = 'https://t.me/+TceR1MPeLAY4ZDI0';
 const String kUrlTelegramPara = 'https://t.me/+nIG4tVyJpC01OTc0';
+const String kStripeTestKey = 'pk_test_51JcVEyCCSTERFkQxZ6u19N1g58o2sfoNklPAeFqtSsZDtUNI7ojUgdnPNSIqWzCMnjg053s7urEJwfWlL23RLyMw00BcXJOVAa';
+const String kStripeProdKey = 'pk_live_51JcVEyCCSTERFkQx9VOdDpB1dvILuQNNfFOYbXgSMYMs0WjBoB3zqorkUU63J7hwYBj18oWPqmmMlIcfiAF67RCi00xu9YBQuA';
+
+String getStripeKey() {
+  if (!kIsProductionMode) {
+    return kStripeTestKey;
+  }
+
+  if (Config().baseUrl.startsWith('https://devs')) {
+    return kStripeTestKey;
+  }
+
+  return kStripeProdKey;
+}
 
 final kDebugLogger = Logger('HealHappy');
 

@@ -69,7 +69,7 @@ void app({Config? config}) async {
   }
   await SentryFlutter.init(
     (options) {
-      options.dsn = !kIsProductionMode ? 'https://1827c477584d403dacf3ba82fb437c39@sentry.ah-si.org/2' : '';
+      options.dsn = kIsProductionMode ? 'https://1827c477584d403dacf3ba82fb437c39@sentry.ah-si.org/2' : '';
       options.tracesSampleRate = .1;
       options.addIntegration(LoggingIntegration());
       options.beforeSend = beforeSend;
@@ -92,7 +92,14 @@ class MyApp extends StatelessWidget {
             return MaterialApp.router(
               title: 'Soignez Heureux',
               //force time picker and other date widget to use 24h format
-              builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true), child: child!),
+              builder: (context, child) {
+                final media = MediaQuery.maybeOf(context);
+                if (media == null) {
+                  return MediaQuery(data: const MediaQueryData(alwaysUse24HourFormat: true), child: child ?? const SizedBox());
+                } else {
+                  return MediaQuery(data: media.copyWith(alwaysUse24HourFormat: true), child: child ?? const SizedBox());
+                }
+              },
               theme: ThemeData(
                 primarySwatch: createMaterialColor(kPrimaryColor),
                 scrollbarTheme: const ScrollbarThemeData().copyWith(

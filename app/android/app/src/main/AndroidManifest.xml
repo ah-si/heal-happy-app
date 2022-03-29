@@ -8,7 +8,7 @@
             android:label="Soignez Heureux"
             android:icon="@mipmap/ic_launcher">
         <activity
-                android:name="io.flutter.embedding.android.FlutterActivity"
+                android:name="io.flutter.embedding.android.FlutterFragmentActivity"
                 android:launchMode="singleTop"
                 android:theme="@style/LaunchTheme"
                 android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

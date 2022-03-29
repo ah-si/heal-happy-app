@@ -128,10 +128,18 @@ class DialogAction {
   int get hashCode => text.hashCode;
 }
 
-Future<bool> showConfirm(BuildContext context, String title, String content, {bool barrierDismissible = true, bool isDestructive = false}) async {
+Future<bool> showConfirm(
+  BuildContext context,
+  String title,
+  String content, {
+  bool barrierDismissible = true,
+  bool isDestructive = false,
+  String? cancelButtonLabel,
+  String? okButtonLabel,
+}) async {
   return (await showAppDialog(context, (_) => Text(title), (_) => Text(content), barrierDismissible: barrierDismissible, actions: [
         DialogAction(
-          text: MaterialLocalizations.of(context).cancelButtonLabel,
+          text: cancelButtonLabel ?? MaterialLocalizations.of(context).cancelButtonLabel,
           callback: (context) {
             Navigator.of(context).pop(false);
           },
@@ -139,7 +147,7 @@ Future<bool> showConfirm(BuildContext context, String title, String content, {bo
         DialogAction(
           isDestructiveAction: isDestructive,
           isDefaultAction: true,
-          text: MaterialLocalizations.of(context).okButtonLabel,
+          text: okButtonLabel ?? MaterialLocalizations.of(context).okButtonLabel,
           callback: (context) {
             Navigator.of(context).pop(true);
           },
@@ -223,11 +231,11 @@ Future<String?> showPrompt<T>(
   );
 }
 
-Future<void> showAlert<T>(BuildContext context, String title, WidgetBuilder content, {bool barrierDismissible = true}) {
+Future<void> showAlert<T>(BuildContext context, String title, WidgetBuilder content, {bool barrierDismissible = true, String? actionLabel}) {
   return showAppDialog(context, (_) => Text(title), content, barrierDismissible: barrierDismissible, actions: [
     DialogAction(
       isDefaultAction: true,
-      text: MaterialLocalizations.of(context).okButtonLabel,
+      text: actionLabel ?? MaterialLocalizations.of(context).okButtonLabel,
       callback: (context) {
         Navigator.of(context).pop();
       },

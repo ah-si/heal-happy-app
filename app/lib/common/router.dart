@@ -9,6 +9,7 @@ import 'package:heal_happy/auth/register/register_screen.dart';
 import 'package:heal_happy/common/presentation/account_activated_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
+import 'package:heal_happy/donations/donate.dart';
 import 'package:heal_happy/common/presentation/invite_accepted_screen.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
@@ -38,11 +39,19 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
               HomeScreen.name,
               '/404',
               '/500',
+              '/500',
+              '/500',
+              DonateCancelled.name,
+              DonateScreen.name,
+              DonateSuccess.name,
               RegisterScreen.name,
               InviteAcceptedScreen.name,
               AccountActivatedScreen.name,
               LoginScreen.name,
               ChangePasswordScreen.name,
+              '/${DonateScreen.name}',
+              '/${DonateCancelled.name}',
+              '/${DonateSuccess.name}',
               '/${LoginScreen.name}',
               '/${AccountActivatedScreen.name}',
               '/${InviteAcceptedScreen.name}',
@@ -93,6 +102,39 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
               return child;
             },
             child: const PageStatus(status: 500),
+          ),
+        ),
+        GoRoute(
+          path: '/${DonateScreen.name}',
+          name: DonateScreen.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const DonateScreen(),
+          ),
+        ),
+        GoRoute(
+          path: '/${DonateSuccess.name}',
+          name: DonateSuccess.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const DonateSuccess(),
+          ),
+        ),
+        GoRoute(
+          path: '/${DonateCancelled.name}',
+          name: DonateCancelled.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const DonateCancelled(),
           ),
         ),
         GoRoute(
