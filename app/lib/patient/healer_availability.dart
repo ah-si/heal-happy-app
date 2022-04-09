@@ -191,6 +191,7 @@ class HealerAvailability extends HookConsumerWidget {
                 hintText: context.l10n.hintReasonConsultation,
               ),
             ),
+            Text(context.l10n.consultationLimit),
             HookBuilder(
               builder: (context) {
                 final urgentState = useState(isUrgent);

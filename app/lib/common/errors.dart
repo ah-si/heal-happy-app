@@ -42,7 +42,7 @@ ErrorResultException handleError(error, stackTrace) {
       result = ErrorResultException(ErrorResult.noOpeningRoomOverlap);
     } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('opening_overlap')) {
       result = ErrorResultException(ErrorResult.noOpeningOverlap);
-    } else if (error is DioError && error.response?.statusCode == 400 && error.response!.data!.toString().contains('slot_taken')) {
+    } else if (error is DioError && (error.response?.statusCode == 400 || error.response?.statusCode == 403) && error.response!.data!.toString().contains('slot_taken')) {
       result = ErrorResultException(ErrorResult.meetingAlreadyBooked);
     } else if (error is DioError && error.response?.statusCode == 403) {
       result = ErrorResultException(ErrorResult.forbidden);

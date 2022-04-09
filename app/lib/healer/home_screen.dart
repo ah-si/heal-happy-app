@@ -157,6 +157,7 @@ class HealerHomeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
       ref.read(userStoreProvider).loadOffices();
+      return null;
     }, const[]);
     return context.isMobile ? const MobileHealerHome() : const DesktopHealerHome();
   }

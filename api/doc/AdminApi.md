@@ -12,6 +12,7 @@ Method | HTTP request | Description
 [**createUser**](AdminApi.md#createuser) | **POST** /api/v1/admin/users | 
 [**deleteUser**](AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [**getDashboard**](AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
+[**getDonations**](AdminApi.md#getdonations) | **GET** /api/v1/admin/donations | 
 [**getHealerStats**](AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
 [**getUser**](AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
 [**searchEvents**](AdminApi.md#searchevents) | **GET** /api/v1/admin/events | 
@@ -138,6 +139,47 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**Dashboard**](Dashboard.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getDonations**
+> DonationsData getDonations()
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getAdminApi();
+
+try { 
+    final response = api.getDonations();
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling AdminApi->getDonations: $e\n');
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**DonationsData**](DonationsData.md)
 
 ### Authorization
 

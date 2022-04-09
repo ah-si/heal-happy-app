@@ -13,6 +13,8 @@ doc/DashboardEvent.md
 doc/DashboardUser.md
 doc/DeleteEventRequest.md
 doc/DonationsApi.md
+doc/DonationsData.md
+doc/DonationsMonthData.md
 doc/FileData.md
 doc/Healer.md
 doc/HealerAvailabilities.md
@@ -70,6 +72,8 @@ lib/src/model/dashboard_event.dart
 lib/src/model/dashboard_user.dart
 lib/src/model/date.dart
 lib/src/model/delete_event_request.dart
+lib/src/model/donations_data.dart
+lib/src/model/donations_month_data.dart
 lib/src/model/file_data.dart
 lib/src/model/healer.dart
 lib/src/model/healer_availabilities.dart
@@ -112,6 +116,8 @@ test/dashboard_test.dart
 test/dashboard_user_test.dart
 test/delete_event_request_test.dart
 test/donations_api_test.dart
+test/donations_data_test.dart
+test/donations_month_data_test.dart
 test/file_data_test.dart
 test/healer_availabilities_test.dart
 test/healer_event_type_test.dart

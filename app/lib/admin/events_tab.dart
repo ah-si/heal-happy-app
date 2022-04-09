@@ -78,7 +78,7 @@ class _Events extends HookConsumerWidget {
 class _EventsSearch extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final startState = useState<DateTime>(DateTime.now().copyWith(day: 1));
+    final startState = useState<DateTime>(DateTime.now().copyWith(day: 1).subtract(const Duration(days: 31)));
     final endState = useState<DateTime>(DateTime.now().add(const Duration(days: 1)));
     final urgent = useState<bool?>(null);
     final emailController = useTextEditingController();

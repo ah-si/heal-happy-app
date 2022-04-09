@@ -14,37 +14,37 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   stripe_checkout: ^0.1.2
-  file_picker: ^4.2.8
+  file_picker: ^4.5.1
   country_code_picker: ^2.0.2
   collection: ^1.15.0
-  syncfusion_flutter_barcodes: ^19.4.54
-  syncfusion_flutter_charts: ^19.3.59
-  url_launcher: ^6.0.17
+  syncfusion_flutter_barcodes: ^19.4.56
+  syncfusion_flutter_charts: ^19.4.56
+  url_launcher: ^6.0.20
   dio:
-  syncfusion_flutter_calendar: ^19.4.50
+  syncfusion_flutter_calendar: ^19.4.56
   built_value:
   intl: ^0.17.0
   pubspec_parse: ^1.2.0
   stream_transform: ^2.0.0
-  shared_preferences: ^2.0.11
-  go_router: ^3.0.2
+  shared_preferences: ^2.0.13
+  go_router: ^3.0.6
   heal_happy_sdk:
     path: '../api'
   flutter_riverpod: ^1.0.3
   hooks_riverpod: ^1.0.3
-  flutter_hooks: ^0.18.1
+  flutter_hooks: ^0.18.2+1
   sentry_flutter: ^6.4.0
   sentry_dio: ^6.4.0
   sentry_logging: ^6.4.0
   logging: ^1.0.2
-  jitsi_meet_wrapper: ^0.0.2
-  cupertino_icons: ^1.0.2
+  jitsi_meet_wrapper: ^0.0.3
+  cupertino_icons: ^1.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^1.0.0
+  flutter_lints: ^1.0.4
 
 flutter:
 

@@ -204,56 +204,6 @@ class _SearchStats extends HookConsumerWidget {
   }
 }
 
-class _DateTimeField extends HookWidget {
-  final DateTime? value;
-  final DateTime? lastDate;
-  final DateTime? firstDate;
-  final String label;
-  final Function(DateTime date) onDateSelected;
-
-  const _DateTimeField({
-    Key? key,
-    this.value,
-    this.lastDate,
-    this.firstDate,
-    required this.onDateSelected,
-    required this.label,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: value == null ? '' : kDateFormat.format(value!));
-
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 200),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () async {
-            final date = await showDatePicker(
-              context: context,
-              firstDate: firstDate ?? DateTime.now().subtract(const Duration(days: 365)),
-              lastDate: lastDate ?? DateTime.now(),
-              initialDate: value ?? DateTime.now(),
-            );
-            if (date != null) {
-              controller.text = kDateFormat.format(date);
-              onDateSelected(date);
-            }
-          },
-          child: IgnorePointer(
-            child: TextField(
-              readOnly: true,
-              controller: controller,
-              decoration: InputDecoration(label: Text(label)),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _DateTimeRangeField extends HookWidget {
   final DateTime? start;
   final DateTime? end;

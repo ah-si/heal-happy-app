@@ -12,6 +12,6 @@ dependencies:
   built_collection: '>=5.1.0 <6.0.0'
 
 dev_dependencies:
+  analyzer: ^3.4.1
   built_value_generator: '>=8.1.0 <9.0.0'
   build_runner: any
-  test: '>=1.16.0 <1.17.0'

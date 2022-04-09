@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/admin/stores/admin_store.dart';
 import 'package:heal_happy/admin/stores/dashboard_store.dart';
+import 'package:heal_happy/admin/stores/donations_store.dart';
 import 'package:heal_happy/admin/stores/events_search_store.dart';
 import 'package:heal_happy/admin/stores/healer_stats_store.dart';
 import 'package:heal_happy/admin/stores/users_search_store.dart';
@@ -33,6 +34,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'dashboard_tab.dart';
+part 'donations_tab.dart';
 part 'events_tab.dart';
 part 'healer_reports_tab.dart';
 part 'users_tab.dart';
@@ -61,7 +63,7 @@ class MobileAdminHome extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.read(adminStoreProvider);
-    final controller = useTabController(initialLength: 6, initialIndex: store.selectedTab.index);
+    final controller = useTabController(initialLength: HomeTabs.values.length, initialIndex: store.selectedTab.index);
 
     useEffect(() {
       controller.addListener(() {
@@ -112,6 +114,9 @@ class MobileAdminHome extends HookConsumerWidget {
             Tab(
               text: context.l10n.profile,
             ),
+            Tab(
+              text: context.l10n.donations,
+            ),
           ],
         ),
       ),
@@ -127,6 +132,7 @@ class MobileAdminHome extends HookConsumerWidget {
               _Events(),
               HealerReports(),
               UserProfile(),
+              Donations(),
             ],
             controller: controller,
           ),
@@ -164,6 +170,9 @@ class DesktopAdminHome extends HookConsumerWidget {
         break;
       case HomeTabs.offices:
         child = const Offices();
+        break;
+      case HomeTabs.donations:
+        child = const Donations();
         break;
     }
 
@@ -229,6 +238,14 @@ class DesktopAdminHome extends HookConsumerWidget {
                                 store.selectedTab = HomeTabs.profile;
                               },
                               selected: store.selectedTab == HomeTabs.profile,
+                            ),
+                            const SizedBox(width: 2),
+                            MenuItem(
+                              label: context.l10n.donations,
+                              onTap: () {
+                                store.selectedTab = HomeTabs.donations;
+                              },
+                              selected: store.selectedTab == HomeTabs.donations,
                             ),
                             const SizedBox(width: kNormalPadding),
                             MenuItem(

@@ -25,6 +25,8 @@ export 'package:heal_happy_sdk/src/model/dashboard.dart';
 export 'package:heal_happy_sdk/src/model/dashboard_event.dart';
 export 'package:heal_happy_sdk/src/model/dashboard_user.dart';
 export 'package:heal_happy_sdk/src/model/delete_event_request.dart';
+export 'package:heal_happy_sdk/src/model/donations_data.dart';
+export 'package:heal_happy_sdk/src/model/donations_month_data.dart';
 export 'package:heal_happy_sdk/src/model/file_data.dart';
 export 'package:heal_happy_sdk/src/model/healer.dart';
 export 'package:heal_happy_sdk/src/model/healer_availabilities.dart';

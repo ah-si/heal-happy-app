@@ -41,7 +41,7 @@ class Dashboard extends HookConsumerWidget {
               child: ClipRect(
                 child: SfCartesianChart(
                   primaryXAxis: CategoryAxis(),
-                  primaryYAxis: NumericAxis(minimum: 0, interval: 50),
+                  primaryYAxis: NumericAxis(minimum: 0, interval: 100),
                   title: ChartTitle(text: 'Consultations'),
                   legend: Legend(
                     isVisible: true,

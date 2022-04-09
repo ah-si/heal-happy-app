@@ -67,6 +67,7 @@ Class | Method | HTTP request | Description
 [*AdminApi*](doc/AdminApi.md) | [**createUser**](doc/AdminApi.md#createuser) | **POST** /api/v1/admin/users | 
 [*AdminApi*](doc/AdminApi.md) | [**deleteUser**](doc/AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**getDashboard**](doc/AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
+[*AdminApi*](doc/AdminApi.md) | [**getDonations**](doc/AdminApi.md#getdonations) | **GET** /api/v1/admin/donations | 
 [*AdminApi*](doc/AdminApi.md) | [**getHealerStats**](doc/AdminApi.md#gethealerstats) | **GET** /api/v1/admin/healers/stats | 
 [*AdminApi*](doc/AdminApi.md) | [**getUser**](doc/AdminApi.md#getuser) | **GET** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**searchEvents**](doc/AdminApi.md#searchevents) | **GET** /api/v1/admin/events | 
@@ -132,6 +133,8 @@ Class | Method | HTTP request | Description
  - [DashboardEvent](doc/DashboardEvent.md)
  - [DashboardUser](doc/DashboardUser.md)
  - [DeleteEventRequest](doc/DeleteEventRequest.md)
+ - [DonationsData](doc/DonationsData.md)
+ - [DonationsMonthData](doc/DonationsMonthData.md)
  - [FileData](doc/FileData.md)
  - [Healer](doc/Healer.md)
  - [HealerAvailabilities](doc/HealerAvailabilities.md)

@@ -21,6 +21,8 @@ import 'package:heal_happy_sdk/src/model/dashboard.dart';
 import 'package:heal_happy_sdk/src/model/dashboard_event.dart';
 import 'package:heal_happy_sdk/src/model/dashboard_user.dart';
 import 'package:heal_happy_sdk/src/model/delete_event_request.dart';
+import 'package:heal_happy_sdk/src/model/donations_data.dart';
+import 'package:heal_happy_sdk/src/model/donations_month_data.dart';
 import 'package:heal_happy_sdk/src/model/file_data.dart';
 import 'package:heal_happy_sdk/src/model/healer.dart';
 import 'package:heal_happy_sdk/src/model/healer_availabilities.dart';
@@ -63,6 +65,8 @@ part 'serializers.g.dart';
   DashboardEvent,
   DashboardUser,
   DeleteEventRequest,
+  DonationsData,
+  DonationsMonthData,
   FileData,
   Healer,
   HealerAvailabilities,

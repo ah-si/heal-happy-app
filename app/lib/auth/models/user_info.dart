@@ -19,8 +19,9 @@ class UserInfo extends ChangeNotifier {
 
   toUser({User? existingUser}) {
     builder(UserBuilder b) {
-      b.isVerified = false;
-      b.isActivated = false;
+      b.isVerified = existingUser?.isVerified ?? false;
+      b.isActivated = existingUser?.isActivated ?? false;
+      b.canDoFaceToFace = existingUser?.canDoFaceToFace ?? false;
       b.isTermsAccepted = _isTermsAccepted;
 
       b.type = type;

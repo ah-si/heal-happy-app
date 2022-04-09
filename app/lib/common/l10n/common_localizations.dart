@@ -126,7 +126,7 @@ class CommonLocalizations {
 
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
-  String get donateSuccess => Intl.message('Votre don a bien été accepté, merci beaucoup pour votre soutient!\n\nSoyez Heureux!', name: 'donateSuccess');
+  String get donateSuccess => Intl.message('Votre don a bien été accepté, merci beaucoup pour votre soutien!\n\nSoyez Heureux!', name: 'donateSuccess');
 
   String get askToDonate => Intl.message('Nous avons besoin de vous!', name: 'askToDonate');
   String get askToDonateDesc => Intl.message('Soignez Heureux ne fonctionne que grace aux dons que vous nous faites, et ces dons sont rétrocédé aux soignants. Si vous le pouvez et voulez aider l\'ONG et les soignants, merci de nous faire un dons.', name: 'askToDonateDesc');
@@ -469,6 +469,8 @@ class CommonLocalizations {
 
   String get profile => Intl.message('Profil', name: 'profile');
 
+  String get donations => Intl.message('Donations', name: 'donations');
+
   String get countryField => Intl.message('Pays', name: 'countryField');
 
   String get help => Intl.message('Aide', name: 'help');
@@ -609,6 +611,8 @@ class CommonLocalizations {
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
   String get wrongConsultationDuration => Intl.message('entre 30 et 120 minutes uniquement', name: 'wrongConsultationDuration');
+
+  String get consultationLimit => Intl.message('Lorsque plusieurs membres d\'une même famille sont malades, merci de créer un compte pour chaque personne et de réserver un rendez-vous par patient.', name: 'consultationLimit');
 
   String get hintReasonConsultation =>
       Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');
