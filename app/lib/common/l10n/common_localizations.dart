@@ -553,9 +553,6 @@ class CommonLocalizations {
       'Aucune donnée médicale n\'est demandée ni diffusée. Les données personnelles sont protégées. Les praticiens médicaux et para médicaux de « soignez heureux » se sont engagés à respecter le secret médical.',
       name: 'mentionLegal');
 
-  String get addressLegal =>
-      Intl.message('Alliance Humaine Santé Internationale - AHSI\nHuman Alliance International Health – HAIH\nCH-1202 Genève – Suisse', name: 'addressLegal');
-
   String get donateIntro => Intl.message('Voici les informations pour faire vos dons par virement bancaire: ', name: 'donateIntro');
 
   String get urgencyContact => Intl.message(

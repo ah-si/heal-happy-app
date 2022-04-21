@@ -264,24 +264,9 @@ class DesktopPatientHome extends HookConsumerWidget {
                         if (MediaQuery.of(context).size.width > 650)
                           Padding(
                             padding: const EdgeInsets.all(kNormalPadding),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    context.l10n.mentionLegal,
-                                    style: TextStyle(color: context.primaryColor),
-                                  ),
-                                ),
-                                const SizedBox(width: kNormalPadding),
-                                Expanded(
-                                  child: Text(
-                                    context.l10n.addressLegal,
-                                    style: TextStyle(color: context.primaryColor),
-                                    textAlign: TextAlign.right,
-                                  ),
-                                ),
-                              ],
+                            child: Text(
+                              context.l10n.mentionLegal,
+                              style: TextStyle(color: context.primaryColor),
                             ),
                           ),
                         const DonateBanner(),

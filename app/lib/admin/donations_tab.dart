@@ -28,7 +28,7 @@ class Donations extends HookConsumerWidget {
               child: ClipRect(
                 child: SfCartesianChart(
                   primaryXAxis: CategoryAxis(),
-                  primaryYAxis: NumericAxis(minimum: 0, interval: 100),
+                  primaryYAxis: NumericAxis(minimum: 0, interval: 1000),
                   title: ChartTitle(text: 'Dons'),
                   series: store.donationsChart!,
                 ),

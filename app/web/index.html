@@ -25,45 +25,156 @@
             background: #b7cbeb;
         }
 
-        div {
+        #loading {
             display: block;
+            z-index: 1000;
             text-align: center;
             transform: translate(-50%, -50%);
             position: absolute;
             top: 50%;
             left: 50%;
-            color: black;
+            color: #2a3a5e;
+            font-size: medium;
+            font-family: sans-serif;
+            font-weight: bold;
         }
+
+        .lds-heart {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+            transform: rotate(45deg);
+            transform-origin: 40px 40px;
+        }
+
+        .lds-heart div {
+            top: 32px;
+            left: 32px;
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: #d93861;
+            animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .lds-heart div:after,
+        .lds-heart div:before {
+            content: " ";
+            position: absolute;
+            display: block;
+            width: 32px;
+            height: 32px;
+            background: #d93861;
+        }
+
+        .lds-heart div:before {
+            left: -24px;
+            border-radius: 50% 0 0 50%;
+        }
+
+        .lds-heart div:after {
+            top: -24px;
+            border-radius: 50% 50% 0 0;
+        }
+
+        @keyframes lds-heart {
+            0% {
+                transform: scale(0.95);
+            }
+            5% {
+                transform: scale(1.1);
+            }
+            39% {
+                transform: scale(0.85);
+            }
+            45% {
+                transform: scale(1);
+            }
+            60% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(0.9);
+            }
+        }
+
     </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <script src="https://js.stripe.com/v3/"></script>
-<div>Chargement en cours...</div>
+<div id="loading">
+    <div class="lds-heart">
+        <div></div>
+    </div>
+    <div>Chargement en cours...</div>
+</div>
 <!-- This script installs service_worker.js to provide PWA functionality to
      application. For more information, see:
      https://developers.google.com/web/fundamentals/primers/service-workers -->
+<script type="text/javascript">
+    const params = new URLSearchParams(window.location.search);
+    const useHtml = params.get("useHtml");
+    if(useHtml || window.sessionStorage.useHtml) {
+        window.sessionStorage.useHtml = true;
+        window.flutterWebRenderer = "html";
+    }
+</script>
 <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
+    var firstFrameOnScreen = false;
+
+    window.addEventListener("flutter-first-frame", function () {
+        console.log('App loaded');
+        firstFrameOnScreen = true;
+        document.getElementById('loading').remove();
+    });
+    window.onerror = function (err, stack) {
+        console.log('App error', err, stack);
+        if (!firstFrameOnScreen) {
+            showError();
+        }
+    };
 
     function loadMainDartJs() {
         if (scriptLoaded) {
             return;
         }
         scriptLoaded = true;
-        var scriptTag = document.createElement('script');
+        const scriptTag = document.createElement('script');
         scriptTag.src = 'main.dart.js';
         scriptTag.type = 'application/javascript';
         document.body.append(scriptTag);
     }
 
+    function showSlow() {
+        const div = document.getElementById('loading');
+        if (div) {
+            div.innerHTML = 'Votre connexion est lente ou instable, merci de <a href="/">recharger la page</a> ou <a href="/?useHtml=true">tester la version light</a>.';
+        }
+    }
+
+    function showError() {
+        const div = document.getElementById('loading');
+        if (div) {
+            div.innerHTML = 'Une erreur est survenue, merci de <a href="/">recharger la page</a> ou <a href="/?useHtml=true">tester la version light</a>.';
+        }
+    }
+    setTimeout(() => {
+        if (!firstFrameOnScreen) {
+            showSlow();
+        }
+    }, 30000);
     if ('serviceWorker' in navigator) {
+
         // Service workers are supported. Use them.
         window.addEventListener('load', function () {
             // Wait for registration to finish before dropping the <script> tag.
             // Otherwise, the browser will load the script multiple times,
             // potentially different versions.
-            var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
+            const serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
             navigator.serviceWorker.register(serviceWorkerUrl)
                 .then((reg) => {
                     function waitForActivation(serviceWorker) {
@@ -92,7 +203,10 @@
                         console.log('Loading app from service worker.');
                         loadMainDartJs();
                     }
-                });
+                }).catch((err) => {
+                console.error(err);
+                showError();
+            });
 
             // If service worker doesn't succeed in a reasonable amount of time,
             // fallback to plaint <script> tag.

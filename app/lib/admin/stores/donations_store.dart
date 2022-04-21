@@ -83,6 +83,10 @@ class AdminDonationsStore extends ChangeNotifier {
       data.add(DonationsChartData(don + donationsData.currency, donationsData.donations[don]!));
     }
 
+    String? getCallbackLabel(DonationsChartData row, _) {
+      return row.amount;
+    }
+
     String? getCallback(DonationsChartData row, _) {
       return '${row.amount} (${row.total} dons)';
     }
@@ -98,7 +102,7 @@ class AdminDonationsStore extends ChangeNotifier {
         xValueMapper: getCallback,
         yValueMapper: (DonationsChartData data, _) => data.total,
         // Set a label accessor to control the text of the arc label.
-        dataLabelMapper: getCallback,
+        dataLabelMapper: getCallbackLabel,
       )
     ];
   }
