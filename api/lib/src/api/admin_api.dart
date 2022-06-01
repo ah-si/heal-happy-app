@@ -4,10 +4,9 @@
 
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-
-import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/api_util.dart';
 import 'package:heal_happy_sdk/src/model/dashboard.dart';
 import 'package:heal_happy_sdk/src/model/date.dart';
@@ -17,6 +16,7 @@ import 'package:heal_happy_sdk/src/model/paginated_events.dart';
 import 'package:heal_happy_sdk/src/model/paginated_users.dart';
 import 'package:heal_happy_sdk/src/model/user.dart';
 import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
+import 'package:heal_happy_sdk/src/model/verify_request.dart';
 
 class AdminApi {
 
@@ -27,10 +27,10 @@ class AdminApi {
   const AdminApi(this._dio, this._serializers);
 
   /// createUser
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [user] 
+  /// * [user]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -40,7 +40,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> createUser({ 
+  Future<Response<User>> createUser({
     required User user,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -127,10 +127,10 @@ class AdminApi {
   }
 
   /// deleteUser
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -140,7 +140,7 @@ class AdminApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> deleteUser({ 
+  Future<Response<void>> deleteUser({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -181,7 +181,7 @@ class AdminApi {
   }
 
   /// getDashboard
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -193,7 +193,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [Dashboard] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<Dashboard>> getDashboard({ 
+  Future<Response<Dashboard>> getDashboard({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -260,7 +260,7 @@ class AdminApi {
   }
 
   /// getDonations
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -272,7 +272,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [DonationsData] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<DonationsData>> getDonations({ 
+  Future<Response<DonationsData>> getDonations({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -339,11 +339,11 @@ class AdminApi {
   }
 
   /// getHealerStats
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [start] 
-  /// * [end] 
+  /// * [start]
+  /// * [end]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -353,7 +353,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<HealerStats>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<BuiltList<HealerStats>>> getHealerStats({ 
+  Future<Response<BuiltList<HealerStats>>> getHealerStats({
     required Date start,
     required Date end,
     CancelToken? cancelToken,
@@ -428,10 +428,10 @@ class AdminApi {
   }
 
   /// getUser
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -441,7 +441,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> getUser({ 
+  Future<Response<User>> getUser({
     required String id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -509,14 +509,14 @@ class AdminApi {
   }
 
   /// searchEvents
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [start] 
-  /// * [end] 
-  /// * [email] 
-  /// * [isUrgent] 
-  /// * [isCancelled] 
+  /// * [start]
+  /// * [end]
+  /// * [email]
+  /// * [isUrgent]
+  /// * [isCancelled]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -526,7 +526,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PaginatedEvents] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PaginatedEvents>> searchEvents({ 
+  Future<Response<PaginatedEvents>> searchEvents({
     required Date start,
     required Date end,
     String? email,
@@ -607,16 +607,16 @@ class AdminApi {
   }
 
   /// searchUsers
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [page] 
-  /// * [query] 
-  /// * [type] 
-  /// * [job] 
-  /// * [isActivated] 
-  /// * [canDoFaceToFace] 
-  /// * [isVerified] 
+  /// * [page]
+  /// * [query]
+  /// * [type]
+  /// * [job]
+  /// * [isActivated]
+  /// * [canDoFaceToFace]
+  /// * [isVerified]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -626,7 +626,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PaginatedUsers] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PaginatedUsers>> searchUsers({ 
+  Future<Response<PaginatedUsers>> searchUsers({
     required int page,
     String? query,
     UserTypeEnum? type,
@@ -711,11 +711,11 @@ class AdminApi {
   }
 
   /// updateUser
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
-  /// * [user] 
+  /// * [id]
+  /// * [user]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -725,7 +725,7 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> updateUser({ 
+  Future<Response<User>> updateUser({
     required String id,
     required User user,
     CancelToken? cancelToken,
@@ -813,10 +813,11 @@ class AdminApi {
   }
 
   /// verifyUser
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [id] 
+  /// * [id]
+  /// * [verifyRequest]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -826,8 +827,9 @@ class AdminApi {
   ///
   /// Returns a [Future] containing a [Response] with a [User] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<User>> verifyUser({ 
+  Future<Response<User>> verifyUser({
     required String id,
+    required VerifyRequest verifyRequest,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -852,11 +854,30 @@ class AdminApi {
         ],
         ...?extra,
       },
+      contentType: 'application/json',
       validateStatus: validateStatus,
     );
 
+    dynamic _bodyData;
+
+    try {
+      const _type = FullType(VerifyRequest);
+      _bodyData = _serializers.serialize(verifyRequest, specifiedType: _type);
+
+    } catch(error, stackTrace) {
+      throw DioError(
+         requestOptions: _options.compose(
+          _dio.options,
+          _path,
+        ),
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
     final _response = await _dio.request<Object>(
       _path,
+      data: _bodyData,
       options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,

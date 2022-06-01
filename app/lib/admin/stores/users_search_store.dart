@@ -66,8 +66,10 @@ class AdminUsersStore extends ChangeNotifier {
     _lastSearchQuery = query;
   }
 
-  Future<void> validateHealer(User healer) async {
-    await _adminApi.verifyUser(id: healer.id!);
+  Future<void> validateHealer(User healer, bool isVerified) async {
+    await _adminApi.verifyUser(verifyRequest: VerifyRequest((b) {
+      b.isVerified = isVerified;
+    }), id: healer.id!);
     await search(searchResults!.currentPage);
     notifyListeners();
   }

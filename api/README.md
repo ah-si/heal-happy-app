@@ -164,6 +164,7 @@ Class | Method | HTTP request | Description
  - [UserEmail](doc/UserEmail.md)
  - [UserEvent](doc/UserEvent.md)
  - [UserTypeEnum](doc/UserTypeEnum.md)
+ - [VerifyRequest](doc/VerifyRequest.md)
 
 
 ## Documentation For Authorization

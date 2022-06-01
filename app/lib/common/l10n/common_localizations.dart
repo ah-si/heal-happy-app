@@ -148,9 +148,19 @@ class CommonLocalizations {
       'En acceptant le soignant, il sera visible dans la recherche et les patients pourront prendre rendez-vous avec lui.\nVoulez- vous continuer?',
       name: 'acceptConfirm');
 
+  String get disableConfirm => Intl.message(
+      'En désactivant le soignant, il ne sera plus visible dans la recherche et les patients ne pourront plus prendre rendez-vous avec lui.\nVoulez- vous continuer?',
+      name: 'disableConfirm');
+
   String get accepting => Intl.message('Acceptation en cours...', name: 'accepting');
 
+  String get disabling => Intl.message('Désactivation en cours...', name: 'disabling');
+
+  String get deactivateUser => Intl.message('Désactiver', name: 'deactivateUser');
+
   String accept(String name) => Intl.message('Accepter $name?', args: [name], name: 'accept');
+
+  String disableUser(String name) => Intl.message('Désactiver $name?', args: [name], name: 'disableUser');
 
   String get youAre => Intl.message('Vous êtes:', name: 'youAre');
 

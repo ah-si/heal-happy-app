@@ -328,10 +328,21 @@ class _UserItem extends HookConsumerWidget {
                     final success = await showConfirm(context, context.l10n.accept(user.name), context.l10n.acceptConfirm);
                     if (success) {
                       final store = ref.read(adminUsersStoreProvider);
-                      showLoadingDialog(context, (_) => Text(context.l10n.accepting), () => store.validateHealer(user));
+                      showLoadingDialog(context, (_) => Text(context.l10n.accepting), () => store.validateHealer(user, true));
                     }
                   },
                   child: Text(context.l10n.acceptButton),
+                ),
+              if (user.type == UserTypeEnum.healer && user.isVerified)
+                TextButton(
+                  onPressed: () async {
+                    final success = await showConfirm(context, context.l10n.disableUser(user.name), context.l10n.disableConfirm);
+                    if (success) {
+                      final store = ref.read(adminUsersStoreProvider);
+                      showLoadingDialog(context, (_) => Text(context.l10n.disabling), () => store.validateHealer(user, false));
+                    }
+                  },
+                  child: Text(context.l10n.deactivateUser),
                 ),
               if (user.type == UserTypeEnum.healer && user.isVerified)
                 TextButton(

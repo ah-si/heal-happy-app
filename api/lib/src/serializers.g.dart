@@ -47,6 +47,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(UserEmail.serializer)
       ..add(UserEvent.serializer)
       ..add(UserTypeEnum.serializer)
+      ..add(VerifyRequest.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(AdminUserEvent)]),
           () => new ListBuilder<AdminUserEvent>())

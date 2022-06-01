@@ -442,7 +442,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **verifyUser**
-> User verifyUser(id)
+> User verifyUser(id, verifyRequest)
 
 
 
@@ -456,9 +456,10 @@ import 'package:heal_happy_sdk/api.dart';
 
 final api = HealHappySdk().getAdminApi();
 final String id = id_example; // String | 
+final VerifyRequest verifyRequest = ; // VerifyRequest | 
 
 try { 
-    final response = api.verifyUser(id);
+    final response = api.verifyUser(id, verifyRequest);
     print(response);
 } catch on DioError (e) {
     print('Exception when calling AdminApi->verifyUser: $e\n');
@@ -470,6 +471,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **String**|  | 
+ **verifyRequest** | [**VerifyRequest**](VerifyRequest.md)|  | 
 
 ### Return type
 
@@ -481,7 +483,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

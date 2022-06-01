@@ -47,6 +47,7 @@ doc/UserApi.md
 doc/UserEmail.md
 doc/UserEvent.md
 doc/UserTypeEnum.md
+doc/VerifyRequest.md
 lib/heal_happy_sdk.dart
 lib/src/api.dart
 lib/src/api/admin_api.dart
@@ -103,6 +104,7 @@ lib/src/model/user_all_of.dart
 lib/src/model/user_email.dart
 lib/src/model/user_event.dart
 lib/src/model/user_type_enum.dart
+lib/src/model/verify_request.dart
 lib/src/serializers.dart
 test/admin_api_test.dart
 test/admin_user_event_test.dart
@@ -150,3 +152,4 @@ test/user_email_test.dart
 test/user_event_test.dart
 test/user_test.dart
 test/user_type_enum_test.dart
+test/verify_request_test.dart
