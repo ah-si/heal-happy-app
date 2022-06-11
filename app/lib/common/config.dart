@@ -5,7 +5,7 @@ String _getBaseUrl() {
   final baseUri = Uri.base;
   //baseUri.port > 5000 mean we Run flutter app in IDE, not included in server side so use URL server, use http to avoid self signed cert issues
   if (baseUri.port > 5000 || !kIsProductionMode) {
-    return 'https://localhost:3443';
+    return 'https://devs.ah-si.org';
   }
   // if not on web use normal URL
   if (baseUri.scheme.contains('file')) {

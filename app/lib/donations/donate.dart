@@ -239,7 +239,7 @@ class DonateByCard extends HookConsumerWidget {
                             successUrl: Config().baseUrl + '/${DonateSuccess.name}',
                             canceledUrl: Config().baseUrl + '/${DonateCancelled.name}',
                           );
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
                             result.when(
                               redirected: () {},
                               success: onSuccess,

@@ -13,6 +13,7 @@ import 'package:heal_happy_sdk/src/date_serializer.dart';
 import 'package:heal_happy_sdk/src/model/admin_user_event.dart';
 import 'package:heal_happy_sdk/src/model/app_settings.dart';
 import 'package:heal_happy_sdk/src/model/ask_reset_password.dart';
+import 'package:heal_happy_sdk/src/model/block_request.dart';
 import 'package:heal_happy_sdk/src/model/create_event_request.dart';
 import 'package:heal_happy_sdk/src/model/create_invite_event_request.dart';
 import 'package:heal_happy_sdk/src/model/dashboard.dart';
@@ -59,6 +60,7 @@ part 'serializers.g.dart';
   AdminUserEvent,
   AppSettings,
   AskResetPassword,
+  BlockRequest,
   CreateEventRequest,
   CreateInviteEventRequest,
   Dashboard,

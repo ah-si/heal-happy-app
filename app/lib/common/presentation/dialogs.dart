@@ -329,7 +329,7 @@ Future<T?> showAppDialog<T>(BuildContext context, WidgetBuilder title, WidgetBui
     ModalPageRoute(
       builder: (context) => Center(
         child: Scrollbar(
-          isAlwaysShown: true,
+          thumbVisibility: true,
           child: SingleChildScrollView(
             child: getAppDialog(context, title, content, actions: actions),
           ),
@@ -357,13 +357,13 @@ Future<bool> showLoadingDialog(
                     builder: (context) {
                       useEffect(() {
                         until().then((_) {
-                          WidgetsBinding.instance?.addPostFrameCallback((_) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
                             if (dialogContext.isRelevant()) {
                               Navigator.of(dialogContext).pop(true);
                             }
                           });
                         }).catchError((err, stack) {
-                          WidgetsBinding.instance?.addPostFrameCallback((_) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
                             if (dialogContext.isRelevant()) {
                               Navigator.of(dialogContext).pop(false);
                             }

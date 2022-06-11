@@ -12,6 +12,8 @@ class _$User extends User {
   @override
   final bool isVerified;
   @override
+  final bool isBlocked;
+  @override
   final bool isActivated;
   @override
   final bool? canDoFaceToFace;
@@ -72,6 +74,7 @@ class _$User extends User {
   _$User._(
       {this.id,
       required this.isVerified,
+      required this.isBlocked,
       required this.isActivated,
       this.canDoFaceToFace,
       this.job,
@@ -101,6 +104,7 @@ class _$User extends User {
       this.password})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(isVerified, 'User', 'isVerified');
+    BuiltValueNullFieldError.checkNotNull(isBlocked, 'User', 'isBlocked');
     BuiltValueNullFieldError.checkNotNull(isActivated, 'User', 'isActivated');
     BuiltValueNullFieldError.checkNotNull(firstName, 'User', 'firstName');
     BuiltValueNullFieldError.checkNotNull(
@@ -129,6 +133,7 @@ class _$User extends User {
     return other is User &&
         id == other.id &&
         isVerified == other.isVerified &&
+        isBlocked == other.isBlocked &&
         isActivated == other.isActivated &&
         canDoFaceToFace == other.canDoFaceToFace &&
         job == other.job &&
@@ -178,7 +183,7 @@ class _$User extends User {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
                                                                                 lang.hashCode),
                                                                             type.hashCode),
                                                                         experiences.hashCode),
@@ -205,6 +210,7 @@ class _$User extends User {
     return (newBuiltValueToStringHelper('User')
           ..add('id', id)
           ..add('isVerified', isVerified)
+          ..add('isBlocked', isBlocked)
           ..add('isActivated', isActivated)
           ..add('canDoFaceToFace', canDoFaceToFace)
           ..add('job', job)
@@ -246,6 +252,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   bool? _isVerified;
   bool? get isVerified => _$this._isVerified;
   set isVerified(bool? isVerified) => _$this._isVerified = isVerified;
+
+  bool? _isBlocked;
+  bool? get isBlocked => _$this._isBlocked;
+  set isBlocked(bool? isBlocked) => _$this._isBlocked = isBlocked;
 
   bool? _isActivated;
   bool? get isActivated => _$this._isActivated;
@@ -369,6 +379,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
     if ($v != null) {
       _id = $v.id;
       _isVerified = $v.isVerified;
+      _isBlocked = $v.isBlocked;
       _isActivated = $v.isActivated;
       _canDoFaceToFace = $v.canDoFaceToFace;
       _job = $v.job;
@@ -419,6 +430,8 @@ class UserBuilder implements Builder<User, UserBuilder> {
             id: id,
             isVerified: BuiltValueNullFieldError.checkNotNull(
                 isVerified, 'User', 'isVerified'),
+            isBlocked: BuiltValueNullFieldError.checkNotNull(
+                isBlocked, 'User', 'isBlocked'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
                 isActivated, 'User', 'isActivated'),
             canDoFaceToFace: canDoFaceToFace,

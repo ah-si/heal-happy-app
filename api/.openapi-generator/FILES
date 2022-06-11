@@ -6,6 +6,7 @@ doc/AdminUserEvent.md
 doc/AppSettings.md
 doc/AskResetPassword.md
 doc/AuthApi.md
+doc/BlockRequest.md
 doc/CreateEventRequest.md
 doc/CreateInviteEventRequest.md
 doc/Dashboard.md
@@ -66,6 +67,7 @@ lib/src/date_serializer.dart
 lib/src/model/admin_user_event.dart
 lib/src/model/app_settings.dart
 lib/src/model/ask_reset_password.dart
+lib/src/model/block_request.dart
 lib/src/model/create_event_request.dart
 lib/src/model/create_invite_event_request.dart
 lib/src/model/dashboard.dart
@@ -111,6 +113,7 @@ test/admin_user_event_test.dart
 test/app_settings_test.dart
 test/ask_reset_password_test.dart
 test/auth_api_test.dart
+test/block_request_test.dart
 test/create_event_request_test.dart
 test/create_invite_event_request_test.dart
 test/dashboard_event_test.dart

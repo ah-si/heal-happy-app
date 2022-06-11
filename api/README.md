@@ -47,13 +47,14 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 
 
 final api = HealHappySdk().getAdminApi();
-final User user = ; // User | 
+final String id = id_example; // String | 
+final BlockRequest blockRequest = ; // BlockRequest | 
 
 try {
-    final response = await api.createUser(user);
+    final response = await api.blockUser(id, blockRequest);
     print(response);
 } catch on DioError (e) {
-    print("Exception when calling AdminApi->createUser: $e\n");
+    print("Exception when calling AdminApi->blockUser: $e\n");
 }
 
 ```
@@ -64,6 +65,7 @@ All URIs are relative to *https://soignez-heureux.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+[*AdminApi*](doc/AdminApi.md) | [**blockUser**](doc/AdminApi.md#blockuser) | **POST** /api/v1/admin/users/{id}/block | 
 [*AdminApi*](doc/AdminApi.md) | [**createUser**](doc/AdminApi.md#createuser) | **POST** /api/v1/admin/users | 
 [*AdminApi*](doc/AdminApi.md) | [**deleteUser**](doc/AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [*AdminApi*](doc/AdminApi.md) | [**getDashboard**](doc/AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
@@ -127,6 +129,7 @@ Class | Method | HTTP request | Description
  - [AdminUserEvent](doc/AdminUserEvent.md)
  - [AppSettings](doc/AppSettings.md)
  - [AskResetPassword](doc/AskResetPassword.md)
+ - [BlockRequest](doc/BlockRequest.md)
  - [CreateEventRequest](doc/CreateEventRequest.md)
  - [CreateInviteEventRequest](doc/CreateInviteEventRequest.md)
  - [Dashboard](doc/Dashboard.md)

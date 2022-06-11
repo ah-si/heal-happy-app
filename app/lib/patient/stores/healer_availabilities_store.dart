@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -56,17 +57,23 @@ class AvailabilitiesStore extends ChangeNotifier {
   }
 
   Future<void> createEvent(String patientId, String? roomId, HealerEventType type, DateTime slot, String message, bool isUrgent) async {
-    await _userApi.createEvent(
-        id: healerId,
-        createEventRequest: CreateEventRequest((b) {
-          b.patientId = patientId;
-          b.slot = slot.toUtc();
-          b.roomId = roomId;
-          b.type = type;
-          b.isUrgent = isUrgent;
-          b.message = message;
-        }));
-
+    try {
+      await _userApi.createEvent(
+          id: healerId,
+          createEventRequest: CreateEventRequest((b) {
+            b.patientId = patientId;
+            b.slot = slot.toUtc();
+            b.roomId = roomId;
+            b.type = type;
+            b.isUrgent = isUrgent;
+            b.message = message;
+          }));
+    } on DioError catch(err) {
+      if (err.response?.statusCode == 403 && err.response!.data!.toString().contains('patient_blocked')) {
+        throw ErrorResultException(ErrorResult.accountBlocked);
+      }
+      rethrow;
+    }
     getAvailabilitiesHealers();
   }
 

@@ -13,6 +13,7 @@ part 'user.g.dart';
 /// Properties:
 /// * [id]
 /// * [isVerified]
+/// * [isBlocked]
 /// * [isActivated]
 /// * [canDoFaceToFace]
 /// * [job]
@@ -46,6 +47,9 @@ abstract class User implements Built<User, UserBuilder> {
 
     @BuiltValueField(wireName: r'isVerified')
     bool get isVerified;
+
+    @BuiltValueField(wireName: r'isBlocked')
+    bool get isBlocked;
 
     @BuiltValueField(wireName: r'isActivated')
     bool get isActivated;
@@ -161,6 +165,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
         result
             ..add(r'isVerified')
             ..add(serializers.serialize(object.isVerified,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isBlocked')
+            ..add(serializers.serialize(object.isBlocked,
                 specifiedType: const FullType(bool)));
         result
             ..add(r'isActivated')
@@ -316,6 +324,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
                     break;
                 case r'isVerified':
                     result.isVerified = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isBlocked':
+                    result.isBlocked = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     break;
                 case r'isActivated':

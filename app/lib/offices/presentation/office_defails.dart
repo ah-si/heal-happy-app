@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide MenuItem;
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -49,7 +49,7 @@ class OfficeDetailsScreen extends HookConsumerWidget {
       );
     } else if (store.selectedTab == OfficeTabs.home) {
       child = Scrollbar(
-        isAlwaysShown: true,
+        thumbVisibility: true,
         controller: controller,
         child: SingleChildScrollView(
           controller: controller,

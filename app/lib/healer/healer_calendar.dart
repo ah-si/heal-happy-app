@@ -283,7 +283,7 @@ class _HealerEvents extends HookConsumerWidget {
                 showPatientForm = true;
                 // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
                 listener.notifyListeners();
-                WidgetsBinding.instance?.addPostFrameCallback((_) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
                   formKey.currentState?.validate();
                 });
                 showAlert(context, context.el10n.noUser, (_) => Text(context.el10n.noUserHint));

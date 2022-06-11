@@ -86,6 +86,7 @@ class ErrorResult {
   static const termsRequired = ErrorResult(_ErrorType.termsRequired);
   static const adminTermsRequired = ErrorResult(_ErrorType.adminTermsRequired);
   static const wrongCredentials = ErrorResult(_ErrorType.wrongCredentials);
+  static const accountBlocked = ErrorResult(_ErrorType.accountBlocked);
   static const linkExpired = ErrorResult(_ErrorType.linkExpired);
   static const noAccount = ErrorResult(_ErrorType.noAccount);
   static const noHealer = ErrorResult(_ErrorType.noHealer);
@@ -183,6 +184,8 @@ class ErrorResult {
         return localizations.noHealer;
       case _ErrorType.noOpeningRoomOverlap:
         return localizations.noOpeningRoomOverlap;
+      case _ErrorType.accountBlocked:
+        return localizations.accountBlocked;
     }
   }
 
@@ -256,6 +259,8 @@ class ErrorResult {
         return localizations.noHealerHint;
       case _ErrorType.noOpeningRoomOverlap:
         return localizations.noOpeningRoomOverlapHint;
+      case _ErrorType.accountBlocked:
+        return localizations.accountBlockedHint;
     }
   }
 
@@ -278,6 +283,7 @@ enum _ErrorType {
   termsRequired,
   adminTermsRequired,
   wrongCredentials,
+  accountBlocked,
   linkExpired,
   noAccount,
   noHealer,

@@ -15,7 +15,7 @@ class Pagination extends HookWidget {
     return Center(
       child: Scrollbar(
         controller: controller,
-        isAlwaysShown: true,
+        thumbVisibility: true,
         scrollbarOrientation: ScrollbarOrientation.bottom,
         child: SingleChildScrollView(
           controller: controller,

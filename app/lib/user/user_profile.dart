@@ -24,7 +24,7 @@ class UserProfile extends HookConsumerWidget {
     final store = ref.watch(userInfoProvider);
     final userStore = ref.watch(userStoreProvider);
     useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (userStore.user != null && id == null) {
           store.fromUser(userStore.user!);
         }
@@ -32,7 +32,7 @@ class UserProfile extends HookConsumerWidget {
       return null;
     }, [userStore.user]);
     useEffect(() {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         if (id != null) {
           userStore.getUser(id!).then(store.fromUser);
         }

@@ -2,47 +2,51 @@
 // AUTO-GENERATED FILE, DO NOT MODIFY!
 //
 
-import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
+import 'package:heal_happy_sdk/src/model/user_type_enum.dart';
 
 part 'healer.g.dart';
 
 /// Healer
 ///
 /// Properties:
-/// * [id] 
-/// * [isVerified] 
-/// * [isActivated] 
-/// * [canDoFaceToFace] 
-/// * [job] 
-/// * [firstName] 
-/// * [consultationDuration] 
-/// * [isAddressPublic] 
-/// * [isTermsAccepted] 
-/// * [versionTermsAccepted] 
-/// * [lang] 
-/// * [type] 
-/// * [experiences] 
-/// * [description] 
-/// * [diploma] 
-/// * [website] 
-/// * [social1] 
-/// * [social2] 
-/// * [social3] 
-/// * [lastName] 
-/// * [street] 
-/// * [street2] 
-/// * [zipCode] 
-/// * [country] 
-/// * [city] 
-/// * [avatar] 
+/// * [id]
+/// * [isVerified]
+/// * [isBlocked]
+/// * [isActivated]
+/// * [canDoFaceToFace]
+/// * [job]
+/// * [firstName]
+/// * [consultationDuration]
+/// * [isAddressPublic]
+/// * [isTermsAccepted]
+/// * [versionTermsAccepted]
+/// * [lang]
+/// * [type]
+/// * [experiences]
+/// * [description]
+/// * [diploma]
+/// * [website]
+/// * [social1]
+/// * [social2]
+/// * [social3]
+/// * [lastName]
+/// * [street]
+/// * [street2]
+/// * [zipCode]
+/// * [country]
+/// * [city]
+/// * [avatar]
 abstract class Healer implements Built<Healer, HealerBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;
 
     @BuiltValueField(wireName: r'isVerified')
     bool get isVerified;
+
+    @BuiltValueField(wireName: r'isBlocked')
+    bool get isBlocked;
 
     @BuiltValueField(wireName: r'isActivated')
     bool get isActivated;
@@ -149,6 +153,10 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
         result
             ..add(r'isVerified')
             ..add(serializers.serialize(object.isVerified,
+                specifiedType: const FullType(bool)));
+        result
+            ..add(r'isBlocked')
+            ..add(serializers.serialize(object.isBlocked,
                 specifiedType: const FullType(bool)));
         result
             ..add(r'isActivated')
@@ -290,6 +298,10 @@ class _$HealerSerializer implements StructuredSerializer<Healer> {
                     break;
                 case r'isVerified':
                     result.isVerified = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isBlocked':
+                    result.isBlocked = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     break;
                 case r'isActivated':

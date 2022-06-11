@@ -9,6 +9,7 @@ All URIs are relative to *https://soignez-heureux.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**blockUser**](AdminApi.md#blockuser) | **POST** /api/v1/admin/users/{id}/block | 
 [**createUser**](AdminApi.md#createuser) | **POST** /api/v1/admin/users | 
 [**deleteUser**](AdminApi.md#deleteuser) | **DELETE** /api/v1/admin/users/{id} | 
 [**getDashboard**](AdminApi.md#getdashboard) | **GET** /api/v1/admin/dashboard | 
@@ -20,6 +21,53 @@ Method | HTTP request | Description
 [**updateUser**](AdminApi.md#updateuser) | **PUT** /api/v1/admin/users/{id} | 
 [**verifyUser**](AdminApi.md#verifyuser) | **POST** /api/v1/admin/users/{id}/verify | 
 
+
+# **blockUser**
+> User blockUser(id, blockRequest)
+
+
+
+### Example 
+```dart
+import 'package:heal_happy_sdk/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = HealHappySdk().getAdminApi();
+final String id = id_example; // String | 
+final BlockRequest blockRequest = ; // BlockRequest | 
+
+try { 
+    final response = api.blockUser(id, blockRequest);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling AdminApi->blockUser: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**|  | 
+ **blockRequest** | [**BlockRequest**](BlockRequest.md)|  | 
+
+### Return type
+
+[**User**](User.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **createUser**
 > User createUser(user)

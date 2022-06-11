@@ -198,7 +198,7 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
       if (_focusNode.hasFocus) {
         if (_controller.text.length >= widget.characterThreshold) {
           _showOverlay();
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             _bloc.refresh(_controller.text);
           });
         }

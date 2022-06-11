@@ -157,6 +157,10 @@ class ErrorLocalizations {
   String get noOpeningRoomOverlap => Intl.message('Chevauchement des horaires', name: 'noOpeningRoomOverlap');
 
   String get noOpeningRoomOverlapHint => Intl.message('Un autre soignant a déjà pris ce créneau dans cette salle, merci d\'en choisir un autre.' , name: 'noOpeningRoomOverlapHint');
+
+  String get accountBlocked => Intl.message('Compte bloqué', name: 'accountBlocked');
+
+  String get accountBlockedHint => Intl.message('Votre compte a été bloqué, pour en savoir plus merci de nous contacter à contact@ah-si.org.' , name: 'accountBlockedHint');
 }
 
 class ErrorLocalizationsDelegate extends LocalizationsDelegate<ErrorLocalizations> {

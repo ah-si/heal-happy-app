@@ -74,6 +74,14 @@ class AdminUsersStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> blockUser(User user, bool isBlocked) async {
+    await _adminApi.blockUser(blockRequest: BlockRequest((b) {
+      b.isBlocked = isBlocked;
+    }), id: user.id!);
+    await search(searchResults!.currentPage);
+    notifyListeners();
+  }
+
   Future<void> saveHealer(User healer) async {
     await _adminApi.updateUser(id: healer.id!, user: healer);
     await search(searchResults!.currentPage);

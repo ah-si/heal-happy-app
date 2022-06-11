@@ -120,7 +120,7 @@ class HealerAvailability extends HookConsumerWidget {
                             final controller = useScrollController();
                             return Scrollbar(
                               controller: controller,
-                              isAlwaysShown: true,
+                              thumbVisibility: true,
                               child: SingleChildScrollView(
                                 controller: controller,
                                 child: Row(

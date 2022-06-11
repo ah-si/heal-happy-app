@@ -149,18 +149,28 @@ class CommonLocalizations {
       name: 'acceptConfirm');
 
   String get disableConfirm => Intl.message(
-      'En désactivant le soignant, il ne sera plus visible dans la recherche et les patients ne pourront plus prendre rendez-vous avec lui.\nVoulez- vous continuer?',
+      'En désactivant l\'utilisateur, il ne pourra plus prendre de rendez-vous. Si il est soignant, il ne sera plus visible dans la recherche.\nVoulez- vous continuer?',
       name: 'disableConfirm');
+
+  String get unblockConfirm => Intl.message(
+      'En réactivant l\'utilisateur, il pourra prendre de rendez-vous. Si il est soignant, il sera visible dans la recherche.\nVoulez- vous continuer?',
+      name: 'unblockConfirm');
 
   String get accepting => Intl.message('Acceptation en cours...', name: 'accepting');
 
   String get disabling => Intl.message('Désactivation en cours...', name: 'disabling');
 
+  String get unblocking => Intl.message('Réactivation en cours...', name: 'unblocking');
+
   String get deactivateUser => Intl.message('Désactiver', name: 'deactivateUser');
+
+  String get unblockUser => Intl.message('Réactiver', name: 'unblockUser');
 
   String accept(String name) => Intl.message('Accepter $name?', args: [name], name: 'accept');
 
   String disableUser(String name) => Intl.message('Désactiver $name?', args: [name], name: 'disableUser');
+
+  String unlockUser(String name) => Intl.message('Réactiver $name?', args: [name], name: 'unlockUser');
 
   String get youAre => Intl.message('Vous êtes:', name: 'youAre');
 

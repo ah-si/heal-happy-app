@@ -12,6 +12,8 @@ class _$Healer extends Healer {
   @override
   final bool isVerified;
   @override
+  final bool isBlocked;
+  @override
   final bool isActivated;
   @override
   final bool? canDoFaceToFace;
@@ -66,6 +68,7 @@ class _$Healer extends Healer {
   _$Healer._(
       {this.id,
       required this.isVerified,
+      required this.isBlocked,
       required this.isActivated,
       this.canDoFaceToFace,
       this.job,
@@ -92,6 +95,7 @@ class _$Healer extends Healer {
       this.avatar})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(isVerified, 'Healer', 'isVerified');
+    BuiltValueNullFieldError.checkNotNull(isBlocked, 'Healer', 'isBlocked');
     BuiltValueNullFieldError.checkNotNull(isActivated, 'Healer', 'isActivated');
     BuiltValueNullFieldError.checkNotNull(firstName, 'Healer', 'firstName');
     BuiltValueNullFieldError.checkNotNull(
@@ -119,6 +123,7 @@ class _$Healer extends Healer {
     return other is Healer &&
         id == other.id &&
         isVerified == other.isVerified &&
+        isBlocked == other.isBlocked &&
         isActivated == other.isActivated &&
         canDoFaceToFace == other.canDoFaceToFace &&
         job == other.job &&
@@ -165,7 +170,7 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode),
                                                                                 isAddressPublic.hashCode),
                                                                             isTermsAccepted.hashCode),
                                                                         versionTermsAccepted.hashCode),
@@ -192,6 +197,7 @@ class _$Healer extends Healer {
     return (newBuiltValueToStringHelper('Healer')
           ..add('id', id)
           ..add('isVerified', isVerified)
+          ..add('isBlocked', isBlocked)
           ..add('isActivated', isActivated)
           ..add('canDoFaceToFace', canDoFaceToFace)
           ..add('job', job)
@@ -230,6 +236,10 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   bool? _isVerified;
   bool? get isVerified => _$this._isVerified;
   set isVerified(bool? isVerified) => _$this._isVerified = isVerified;
+
+  bool? _isBlocked;
+  bool? get isBlocked => _$this._isBlocked;
+  set isBlocked(bool? isBlocked) => _$this._isBlocked = isBlocked;
 
   bool? _isActivated;
   bool? get isActivated => _$this._isActivated;
@@ -341,6 +351,7 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
     if ($v != null) {
       _id = $v.id;
       _isVerified = $v.isVerified;
+      _isBlocked = $v.isBlocked;
       _isActivated = $v.isActivated;
       _canDoFaceToFace = $v.canDoFaceToFace;
       _job = $v.job;
@@ -388,6 +399,8 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
             id: id,
             isVerified: BuiltValueNullFieldError.checkNotNull(
                 isVerified, 'Healer', 'isVerified'),
+            isBlocked: BuiltValueNullFieldError.checkNotNull(
+                isBlocked, 'Healer', 'isBlocked'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
                 isActivated, 'Healer', 'isActivated'),
             canDoFaceToFace: canDoFaceToFace,

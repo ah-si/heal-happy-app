@@ -187,7 +187,10 @@ class UserStore extends ChangeNotifier {
     } on DioError catch (ex) {
       if (ex.response?.statusCode == 401) {
         throw ErrorResultException(ErrorResult.wrongCredentials);
+      } else if (ex.response?.statusCode == 423) {
+        throw ErrorResultException(ErrorResult.accountBlocked);
       }
+
       rethrow;
     }
   }

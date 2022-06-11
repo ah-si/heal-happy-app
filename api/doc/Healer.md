@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | [optional] 
 **isVerified** | **bool** |  | 
+**isBlocked** | **bool** |  | 
 **isActivated** | **bool** |  | 
 **canDoFaceToFace** | **bool** |  | [optional] 
 **job** | **String** |  | [optional] 
