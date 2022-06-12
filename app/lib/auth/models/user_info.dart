@@ -21,6 +21,7 @@ class UserInfo extends ChangeNotifier {
     builder(UserBuilder b) {
       b.isVerified = existingUser?.isVerified ?? false;
       b.isActivated = existingUser?.isActivated ?? false;
+      b.isBlocked = existingUser?.isBlocked ?? false;
       b.canDoFaceToFace = existingUser?.canDoFaceToFace ?? false;
       b.isTermsAccepted = _isTermsAccepted;
 
