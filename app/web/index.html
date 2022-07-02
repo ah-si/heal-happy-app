@@ -108,9 +108,13 @@
     <script type="text/javascript">
         const params = new URLSearchParams(window.location.search);
         const useHtml = params.get("useHtml");
-        if(useHtml || window.sessionStorage.useHtml) {
-            window.sessionStorage.useHtml = true;
-            window.flutterWebRenderer = "html";
+        try {
+            if(useHtml || window.sessionStorage.useHtml) {
+                window.sessionStorage.useHtml = true;
+                window.flutterWebRenderer = "html";
+            }
+        } catch(e) {
+            console.error(e);
         }
     </script>
     <!-- This script adds the flutter initialization JS code -->
