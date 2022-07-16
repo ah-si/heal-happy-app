@@ -31,14 +31,14 @@ class PatientStore extends ChangeNotifier {
   Map<String, String> specialities = {};
   Map<String, String> localities = {};
   bool isLoading = false;
-  late String _lastJobSearch;
+  String? _lastJobSearch;
   String? _lastLocalizationSearch;
   HealerEventType lastTypeSearch = HealerEventType.visio;
   HomeTabs _selectedTab = HomeTabs.home;
 
   PatientStore({UserApi? userApi}) : _userApi = BackendApiProvider().api.getUserApi();
 
-  String get lastJobSearch => _lastJobSearch;
+  String get lastJobSearch => _lastJobSearch ?? '';
 
   HomeTabs get selectedTab => _selectedTab;
 
@@ -58,24 +58,37 @@ class PatientStore extends ChangeNotifier {
   }
 
   Future<void> loadHealersPage(int page) async {
-    return searchHealers(_lastJobSearch, lastTypeSearch, _lastLocalizationSearch, page);
+    return searchHealers(_lastJobSearch!, lastTypeSearch, _lastLocalizationSearch, page);
+  }
+
+  bool _isNewSearch(String job, HealerEventType type, String? localization) {
+    return searchResults?.healers == null || job != _lastJobSearch || lastTypeSearch != type || _lastLocalizationSearch != localization;
   }
 
   Future<void> searchHealers(String job, HealerEventType type, String? localization, int page) async {
-    isLoading = true;
+    final isNewSearch = _isNewSearch(job, type, localization) || page == 0;
+    isLoading = isNewSearch;
     _selectedTab = HomeTabs.search;
     notifyListeners();
     try {
       final pageToLoad = page;
       final results = await _userApi.searchHealers(job: job, localization: localization, page: pageToLoad, type: type);
-      searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
+      if (isNewSearch) {
+        searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
+      } else {
+        searchResults = SearchResults(List.from(searchResults!.healers)..addAll(results.data?.healers.toList() ?? []), pageToLoad, results.data?.totalPages ?? 0);
+      }
       isLoading = false;
       _lastJobSearch = job;
       lastTypeSearch = type;
       _lastLocalizationSearch = localization;
       notifyListeners();
     } catch (error, stackTrace) {
-      searchResults = SearchResults([], 0, 0, error: handleError(error, stackTrace));
+      if (isNewSearch) {
+        searchResults = SearchResults([], 0, 0, error: handleError(error, stackTrace));
+      } else {
+        searchResults = SearchResults(searchResults!.healers, 0, 0, error: handleError(error, stackTrace));
+      }
       isLoading = false;
       notifyListeners();
     }

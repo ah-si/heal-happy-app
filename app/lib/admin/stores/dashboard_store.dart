@@ -49,11 +49,11 @@ class AdminDashboardStore extends ChangeNotifier {
     final eventsData = dashboard.events.where((p0) => !p0.isCancelled && !p0.isUrgent).toList();
     final canceledEventsData = dashboard.events.where((p0) => p0.isCancelled).toList();
     final urgentEventsData = dashboard.events.where((p0) => !p0.isCancelled && p0.isUrgent).toList();
-    final _uiFormat = DateFormat('MMM');
+    final uiFormat = DateFormat('MMM');
     final year = Date.now().year;
     String? getCallback(EventsChartData row, _) {
-      final _date = DateTime(year, row.month, 1);
-      return _uiFormat.format(_date);
+      final date = DateTime(year, row.month, 1);
+      return uiFormat.format(date);
     }
 
     String? getCallbackLabel(EventsChartData row, _) {

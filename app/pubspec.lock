@@ -217,6 +217,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  infinite_widgets:
+    dependency: "direct main"
+    description:
+      name: infinite_widgets
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   intl:
     dependency: "direct main"
     description:
@@ -293,7 +300,7 @@ packages:
       name: modal_bottom_sheet
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.1.0"
   package_info_plus:
     dependency: transitive
     description:

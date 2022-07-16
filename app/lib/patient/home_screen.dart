@@ -11,7 +11,6 @@ import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
-import 'package:heal_happy/common/presentation/pagination.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
@@ -24,10 +23,12 @@ import 'package:heal_happy/user/user_profile.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:infinite_widgets/infinite_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
   final success = await showConfirm(context, context.l10n.disconnect, context.l10n.disconnectConfirm);
@@ -107,6 +108,7 @@ class MobilePatientHome extends HookConsumerWidget {
         child: ColoredBox(
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
+            controller: controller,
             children: [
               Column(
                 children: [
@@ -148,7 +150,6 @@ class MobilePatientHome extends HookConsumerWidget {
               if (userStore.user?.type == UserTypeEnum.patient) const UserProfile(),
               const Scrollbar(child: Center(child: _PlannedConsultations(showHistory: true))),
             ],
-            controller: controller,
           ),
         ),
       ),
@@ -318,7 +319,7 @@ class _HealerList extends HookConsumerWidget {
       return const Loading();
     }
 
-    if (store.searchResults?.error != null) {
+    if (store.searchResults!.healers.isEmpty && store.searchResults?.error != null) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(kNormalPadding),
@@ -349,7 +350,7 @@ class _HealerList extends HookConsumerWidget {
             padding: const EdgeInsets.all(kSmallPadding),
             child: TextButton(
               onPressed: () {
-                launch('mailto:urgence@ah-si.org');
+                launchUrlString('mailto:urgence@ah-si.org');
               },
               onLongPress: () {
                 Clipboard.setData(const ClipboardData(text: 'urgence@ah-si.org'));
@@ -365,24 +366,24 @@ class _HealerList extends HookConsumerWidget {
           child: Scrollbar(
             thumbVisibility: true,
             controller: controller,
-            child: ListView.separated(
+            child: InfiniteListView.separated(
               controller: controller,
               itemBuilder: (context, index) {
                 return _HealerListItem(healer: store.searchResults!.healers[index]);
               },
-              separatorBuilder: (context, index) => const Divider(height: 1),
+              itemCount: store.searchResults?.healers.length ?? 0,
+              // Current itemCount you have
+              hasNext: store.searchResults!.currentPage < store.searchResults!.totalPages-1,
+              // let the widget know if you have more data to show or not
+              nextData: () {
+                store.loadHealersPage(store.searchResults!.currentPage + 1);
+              },
               primary: false,
               shrinkWrap: true,
-              itemCount: store.searchResults?.healers.length ?? 0,
+              // callback called when end to the list is reach and hasNext is true
+              separatorBuilder: (context, index) => const Divider(height: 1),
             ),
           ),
-        ),
-        Pagination(
-          total: store.searchResults!.totalPages,
-          current: store.searchResults!.currentPage,
-          onPageSelected: (int selectedPage) {
-            store.loadHealersPage(selectedPage);
-          },
         ),
       ],
     );
@@ -823,6 +824,7 @@ class _SearchBar extends HookConsumerWidget {
                     const Icon(Icons.search),
                     const SizedBox(width: kNormalPadding),
                     Expanded(
+                      flex: 2,
                       child: Center(
                         child: JobSearchFormField(
                           decoration: InputDecoration(
@@ -846,34 +848,36 @@ class _SearchBar extends HookConsumerWidget {
                           },
                         ),
                       ),
-                      flex: 2,
                     ),
                     const SizedBox(
                       width: kSmallPadding,
                     ),
-                    Expanded(
-                      child: DropdownButtonFormField<HealerEventType>(
-                        items: HealerEventType.values
-                            .map((e) => DropdownMenuItem(
-                                  child: Text(
-                                    context.l10n.consultationLabel(e),
-                                    maxLines: 1,
-                                  ),
-                                  value: e,
-                                ))
-                            .toList(growable: false),
-                        decoration: InputDecoration(
-                          labelText: context.l10n.consultationType,
-                          border: InputBorder.none,
+                    Visibility(
+                      visible: false,
+                      child: Expanded(
+                        child: DropdownButtonFormField<HealerEventType>(
+                          items: HealerEventType.values
+                              .map((e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text(
+                                      context.l10n.consultationLabel(e),
+                                      maxLines: 1,
+                                    ),
+                                  ))
+                              .toList(growable: false),
+                          decoration: InputDecoration(
+                            labelText: context.l10n.consultationType,
+                            border: InputBorder.none,
+                          ),
+                          value: typeChoice.value,
+                          isExpanded: true,
+                          onChanged: (value) {
+                            typeChoice.value = value!;
+                            if (value == HealerEventType.visio) {
+                              controllerLocalization.text = '';
+                            }
+                          },
                         ),
-                        value: typeChoice.value,
-                        isExpanded: true,
-                        onChanged: (value) {
-                          typeChoice.value = value!;
-                          if (value == HealerEventType.visio) {
-                            controllerLocalization.text = '';
-                          }
-                        },
                       ),
                     ),
                     if (typeChoice.value == HealerEventType.visio)
