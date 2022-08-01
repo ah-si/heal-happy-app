@@ -9,6 +9,7 @@ import 'package:heal_happy/patient/stores/healer_profile_store.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DesktopHealerProfile extends HookConsumerWidget {
   final String id;
@@ -52,6 +53,8 @@ class DesktopHealerProfile extends HookConsumerWidget {
                         children: [
                           HealerAvailability(
                             id: id,
+                            price:
+                                store.healerProfile?.profile?.consultationPrice == null ? null : '${store.healerProfile!.profile!.consultationPrice! ~/ 100}€',
                             eventType: eventType,
                             healerName: store.healerProfile?.profile?.name ?? '',
                           ),
@@ -81,6 +84,9 @@ class MobileHealerProfile extends HookConsumerWidget {
     final store = ref.watch(healerProfileStoreProvider(id));
 
     return BgContainer(
+      appBar: AppBar(
+        title: Text(store.healerProfile?.profile?.name ?? ''),
+      ),
       child: Scrollbar(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -89,6 +95,7 @@ class MobileHealerProfile extends HookConsumerWidget {
               children: [
                 HealerAvailability(
                   id: id,
+                  price: store.healerProfile?.profile?.consultationPrice == null ? null : '${store.healerProfile!.profile!.consultationPrice! ~/ 100}€',
                   eventType: eventType,
                   healerName: store.healerProfile?.profile?.name ?? '',
                 ),
@@ -97,9 +104,6 @@ class MobileHealerProfile extends HookConsumerWidget {
             ),
           ),
         ),
-      ),
-      appBar: AppBar(
-        title: Text(store.healerProfile?.profile?.name ?? ''),
       ),
     );
   }
@@ -146,6 +150,16 @@ class _HealerInfo extends HookConsumerWidget {
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               if (!healer.description.isNullOrEmpty) Text(healer.description!),
+              if (!healer.isSuspended && !healer.website.isNullOrEmpty) const SizedBox(height: kNormalPadding),
+              if (!healer.isSuspended && !healer.website.isNullOrEmpty)
+                InkWell(
+                  onTap: () {
+                    launchUrlString(healer.website!);
+                  },
+                  child: Text(
+                    healer.website!,
+                  ),
+                ),
               if (!healer.diploma.isNullOrEmpty) const SizedBox(height: kNormalPadding),
               if (!healer.diploma.isNullOrEmpty)
                 Text(

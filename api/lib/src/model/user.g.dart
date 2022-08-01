@@ -12,6 +12,8 @@ class _$User extends User {
   @override
   final bool isVerified;
   @override
+  final bool isSuspended;
+  @override
   final bool isBlocked;
   @override
   final bool isActivated;
@@ -23,6 +25,8 @@ class _$User extends User {
   final String firstName;
   @override
   final int? consultationDuration;
+  @override
+  final int? consultationPrice;
   @override
   final bool isAddressPublic;
   @override
@@ -74,12 +78,14 @@ class _$User extends User {
   _$User._(
       {this.id,
       required this.isVerified,
+      required this.isSuspended,
       required this.isBlocked,
       required this.isActivated,
       this.canDoFaceToFace,
       this.job,
       required this.firstName,
       this.consultationDuration,
+      this.consultationPrice,
       required this.isAddressPublic,
       required this.isTermsAccepted,
       this.versionTermsAccepted,
@@ -104,6 +110,7 @@ class _$User extends User {
       this.password})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(isVerified, 'User', 'isVerified');
+    BuiltValueNullFieldError.checkNotNull(isSuspended, 'User', 'isSuspended');
     BuiltValueNullFieldError.checkNotNull(isBlocked, 'User', 'isBlocked');
     BuiltValueNullFieldError.checkNotNull(isActivated, 'User', 'isActivated');
     BuiltValueNullFieldError.checkNotNull(firstName, 'User', 'firstName');
@@ -133,12 +140,14 @@ class _$User extends User {
     return other is User &&
         id == other.id &&
         isVerified == other.isVerified &&
+        isSuspended == other.isSuspended &&
         isBlocked == other.isBlocked &&
         isActivated == other.isActivated &&
         canDoFaceToFace == other.canDoFaceToFace &&
         job == other.job &&
         firstName == other.firstName &&
         consultationDuration == other.consultationDuration &&
+        consultationPrice == other.consultationPrice &&
         isAddressPublic == other.isAddressPublic &&
         isTermsAccepted == other.isTermsAccepted &&
         versionTermsAccepted == other.versionTermsAccepted &&
@@ -183,7 +192,7 @@ class _$User extends User {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isSuspended.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), consultationPrice.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
                                                                                 lang.hashCode),
                                                                             type.hashCode),
                                                                         experiences.hashCode),
@@ -210,12 +219,14 @@ class _$User extends User {
     return (newBuiltValueToStringHelper('User')
           ..add('id', id)
           ..add('isVerified', isVerified)
+          ..add('isSuspended', isSuspended)
           ..add('isBlocked', isBlocked)
           ..add('isActivated', isActivated)
           ..add('canDoFaceToFace', canDoFaceToFace)
           ..add('job', job)
           ..add('firstName', firstName)
           ..add('consultationDuration', consultationDuration)
+          ..add('consultationPrice', consultationPrice)
           ..add('isAddressPublic', isAddressPublic)
           ..add('isTermsAccepted', isTermsAccepted)
           ..add('versionTermsAccepted', versionTermsAccepted)
@@ -253,6 +264,10 @@ class UserBuilder implements Builder<User, UserBuilder> {
   bool? get isVerified => _$this._isVerified;
   set isVerified(bool? isVerified) => _$this._isVerified = isVerified;
 
+  bool? _isSuspended;
+  bool? get isSuspended => _$this._isSuspended;
+  set isSuspended(bool? isSuspended) => _$this._isSuspended = isSuspended;
+
   bool? _isBlocked;
   bool? get isBlocked => _$this._isBlocked;
   set isBlocked(bool? isBlocked) => _$this._isBlocked = isBlocked;
@@ -278,6 +293,11 @@ class UserBuilder implements Builder<User, UserBuilder> {
   int? get consultationDuration => _$this._consultationDuration;
   set consultationDuration(int? consultationDuration) =>
       _$this._consultationDuration = consultationDuration;
+
+  int? _consultationPrice;
+  int? get consultationPrice => _$this._consultationPrice;
+  set consultationPrice(int? consultationPrice) =>
+      _$this._consultationPrice = consultationPrice;
 
   bool? _isAddressPublic;
   bool? get isAddressPublic => _$this._isAddressPublic;
@@ -379,12 +399,14 @@ class UserBuilder implements Builder<User, UserBuilder> {
     if ($v != null) {
       _id = $v.id;
       _isVerified = $v.isVerified;
+      _isSuspended = $v.isSuspended;
       _isBlocked = $v.isBlocked;
       _isActivated = $v.isActivated;
       _canDoFaceToFace = $v.canDoFaceToFace;
       _job = $v.job;
       _firstName = $v.firstName;
       _consultationDuration = $v.consultationDuration;
+      _consultationPrice = $v.consultationPrice;
       _isAddressPublic = $v.isAddressPublic;
       _isTermsAccepted = $v.isTermsAccepted;
       _versionTermsAccepted = $v.versionTermsAccepted;
@@ -430,6 +452,8 @@ class UserBuilder implements Builder<User, UserBuilder> {
             id: id,
             isVerified: BuiltValueNullFieldError.checkNotNull(
                 isVerified, 'User', 'isVerified'),
+            isSuspended: BuiltValueNullFieldError.checkNotNull(
+                isSuspended, 'User', 'isSuspended'),
             isBlocked: BuiltValueNullFieldError.checkNotNull(
                 isBlocked, 'User', 'isBlocked'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
@@ -439,6 +463,7 @@ class UserBuilder implements Builder<User, UserBuilder> {
             firstName: BuiltValueNullFieldError.checkNotNull(
                 firstName, 'User', 'firstName'),
             consultationDuration: consultationDuration,
+            consultationPrice: consultationPrice,
             isAddressPublic: BuiltValueNullFieldError.checkNotNull(
                 isAddressPublic, 'User', 'isAddressPublic'),
             isTermsAccepted: BuiltValueNullFieldError.checkNotNull(

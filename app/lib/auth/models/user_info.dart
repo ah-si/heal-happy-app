@@ -24,11 +24,13 @@ class UserInfo extends ChangeNotifier {
       b.isBlocked = existingUser?.isBlocked ?? false;
       b.canDoFaceToFace = existingUser?.canDoFaceToFace ?? false;
       b.isTermsAccepted = _isTermsAccepted;
+      b.isSuspended = false;
 
       b.type = type;
       b.type = type;
       b.lang = 'fr_FR';
       b.consultationDuration = consultationDuration ?? 30;
+      b.consultationPrice = consultationPrice == null ? null : consultationPrice! * 100;
 
       b.job = job;
       b.description = description ?? '';
@@ -67,6 +69,7 @@ class UserInfo extends ChangeNotifier {
     _email = user.email;
     _mobile = user.mobile;
     _consultationTime = user.consultationDuration;
+    _consultationPrice = user.consultationPrice == null ? null : user.consultationPrice! ~/ 100;
     _website = user.website;
     _social1 = user.social1;
     _social2 = user.social2;
@@ -100,6 +103,15 @@ class UserInfo extends ChangeNotifier {
 
   set isTermsAccepted(bool value) {
     _isTermsAccepted = value;
+    notifyListeners();
+  }
+
+  int? _consultationPrice;
+
+  int? get consultationPrice => _consultationPrice;
+
+  set consultationPrice(int? value) {
+    _consultationPrice = value;
     notifyListeners();
   }
 

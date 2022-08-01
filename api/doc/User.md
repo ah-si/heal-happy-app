@@ -10,12 +10,14 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **String** |  | [optional] 
 **isVerified** | **bool** |  | 
+**isSuspended** | **bool** |  | 
 **isBlocked** | **bool** |  | 
 **isActivated** | **bool** |  | 
 **canDoFaceToFace** | **bool** |  | [optional] 
 **job** | **String** |  | [optional] 
 **firstName** | **String** |  | 
 **consultationDuration** | **int** |  | 
+**consultationPrice** | **int** |  | [optional] 
 **isAddressPublic** | **bool** |  | [default to false]
 **isTermsAccepted** | **bool** |  | 
 **versionTermsAccepted** | **String** |  | [optional] 

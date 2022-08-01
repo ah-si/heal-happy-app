@@ -13,12 +13,14 @@ part 'user.g.dart';
 /// Properties:
 /// * [id]
 /// * [isVerified]
+/// * [isSuspended]
 /// * [isBlocked]
 /// * [isActivated]
 /// * [canDoFaceToFace]
 /// * [job]
 /// * [firstName]
 /// * [consultationDuration]
+/// * [consultationPrice]
 /// * [isAddressPublic]
 /// * [isTermsAccepted]
 /// * [versionTermsAccepted]
@@ -48,6 +50,9 @@ abstract class User implements Built<User, UserBuilder> {
     @BuiltValueField(wireName: r'isVerified')
     bool get isVerified;
 
+    @BuiltValueField(wireName: r'isSuspended')
+    bool get isSuspended;
+
     @BuiltValueField(wireName: r'isBlocked')
     bool get isBlocked;
 
@@ -65,6 +70,9 @@ abstract class User implements Built<User, UserBuilder> {
 
     @BuiltValueField(wireName: r'consultationDuration')
     int? get consultationDuration;
+
+    @BuiltValueField(wireName: r'consultationPrice')
+    int? get consultationPrice;
 
     @BuiltValueField(wireName: r'isAddressPublic')
     bool get isAddressPublic;
@@ -167,6 +175,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
             ..add(serializers.serialize(object.isVerified,
                 specifiedType: const FullType(bool)));
         result
+            ..add(r'isSuspended')
+            ..add(serializers.serialize(object.isSuspended,
+                specifiedType: const FullType(bool)));
+        result
             ..add(r'isBlocked')
             ..add(serializers.serialize(object.isBlocked,
                 specifiedType: const FullType(bool)));
@@ -194,6 +206,12 @@ class _$UserSerializer implements StructuredSerializer<User> {
             ..add(r'consultationDuration')
             ..add(object.consultationDuration == null ? null : serializers.serialize(object.consultationDuration,
                 specifiedType: const FullType(int)));
+        if (object.consultationPrice != null) {
+            result
+                ..add(r'consultationPrice')
+                ..add(serializers.serialize(object.consultationPrice,
+                    specifiedType: const FullType(int)));
+        }
         result
             ..add(r'isAddressPublic')
             ..add(serializers.serialize(object.isAddressPublic,
@@ -326,6 +344,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
                     result.isVerified = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     break;
+                case r'isSuspended':
+                    result.isSuspended = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
                 case r'isBlocked':
                     result.isBlocked = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
@@ -348,6 +370,10 @@ class _$UserSerializer implements StructuredSerializer<User> {
                     break;
                 case r'consultationDuration':
                     result.consultationDuration = serializers.deserialize(value,
+                        specifiedType: const FullType(int)) as int;
+                    break;
+                case r'consultationPrice':
+                    result.consultationPrice = serializers.deserialize(value,
                         specifiedType: const FullType(int)) as int;
                     break;
                 case r'isAddressPublic':

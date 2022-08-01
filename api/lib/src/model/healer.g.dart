@@ -12,6 +12,8 @@ class _$Healer extends Healer {
   @override
   final bool isVerified;
   @override
+  final bool isSuspended;
+  @override
   final bool isBlocked;
   @override
   final bool isActivated;
@@ -23,6 +25,8 @@ class _$Healer extends Healer {
   final String firstName;
   @override
   final int? consultationDuration;
+  @override
+  final int? consultationPrice;
   @override
   final bool isAddressPublic;
   @override
@@ -68,12 +72,14 @@ class _$Healer extends Healer {
   _$Healer._(
       {this.id,
       required this.isVerified,
+      required this.isSuspended,
       required this.isBlocked,
       required this.isActivated,
       this.canDoFaceToFace,
       this.job,
       required this.firstName,
       this.consultationDuration,
+      this.consultationPrice,
       required this.isAddressPublic,
       required this.isTermsAccepted,
       this.versionTermsAccepted,
@@ -95,6 +101,7 @@ class _$Healer extends Healer {
       this.avatar})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(isVerified, 'Healer', 'isVerified');
+    BuiltValueNullFieldError.checkNotNull(isSuspended, 'Healer', 'isSuspended');
     BuiltValueNullFieldError.checkNotNull(isBlocked, 'Healer', 'isBlocked');
     BuiltValueNullFieldError.checkNotNull(isActivated, 'Healer', 'isActivated');
     BuiltValueNullFieldError.checkNotNull(firstName, 'Healer', 'firstName');
@@ -123,12 +130,14 @@ class _$Healer extends Healer {
     return other is Healer &&
         id == other.id &&
         isVerified == other.isVerified &&
+        isSuspended == other.isSuspended &&
         isBlocked == other.isBlocked &&
         isActivated == other.isActivated &&
         canDoFaceToFace == other.canDoFaceToFace &&
         job == other.job &&
         firstName == other.firstName &&
         consultationDuration == other.consultationDuration &&
+        consultationPrice == other.consultationPrice &&
         isAddressPublic == other.isAddressPublic &&
         isTermsAccepted == other.isTermsAccepted &&
         versionTermsAccepted == other.versionTermsAccepted &&
@@ -170,7 +179,7 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isSuspended.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), consultationPrice.hashCode),
                                                                                 isAddressPublic.hashCode),
                                                                             isTermsAccepted.hashCode),
                                                                         versionTermsAccepted.hashCode),
@@ -197,12 +206,14 @@ class _$Healer extends Healer {
     return (newBuiltValueToStringHelper('Healer')
           ..add('id', id)
           ..add('isVerified', isVerified)
+          ..add('isSuspended', isSuspended)
           ..add('isBlocked', isBlocked)
           ..add('isActivated', isActivated)
           ..add('canDoFaceToFace', canDoFaceToFace)
           ..add('job', job)
           ..add('firstName', firstName)
           ..add('consultationDuration', consultationDuration)
+          ..add('consultationPrice', consultationPrice)
           ..add('isAddressPublic', isAddressPublic)
           ..add('isTermsAccepted', isTermsAccepted)
           ..add('versionTermsAccepted', versionTermsAccepted)
@@ -237,6 +248,10 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   bool? get isVerified => _$this._isVerified;
   set isVerified(bool? isVerified) => _$this._isVerified = isVerified;
 
+  bool? _isSuspended;
+  bool? get isSuspended => _$this._isSuspended;
+  set isSuspended(bool? isSuspended) => _$this._isSuspended = isSuspended;
+
   bool? _isBlocked;
   bool? get isBlocked => _$this._isBlocked;
   set isBlocked(bool? isBlocked) => _$this._isBlocked = isBlocked;
@@ -262,6 +277,11 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   int? get consultationDuration => _$this._consultationDuration;
   set consultationDuration(int? consultationDuration) =>
       _$this._consultationDuration = consultationDuration;
+
+  int? _consultationPrice;
+  int? get consultationPrice => _$this._consultationPrice;
+  set consultationPrice(int? consultationPrice) =>
+      _$this._consultationPrice = consultationPrice;
 
   bool? _isAddressPublic;
   bool? get isAddressPublic => _$this._isAddressPublic;
@@ -351,12 +371,14 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
     if ($v != null) {
       _id = $v.id;
       _isVerified = $v.isVerified;
+      _isSuspended = $v.isSuspended;
       _isBlocked = $v.isBlocked;
       _isActivated = $v.isActivated;
       _canDoFaceToFace = $v.canDoFaceToFace;
       _job = $v.job;
       _firstName = $v.firstName;
       _consultationDuration = $v.consultationDuration;
+      _consultationPrice = $v.consultationPrice;
       _isAddressPublic = $v.isAddressPublic;
       _isTermsAccepted = $v.isTermsAccepted;
       _versionTermsAccepted = $v.versionTermsAccepted;
@@ -399,6 +421,8 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
             id: id,
             isVerified: BuiltValueNullFieldError.checkNotNull(
                 isVerified, 'Healer', 'isVerified'),
+            isSuspended: BuiltValueNullFieldError.checkNotNull(
+                isSuspended, 'Healer', 'isSuspended'),
             isBlocked: BuiltValueNullFieldError.checkNotNull(
                 isBlocked, 'Healer', 'isBlocked'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
@@ -408,6 +432,7 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
             firstName: BuiltValueNullFieldError.checkNotNull(
                 firstName, 'Healer', 'firstName'),
             consultationDuration: consultationDuration,
+            consultationPrice: consultationPrice,
             isAddressPublic: BuiltValueNullFieldError.checkNotNull(
                 isAddressPublic, 'Healer', 'isAddressPublic'),
             isTermsAccepted: BuiltValueNullFieldError.checkNotNull(

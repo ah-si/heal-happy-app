@@ -13,9 +13,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class HealerAvailability extends HookConsumerWidget {
   final String id;
   final String healerName;
+  final String? price;
   final HealerEventType eventType;
 
-  const HealerAvailability({Key? key, required this.id, required this.eventType, required this.healerName}) : super(key: key);
+  const HealerAvailability({Key? key, required this.id, required this.price, required this.eventType, required this.healerName}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -182,6 +183,15 @@ class HealerAvailability extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(context.l10n.takeRdvConfirm(healerName, slot.label)),
+            if(!price.isNullOrEmpty)
+            Row(
+              children: [
+                Text(context.l10n.healerPrice),
+                const SizedBox(width: 8),
+                Text(price!),
+                const Spacer(),
+              ],
+            ),
             TextFormField(
               controller: controller,
               maxLines: 3,

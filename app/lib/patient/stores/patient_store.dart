@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -10,9 +11,10 @@ class SearchResults {
   final List<Healer> healers;
   final int totalPages;
   final int currentPage;
+  final bool isSuspended;
   final ErrorResultException? error;
 
-  SearchResults(this.healers, this.currentPage, this.totalPages, {this.error});
+  SearchResults(this.healers, this.isSuspended, this.currentPage, this.totalPages, {this.error});
 }
 
 class PatientEventResults {
@@ -73,10 +75,21 @@ class PatientStore extends ChangeNotifier {
     try {
       final pageToLoad = page;
       final results = await _userApi.searchHealers(job: job, localization: localization, page: pageToLoad, type: type);
+      final healers = results.data?.healers.toList() ?? [];
       if (isNewSearch) {
-        searchResults = SearchResults(results.data?.healers.toList() ?? [], pageToLoad, results.data?.totalPages ?? 0);
+        searchResults = SearchResults(
+          healers,
+          healers.firstOrNull?.isSuspended ?? false,
+          pageToLoad,
+          results.data?.totalPages ?? 0,
+        );
       } else {
-        searchResults = SearchResults(List.from(searchResults!.healers)..addAll(results.data?.healers.toList() ?? []), pageToLoad, results.data?.totalPages ?? 0);
+        searchResults = SearchResults(
+          List.from(searchResults!.healers)..addAll(healers),
+          healers.firstOrNull?.isSuspended ?? false,
+          pageToLoad,
+          results.data?.totalPages ?? 0,
+        );
       }
       isLoading = false;
       _lastJobSearch = job;
@@ -85,9 +98,15 @@ class PatientStore extends ChangeNotifier {
       notifyListeners();
     } catch (error, stackTrace) {
       if (isNewSearch) {
-        searchResults = SearchResults([], 0, 0, error: handleError(error, stackTrace));
+        searchResults = SearchResults([], false, 0, 0, error: handleError(error, stackTrace));
       } else {
-        searchResults = SearchResults(searchResults!.healers, 0, 0, error: handleError(error, stackTrace));
+        searchResults = SearchResults(
+          searchResults!.healers,
+          searchResults!.healers.firstOrNull?.isSuspended ?? false,
+          0,
+          0,
+          error: handleError(error, stackTrace),
+        );
       }
       isLoading = false;
       notifyListeners();

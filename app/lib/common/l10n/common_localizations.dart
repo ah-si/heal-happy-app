@@ -29,6 +29,10 @@ class CommonLocalizations {
 
   String get healerDescription => Intl.message('Description:', name: 'healerDescription');
 
+  String get healerPrice => Intl.message('Tarif de la consultation:', name: 'healerPrice');
+
+  String get healerPriceUnknown => Intl.message('Non renseigné', name: 'healerPriceUnknown');
+
   String get healerDiploma => Intl.message('Diplomes:', name: 'healerDiploma');
 
   String get healerExperiences => Intl.message('Expériences:', name: 'healerExperiences');
@@ -466,6 +470,10 @@ class CommonLocalizations {
 
   String get consultationDurationField => Intl.message('Durée d\'une consultation*:', name: 'consultationDurationField');
 
+  String get consultationDurationPrice => Intl.message('Prix d\'une consultation*:', name: 'consultationDurationPrice');
+
+  String get consultationDurationPriceHint => Intl.message('A spécifier en euro sans centimes', name: 'consultationDurationPriceHint');
+
   String get consultationDurationHint => Intl.message('A spécifier en minutes', name: 'consultationDurationHint');
 
   String calendarDayError(String day) => Intl.message('Les horaires pour $day sont incorrects, merci de corriger.', args: [day], name: 'calendarDayError');
@@ -579,6 +587,10 @@ class CommonLocalizations {
       'En cas d\'urgence, et si vous ne trouvez pas de médecin disponible, merci de nous contacter à urgence@ah-si.org en précisant votre problème et vos informations de contact.',
       name: 'urgencyContact');
 
+  String get nonSuspendedWarning => Intl.message(
+      'Attention: les soignants de cette catégorie sont des soignants partenaires, le tarif des consultations ainsi que le paiement est à voir directement avec le soignant choisi. Soignez Heureux n\'effectue que la mise en relation.',
+      name: 'nonSuspendedWarning');
+
   String eventCreatedAt(String date) => Intl.message('Consultation prise le $date', args: [date], name: 'eventCreatedAt');
 
   String get donateInstructions =>
@@ -628,6 +640,8 @@ class CommonLocalizations {
   String get creatingRdv => Intl.message('Création du rendez-vous', name: 'creatingRdv');
 
   String get wrongConsultationDuration => Intl.message('entre 30 et 120 minutes uniquement', name: 'wrongConsultationDuration');
+
+  String get wrongConsultationPrice => Intl.message('Merci de renseigner le prix', name: 'wrongConsultationPrice');
 
   String get consultationLimit => Intl.message('Lorsque plusieurs membres d\'une même famille sont malades, merci de créer un compte pour chaque personne et de réserver un rendez-vous par patient.', name: 'consultationLimit');
 

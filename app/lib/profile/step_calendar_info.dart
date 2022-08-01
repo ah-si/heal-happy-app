@@ -30,6 +30,7 @@ class StepCalendarInfo extends HookConsumerWidget {
     final userStore = ref.watch(userStoreProvider);
     final userInfo = ref.watch(userInfoProvider);
     final controllerConsultation = useTextEditingController(text: userInfo.consultationDuration?.toString() ?? '');
+    final controllerPrice = useTextEditingController(text: userInfo.consultationPrice?.toString() ?? '');
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final dataSource = useMemoized(() => _CalendarDataSource(openingStore.results?.slots ?? [], userStore.rooms, userStore.user?.id ?? '', context.l10n),
         [openingStore.results, userStore.rooms]);
@@ -57,36 +58,62 @@ class StepCalendarInfo extends HookConsumerWidget {
       );
     }
 
+    final suffixButton = ElevatedButton(
+      onPressed: () async {
+        if (formKey.currentState!.validate()) {
+          userInfo.consultationPrice = int.tryParse(controllerPrice.text);
+          onSave();
+        }
+      },
+      child: Text(context.l10n.saveButton),
+    );
+
+    print(userStore.user?.isSuspended);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Form(
           key: formKey,
-          child: TextFormField(
-            controller: controllerConsultation,
-            validator: (value) {
-              final result = isRequired(value, context);
-              final intValue = int.tryParse(value!) ?? 0;
-              if (result == null && (intValue < 30 || intValue > 120)) {
-                return context.l10n.wrongConsultationDuration;
-              }
-              return result;
-            },
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            keyboardType: const TextInputType.numberWithOptions(),
-            decoration: InputDecoration(
-              label: Text(context.l10n.consultationDurationField),
-              hintText: context.l10n.consultationDurationHint,
-              suffix: ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate()) {
-                    userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
-                    onSave();
+          child: Column(
+            children: [
+              TextFormField(
+                controller: controllerConsultation,
+                validator: (value) {
+                  final result = isRequired(value, context);
+                  final intValue = int.tryParse(value!) ?? 0;
+                  if (result == null && (intValue < 30 || intValue > 120)) {
+                    return context.l10n.wrongConsultationDuration;
                   }
+                  return result;
                 },
-                child: Text(context.l10n.saveButton),
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: const TextInputType.numberWithOptions(),
+                decoration: InputDecoration(
+                  label: Text(context.l10n.consultationDurationField),
+                  hintText: context.l10n.consultationDurationHint,
+                  suffix: (userStore.user?.isSuspended ?? false) ? suffixButton : null,
+                ),
               ),
-            ),
+              if (!(userStore.user?.isSuspended ?? false))
+                TextFormField(
+                  controller: controllerPrice,
+                  validator: (value) {
+                    final result = isRequired(value, context);
+                    final intValue = int.tryParse(value!);
+                    if (result != null && intValue == null) {
+                      return context.l10n.wrongConsultationPrice;
+                    }
+                    return result;
+                  },
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: const TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    label: Text(context.l10n.consultationDurationPrice),
+                    hintText: context.l10n.consultationDurationPriceHint,
+                    suffix: suffixButton,
+                  ),
+                ),
+            ],
           ),
         ),
         const SizedBox(height: kSmallPadding),
@@ -202,8 +229,8 @@ class StepCalendarInfo extends HookConsumerWidget {
                   items: OpeningType.values
                       .map(
                         (e) => DropdownMenuItem(
-                          child: Text(context.l10n.openingLabel(e)),
                           value: e,
+                          child: Text(context.l10n.openingLabel(e)),
                         ),
                       )
                       .toList(growable: false),
@@ -221,8 +248,8 @@ class StepCalendarInfo extends HookConsumerWidget {
                   items: userStore.rooms
                       .map(
                         (e) => DropdownMenuItem(
-                          child: Text(e.room.name + ' (${e.office.name})'),
                           value: e.room.id,
+                          child: Text(e.room.name + ' (${e.office.name})'),
                         ),
                       )
                       .toList(growable: false),
@@ -236,14 +263,14 @@ class StepCalendarInfo extends HookConsumerWidget {
               DropdownButtonFormField<OpeningRepeatType>(
                 items: [
                   DropdownMenuItem(
-                    child: Text(context.l10n.openingRepeatLabel(null)),
                     value: null,
+                    child: Text(context.l10n.openingRepeatLabel(null)),
                   ),
                   ...OpeningRepeatType.values
                       .where((p0) => p0 != OpeningRepeatType.daily)
                       .map((e) => DropdownMenuItem(
-                            child: Text(context.l10n.openingRepeatLabel(e)),
                             value: e,
+                            child: Text(context.l10n.openingRepeatLabel(e)),
                           ))
                       .toList(growable: false)
                 ],
@@ -366,13 +393,13 @@ class _CalendarDataSource extends CalendarDataSource<HealerOpening> {
       case OpeningType.faceToFace:
         if (opening.userId != currentUserId && opening.roomId != null) {
           final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId);
-          return (opening.user?.name ?? '') + ' ' + room!.office.name + ' (' + room.room.name + ')';
+          return '${opening.user?.name ?? ''} ${room!.office.name} (${room.room.name})';
         } else if (opening.roomId != null) {
           final room = rooms.firstWhereOrNull((element) => element.room.id == opening.roomId);
           if (room == null) {
             return 'Cabinet supprimé';
           }
-          return localizations.openingFaceToFace + ' ' + room.office.name + ' (' + room.room.name + ')';
+          return '${localizations.openingFaceToFace} ${room.office.name} (${room.room.name})';
         }
         return localizations.openingFaceToFace;
       case OpeningType.unavailable:

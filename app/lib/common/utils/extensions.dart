@@ -159,7 +159,7 @@ extension StringCasingExtension on String {
 
   String get titleCase => replaceAll(RegExp(' +'), ' ').split(" ").map((str) => str.capitalized).join(" ");
 
-  String get mandatory => substring(0, length-1) + '*:';
+  String get mandatory => '${substring(0, length-1)}*:';
 
   String removeDiacritic() {
     return String.fromCharCodes(replaceCodeUnits(codeUnits));

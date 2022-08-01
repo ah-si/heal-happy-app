@@ -342,38 +342,61 @@ class _HealerList extends HookConsumerWidget {
       );
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (store.lastJobSearch == 'med_gene' && userStore.appSettings!.enableUrgencyButton)
-          Padding(
-            padding: const EdgeInsets.all(kSmallPadding),
-            child: TextButton(
-              onPressed: () {
-                launchUrlString('mailto:urgence@ah-si.org');
-              },
-              onLongPress: () {
-                Clipboard.setData(const ClipboardData(text: 'urgence@ah-si.org'));
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
-              },
-              child: Text(
-                context.l10n.urgencyContact,
-                textAlign: TextAlign.center,
+    return Scrollbar(
+      thumbVisibility: true,
+      controller: controller,
+      child: SingleChildScrollView(
+        controller: controller,
+        child: Column(
+          children: [
+            if (store.lastJobSearch == 'med_gene' && userStore.appSettings!.enableUrgencyButton)
+              Padding(
+                padding: const EdgeInsets.all(kSmallPadding),
+                child: TextButton(
+                  onPressed: () {
+                    launchUrlString('mailto:urgence@ah-si.org');
+                  },
+                  onLongPress: () {
+                    Clipboard.setData(const ClipboardData(text: 'urgence@ah-si.org'));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.l10n.itemCopied('Email'))));
+                  },
+                  child: Text(
+                    context.l10n.urgencyContact,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-            ),
-          ),
-        Expanded(
-          child: Scrollbar(
-            thumbVisibility: true,
-            controller: controller,
-            child: InfiniteListView.separated(
-              controller: controller,
+            if (!store.searchResults!.isSuspended)
+              Padding(
+                padding: const EdgeInsets.all(kSmallPadding),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.warning_amber,
+                      color: Colors.orange,
+                    ),
+                    const SizedBox(width: kNormalPadding),
+                    Expanded(
+                      child: Text(
+                        context.l10n.nonSuspendedWarning,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orange,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            InfiniteListView.separated(
               itemBuilder: (context, index) {
                 return _HealerListItem(healer: store.searchResults!.healers[index]);
               },
               itemCount: store.searchResults?.healers.length ?? 0,
               // Current itemCount you have
-              hasNext: store.searchResults!.currentPage < store.searchResults!.totalPages-1,
+              hasNext: store.searchResults!.currentPage < store.searchResults!.totalPages - 1,
               // let the widget know if you have more data to show or not
               nextData: () {
                 store.loadHealersPage(store.searchResults!.currentPage + 1);
@@ -383,9 +406,9 @@ class _HealerList extends HookConsumerWidget {
               // callback called when end to the list is reach and hasNext is true
               separatorBuilder: (context, index) => const Divider(height: 1),
             ),
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -515,6 +538,17 @@ class _HealerListItem extends HookConsumerWidget {
                 const SizedBox(height: kNormalPadding),
                 //if (patientStore.lastTypeSearch == HealerEventType.visio) Text(healer.address),
                 if (!healer.description.isNullOrEmpty) const SizedBox(height: kNormalPadding),
+                if (!healer.isSuspended)
+                  Text(
+                    context.l10n.healerPrice,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                if (!healer.isSuspended)
+                  Text(
+                    healer.consultationPrice == null ? context.l10n.healerPriceUnknown : '${(healer.consultationPrice! / 100).toStringAsFixed(0)}€',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                if (!healer.isSuspended) const SizedBox(height: kNormalPadding),
                 if (!healer.description.isNullOrEmpty)
                   Text(
                     context.l10n.healerDescription,
@@ -524,6 +558,20 @@ class _HealerListItem extends HookConsumerWidget {
                   Text(
                     healer.description!,
                     maxLines: 5,
+                  ),
+                if (!healer.isSuspended && !healer.website.isNullOrEmpty) const SizedBox(height: kNormalPadding),
+                if (!healer.isSuspended && !healer.website.isNullOrEmpty)
+                  InkWell(
+                    onTap: () {
+                      var website = healer.website!;
+                      if (!website.startsWith('http')) {
+                        website = 'https://${healer.website!}';
+                      }
+                      launchUrlString(website);
+                    },
+                    child: Text(
+                      healer.website!,
+                    ),
                   ),
                 const SizedBox(height: kNormalPadding),
                 ElevatedButton(
@@ -543,6 +591,7 @@ class _HealerListItem extends HookConsumerWidget {
                 alignment: Alignment.centerRight,
                 child: HealerAvailability(
                   id: healer.id!,
+                  price: healer.consultationPrice == null ? null : '${healer.consultationPrice! ~/ 100}€',
                   eventType: patientStore.lastTypeSearch,
                   healerName: healer.name,
                 ),
