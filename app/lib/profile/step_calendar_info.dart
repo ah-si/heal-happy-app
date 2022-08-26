@@ -62,13 +62,13 @@ class StepCalendarInfo extends HookConsumerWidget {
       onPressed: () async {
         if (formKey.currentState!.validate()) {
           userInfo.consultationPrice = int.tryParse(controllerPrice.text);
+          userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
           onSave();
         }
       },
       child: Text(context.l10n.saveButton),
     );
 
-    print(userStore.user?.isSuspended);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -91,10 +91,10 @@ class StepCalendarInfo extends HookConsumerWidget {
                 decoration: InputDecoration(
                   label: Text(context.l10n.consultationDurationField),
                   hintText: context.l10n.consultationDurationHint,
-                  suffix: (userStore.user?.isSuspended ?? false) ? suffixButton : null,
+                  suffix: (userInfo.isSuspended) ? suffixButton : null,
                 ),
               ),
-              if (!(userStore.user?.isSuspended ?? false))
+              if (!(userInfo.isSuspended))
                 TextFormField(
                   controller: controllerPrice,
                   validator: (value) {

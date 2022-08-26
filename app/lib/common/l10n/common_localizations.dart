@@ -644,6 +644,7 @@ class CommonLocalizations {
   String get wrongConsultationPrice => Intl.message('Merci de renseigner le prix', name: 'wrongConsultationPrice');
 
   String get consultationLimit => Intl.message('Lorsque plusieurs membres d\'une même famille sont malades, merci de créer un compte pour chaque personne et de réserver un rendez-vous par patient.', name: 'consultationLimit');
+  String get consultationAMM => Intl.message('Les consultations sont hors AMM, donc vous devrez payer vos médicaments, ils ne seront pas remboursés.', name: 'consultationAMM');
 
   String get hintReasonConsultation =>
       Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');

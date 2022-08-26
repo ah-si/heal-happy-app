@@ -24,7 +24,7 @@ class UserInfo extends ChangeNotifier {
       b.isBlocked = existingUser?.isBlocked ?? false;
       b.canDoFaceToFace = existingUser?.canDoFaceToFace ?? false;
       b.isTermsAccepted = _isTermsAccepted;
-      b.isSuspended = false;
+      b.isSuspended = _isSuspended;
 
       b.type = type;
       b.type = type;
@@ -85,6 +85,7 @@ class UserInfo extends ChangeNotifier {
     _job = user.job;
     _country = user.country;
     _password = null;
+    _isSuspended = user.isSuspended;
     notifyListeners();
   }
 
@@ -96,6 +97,10 @@ class UserInfo extends ChangeNotifier {
     _isAddressVisible = value;
     notifyListeners();
   }
+
+  bool _isSuspended = false;
+
+  bool get isSuspended => _isSuspended;
 
   bool _isTermsAccepted = false;
 

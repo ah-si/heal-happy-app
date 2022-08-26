@@ -183,6 +183,7 @@ class HealerAvailability extends HookConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(context.l10n.takeRdvConfirm(healerName, slot.label)),
+            Text(context.l10n.consultationAMM),
             if(!price.isNullOrEmpty)
             Row(
               children: [
