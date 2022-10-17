@@ -25,7 +25,7 @@ class _$Office extends Office {
   final String zipCode;
 
   factory _$Office([void Function(OfficeBuilder)? updates]) =>
-      (new OfficeBuilder()..update(updates)).build();
+      (new OfficeBuilder()..update(updates))._build();
 
   _$Office._(
       {required this.rooms,
@@ -37,13 +37,13 @@ class _$Office extends Office {
       required this.city,
       required this.zipCode})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(rooms, 'Office', 'rooms');
-    BuiltValueNullFieldError.checkNotNull(managers, 'Office', 'managers');
-    BuiltValueNullFieldError.checkNotNull(name, 'Office', 'name');
-    BuiltValueNullFieldError.checkNotNull(street, 'Office', 'street');
-    BuiltValueNullFieldError.checkNotNull(street2, 'Office', 'street2');
-    BuiltValueNullFieldError.checkNotNull(city, 'Office', 'city');
-    BuiltValueNullFieldError.checkNotNull(zipCode, 'Office', 'zipCode');
+    BuiltValueNullFieldError.checkNotNull(rooms, r'Office', 'rooms');
+    BuiltValueNullFieldError.checkNotNull(managers, r'Office', 'managers');
+    BuiltValueNullFieldError.checkNotNull(name, r'Office', 'name');
+    BuiltValueNullFieldError.checkNotNull(street, r'Office', 'street');
+    BuiltValueNullFieldError.checkNotNull(street2, r'Office', 'street2');
+    BuiltValueNullFieldError.checkNotNull(city, r'Office', 'city');
+    BuiltValueNullFieldError.checkNotNull(zipCode, r'Office', 'zipCode');
   }
 
   @override
@@ -85,7 +85,7 @@ class _$Office extends Office {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Office')
+    return (newBuiltValueToStringHelper(r'Office')
           ..add('rooms', rooms)
           ..add('managers', managers)
           ..add('id', id)
@@ -167,7 +167,9 @@ class OfficeBuilder implements Builder<Office, OfficeBuilder> {
   }
 
   @override
-  _$Office build() {
+  Office build() => _build();
+
+  _$Office _build() {
     _$Office _$result;
     try {
       _$result = _$v ??
@@ -175,16 +177,16 @@ class OfficeBuilder implements Builder<Office, OfficeBuilder> {
               rooms: rooms.build(),
               managers: managers.build(),
               id: id,
-              name:
-                  BuiltValueNullFieldError.checkNotNull(name, 'Office', 'name'),
+              name: BuiltValueNullFieldError.checkNotNull(
+                  name, r'Office', 'name'),
               street: BuiltValueNullFieldError.checkNotNull(
-                  street, 'Office', 'street'),
+                  street, r'Office', 'street'),
               street2: BuiltValueNullFieldError.checkNotNull(
-                  street2, 'Office', 'street2'),
-              city:
-                  BuiltValueNullFieldError.checkNotNull(city, 'Office', 'city'),
+                  street2, r'Office', 'street2'),
+              city: BuiltValueNullFieldError.checkNotNull(
+                  city, r'Office', 'city'),
               zipCode: BuiltValueNullFieldError.checkNotNull(
-                  zipCode, 'Office', 'zipCode'));
+                  zipCode, r'Office', 'zipCode'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -194,7 +196,7 @@ class OfficeBuilder implements Builder<Office, OfficeBuilder> {
         managers.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'Office', _$failedField, e.toString());
+            r'Office', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -203,4 +205,4 @@ class OfficeBuilder implements Builder<Office, OfficeBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

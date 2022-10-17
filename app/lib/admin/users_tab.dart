@@ -135,10 +135,10 @@ class _UsersSearch extends HookConsumerWidget {
               },
               value: typeState.value,
               items: const [
-                DropdownMenuItem(child: Text('Tous'), value: null),
-                DropdownMenuItem(child: Text('Patients'), value: UserTypeEnum.patient),
-                DropdownMenuItem(child: Text('Soignants'), value: UserTypeEnum.healer),
-                DropdownMenuItem(child: Text('Admins'), value: UserTypeEnum.admin),
+                DropdownMenuItem(value: null, child: Text('Tous')),
+                DropdownMenuItem(value: UserTypeEnum.patient, child: Text('Patients')),
+                DropdownMenuItem(value: UserTypeEnum.healer, child: Text('Soignants')),
+                DropdownMenuItem(value: UserTypeEnum.admin, child: Text('Admins')),
               ],
             ),
           ),
@@ -229,7 +229,7 @@ class _UsersSearch extends HookConsumerWidget {
 
               final token = BackendApiProvider().getToken();
               url += 'token=$token&';
-              launch(url);
+              launchUrlString(url);
             },
             child: Text(context.l10n.exportButton),
           ),
@@ -277,7 +277,7 @@ class _UserItem extends HookConsumerWidget {
                 Text(user.address),
                 InkWell(
                   onTap: () {
-                    launch('mailto:${user.email}');
+                    launchUrlString('mailto:${user.email}');
                   },
                   onLongPress: () {
                     Clipboard.setData(ClipboardData(text: user.email));
@@ -296,7 +296,7 @@ class _UserItem extends HookConsumerWidget {
                 if (!user.mobile.isNullOrEmpty)
                   InkWell(
                     onTap: () {
-                      launch('tel:${user.mobile}');
+                      launchUrlString('tel:${user.mobile}');
                     },
                     onLongPress: () {
                       Clipboard.setData(ClipboardData(text: user.mobile));
@@ -312,6 +312,7 @@ class _UserItem extends HookConsumerWidget {
                   ),
                 user.isActivated ? Text(context.l10n.userActivated) : Text(context.l10n.userUnActivated),
                 if (user.type == UserTypeEnum.healer) user.isVerified ? Text(context.l10n.userVerified) : Text(context.l10n.userUnVerified),
+                if (user.type == UserTypeEnum.healer && user.dateSubscription != null) Text(context.l10n.userValid(kDateFormat.format(user.dateSubscription!))),
                 if (!user.isTermsAccepted) Text(context.l10n.userRgpdKo),
               ],
             ),

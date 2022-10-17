@@ -13,10 +13,10 @@ class _$Slot extends Slot {
   final BuiltList<DateTime> slots;
 
   factory _$Slot([void Function(SlotBuilder)? updates]) =>
-      (new SlotBuilder()..update(updates)).build();
+      (new SlotBuilder()..update(updates))._build();
 
   _$Slot._({this.roomId, required this.slots}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(slots, 'Slot', 'slots');
+    BuiltValueNullFieldError.checkNotNull(slots, r'Slot', 'slots');
   }
 
   @override
@@ -39,7 +39,7 @@ class _$Slot extends Slot {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Slot')
+    return (newBuiltValueToStringHelper(r'Slot')
           ..add('roomId', roomId)
           ..add('slots', slots))
         .toString();
@@ -84,7 +84,9 @@ class SlotBuilder implements Builder<Slot, SlotBuilder> {
   }
 
   @override
-  _$Slot build() {
+  Slot build() => _build();
+
+  _$Slot _build() {
     _$Slot _$result;
     try {
       _$result = _$v ?? new _$Slot._(roomId: roomId, slots: slots.build());
@@ -95,7 +97,7 @@ class SlotBuilder implements Builder<Slot, SlotBuilder> {
         slots.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'Slot', _$failedField, e.toString());
+            r'Slot', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -104,4 +106,4 @@ class SlotBuilder implements Builder<Slot, SlotBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

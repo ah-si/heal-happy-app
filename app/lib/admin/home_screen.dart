@@ -31,7 +31,7 @@ import 'package:heal_happy_sdk/heal_happy_sdk.dart' hide Dashboard;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 part 'dashboard_tab.dart';
 part 'donations_tab.dart';
@@ -125,6 +125,7 @@ class MobileAdminHome extends HookConsumerWidget {
         child: ColoredBox(
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
+            controller: controller,
             children: const [
               Dashboard(),
               _Users(),
@@ -134,7 +135,6 @@ class MobileAdminHome extends HookConsumerWidget {
               UserProfile(),
               Donations(),
             ],
-            controller: controller,
           ),
         ),
       ),

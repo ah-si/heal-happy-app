@@ -13,6 +13,7 @@ class MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: context.primaryColor,
+      onTap: onTap,
       child: ColoredBox(
         color: Colors.white.withOpacity(selected ? 0.8 : 0.6),
         child: Padding(
@@ -26,7 +27,6 @@ class MenuItem extends StatelessWidget {
           ),
         ),
       ),
-      onTap: onTap,
     );
   }
 }

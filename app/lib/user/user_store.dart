@@ -12,6 +12,7 @@ import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
+// ignore: depend_on_referenced_packages
 import 'package:http_parser/http_parser.dart';
 import 'package:logging/logging.dart';
 
@@ -133,6 +134,12 @@ class UserStore extends ChangeNotifier {
     if (force) {
       notifyListeners();
     }
+  }
+
+  Future<void> reloadUser() async {
+    final results = await _apiProvider.api.getUserApi().getProfile();
+    user = results.data;
+    notifyListeners();
   }
 
   Future<void> init({bool silent = true}) async {

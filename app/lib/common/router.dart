@@ -9,10 +9,11 @@ import 'package:heal_happy/auth/register/register_screen.dart';
 import 'package:heal_happy/common/presentation/account_activated_screen.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
-import 'package:heal_happy/donations/donate.dart';
 import 'package:heal_happy/common/presentation/invite_accepted_screen.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
+import 'package:heal_happy/donations/donate.dart';
+import 'package:heal_happy/donations/payments.dart';
 import 'package:heal_happy/healer/home_screen.dart';
 import 'package:heal_happy/main.dart';
 import 'package:heal_happy/offices/presentation/office_defails.dart';
@@ -25,10 +26,11 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 late GoRouter router;
 
 GoRouter createRouter(UserStore userStore) => router = GoRouter(
+
       observers: [SentryNavigatorObserver()],
       refreshListenable: userStore,
       // redirect to the login page if the user is not logged in
-      redirect: (state) {
+      redirect: (context, state) {
         if (userStore.initPending) {
           //login still ongoing so let's wait
           return null;
@@ -43,6 +45,8 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
               '/500',
               DonateCancelled.name,
               DonateScreen.name,
+              PaymentCancelled.name,
+              PaymentSuccess.name,
               DonateSuccess.name,
               RegisterScreen.name,
               InviteAcceptedScreen.name,
@@ -137,6 +141,29 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
             child: const DonateCancelled(),
           ),
         ),
+
+        GoRoute(
+          path: '/${PaymentSuccess.name}',
+          name: PaymentSuccess.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const PaymentSuccess(),
+          ),
+        ),
+        GoRoute(
+          path: '/${PaymentCancelled.name}',
+          name: PaymentCancelled.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+              return child;
+            },
+            child: const PaymentCancelled(),
+          ),
+        ),
         GoRoute(
           path: '/',
           name: HomeScreen.name,
@@ -229,7 +256,7 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
           ),
         ),
         GoRoute(
-          path: HealerProfileScreen.route+'/visio',
+          path: '${HealerProfileScreen.route}/visio',
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
@@ -242,7 +269,7 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
           ),
         ),
         GoRoute(
-          path: HealerProfileScreen.route+'/faceToFace',
+          path: '${HealerProfileScreen.route}/faceToFace',
           pageBuilder: (context, state) => CustomTransitionPage<void>(
             key: state.pageKey,
             transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {

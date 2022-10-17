@@ -14,29 +14,29 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   stripe_checkout: ^1.0.0
-  file_picker: ^4.6.1
+  file_picker: ^5.2.0+1
   country_code_picker: ^2.0.2
-  collection: ^1.15.0
-  syncfusion_flutter_barcodes: ^20.1.59
-  syncfusion_flutter_charts: ^20.1.59
-  syncfusion_flutter_calendar: ^20.1.59
-  url_launcher: ^6.1.3
+  collection: ^1.16.0
+  syncfusion_flutter_barcodes: ^20.3.48
+  syncfusion_flutter_charts: ^20.3.48
+  syncfusion_flutter_calendar: ^20.3.48
+  url_launcher: ^6.1.6
   dio:
   built_value:
   intl: ^0.17.0
-  pubspec_parse: ^1.2.0
-  stream_transform: ^2.0.0
+  pubspec_parse: ^1.2.1
+  stream_transform: ^2.0.1
   shared_preferences: ^2.0.15
-  go_router: ^3.1.1
+  go_router: ^5.0.5
   heal_happy_sdk:
     path: '../api'
   flutter_riverpod: ^1.0.4
   hooks_riverpod: ^1.0.4
-  flutter_hooks: ^0.18.4
-  sentry_flutter: ^6.5.1
-  sentry_dio: ^6.5.1
-  sentry_logging: ^6.5.1
-  logging: ^1.0.2
+  flutter_hooks: ^0.18.5+1
+  sentry_flutter: ^6.11.2
+  sentry_dio: ^6.11.2
+  sentry_logging: ^6.11.2
+  logging: ^1.1.0
   jitsi_meet_wrapper: ^0.0.5
   cupertino_icons: ^1.0.5
   infinite_widgets: ^2.0.2
@@ -48,7 +48,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
 
 dependency_overrides:
-  modal_bottom_sheet: ^2.1.0
+  modal_bottom_sheet: ^2.1.2
 
 flutter:
 

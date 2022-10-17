@@ -11,11 +11,11 @@ class _$VerifyRequest extends VerifyRequest {
   final bool isVerified;
 
   factory _$VerifyRequest([void Function(VerifyRequestBuilder)? updates]) =>
-      (new VerifyRequestBuilder()..update(updates)).build();
+      (new VerifyRequestBuilder()..update(updates))._build();
 
   _$VerifyRequest._({required this.isVerified}) : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        isVerified, 'VerifyRequest', 'isVerified');
+        isVerified, r'VerifyRequest', 'isVerified');
   }
 
   @override
@@ -38,7 +38,7 @@ class _$VerifyRequest extends VerifyRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('VerifyRequest')
+    return (newBuiltValueToStringHelper(r'VerifyRequest')
           ..add('isVerified', isVerified))
         .toString();
   }
@@ -77,14 +77,16 @@ class VerifyRequestBuilder
   }
 
   @override
-  _$VerifyRequest build() {
+  VerifyRequest build() => _build();
+
+  _$VerifyRequest _build() {
     final _$result = _$v ??
         new _$VerifyRequest._(
             isVerified: BuiltValueNullFieldError.checkNotNull(
-                isVerified, 'VerifyRequest', 'isVerified'));
+                isVerified, r'VerifyRequest', 'isVerified'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

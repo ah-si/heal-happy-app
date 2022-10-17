@@ -13,13 +13,13 @@ class _$LoginResponse extends LoginResponse {
   final String refreshToken;
 
   factory _$LoginResponse([void Function(LoginResponseBuilder)? updates]) =>
-      (new LoginResponseBuilder()..update(updates)).build();
+      (new LoginResponseBuilder()..update(updates))._build();
 
   _$LoginResponse._({required this.token, required this.refreshToken})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(token, 'LoginResponse', 'token');
+    BuiltValueNullFieldError.checkNotNull(token, r'LoginResponse', 'token');
     BuiltValueNullFieldError.checkNotNull(
-        refreshToken, 'LoginResponse', 'refreshToken');
+        refreshToken, r'LoginResponse', 'refreshToken');
   }
 
   @override
@@ -44,7 +44,7 @@ class _$LoginResponse extends LoginResponse {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('LoginResponse')
+    return (newBuiltValueToStringHelper(r'LoginResponse')
           ..add('token', token)
           ..add('refreshToken', refreshToken))
         .toString();
@@ -89,16 +89,18 @@ class LoginResponseBuilder
   }
 
   @override
-  _$LoginResponse build() {
+  LoginResponse build() => _build();
+
+  _$LoginResponse _build() {
     final _$result = _$v ??
         new _$LoginResponse._(
             token: BuiltValueNullFieldError.checkNotNull(
-                token, 'LoginResponse', 'token'),
+                token, r'LoginResponse', 'token'),
             refreshToken: BuiltValueNullFieldError.checkNotNull(
-                refreshToken, 'LoginResponse', 'refreshToken'));
+                refreshToken, r'LoginResponse', 'refreshToken'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

@@ -174,10 +174,10 @@ class ExpandablePageView extends StatefulWidget {
         super(key: key);
 
   @override
-  _ExpandablePageViewState createState() => _ExpandablePageViewState();
+  ExpandablePageViewState createState() => ExpandablePageViewState();
 }
 
-class _ExpandablePageViewState extends State<ExpandablePageView> {
+class ExpandablePageViewState extends State<ExpandablePageView> {
   late PageController _pageController;
   late List<double> _heights;
   int _currentPage = 0;
@@ -285,7 +285,6 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
     return PageView(
       key: widget.key,
       controller: _pageController,
-      children: _sizeReportingChildren(),
       onPageChanged: widget.onPageChanged,
       reverse: widget.reverse,
       physics: widget.physics,
@@ -297,6 +296,7 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
       scrollBehavior: widget.scrollBehavior,
       scrollDirection: widget.scrollDirection,
       padEnds: widget.padEnds,
+      children: _sizeReportingChildren(),
     );
   }
 
@@ -323,8 +323,8 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
     final item = widget.itemBuilder!(context, index);
     return OverflowPage(
       onSizeChange: (size) => setState(() => _heights[index] = size.height),
-      child: item,
       alignment: widget.alignment,
+      child: item,
     );
   }
 
@@ -337,8 +337,8 @@ class _ExpandablePageViewState extends State<ExpandablePageView> {
         onSizeChange: (size) => setState(
               () => _heights[index] = size.height,
         ),
-        child: child,
         alignment: widget.alignment,
+        child: child,
       ),
     ),
   )

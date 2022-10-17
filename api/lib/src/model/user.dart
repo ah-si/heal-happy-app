@@ -11,38 +11,40 @@ part 'user.g.dart';
 /// User
 ///
 /// Properties:
-/// * [id]
-/// * [isVerified]
-/// * [isSuspended]
-/// * [isBlocked]
-/// * [isActivated]
-/// * [canDoFaceToFace]
-/// * [job]
-/// * [firstName]
-/// * [consultationDuration]
-/// * [consultationPrice]
-/// * [isAddressPublic]
-/// * [isTermsAccepted]
-/// * [versionTermsAccepted]
-/// * [lang]
-/// * [type]
-/// * [experiences]
-/// * [description]
-/// * [diploma]
-/// * [website]
-/// * [social1]
-/// * [social2]
-/// * [social3]
-/// * [lastName]
-/// * [street]
-/// * [street2]
-/// * [zipCode]
-/// * [country]
-/// * [city]
-/// * [avatar]
-/// * [email]
-/// * [mobile]
-/// * [password]
+/// * [id] 
+/// * [isVerified] 
+/// * [isSuspended] 
+/// * [isSubscriptionValid] 
+/// * [dateSubscription] 
+/// * [isBlocked] 
+/// * [isActivated] 
+/// * [canDoFaceToFace] 
+/// * [job] 
+/// * [firstName] 
+/// * [consultationDuration] 
+/// * [consultationPrice] 
+/// * [isAddressPublic] 
+/// * [isTermsAccepted] 
+/// * [versionTermsAccepted] 
+/// * [lang] 
+/// * [type] 
+/// * [experiences] 
+/// * [description] 
+/// * [diploma] 
+/// * [website] 
+/// * [social1] 
+/// * [social2] 
+/// * [social3] 
+/// * [lastName] 
+/// * [street] 
+/// * [street2] 
+/// * [zipCode] 
+/// * [country] 
+/// * [city] 
+/// * [avatar] 
+/// * [email] 
+/// * [mobile] 
+/// * [password] 
 abstract class User implements Built<User, UserBuilder> {
     @BuiltValueField(wireName: r'id')
     String? get id;
@@ -52,6 +54,12 @@ abstract class User implements Built<User, UserBuilder> {
 
     @BuiltValueField(wireName: r'isSuspended')
     bool get isSuspended;
+
+    @BuiltValueField(wireName: r'isSubscriptionValid')
+    bool get isSubscriptionValid;
+
+    @BuiltValueField(wireName: r'dateSubscription')
+    DateTime? get dateSubscription;
 
     @BuiltValueField(wireName: r'isBlocked')
     bool get isBlocked;
@@ -178,6 +186,16 @@ class _$UserSerializer implements StructuredSerializer<User> {
             ..add(r'isSuspended')
             ..add(serializers.serialize(object.isSuspended,
                 specifiedType: const FullType(bool)));
+        result
+            ..add(r'isSubscriptionValid')
+            ..add(serializers.serialize(object.isSubscriptionValid,
+                specifiedType: const FullType(bool)));
+        if (object.dateSubscription != null) {
+            result
+                ..add(r'dateSubscription')
+                ..add(serializers.serialize(object.dateSubscription,
+                    specifiedType: const FullType(DateTime)));
+        }
         result
             ..add(r'isBlocked')
             ..add(serializers.serialize(object.isBlocked,
@@ -347,6 +365,14 @@ class _$UserSerializer implements StructuredSerializer<User> {
                 case r'isSuspended':
                     result.isSuspended = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'isSubscriptionValid':
+                    result.isSubscriptionValid = serializers.deserialize(value,
+                        specifiedType: const FullType(bool)) as bool;
+                    break;
+                case r'dateSubscription':
+                    result.dateSubscription = serializers.deserialize(value,
+                        specifiedType: const FullType(DateTime)) as DateTime;
                     break;
                 case r'isBlocked':
                     result.isBlocked = serializers.deserialize(value,

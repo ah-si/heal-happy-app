@@ -81,8 +81,8 @@ Class | Method | HTTP request | Description
 [*AuthApi*](doc/AuthApi.md) | [**refreshToken**](doc/AuthApi.md#refreshtoken) | **POST** /api/v1/auth/token/refresh | 
 [*AuthApi*](doc/AuthApi.md) | [**register**](doc/AuthApi.md#register) | **POST** /api/v1/auth/register | 
 [*AuthApi*](doc/AuthApi.md) | [**resetPassword**](doc/AuthApi.md#resetpassword) | **POST** /api/v1/auth/resetPassword | 
-[*DonationsApi*](doc/DonationsApi.md) | [**getProducts**](doc/DonationsApi.md#getproducts) | **GET** /api/v1/donations/products | 
-[*DonationsApi*](doc/DonationsApi.md) | [**getSessionInfo**](doc/DonationsApi.md#getsessioninfo) | **GET** /api/v1/donations/donate | 
+[*DonationsApi*](doc/DonationsApi.md) | [**getProducts**](doc/DonationsApi.md#getproducts) | **GET** /api/v1/payments/products | 
+[*DonationsApi*](doc/DonationsApi.md) | [**getSessionInfo**](doc/DonationsApi.md#getsessioninfo) | **GET** /api/v1/donations/session | 
 [*OfficesApi*](doc/OfficesApi.md) | [**addHealerToRoom**](doc/OfficesApi.md#addhealertoroom) | **POST** /api/v1/offices/rooms/{id}/healers | 
 [*OfficesApi*](doc/OfficesApi.md) | [**addManager**](doc/OfficesApi.md#addmanager) | **POST** /api/v1/offices/{id}/managers | 
 [*OfficesApi*](doc/OfficesApi.md) | [**addRoom**](doc/OfficesApi.md#addroom) | **POST** /api/v1/offices/{id}/rooms | 

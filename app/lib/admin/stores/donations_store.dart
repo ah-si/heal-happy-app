@@ -52,11 +52,11 @@ class AdminDonationsStore extends ChangeNotifier {
     data.add(AmountChartData(previous.month, previous.year, donations.previous.total));
     data.add(AmountChartData(now.month, now.year, donations.current.total));
 
-    final _uiFormat = DateFormat('MMMM');
+    final uiFormat = DateFormat('MMMM');
     final year = Date.now().year;
     String? getCallback(AmountChartData row, _) {
-      final _date = DateTime(year, row.month, 1);
-      return _uiFormat.format(_date);
+      final date = DateTime(year, row.month, 1);
+      return uiFormat.format(date);
     }
 
     String? getCallbackLabel(AmountChartData row, _) {

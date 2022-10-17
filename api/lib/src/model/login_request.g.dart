@@ -13,11 +13,12 @@ class _$LoginRequest extends LoginRequest {
   final String password;
 
   factory _$LoginRequest([void Function(LoginRequestBuilder)? updates]) =>
-      (new LoginRequestBuilder()..update(updates)).build();
+      (new LoginRequestBuilder()..update(updates))._build();
 
   _$LoginRequest._({required this.email, required this.password}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(email, 'LoginRequest', 'email');
-    BuiltValueNullFieldError.checkNotNull(password, 'LoginRequest', 'password');
+    BuiltValueNullFieldError.checkNotNull(email, r'LoginRequest', 'email');
+    BuiltValueNullFieldError.checkNotNull(
+        password, r'LoginRequest', 'password');
   }
 
   @override
@@ -42,7 +43,7 @@ class _$LoginRequest extends LoginRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('LoginRequest')
+    return (newBuiltValueToStringHelper(r'LoginRequest')
           ..add('email', email)
           ..add('password', password))
         .toString();
@@ -87,16 +88,18 @@ class LoginRequestBuilder
   }
 
   @override
-  _$LoginRequest build() {
+  LoginRequest build() => _build();
+
+  _$LoginRequest _build() {
     final _$result = _$v ??
         new _$LoginRequest._(
             email: BuiltValueNullFieldError.checkNotNull(
-                email, 'LoginRequest', 'email'),
+                email, r'LoginRequest', 'email'),
             password: BuiltValueNullFieldError.checkNotNull(
-                password, 'LoginRequest', 'password'));
+                password, r'LoginRequest', 'password'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

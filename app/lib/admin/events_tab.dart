@@ -86,6 +86,10 @@ class _EventsSearch extends HookConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runAlignment: WrapAlignment.spaceEvenly,
+        alignment: WrapAlignment.spaceEvenly,
+        runSpacing: kNormalPadding,
         children: [
           _DateTimeRangeField(
             onDatesSelected: (range) {
@@ -134,10 +138,6 @@ class _EventsSearch extends HookConsumerWidget {
             child: Text(context.l10n.searchButton),
           ),
         ],
-        crossAxisAlignment: WrapCrossAlignment.center,
-        runAlignment: WrapAlignment.spaceEvenly,
-        alignment: WrapAlignment.spaceEvenly,
-        runSpacing: kNormalPadding,
       ),
     );
   }
@@ -223,7 +223,7 @@ class _EventItem extends HookConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
                       child: InkWell(
                         onTap: () {
-                          launch('mailto:${event.healer.email}');
+                          launchUrlString('mailto:${event.healer.email}');
                         },
                         onLongPress: () {
                           Clipboard.setData(ClipboardData(text: event.healer.email));
@@ -243,7 +243,7 @@ class _EventItem extends HookConsumerWidget {
                     if (!event.healer.mobile.isNullOrEmpty)
                       InkWell(
                         onTap: () {
-                          launch('tel:${event.healer.mobile}');
+                          launchUrlString('tel:${event.healer.mobile}');
                         },
                         onLongPress: () {
                           Clipboard.setData(ClipboardData(text: event.healer.mobile));
@@ -270,7 +270,7 @@ class _EventItem extends HookConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
                       child: InkWell(
                         onTap: () {
-                          launch('mailto:${event.patient.email}');
+                          launchUrlString('mailto:${event.patient.email}');
                         },
                         onLongPress: () {
                           Clipboard.setData(ClipboardData(text: event.patient.email));
@@ -290,7 +290,7 @@ class _EventItem extends HookConsumerWidget {
                     if (!event.patient.mobile.isNullOrEmpty)
                       InkWell(
                         onTap: () {
-                          launch('tel:${event.patient.mobile}');
+                          launchUrlString('tel:${event.patient.mobile}');
                         },
                         onLongPress: () {
                           Clipboard.setData(ClipboardData(text: event.patient.mobile));

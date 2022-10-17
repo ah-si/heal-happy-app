@@ -29,6 +29,8 @@ class UserInfo extends ChangeNotifier {
       b.type = type;
       b.type = type;
       b.lang = 'fr_FR';
+      b.isSubscriptionValid = existingUser?.isSubscriptionValid ?? false;
+      b.dateSubscription = existingUser?.dateSubscription;
       b.consultationDuration = consultationDuration ?? 30;
       b.consultationPrice = consultationPrice == null ? null : consultationPrice! * 100;
 

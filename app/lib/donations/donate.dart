@@ -86,37 +86,40 @@ class DonateScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(kNormalPadding),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisAlignment: MainAxisAlignment.center, children: [
-              Hero(
-                tag: 'logo',
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  height: 180,
-                ),
-              ),
-              const SizedBox(height: 30),
-              IntroDialog(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: Column(
-                  children: [
-                    Donate(
-                      onCancelled: () {
-                        context.goNamed(DonateCancelled.name);
-                      },
-                      onSuccess: () {
-                        context.goNamed(DonateSuccess.name);
-                      },
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      height: 180,
                     ),
-                    TextButton(
-                      onPressed: () {
-                        context.go('/');
-                      },
-                      child: Text(context.l10n.backToWebsite),
+                  ),
+                  const SizedBox(height: 30),
+                  IntroDialog(
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    child: Column(
+                      children: [
+                        Donate(
+                          onCancelled: () {
+                            context.goNamed(DonateCancelled.name);
+                          },
+                          onSuccess: () {
+                            context.goNamed(DonateSuccess.name);
+                          },
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.go('/');
+                          },
+                          child: Text(context.l10n.backToWebsite),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            ]),
+                  ),
+                ]),
           ),
         ),
       ),
@@ -159,7 +162,7 @@ class Donate extends HookWidget {
           child: TabBarView(
             controller: controller,
             children: [
-              DonateByCard(
+              PaymentByCard(
                 onCancelled: onCancelled,
                 onSuccess: onSuccess,
               ),
@@ -172,18 +175,23 @@ class Donate extends HookWidget {
   }
 }
 
-class DonateByCard extends HookConsumerWidget {
+class PaymentByCard extends HookConsumerWidget {
+  final bool isDonation;
   final VoidCallback onSuccess;
   final VoidCallback onCancelled;
 
-  const DonateByCard({Key? key, required this.onSuccess, required this.onCancelled}) : super(key: key);
+  const PaymentByCard({Key? key, this.isDonation = true, required this.onSuccess, required this.onCancelled})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final store = ref.watch(donateStoreProvider);
 
     useEffect(() {
-      store.loadPaymentProducts();
+      if (isDonation) {
+        store.donateMode = DonateMode.oneTime;
+      }
+      store.loadPaymentProducts(isDonation);
       return null;
     }, const []);
 
@@ -208,13 +216,15 @@ class DonateByCard extends HookConsumerWidget {
       padding: const EdgeInsets.all(kNormalPadding),
       child: Column(
         children: [
-          CheckboxListTile(
-            value: store.donateMode == DonateMode.recurrent,
-            onChanged: (value) {
-              store.donateMode = value! ? DonateMode.recurrent : DonateMode.oneTime;
-            },
-            title: Text(context.l10n.donateRecurrent),
-          ),
+          if (!isDonation) Text(context.l10n.subscriptionRenewal),
+          if (isDonation)
+            CheckboxListTile(
+              value: store.donateMode == DonateMode.recurrent,
+              onChanged: (value) {
+                store.donateMode = value! ? DonateMode.recurrent : DonateMode.oneTime;
+              },
+              title: Text(context.l10n.donateRecurrent),
+            ),
           const SizedBox(
             height: kSmallPadding,
           ),
@@ -228,7 +238,7 @@ class DonateByCard extends HookConsumerWidget {
                       onPressed: () async {
                         final userStore = ref.read(userStoreProvider);
                         final success = await showLoadingDialog(context, (_) => Text(context.l10n.loading), () async {
-                          await store.loadPaymentSessionId(e, userStore.user?.email);
+                          await store.loadPaymentSessionId(e, isDonation, userStore.user?.email);
                         });
 
                         if (success) {
@@ -236,16 +246,17 @@ class DonateByCard extends HookConsumerWidget {
                             context: context,
                             sessionId: store.sessionId,
                             publishableKey: getStripeKey(),
-                            successUrl: Config().baseUrl + '/${DonateSuccess.name}',
-                            canceledUrl: Config().baseUrl + '/${DonateCancelled.name}',
+                            successUrl: '${Config().baseUrl}/${DonateSuccess.name}',
+                            canceledUrl: '${Config().baseUrl}/${DonateCancelled.name}',
                           );
                           WidgetsBinding.instance.addPostFrameCallback((_) {
+                            userStore.reloadUser();
                             result.when(
                               redirected: () {},
                               success: onSuccess,
                               canceled: onCancelled,
                               error: (error) {
-                               //FIXME in web it crash but works so ignore error for now showErrorDialog(context, error, StackTrace.current);
+                                //FIXME in web it crash but works so ignore error for now showErrorDialog(context, error, StackTrace.current);
                               },
                             );
                           });

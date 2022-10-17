@@ -22,7 +22,7 @@ class _$CreateEventRequest extends CreateEventRequest {
 
   factory _$CreateEventRequest(
           [void Function(CreateEventRequestBuilder)? updates]) =>
-      (new CreateEventRequestBuilder()..update(updates)).build();
+      (new CreateEventRequestBuilder()..update(updates))._build();
 
   _$CreateEventRequest._(
       {required this.slot,
@@ -32,9 +32,9 @@ class _$CreateEventRequest extends CreateEventRequest {
       this.type,
       this.message})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(slot, 'CreateEventRequest', 'slot');
+    BuiltValueNullFieldError.checkNotNull(slot, r'CreateEventRequest', 'slot');
     BuiltValueNullFieldError.checkNotNull(
-        patientId, 'CreateEventRequest', 'patientId');
+        patientId, r'CreateEventRequest', 'patientId');
   }
 
   @override
@@ -72,7 +72,7 @@ class _$CreateEventRequest extends CreateEventRequest {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('CreateEventRequest')
+    return (newBuiltValueToStringHelper(r'CreateEventRequest')
           ..add('slot', slot)
           ..add('roomId', roomId)
           ..add('isUrgent', isUrgent)
@@ -141,15 +141,17 @@ class CreateEventRequestBuilder
   }
 
   @override
-  _$CreateEventRequest build() {
+  CreateEventRequest build() => _build();
+
+  _$CreateEventRequest _build() {
     final _$result = _$v ??
         new _$CreateEventRequest._(
             slot: BuiltValueNullFieldError.checkNotNull(
-                slot, 'CreateEventRequest', 'slot'),
+                slot, r'CreateEventRequest', 'slot'),
             roomId: roomId,
             isUrgent: isUrgent,
             patientId: BuiltValueNullFieldError.checkNotNull(
-                patientId, 'CreateEventRequest', 'patientId'),
+                patientId, r'CreateEventRequest', 'patientId'),
             type: type,
             message: message);
     replace(_$result);
@@ -157,4 +159,4 @@ class CreateEventRequestBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

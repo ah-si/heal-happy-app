@@ -89,7 +89,7 @@ class _HealerStats extends HookConsumerWidget {
                   Text(stats.adminAddress),
                   InkWell(
                     onTap: () {
-                      launch('mailto:${stats.email}');
+                      launchUrlString('mailto:${stats.email}');
                     },
                     onLongPress: () {
                       Clipboard.setData(ClipboardData(text: stats.email));
@@ -108,7 +108,7 @@ class _HealerStats extends HookConsumerWidget {
                   if (!stats.mobile.isNullOrEmpty)
                     InkWell(
                       onTap: () {
-                        launch('tel:${stats.mobile}');
+                        launchUrlString('tel:${stats.mobile}');
                       },
                       onLongPress: () {
                         Clipboard.setData(ClipboardData(text: stats.mobile));
@@ -150,6 +150,10 @@ class _SearchStats extends HookConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runAlignment: WrapAlignment.spaceEvenly,
+        alignment: WrapAlignment.spaceEvenly,
+        runSpacing: kNormalPadding,
         children: [
           _DateTimeRangeField(
             onDatesSelected: (range) {
@@ -189,16 +193,12 @@ class _SearchStats extends HookConsumerWidget {
                 }
                 final token = BackendApiProvider().getToken();
                 url += 'token=$token&';
-                launch(url);
+                launchUrlString(url);
               }
             },
             child: Text(context.l10n.exportButton),
           ),
         ],
-        crossAxisAlignment: WrapCrossAlignment.center,
-        runAlignment: WrapAlignment.spaceEvenly,
-        alignment: WrapAlignment.spaceEvenly,
-        runSpacing: kNormalPadding,
       ),
     );
   }
@@ -224,7 +224,7 @@ class _DateTimeRangeField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = useTextEditingController(text: start == null ? '' : (kDateFormat.format(start!) + ' - ' + kDateFormat.format(end!)));
+    final controller = useTextEditingController(text: start == null ? '' : ('${kDateFormat.format(start!)} - ${kDateFormat.format(end!)}'));
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 220),
@@ -239,7 +239,7 @@ class _DateTimeRangeField extends HookWidget {
               initialDateRange: start == null ? null : DateTimeRange(start: start!, end: end!),
             );
             if (range != null) {
-              controller.text = (kDateFormat.format(range.start) + ' - ' + kDateFormat.format(range.end));
+              controller.text = ('${kDateFormat.format(range.start)} - ${kDateFormat.format(range.end)}');
               onDatesSelected(range);
             }
           },

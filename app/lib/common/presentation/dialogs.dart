@@ -75,7 +75,7 @@ class CustomDialog extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: kNormalPadding),
-                        child: DefaultTextStyle(child: title, style: context.textTheme.headline5!),
+                        child: DefaultTextStyle(style: context.textTheme.headline5!, child: title),
                       ),
                     ),
                     const CloseButton(),
@@ -95,11 +95,11 @@ class CustomDialog extends StatelessWidget {
                     children: actions
                         .map(
                           (action) => TextButton(
+                            onPressed: action.callback == null ? null : () => action.callback!(context),
                             child: Text(
                               action.text,
                               style: TextStyle(color: _getColorForAction(context, action)),
                             ),
-                            onPressed: action.callback == null ? null : () => action.callback!(context),
                           ),
                         )
                         .toList(growable: false),

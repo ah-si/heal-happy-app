@@ -14,6 +14,10 @@ class _$User extends User {
   @override
   final bool isSuspended;
   @override
+  final bool isSubscriptionValid;
+  @override
+  final DateTime? dateSubscription;
+  @override
   final bool isBlocked;
   @override
   final bool isActivated;
@@ -73,12 +77,14 @@ class _$User extends User {
   final String? password;
 
   factory _$User([void Function(UserBuilder)? updates]) =>
-      (new UserBuilder()..update(updates)).build();
+      (new UserBuilder()..update(updates))._build();
 
   _$User._(
       {this.id,
       required this.isVerified,
       required this.isSuspended,
+      required this.isSubscriptionValid,
+      this.dateSubscription,
       required this.isBlocked,
       required this.isActivated,
       this.canDoFaceToFace,
@@ -109,22 +115,24 @@ class _$User extends User {
       this.mobile,
       this.password})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(isVerified, 'User', 'isVerified');
-    BuiltValueNullFieldError.checkNotNull(isSuspended, 'User', 'isSuspended');
-    BuiltValueNullFieldError.checkNotNull(isBlocked, 'User', 'isBlocked');
-    BuiltValueNullFieldError.checkNotNull(isActivated, 'User', 'isActivated');
-    BuiltValueNullFieldError.checkNotNull(firstName, 'User', 'firstName');
+    BuiltValueNullFieldError.checkNotNull(isVerified, r'User', 'isVerified');
+    BuiltValueNullFieldError.checkNotNull(isSuspended, r'User', 'isSuspended');
     BuiltValueNullFieldError.checkNotNull(
-        isAddressPublic, 'User', 'isAddressPublic');
+        isSubscriptionValid, r'User', 'isSubscriptionValid');
+    BuiltValueNullFieldError.checkNotNull(isBlocked, r'User', 'isBlocked');
+    BuiltValueNullFieldError.checkNotNull(isActivated, r'User', 'isActivated');
+    BuiltValueNullFieldError.checkNotNull(firstName, r'User', 'firstName');
     BuiltValueNullFieldError.checkNotNull(
-        isTermsAccepted, 'User', 'isTermsAccepted');
-    BuiltValueNullFieldError.checkNotNull(lang, 'User', 'lang');
-    BuiltValueNullFieldError.checkNotNull(type, 'User', 'type');
-    BuiltValueNullFieldError.checkNotNull(lastName, 'User', 'lastName');
-    BuiltValueNullFieldError.checkNotNull(zipCode, 'User', 'zipCode');
-    BuiltValueNullFieldError.checkNotNull(country, 'User', 'country');
-    BuiltValueNullFieldError.checkNotNull(city, 'User', 'city');
-    BuiltValueNullFieldError.checkNotNull(email, 'User', 'email');
+        isAddressPublic, r'User', 'isAddressPublic');
+    BuiltValueNullFieldError.checkNotNull(
+        isTermsAccepted, r'User', 'isTermsAccepted');
+    BuiltValueNullFieldError.checkNotNull(lang, r'User', 'lang');
+    BuiltValueNullFieldError.checkNotNull(type, r'User', 'type');
+    BuiltValueNullFieldError.checkNotNull(lastName, r'User', 'lastName');
+    BuiltValueNullFieldError.checkNotNull(zipCode, r'User', 'zipCode');
+    BuiltValueNullFieldError.checkNotNull(country, r'User', 'country');
+    BuiltValueNullFieldError.checkNotNull(city, r'User', 'city');
+    BuiltValueNullFieldError.checkNotNull(email, r'User', 'email');
   }
 
   @override
@@ -141,6 +149,8 @@ class _$User extends User {
         id == other.id &&
         isVerified == other.isVerified &&
         isSuspended == other.isSuspended &&
+        isSubscriptionValid == other.isSubscriptionValid &&
+        dateSubscription == other.dateSubscription &&
         isBlocked == other.isBlocked &&
         isActivated == other.isActivated &&
         canDoFaceToFace == other.canDoFaceToFace &&
@@ -192,7 +202,7 @@ class _$User extends User {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isSuspended.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), consultationPrice.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isSuspended.hashCode), isSubscriptionValid.hashCode), dateSubscription.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), consultationPrice.hashCode), isAddressPublic.hashCode), isTermsAccepted.hashCode), versionTermsAccepted.hashCode),
                                                                                 lang.hashCode),
                                                                             type.hashCode),
                                                                         experiences.hashCode),
@@ -216,10 +226,12 @@ class _$User extends User {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('User')
+    return (newBuiltValueToStringHelper(r'User')
           ..add('id', id)
           ..add('isVerified', isVerified)
           ..add('isSuspended', isSuspended)
+          ..add('isSubscriptionValid', isSubscriptionValid)
+          ..add('dateSubscription', dateSubscription)
           ..add('isBlocked', isBlocked)
           ..add('isActivated', isActivated)
           ..add('canDoFaceToFace', canDoFaceToFace)
@@ -267,6 +279,16 @@ class UserBuilder implements Builder<User, UserBuilder> {
   bool? _isSuspended;
   bool? get isSuspended => _$this._isSuspended;
   set isSuspended(bool? isSuspended) => _$this._isSuspended = isSuspended;
+
+  bool? _isSubscriptionValid;
+  bool? get isSubscriptionValid => _$this._isSubscriptionValid;
+  set isSubscriptionValid(bool? isSubscriptionValid) =>
+      _$this._isSubscriptionValid = isSubscriptionValid;
+
+  DateTime? _dateSubscription;
+  DateTime? get dateSubscription => _$this._dateSubscription;
+  set dateSubscription(DateTime? dateSubscription) =>
+      _$this._dateSubscription = dateSubscription;
 
   bool? _isBlocked;
   bool? get isBlocked => _$this._isBlocked;
@@ -400,6 +422,8 @@ class UserBuilder implements Builder<User, UserBuilder> {
       _id = $v.id;
       _isVerified = $v.isVerified;
       _isSuspended = $v.isSuspended;
+      _isSubscriptionValid = $v.isSubscriptionValid;
+      _dateSubscription = $v.dateSubscription;
       _isBlocked = $v.isBlocked;
       _isActivated = $v.isActivated;
       _canDoFaceToFace = $v.canDoFaceToFace;
@@ -446,31 +470,36 @@ class UserBuilder implements Builder<User, UserBuilder> {
   }
 
   @override
-  _$User build() {
+  User build() => _build();
+
+  _$User _build() {
     final _$result = _$v ??
         new _$User._(
             id: id,
             isVerified: BuiltValueNullFieldError.checkNotNull(
-                isVerified, 'User', 'isVerified'),
+                isVerified, r'User', 'isVerified'),
             isSuspended: BuiltValueNullFieldError.checkNotNull(
-                isSuspended, 'User', 'isSuspended'),
+                isSuspended, r'User', 'isSuspended'),
+            isSubscriptionValid: BuiltValueNullFieldError.checkNotNull(
+                isSubscriptionValid, r'User', 'isSubscriptionValid'),
+            dateSubscription: dateSubscription,
             isBlocked: BuiltValueNullFieldError.checkNotNull(
-                isBlocked, 'User', 'isBlocked'),
+                isBlocked, r'User', 'isBlocked'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
-                isActivated, 'User', 'isActivated'),
+                isActivated, r'User', 'isActivated'),
             canDoFaceToFace: canDoFaceToFace,
             job: job,
             firstName: BuiltValueNullFieldError.checkNotNull(
-                firstName, 'User', 'firstName'),
+                firstName, r'User', 'firstName'),
             consultationDuration: consultationDuration,
             consultationPrice: consultationPrice,
             isAddressPublic: BuiltValueNullFieldError.checkNotNull(
-                isAddressPublic, 'User', 'isAddressPublic'),
+                isAddressPublic, r'User', 'isAddressPublic'),
             isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
-                isTermsAccepted, 'User', 'isTermsAccepted'),
+                isTermsAccepted, r'User', 'isTermsAccepted'),
             versionTermsAccepted: versionTermsAccepted,
-            lang: BuiltValueNullFieldError.checkNotNull(lang, 'User', 'lang'),
-            type: BuiltValueNullFieldError.checkNotNull(type, 'User', 'type'),
+            lang: BuiltValueNullFieldError.checkNotNull(lang, r'User', 'lang'),
+            type: BuiltValueNullFieldError.checkNotNull(type, r'User', 'type'),
             experiences: experiences,
             description: description,
             diploma: diploma,
@@ -479,17 +508,14 @@ class UserBuilder implements Builder<User, UserBuilder> {
             social2: social2,
             social3: social3,
             lastName: BuiltValueNullFieldError.checkNotNull(
-                lastName, 'User', 'lastName'),
+                lastName, r'User', 'lastName'),
             street: street,
             street2: street2,
-            zipCode: BuiltValueNullFieldError.checkNotNull(
-                zipCode, 'User', 'zipCode'),
-            country: BuiltValueNullFieldError.checkNotNull(
-                country, 'User', 'country'),
-            city: BuiltValueNullFieldError.checkNotNull(city, 'User', 'city'),
+            zipCode: BuiltValueNullFieldError.checkNotNull(zipCode, r'User', 'zipCode'),
+            country: BuiltValueNullFieldError.checkNotNull(country, r'User', 'country'),
+            city: BuiltValueNullFieldError.checkNotNull(city, r'User', 'city'),
             avatar: avatar,
-            email:
-                BuiltValueNullFieldError.checkNotNull(email, 'User', 'email'),
+            email: BuiltValueNullFieldError.checkNotNull(email, r'User', 'email'),
             mobile: mobile,
             password: password);
     replace(_$result);
@@ -497,4 +523,4 @@ class UserBuilder implements Builder<User, UserBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

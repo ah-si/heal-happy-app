@@ -27,7 +27,6 @@ import 'package:infinite_widgets/infinite_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 void _disconnect(BuildContext context, WidgetRef ref) async {
@@ -113,31 +112,7 @@ class MobilePatientHome extends HookConsumerWidget {
               Column(
                 children: [
                   if (!(userStore.user?.isActivated ?? true))
-                    ColoredBox(
-                      color: context.theme.errorColor.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(kSmallPadding),
-                        child: Column(
-                          children: [
-                            Text(
-                              context.l10n.accountNotVerified,
-                              style: const TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                            if (!userStore.activationEmailResent)
-                              TextButton(
-                                onPressed: () async {
-                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
-                                  if (success) {
-                                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
-                                  }
-                                },
-                                child: Text(context.l10n.resendActivationLink),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    _ActivatedBanner(userStore: userStore),
                   const Expanded(
                     child: _PlannedConsultations(
                       key: Key('consultations'),
@@ -224,31 +199,7 @@ class DesktopPatientHome extends HookConsumerWidget {
                 const SizedBox(height: kNormalPadding),
                 const _MenuBar(),
                 if (!(userStore.user?.isActivated ?? true))
-                  ColoredBox(
-                    color: context.theme.errorColor.withOpacity(0.8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(kSmallPadding),
-                      child: Column(
-                        children: [
-                          Text(
-                            context.l10n.accountNotVerified,
-                            style: const TextStyle(color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                          if (!userStore.activationEmailResent)
-                            TextButton(
-                              onPressed: () async {
-                                final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
-                                if (success) {
-                                  showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
-                                }
-                              },
-                              child: Text(context.l10n.resendActivationLink),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  _ActivatedBanner(userStore: userStore),
                 Expanded(
                   child: ColoredBox(
                     color: Colors.white.withOpacity(0.8),
@@ -278,6 +229,44 @@ class DesktopPatientHome extends HookConsumerWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ActivatedBanner extends StatelessWidget {
+  const _ActivatedBanner({
+    Key? key,
+    required this.userStore,
+  }) : super(key: key);
+
+  final UserStore userStore;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: context.theme.errorColor.withOpacity(0.8),
+      child: Padding(
+        padding: const EdgeInsets.all(kSmallPadding),
+        child: Column(
+          children: [
+            Text(
+              context.l10n.accountNotVerified,
+              style: const TextStyle(color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+            if (!userStore.activationEmailResent)
+              TextButton(
+                onPressed: () async {
+                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                  if (success) {
+                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
+                  }
+                },
+                child: Text(context.l10n.resendActivationLink),
+              ),
+          ],
         ),
       ),
     );
@@ -703,7 +692,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                       ),
                       if (event.type == HealerEventType.visio)
                         Text(
-                          event.healer.zipCode + ' ' + event.healer.city,
+                          '${event.healer.zipCode} ${event.healer.city}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center,
                         ),
@@ -737,7 +726,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                             }
 
                             if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                              await launch(event.link);
+                              await launchUrlString(event.link);
                               askToDonate();
                             } else {
                               var options = JitsiMeetingOptions(
@@ -758,7 +747,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                       if (event.type == HealerEventType.faceToFace)
                         TextButton(
                           onPressed: () {
-                            launch(Uri.encodeFull('https://www.google.com/maps/search/?api=1&query=' + event.healer.address));
+                            launchUrlString(Uri.encodeFull('https://www.google.com/maps/search/?api=1&query=${event.healer.address}'));
                           },
                           child: Text(
                             event.office?.address ?? event.healer.address,
@@ -810,7 +799,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                     context,
                     (_) => Text(context.l10n.qrCodeTitle),
                     (_) => SfBarcodeGenerator(
-                      value: Config.instance!.baseUrl + '/acceptInvite/?token=' + event.patientToken!,
+                      value: '${Config.instance!.baseUrl}/acceptInvite/?token=${event.patientToken!}',
                       symbology: QRCode(),
                     ),
                   );

@@ -14,6 +14,10 @@ class _$Healer extends Healer {
   @override
   final bool isSuspended;
   @override
+  final bool isSubscriptionValid;
+  @override
+  final DateTime? dateSubscription;
+  @override
   final bool isBlocked;
   @override
   final bool isActivated;
@@ -67,12 +71,14 @@ class _$Healer extends Healer {
   final String? avatar;
 
   factory _$Healer([void Function(HealerBuilder)? updates]) =>
-      (new HealerBuilder()..update(updates)).build();
+      (new HealerBuilder()..update(updates))._build();
 
   _$Healer._(
       {this.id,
       required this.isVerified,
       required this.isSuspended,
+      required this.isSubscriptionValid,
+      this.dateSubscription,
       required this.isBlocked,
       required this.isActivated,
       this.canDoFaceToFace,
@@ -100,21 +106,25 @@ class _$Healer extends Healer {
       required this.city,
       this.avatar})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(isVerified, 'Healer', 'isVerified');
-    BuiltValueNullFieldError.checkNotNull(isSuspended, 'Healer', 'isSuspended');
-    BuiltValueNullFieldError.checkNotNull(isBlocked, 'Healer', 'isBlocked');
-    BuiltValueNullFieldError.checkNotNull(isActivated, 'Healer', 'isActivated');
-    BuiltValueNullFieldError.checkNotNull(firstName, 'Healer', 'firstName');
+    BuiltValueNullFieldError.checkNotNull(isVerified, r'Healer', 'isVerified');
     BuiltValueNullFieldError.checkNotNull(
-        isAddressPublic, 'Healer', 'isAddressPublic');
+        isSuspended, r'Healer', 'isSuspended');
     BuiltValueNullFieldError.checkNotNull(
-        isTermsAccepted, 'Healer', 'isTermsAccepted');
-    BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang');
-    BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type');
-    BuiltValueNullFieldError.checkNotNull(lastName, 'Healer', 'lastName');
-    BuiltValueNullFieldError.checkNotNull(zipCode, 'Healer', 'zipCode');
-    BuiltValueNullFieldError.checkNotNull(country, 'Healer', 'country');
-    BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city');
+        isSubscriptionValid, r'Healer', 'isSubscriptionValid');
+    BuiltValueNullFieldError.checkNotNull(isBlocked, r'Healer', 'isBlocked');
+    BuiltValueNullFieldError.checkNotNull(
+        isActivated, r'Healer', 'isActivated');
+    BuiltValueNullFieldError.checkNotNull(firstName, r'Healer', 'firstName');
+    BuiltValueNullFieldError.checkNotNull(
+        isAddressPublic, r'Healer', 'isAddressPublic');
+    BuiltValueNullFieldError.checkNotNull(
+        isTermsAccepted, r'Healer', 'isTermsAccepted');
+    BuiltValueNullFieldError.checkNotNull(lang, r'Healer', 'lang');
+    BuiltValueNullFieldError.checkNotNull(type, r'Healer', 'type');
+    BuiltValueNullFieldError.checkNotNull(lastName, r'Healer', 'lastName');
+    BuiltValueNullFieldError.checkNotNull(zipCode, r'Healer', 'zipCode');
+    BuiltValueNullFieldError.checkNotNull(country, r'Healer', 'country');
+    BuiltValueNullFieldError.checkNotNull(city, r'Healer', 'city');
   }
 
   @override
@@ -131,6 +141,8 @@ class _$Healer extends Healer {
         id == other.id &&
         isVerified == other.isVerified &&
         isSuspended == other.isSuspended &&
+        isSubscriptionValid == other.isSubscriptionValid &&
+        dateSubscription == other.dateSubscription &&
         isBlocked == other.isBlocked &&
         isActivated == other.isActivated &&
         canDoFaceToFace == other.canDoFaceToFace &&
@@ -179,7 +191,7 @@ class _$Healer extends Healer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isSuspended.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), consultationPrice.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, id.hashCode), isVerified.hashCode), isSuspended.hashCode), isSubscriptionValid.hashCode), dateSubscription.hashCode), isBlocked.hashCode), isActivated.hashCode), canDoFaceToFace.hashCode), job.hashCode), firstName.hashCode), consultationDuration.hashCode), consultationPrice.hashCode),
                                                                                 isAddressPublic.hashCode),
                                                                             isTermsAccepted.hashCode),
                                                                         versionTermsAccepted.hashCode),
@@ -203,10 +215,12 @@ class _$Healer extends Healer {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Healer')
+    return (newBuiltValueToStringHelper(r'Healer')
           ..add('id', id)
           ..add('isVerified', isVerified)
           ..add('isSuspended', isSuspended)
+          ..add('isSubscriptionValid', isSubscriptionValid)
+          ..add('dateSubscription', dateSubscription)
           ..add('isBlocked', isBlocked)
           ..add('isActivated', isActivated)
           ..add('canDoFaceToFace', canDoFaceToFace)
@@ -251,6 +265,16 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   bool? _isSuspended;
   bool? get isSuspended => _$this._isSuspended;
   set isSuspended(bool? isSuspended) => _$this._isSuspended = isSuspended;
+
+  bool? _isSubscriptionValid;
+  bool? get isSubscriptionValid => _$this._isSubscriptionValid;
+  set isSubscriptionValid(bool? isSubscriptionValid) =>
+      _$this._isSubscriptionValid = isSubscriptionValid;
+
+  DateTime? _dateSubscription;
+  DateTime? get dateSubscription => _$this._dateSubscription;
+  set dateSubscription(DateTime? dateSubscription) =>
+      _$this._dateSubscription = dateSubscription;
 
   bool? _isBlocked;
   bool? get isBlocked => _$this._isBlocked;
@@ -372,6 +396,8 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
       _id = $v.id;
       _isVerified = $v.isVerified;
       _isSuspended = $v.isSuspended;
+      _isSubscriptionValid = $v.isSubscriptionValid;
+      _dateSubscription = $v.dateSubscription;
       _isBlocked = $v.isBlocked;
       _isActivated = $v.isActivated;
       _canDoFaceToFace = $v.canDoFaceToFace;
@@ -415,31 +441,37 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
   }
 
   @override
-  _$Healer build() {
+  Healer build() => _build();
+
+  _$Healer _build() {
     final _$result = _$v ??
         new _$Healer._(
             id: id,
             isVerified: BuiltValueNullFieldError.checkNotNull(
-                isVerified, 'Healer', 'isVerified'),
+                isVerified, r'Healer', 'isVerified'),
             isSuspended: BuiltValueNullFieldError.checkNotNull(
-                isSuspended, 'Healer', 'isSuspended'),
+                isSuspended, r'Healer', 'isSuspended'),
+            isSubscriptionValid: BuiltValueNullFieldError.checkNotNull(
+                isSubscriptionValid, r'Healer', 'isSubscriptionValid'),
+            dateSubscription: dateSubscription,
             isBlocked: BuiltValueNullFieldError.checkNotNull(
-                isBlocked, 'Healer', 'isBlocked'),
+                isBlocked, r'Healer', 'isBlocked'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
-                isActivated, 'Healer', 'isActivated'),
+                isActivated, r'Healer', 'isActivated'),
             canDoFaceToFace: canDoFaceToFace,
             job: job,
             firstName: BuiltValueNullFieldError.checkNotNull(
-                firstName, 'Healer', 'firstName'),
+                firstName, r'Healer', 'firstName'),
             consultationDuration: consultationDuration,
             consultationPrice: consultationPrice,
             isAddressPublic: BuiltValueNullFieldError.checkNotNull(
-                isAddressPublic, 'Healer', 'isAddressPublic'),
+                isAddressPublic, r'Healer', 'isAddressPublic'),
             isTermsAccepted: BuiltValueNullFieldError.checkNotNull(
-                isTermsAccepted, 'Healer', 'isTermsAccepted'),
+                isTermsAccepted, r'Healer', 'isTermsAccepted'),
             versionTermsAccepted: versionTermsAccepted,
-            lang: BuiltValueNullFieldError.checkNotNull(lang, 'Healer', 'lang'),
-            type: BuiltValueNullFieldError.checkNotNull(type, 'Healer', 'type'),
+            lang:
+                BuiltValueNullFieldError.checkNotNull(lang, r'Healer', 'lang'),
+            type: BuiltValueNullFieldError.checkNotNull(type, r'Healer', 'type'),
             experiences: experiences,
             description: description,
             diploma: diploma,
@@ -447,19 +479,16 @@ class HealerBuilder implements Builder<Healer, HealerBuilder> {
             social1: social1,
             social2: social2,
             social3: social3,
-            lastName: BuiltValueNullFieldError.checkNotNull(
-                lastName, 'Healer', 'lastName'),
+            lastName: BuiltValueNullFieldError.checkNotNull(lastName, r'Healer', 'lastName'),
             street: street,
             street2: street2,
-            zipCode: BuiltValueNullFieldError.checkNotNull(
-                zipCode, 'Healer', 'zipCode'),
-            country: BuiltValueNullFieldError.checkNotNull(
-                country, 'Healer', 'country'),
-            city: BuiltValueNullFieldError.checkNotNull(city, 'Healer', 'city'),
+            zipCode: BuiltValueNullFieldError.checkNotNull(zipCode, r'Healer', 'zipCode'),
+            country: BuiltValueNullFieldError.checkNotNull(country, r'Healer', 'country'),
+            city: BuiltValueNullFieldError.checkNotNull(city, r'Healer', 'city'),
             avatar: avatar);
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

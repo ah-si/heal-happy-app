@@ -12,7 +12,7 @@ import 'package:heal_happy/common/utils/preferences_provider.dart';
 import 'package:heal_happy/main.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LoginScreen extends HookConsumerWidget {
   static const name = 'login';
@@ -127,7 +127,7 @@ class LoginScreen extends HookConsumerWidget {
                       children: [
                         InkWell(
                           onTap: () {
-                            launch(kUrlPlayStore);
+                            launchUrlString(kUrlPlayStore);
                           },
                           child: Image.asset(
                             'assets/images/play_badge.png',
@@ -138,7 +138,7 @@ class LoginScreen extends HookConsumerWidget {
                         if (false)
                           InkWell(
                             onTap: () {
-                              launch(kUrlAppStore);
+                              launchUrlString(kUrlAppStore);
                             },
                             child: Image.asset(
                               'assets/images/apple_badge.png',
@@ -149,7 +149,7 @@ class LoginScreen extends HookConsumerWidget {
                         if (false)
                           InkWell(
                             onTap: () {
-                              launch(kUrlAppMacStore);
+                              launchUrlString(kUrlAppMacStore);
                             },
                             child: Image.asset(
                               'assets/images/mac_badge.png',

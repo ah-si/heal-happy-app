@@ -13,13 +13,13 @@ class _$DonationsData extends DonationsData {
   final DonationsMonthData previous;
 
   factory _$DonationsData([void Function(DonationsDataBuilder)? updates]) =>
-      (new DonationsDataBuilder()..update(updates)).build();
+      (new DonationsDataBuilder()..update(updates))._build();
 
   _$DonationsData._({required this.current, required this.previous})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(current, 'DonationsData', 'current');
+    BuiltValueNullFieldError.checkNotNull(current, r'DonationsData', 'current');
     BuiltValueNullFieldError.checkNotNull(
-        previous, 'DonationsData', 'previous');
+        previous, r'DonationsData', 'previous');
   }
 
   @override
@@ -44,7 +44,7 @@ class _$DonationsData extends DonationsData {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('DonationsData')
+    return (newBuiltValueToStringHelper(r'DonationsData')
           ..add('current', current)
           ..add('previous', previous))
         .toString();
@@ -92,7 +92,9 @@ class DonationsDataBuilder
   }
 
   @override
-  _$DonationsData build() {
+  DonationsData build() => _build();
+
+  _$DonationsData _build() {
     _$DonationsData _$result;
     try {
       _$result = _$v ??
@@ -107,7 +109,7 @@ class DonationsDataBuilder
         previous.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'DonationsData', _$failedField, e.toString());
+            r'DonationsData', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -116,4 +118,4 @@ class DonationsDataBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

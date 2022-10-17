@@ -19,7 +19,7 @@ class _$MinimalUser extends MinimalUser {
   final String email;
 
   factory _$MinimalUser([void Function(MinimalUserBuilder)? updates]) =>
-      (new MinimalUserBuilder()..update(updates)).build();
+      (new MinimalUserBuilder()..update(updates))._build();
 
   _$MinimalUser._(
       {required this.id,
@@ -28,12 +28,12 @@ class _$MinimalUser extends MinimalUser {
       required this.mobile,
       required this.email})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, 'MinimalUser', 'id');
+    BuiltValueNullFieldError.checkNotNull(id, r'MinimalUser', 'id');
     BuiltValueNullFieldError.checkNotNull(
-        firstName, 'MinimalUser', 'firstName');
-    BuiltValueNullFieldError.checkNotNull(lastName, 'MinimalUser', 'lastName');
-    BuiltValueNullFieldError.checkNotNull(mobile, 'MinimalUser', 'mobile');
-    BuiltValueNullFieldError.checkNotNull(email, 'MinimalUser', 'email');
+        firstName, r'MinimalUser', 'firstName');
+    BuiltValueNullFieldError.checkNotNull(lastName, r'MinimalUser', 'lastName');
+    BuiltValueNullFieldError.checkNotNull(mobile, r'MinimalUser', 'mobile');
+    BuiltValueNullFieldError.checkNotNull(email, r'MinimalUser', 'email');
   }
 
   @override
@@ -66,7 +66,7 @@ class _$MinimalUser extends MinimalUser {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('MinimalUser')
+    return (newBuiltValueToStringHelper(r'MinimalUser')
           ..add('id', id)
           ..add('firstName', firstName)
           ..add('lastName', lastName)
@@ -128,21 +128,23 @@ class MinimalUserBuilder implements Builder<MinimalUser, MinimalUserBuilder> {
   }
 
   @override
-  _$MinimalUser build() {
+  MinimalUser build() => _build();
+
+  _$MinimalUser _build() {
     final _$result = _$v ??
         new _$MinimalUser._(
-            id: BuiltValueNullFieldError.checkNotNull(id, 'MinimalUser', 'id'),
+            id: BuiltValueNullFieldError.checkNotNull(id, r'MinimalUser', 'id'),
             firstName: BuiltValueNullFieldError.checkNotNull(
-                firstName, 'MinimalUser', 'firstName'),
+                firstName, r'MinimalUser', 'firstName'),
             lastName: BuiltValueNullFieldError.checkNotNull(
-                lastName, 'MinimalUser', 'lastName'),
+                lastName, r'MinimalUser', 'lastName'),
             mobile: BuiltValueNullFieldError.checkNotNull(
-                mobile, 'MinimalUser', 'mobile'),
+                mobile, r'MinimalUser', 'mobile'),
             email: BuiltValueNullFieldError.checkNotNull(
-                email, 'MinimalUser', 'email'));
+                email, r'MinimalUser', 'email'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

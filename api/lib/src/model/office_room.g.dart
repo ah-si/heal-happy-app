@@ -17,7 +17,7 @@ class _$OfficeRoom extends OfficeRoom {
   final BuiltList<User> healers;
 
   factory _$OfficeRoom([void Function(OfficeRoomBuilder)? updates]) =>
-      (new OfficeRoomBuilder()..update(updates)).build();
+      (new OfficeRoomBuilder()..update(updates))._build();
 
   _$OfficeRoom._(
       {this.id,
@@ -25,9 +25,9 @@ class _$OfficeRoom extends OfficeRoom {
       required this.name,
       required this.healers})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(officeId, 'OfficeRoom', 'officeId');
-    BuiltValueNullFieldError.checkNotNull(name, 'OfficeRoom', 'name');
-    BuiltValueNullFieldError.checkNotNull(healers, 'OfficeRoom', 'healers');
+    BuiltValueNullFieldError.checkNotNull(officeId, r'OfficeRoom', 'officeId');
+    BuiltValueNullFieldError.checkNotNull(name, r'OfficeRoom', 'name');
+    BuiltValueNullFieldError.checkNotNull(healers, r'OfficeRoom', 'healers');
   }
 
   @override
@@ -56,7 +56,7 @@ class _$OfficeRoom extends OfficeRoom {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('OfficeRoom')
+    return (newBuiltValueToStringHelper(r'OfficeRoom')
           ..add('id', id)
           ..add('officeId', officeId)
           ..add('name', name)
@@ -112,16 +112,18 @@ class OfficeRoomBuilder implements Builder<OfficeRoom, OfficeRoomBuilder> {
   }
 
   @override
-  _$OfficeRoom build() {
+  OfficeRoom build() => _build();
+
+  _$OfficeRoom _build() {
     _$OfficeRoom _$result;
     try {
       _$result = _$v ??
           new _$OfficeRoom._(
               id: id,
               officeId: BuiltValueNullFieldError.checkNotNull(
-                  officeId, 'OfficeRoom', 'officeId'),
+                  officeId, r'OfficeRoom', 'officeId'),
               name: BuiltValueNullFieldError.checkNotNull(
-                  name, 'OfficeRoom', 'name'),
+                  name, r'OfficeRoom', 'name'),
               healers: healers.build());
     } catch (_) {
       late String _$failedField;
@@ -130,7 +132,7 @@ class OfficeRoomBuilder implements Builder<OfficeRoom, OfficeRoomBuilder> {
         healers.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'OfficeRoom', _$failedField, e.toString());
+            r'OfficeRoom', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -139,4 +141,4 @@ class OfficeRoomBuilder implements Builder<OfficeRoom, OfficeRoomBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

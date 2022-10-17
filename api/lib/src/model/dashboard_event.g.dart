@@ -19,7 +19,7 @@ class _$DashboardEvent extends DashboardEvent {
   final bool isCancelled;
 
   factory _$DashboardEvent([void Function(DashboardEventBuilder)? updates]) =>
-      (new DashboardEventBuilder()..update(updates)).build();
+      (new DashboardEventBuilder()..update(updates))._build();
 
   _$DashboardEvent._(
       {required this.year,
@@ -28,13 +28,13 @@ class _$DashboardEvent extends DashboardEvent {
       required this.isUrgent,
       required this.isCancelled})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(year, 'DashboardEvent', 'year');
-    BuiltValueNullFieldError.checkNotNull(month, 'DashboardEvent', 'month');
-    BuiltValueNullFieldError.checkNotNull(total, 'DashboardEvent', 'total');
+    BuiltValueNullFieldError.checkNotNull(year, r'DashboardEvent', 'year');
+    BuiltValueNullFieldError.checkNotNull(month, r'DashboardEvent', 'month');
+    BuiltValueNullFieldError.checkNotNull(total, r'DashboardEvent', 'total');
     BuiltValueNullFieldError.checkNotNull(
-        isUrgent, 'DashboardEvent', 'isUrgent');
+        isUrgent, r'DashboardEvent', 'isUrgent');
     BuiltValueNullFieldError.checkNotNull(
-        isCancelled, 'DashboardEvent', 'isCancelled');
+        isCancelled, r'DashboardEvent', 'isCancelled');
   }
 
   @override
@@ -66,7 +66,7 @@ class _$DashboardEvent extends DashboardEvent {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('DashboardEvent')
+    return (newBuiltValueToStringHelper(r'DashboardEvent')
           ..add('year', year)
           ..add('month', month)
           ..add('total', total)
@@ -129,22 +129,24 @@ class DashboardEventBuilder
   }
 
   @override
-  _$DashboardEvent build() {
+  DashboardEvent build() => _build();
+
+  _$DashboardEvent _build() {
     final _$result = _$v ??
         new _$DashboardEvent._(
             year: BuiltValueNullFieldError.checkNotNull(
-                year, 'DashboardEvent', 'year'),
+                year, r'DashboardEvent', 'year'),
             month: BuiltValueNullFieldError.checkNotNull(
-                month, 'DashboardEvent', 'month'),
+                month, r'DashboardEvent', 'month'),
             total: BuiltValueNullFieldError.checkNotNull(
-                total, 'DashboardEvent', 'total'),
+                total, r'DashboardEvent', 'total'),
             isUrgent: BuiltValueNullFieldError.checkNotNull(
-                isUrgent, 'DashboardEvent', 'isUrgent'),
+                isUrgent, r'DashboardEvent', 'isUrgent'),
             isCancelled: BuiltValueNullFieldError.checkNotNull(
-                isCancelled, 'DashboardEvent', 'isCancelled'));
+                isCancelled, r'DashboardEvent', 'isCancelled'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

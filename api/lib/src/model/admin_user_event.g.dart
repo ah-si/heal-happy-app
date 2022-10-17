@@ -37,7 +37,7 @@ class _$AdminUserEvent extends AdminUserEvent {
   final String link;
 
   factory _$AdminUserEvent([void Function(AdminUserEventBuilder)? updates]) =>
-      (new AdminUserEventBuilder()..update(updates)).build();
+      (new AdminUserEventBuilder()..update(updates))._build();
 
   _$AdminUserEvent._(
       {required this.id,
@@ -55,23 +55,24 @@ class _$AdminUserEvent extends AdminUserEvent {
       this.cancelledDescription,
       required this.link})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, 'AdminUserEvent', 'id');
-    BuiltValueNullFieldError.checkNotNull(patient, 'AdminUserEvent', 'patient');
-    BuiltValueNullFieldError.checkNotNull(healer, 'AdminUserEvent', 'healer');
+    BuiltValueNullFieldError.checkNotNull(id, r'AdminUserEvent', 'id');
     BuiltValueNullFieldError.checkNotNull(
-        isHealerPresent, 'AdminUserEvent', 'isHealerPresent');
+        patient, r'AdminUserEvent', 'patient');
+    BuiltValueNullFieldError.checkNotNull(healer, r'AdminUserEvent', 'healer');
     BuiltValueNullFieldError.checkNotNull(
-        isPatientPresent, 'AdminUserEvent', 'isPatientPresent');
+        isHealerPresent, r'AdminUserEvent', 'isHealerPresent');
     BuiltValueNullFieldError.checkNotNull(
-        isUrgent, 'AdminUserEvent', 'isUrgent');
+        isPatientPresent, r'AdminUserEvent', 'isPatientPresent');
     BuiltValueNullFieldError.checkNotNull(
-        isCancelled, 'AdminUserEvent', 'isCancelled');
+        isUrgent, r'AdminUserEvent', 'isUrgent');
     BuiltValueNullFieldError.checkNotNull(
-        createdAt, 'AdminUserEvent', 'createdAt');
-    BuiltValueNullFieldError.checkNotNull(start, 'AdminUserEvent', 'start');
-    BuiltValueNullFieldError.checkNotNull(end, 'AdminUserEvent', 'end');
-    BuiltValueNullFieldError.checkNotNull(name, 'AdminUserEvent', 'name');
-    BuiltValueNullFieldError.checkNotNull(link, 'AdminUserEvent', 'link');
+        isCancelled, r'AdminUserEvent', 'isCancelled');
+    BuiltValueNullFieldError.checkNotNull(
+        createdAt, r'AdminUserEvent', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(start, r'AdminUserEvent', 'start');
+    BuiltValueNullFieldError.checkNotNull(end, r'AdminUserEvent', 'end');
+    BuiltValueNullFieldError.checkNotNull(name, r'AdminUserEvent', 'name');
+    BuiltValueNullFieldError.checkNotNull(link, r'AdminUserEvent', 'link');
   }
 
   @override
@@ -134,7 +135,7 @@ class _$AdminUserEvent extends AdminUserEvent {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AdminUserEvent')
+    return (newBuiltValueToStringHelper(r'AdminUserEvent')
           ..add('id', id)
           ..add('patient', patient)
           ..add('healer', healer)
@@ -254,33 +255,35 @@ class AdminUserEventBuilder
   }
 
   @override
-  _$AdminUserEvent build() {
+  AdminUserEvent build() => _build();
+
+  _$AdminUserEvent _build() {
     _$AdminUserEvent _$result;
     try {
       _$result = _$v ??
           new _$AdminUserEvent._(
               id: BuiltValueNullFieldError.checkNotNull(
-                  id, 'AdminUserEvent', 'id'),
+                  id, r'AdminUserEvent', 'id'),
               patient: patient.build(),
               healer: healer.build(),
               isHealerPresent: BuiltValueNullFieldError.checkNotNull(
-                  isHealerPresent, 'AdminUserEvent', 'isHealerPresent'),
+                  isHealerPresent, r'AdminUserEvent', 'isHealerPresent'),
               isPatientPresent: BuiltValueNullFieldError.checkNotNull(
-                  isPatientPresent, 'AdminUserEvent', 'isPatientPresent'),
+                  isPatientPresent, r'AdminUserEvent', 'isPatientPresent'),
               isUrgent: BuiltValueNullFieldError.checkNotNull(
-                  isUrgent, 'AdminUserEvent', 'isUrgent'),
+                  isUrgent, r'AdminUserEvent', 'isUrgent'),
               isCancelled: BuiltValueNullFieldError.checkNotNull(
-                  isCancelled, 'AdminUserEvent', 'isCancelled'),
+                  isCancelled, r'AdminUserEvent', 'isCancelled'),
               createdAt: BuiltValueNullFieldError.checkNotNull(
-                  createdAt, 'AdminUserEvent', 'createdAt'),
+                  createdAt, r'AdminUserEvent', 'createdAt'),
               start: BuiltValueNullFieldError.checkNotNull(
-                  start, 'AdminUserEvent', 'start'),
+                  start, r'AdminUserEvent', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(
-                  end, 'AdminUserEvent', 'end'),
-              name: BuiltValueNullFieldError.checkNotNull(name, 'AdminUserEvent', 'name'),
+                  end, r'AdminUserEvent', 'end'),
+              name: BuiltValueNullFieldError.checkNotNull(name, r'AdminUserEvent', 'name'),
               description: description,
               cancelledDescription: cancelledDescription,
-              link: BuiltValueNullFieldError.checkNotNull(link, 'AdminUserEvent', 'link'));
+              link: BuiltValueNullFieldError.checkNotNull(link, r'AdminUserEvent', 'link'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -290,7 +293,7 @@ class AdminUserEventBuilder
         healer.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'AdminUserEvent', _$failedField, e.toString());
+            r'AdminUserEvent', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -299,4 +302,4 @@ class AdminUserEventBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

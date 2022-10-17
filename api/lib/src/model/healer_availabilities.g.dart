@@ -14,14 +14,14 @@ class _$HealerAvailabilities extends HealerAvailabilities {
 
   factory _$HealerAvailabilities(
           [void Function(HealerAvailabilitiesBuilder)? updates]) =>
-      (new HealerAvailabilitiesBuilder()..update(updates)).build();
+      (new HealerAvailabilitiesBuilder()..update(updates))._build();
 
   _$HealerAvailabilities._({required this.slots, required this.until})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        slots, 'HealerAvailabilities', 'slots');
+        slots, r'HealerAvailabilities', 'slots');
     BuiltValueNullFieldError.checkNotNull(
-        until, 'HealerAvailabilities', 'until');
+        until, r'HealerAvailabilities', 'until');
   }
 
   @override
@@ -48,7 +48,7 @@ class _$HealerAvailabilities extends HealerAvailabilities {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('HealerAvailabilities')
+    return (newBuiltValueToStringHelper(r'HealerAvailabilities')
           ..add('slots', slots)
           ..add('until', until))
         .toString();
@@ -93,14 +93,16 @@ class HealerAvailabilitiesBuilder
   }
 
   @override
-  _$HealerAvailabilities build() {
+  HealerAvailabilities build() => _build();
+
+  _$HealerAvailabilities _build() {
     _$HealerAvailabilities _$result;
     try {
       _$result = _$v ??
           new _$HealerAvailabilities._(
               slots: slots.build(),
               until: BuiltValueNullFieldError.checkNotNull(
-                  until, 'HealerAvailabilities', 'until'));
+                  until, r'HealerAvailabilities', 'until'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -108,7 +110,7 @@ class HealerAvailabilitiesBuilder
         slots.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'HealerAvailabilities', _$failedField, e.toString());
+            r'HealerAvailabilities', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -117,4 +119,4 @@ class HealerAvailabilitiesBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

@@ -114,6 +114,7 @@ class MyApp extends StatelessWidget {
                 ErrorLocalizationsDelegate(),
               ],
               supportedLocales: kSupportedLanguages,
+              routeInformationProvider: router.routeInformationProvider,
               routeInformationParser: router.routeInformationParser,
               routerDelegate: router.routerDelegate,
             );

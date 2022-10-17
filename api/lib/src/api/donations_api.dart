@@ -4,10 +4,9 @@
 
 import 'dart:async';
 
+import 'package:built_collection/built_collection.dart';
 import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
-
-import 'package:built_collection/built_collection.dart';
 import 'package:heal_happy_sdk/src/api_util.dart';
 import 'package:heal_happy_sdk/src/model/product.dart';
 import 'package:heal_happy_sdk/src/model/session_info.dart';
@@ -24,6 +23,7 @@ class DonationsApi {
   /// 
   ///
   /// Parameters:
+  /// * [type] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -34,6 +34,7 @@ class DonationsApi {
   /// Returns a [Future] containing a [Response] with a [BuiltList<Product>] as data
   /// Throws [DioError] if API call or serialization fails
   Future<Response<BuiltList<Product>>> getProducts({ 
+    required String type,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -41,7 +42,7 @@ class DonationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/donations/products';
+    final _path = r'/api/v1/payments/products';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -61,9 +62,14 @@ class DonationsApi {
       validateStatus: validateStatus,
     );
 
+    final _queryParameters = <String, dynamic>{
+      r'type': encodeQueryParameter(_serializers, type, const FullType(String)),
+    };
+
     final _response = await _dio.request<Object>(
       _path,
       options: _options,
+      queryParameters: _queryParameters,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
@@ -106,6 +112,7 @@ class DonationsApi {
   /// * [id] 
   /// * [mode] 
   /// * [email] 
+  /// * [type] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -119,6 +126,7 @@ class DonationsApi {
     required String id,
     required String mode,
     String? email,
+    String? type,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -126,7 +134,7 @@ class DonationsApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/v1/donations/donate';
+    final _path = r'/api/v1/donations/session';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -150,6 +158,7 @@ class DonationsApi {
       r'id': encodeQueryParameter(_serializers, id, const FullType(String)),
       r'mode': encodeQueryParameter(_serializers, mode, const FullType(String)),
       if (email != null) r'email': encodeQueryParameter(_serializers, email, const FullType(String)),
+      if (type != null) r'type': encodeQueryParameter(_serializers, type, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(

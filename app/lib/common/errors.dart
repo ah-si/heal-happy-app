@@ -115,6 +115,7 @@ class ErrorResult {
 
   final _ErrorType _type;
 
+  // ignore: library_private_types_in_public_api
   const ErrorResult(this._type);
 
   String getMessage(BuildContext context) {

@@ -2,13 +2,13 @@ PODS:
   - FlutterMacOS (1.0.0)
   - package_info_plus_macos (0.0.1):
     - FlutterMacOS
-  - Sentry (7.11.0):
-    - Sentry/Core (= 7.11.0)
-  - Sentry/Core (7.11.0)
+  - Sentry (7.27.1):
+    - Sentry/Core (= 7.27.1)
+  - Sentry/Core (7.27.1)
   - sentry_flutter (0.0.1):
     - Flutter
     - FlutterMacOS
-    - Sentry (~> 7.11.0)
+    - Sentry (~> 7.27.0)
   - shared_preferences_macos (0.0.1):
     - FlutterMacOS
   - url_launcher_macos (0.0.1):
@@ -38,13 +38,13 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
-  FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
+  FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
   package_info_plus_macos: f010621b07802a241d96d01876d6705f15e77c1c
-  Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
-  sentry_flutter: efb3df2c203cd03aad255892a8d628a458656d14
+  Sentry: bc644307e2eb6a4c9c55cf117a80b895bb2a25a7
+  sentry_flutter: a8616c994ac18c371aabee21a953cc727c166421
   shared_preferences_macos: 480ce071d0666e37cef23fe6c702293a3d21799e
   url_launcher_macos: 45af3d61de06997666568a7149c1be98b41c95d4
 
 PODFILE CHECKSUM: 505596d150d38022472859d890f709281982e016
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

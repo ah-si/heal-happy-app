@@ -11,10 +11,10 @@ class _$UserEmail extends UserEmail {
   final String email;
 
   factory _$UserEmail([void Function(UserEmailBuilder)? updates]) =>
-      (new UserEmailBuilder()..update(updates)).build();
+      (new UserEmailBuilder()..update(updates))._build();
 
   _$UserEmail._({required this.email}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(email, 'UserEmail', 'email');
+    BuiltValueNullFieldError.checkNotNull(email, r'UserEmail', 'email');
   }
 
   @override
@@ -37,7 +37,7 @@ class _$UserEmail extends UserEmail {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('UserEmail')..add('email', email))
+    return (newBuiltValueToStringHelper(r'UserEmail')..add('email', email))
         .toString();
   }
 }
@@ -74,14 +74,16 @@ class UserEmailBuilder implements Builder<UserEmail, UserEmailBuilder> {
   }
 
   @override
-  _$UserEmail build() {
+  UserEmail build() => _build();
+
+  _$UserEmail _build() {
     final _$result = _$v ??
         new _$UserEmail._(
             email: BuiltValueNullFieldError.checkNotNull(
-                email, 'UserEmail', 'email'));
+                email, r'UserEmail', 'email'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

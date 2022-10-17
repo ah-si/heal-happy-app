@@ -209,7 +209,7 @@ class _CalendarDataSource extends CalendarDataSource<UserEvent> {
   String getSubject(int index) {
     final UserEvent event = appointments![index];
 
-    return event.patient.firstName + ' ' + event.patient.lastName;
+    return '${event.patient.firstName} ${event.patient.lastName}';
   }
 
   @override

@@ -14,6 +14,8 @@ import 'package:heal_happy/common/presentation/menu_item.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
 import 'package:heal_happy/common/utils/form_validators.dart';
+import 'package:heal_happy/donations/donate.dart';
+import 'package:heal_happy/donations/payments.dart';
 import 'package:heal_happy/healer/stores/healer_store.dart';
 import 'package:heal_happy/offices/presentation/offices_tab.dart';
 import 'package:heal_happy/patient/healer_profile_screen.dart';
@@ -25,7 +27,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:jitsi_meet_wrapper/jitsi_meet_wrapper.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 part 'healer_calendar.dart';
 
@@ -93,54 +95,17 @@ class MobileHealerHome extends HookConsumerWidget {
         child: ColoredBox(
           color: Colors.white.withOpacity(0.8),
           child: TabBarView(
+            controller: controller,
             children: [
               Column(
                 children: [
-                  if (!(userStore.user?.isActivated ?? true))
-                    ColoredBox(
-                      color: context.theme.errorColor.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(kSmallPadding),
-                        child: Column(
-                          children: [
-                            Text(
-                              context.l10n.accountNotVerified,
-                              style: const TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                            if (!userStore.activationEmailResent)
-                              TextButton(
-                                onPressed: () async {
-                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
-                                  if (success) {
-                                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
-                                  }
-                                },
-                                child: Text(context.l10n.resendActivationLink),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (!(userStore.user?.isVerified ?? true))
-                    ColoredBox(
-                      color: context.theme.errorColor.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(kSmallPadding),
-                        child: Text(
-                          context.l10n.accountPending,
-                          style: const TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                  _Banners(userStore: userStore),
                   const Expanded(child: _HealerHomePage()),
                 ],
               ),
               const UserProfile(),
               const SingleChildScrollView(child: _Help()),
             ],
-            controller: controller,
           ),
         ),
       ),
@@ -158,7 +123,7 @@ class HealerHomeScreen extends HookConsumerWidget {
     useEffect(() {
       ref.read(userStoreProvider).loadOffices();
       return null;
-    }, const[]);
+    }, const []);
     return context.isMobile ? const MobileHealerHome() : const DesktopHealerHome();
   }
 }
@@ -230,13 +195,13 @@ class DesktopHealerHome extends HookConsumerWidget {
                               ),
                               const SizedBox(width: 2),
                               if (userStore.isOfficeManager)
-                              MenuItem(
-                                label: context.l10n.adminOfficesMenu,
-                                onTap: () {
-                                  store.selectedTab = HomeTabs.offices;
-                                },
-                                selected: store.selectedTab == HomeTabs.offices,
-                              ),
+                                MenuItem(
+                                  label: context.l10n.adminOfficesMenu,
+                                  onTap: () {
+                                    store.selectedTab = HomeTabs.offices;
+                                  },
+                                  selected: store.selectedTab == HomeTabs.offices,
+                                ),
                               const SizedBox(width: kNormalPadding),
                               MenuItem(
                                 label: context.l10n.patientMode,
@@ -258,44 +223,7 @@ class DesktopHealerHome extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  if (!(userStore.user?.isActivated ?? true))
-                    ColoredBox(
-                      color: context.theme.errorColor.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(kSmallPadding),
-                        child: Column(
-                          children: [
-                            Text(
-                              context.l10n.accountNotVerified,
-                              style: const TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                            if (!userStore.activationEmailResent)
-                              TextButton(
-                                onPressed: () async {
-                                  final success = await showLoadingDialog(context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
-                                  if (success) {
-                                    showAlert(context, context.l10n.resendActivationLinkTitle, (_) => Text(context.l10n.resendActivationLinkSuccess));
-                                  }
-                                },
-                                child: Text(context.l10n.resendActivationLink),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  if (!(userStore.user?.isVerified ?? true))
-                    ColoredBox(
-                      color: context.theme.errorColor.withOpacity(0.8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(kSmallPadding),
-                        child: Text(
-                          context.l10n.accountPending,
-                          style: const TextStyle(color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
+                  _Banners(userStore: userStore),
                   Expanded(
                     child: ColoredBox(
                       color: Colors.white.withOpacity(0.8),
@@ -308,6 +236,134 @@ class DesktopHealerHome extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Banners extends StatelessWidget {
+  const _Banners({
+    Key? key,
+    required this.userStore,
+  }) : super(key: key);
+
+  final UserStore userStore;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (userStore.user != null &&
+            userStore.user!.isActivated &&
+            userStore.user!.dateSubscription != null &&
+            userStore.user!.dateSubscription!.subtract(const Duration(days: 30)).isBefore(DateTime.now()) &&
+            userStore.user!.isSubscriptionValid)
+          ColoredBox(
+            color: Colors.orange.withOpacity(0.8),
+            child: Padding(
+              padding: const EdgeInsets.all(kSmallPadding),
+              child: Column(
+                children: [
+                  Text(
+                    context.l10n.subscriptionSoonFinish(kDateFormat.format(userStore.user!.dateSubscription!)),
+                    style: const TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      showAppDialog(
+                        context,
+                        (_) => Text(context.l10n.paySubscription),
+                        (_) => SubscriptionPayment(
+                          onCancelled: () {
+                            context.goNamed(DonateCancelled.name);
+                          },
+                          onSuccess: () {
+                            context.goNamed(DonateSuccess.name);
+                          },
+                        ),
+                      );
+                    },
+                    child: Text(context.l10n.renewSubscription),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (!(userStore.user?.isSubscriptionValid ?? true))
+          ColoredBox(
+            color: context.theme.errorColor.withOpacity(0.8),
+            child: Padding(
+              padding: const EdgeInsets.all(kSmallPadding),
+              child: Column(
+                children: [
+                  Text(
+                    context.l10n.subscriptionInvalid,
+                    style: const TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      showAppDialog(
+                        context,
+                            (_) => Text(context.l10n.paySubscription),
+                            (_) => SubscriptionPayment(
+                          onCancelled: () {
+                            context.goNamed(DonateCancelled.name);
+                          },
+                          onSuccess: () {
+                            context.goNamed(DonateSuccess.name);
+                          },
+                        ),
+                      );
+                    },
+                    child: Text(context.l10n.renewSubscription),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (!(userStore.user?.isActivated ?? true))
+          ColoredBox(
+            color: context.theme.errorColor.withOpacity(0.8),
+            child: Padding(
+              padding: const EdgeInsets.all(kSmallPadding),
+              child: Column(
+                children: [
+                  Text(
+                    context.l10n.accountNotVerified,
+                    style: const TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (!userStore.activationEmailResent)
+                    TextButton(
+                      onPressed: () async {
+                        final success = await showLoadingDialog(
+                            context, (_) => Text(context.l10n.sending), () => userStore.resendActivationLink());
+                        if (success) {
+                          showAlert(context, context.l10n.resendActivationLinkTitle,
+                              (_) => Text(context.l10n.resendActivationLinkSuccess));
+                        }
+                      },
+                      child: Text(context.l10n.resendActivationLink),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        if (!(userStore.user?.isVerified ?? true))
+          ColoredBox(
+            color: context.theme.errorColor.withOpacity(0.8),
+            child: Padding(
+              padding: const EdgeInsets.all(kSmallPadding),
+              child: Text(
+                context.l10n.accountPending,
+                style: const TextStyle(color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
@@ -330,7 +386,7 @@ class _Help extends HookConsumerWidget {
           const SizedBox(height: kNormalPadding),
           TextButton(
             onPressed: () {
-              launch('https://www.ah-si.org/wp-content/uploads/Tutoriel-Soignants-soignez-heureux-AH-SI.pdf');
+              launchUrlString('https://www.ah-si.org/wp-content/uploads/Tutoriel-Soignants-soignez-heureux-AH-SI.pdf');
             },
             child: Text(context.l10n.downloadTuto),
           ),
@@ -353,7 +409,7 @@ class _Help extends HookConsumerWidget {
           if (userStore.user?.isVerified ?? false)
             TextButton(
               onPressed: () {
-                launch(userStore.user!.telegramUrl);
+                launchUrlString(userStore.user!.telegramUrl);
               },
               onLongPress: () {
                 Clipboard.setData(ClipboardData(text: userStore.user!.telegramUrl));
@@ -367,7 +423,7 @@ class _Help extends HookConsumerWidget {
           if (userStore.user?.isDoctor ?? false)
             TextButton(
               onPressed: () {
-                launch('${Config().baseUrl}/assets/assets/files/ordo.doc');
+                launchUrlString('${Config().baseUrl}/assets/assets/files/ordo.doc');
               },
               child: Text(context.l10n.helpDownloadOrdo),
             ),
@@ -376,7 +432,7 @@ class _Help extends HookConsumerWidget {
           const SizedBox(height: kSmallPadding),
           if (userStore.user != null)
             SelectableText(
-              Config.instance!.baseUrl + HealerProfileScreen.route.replaceAll(':id', userStore.user!.id!)+'/visio',
+              '${Config.instance!.baseUrl}${HealerProfileScreen.route.replaceAll(':id', userStore.user!.id!)}/visio',
               textAlign: TextAlign.center,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -414,7 +470,7 @@ class _HealerHomePage extends HookConsumerWidget {
                         children: [
                           TextButton(
                               onPressed: () {
-                                launch('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
+                                launchUrlString('${Config().baseUrl}/assets/assets/files/healerTerms.pdf');
                               },
                               child: Text(context.l10n.downloadHealerTerms))
                         ],

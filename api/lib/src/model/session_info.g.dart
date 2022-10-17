@@ -13,11 +13,11 @@ class _$SessionInfo extends SessionInfo {
   final String url;
 
   factory _$SessionInfo([void Function(SessionInfoBuilder)? updates]) =>
-      (new SessionInfoBuilder()..update(updates)).build();
+      (new SessionInfoBuilder()..update(updates))._build();
 
   _$SessionInfo._({required this.id, required this.url}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, 'SessionInfo', 'id');
-    BuiltValueNullFieldError.checkNotNull(url, 'SessionInfo', 'url');
+    BuiltValueNullFieldError.checkNotNull(id, r'SessionInfo', 'id');
+    BuiltValueNullFieldError.checkNotNull(url, r'SessionInfo', 'url');
   }
 
   @override
@@ -40,7 +40,7 @@ class _$SessionInfo extends SessionInfo {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('SessionInfo')
+    return (newBuiltValueToStringHelper(r'SessionInfo')
           ..add('id', id)
           ..add('url', url))
         .toString();
@@ -84,15 +84,17 @@ class SessionInfoBuilder implements Builder<SessionInfo, SessionInfoBuilder> {
   }
 
   @override
-  _$SessionInfo build() {
+  SessionInfo build() => _build();
+
+  _$SessionInfo _build() {
     final _$result = _$v ??
         new _$SessionInfo._(
-            id: BuiltValueNullFieldError.checkNotNull(id, 'SessionInfo', 'id'),
+            id: BuiltValueNullFieldError.checkNotNull(id, r'SessionInfo', 'id'),
             url: BuiltValueNullFieldError.checkNotNull(
-                url, 'SessionInfo', 'url'));
+                url, r'SessionInfo', 'url'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

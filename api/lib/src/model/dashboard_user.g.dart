@@ -17,7 +17,7 @@ class _$DashboardUser extends DashboardUser {
   final int total;
 
   factory _$DashboardUser([void Function(DashboardUserBuilder)? updates]) =>
-      (new DashboardUserBuilder()..update(updates)).build();
+      (new DashboardUserBuilder()..update(updates))._build();
 
   _$DashboardUser._(
       {required this.type,
@@ -25,12 +25,12 @@ class _$DashboardUser extends DashboardUser {
       required this.isVerified,
       required this.total})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(type, 'DashboardUser', 'type');
+    BuiltValueNullFieldError.checkNotNull(type, r'DashboardUser', 'type');
     BuiltValueNullFieldError.checkNotNull(
-        isActivated, 'DashboardUser', 'isActivated');
+        isActivated, r'DashboardUser', 'isActivated');
     BuiltValueNullFieldError.checkNotNull(
-        isVerified, 'DashboardUser', 'isVerified');
-    BuiltValueNullFieldError.checkNotNull(total, 'DashboardUser', 'total');
+        isVerified, r'DashboardUser', 'isVerified');
+    BuiltValueNullFieldError.checkNotNull(total, r'DashboardUser', 'total');
   }
 
   @override
@@ -60,7 +60,7 @@ class _$DashboardUser extends DashboardUser {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('DashboardUser')
+    return (newBuiltValueToStringHelper(r'DashboardUser')
           ..add('type', type)
           ..add('isActivated', isActivated)
           ..add('isVerified', isVerified)
@@ -117,20 +117,22 @@ class DashboardUserBuilder
   }
 
   @override
-  _$DashboardUser build() {
+  DashboardUser build() => _build();
+
+  _$DashboardUser _build() {
     final _$result = _$v ??
         new _$DashboardUser._(
             type: BuiltValueNullFieldError.checkNotNull(
-                type, 'DashboardUser', 'type'),
+                type, r'DashboardUser', 'type'),
             isActivated: BuiltValueNullFieldError.checkNotNull(
-                isActivated, 'DashboardUser', 'isActivated'),
+                isActivated, r'DashboardUser', 'isActivated'),
             isVerified: BuiltValueNullFieldError.checkNotNull(
-                isVerified, 'DashboardUser', 'isVerified'),
+                isVerified, r'DashboardUser', 'isVerified'),
             total: BuiltValueNullFieldError.checkNotNull(
-                total, 'DashboardUser', 'total'));
+                total, r'DashboardUser', 'total'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

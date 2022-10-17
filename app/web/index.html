@@ -139,8 +139,8 @@
     });
 
     window.onerror = function (err, stack) {
-        console.log('App error', err, stack);
         if (!firstFrameOnScreen) {
+            console.log('App error', err, stack);
             showError();
         }
     };

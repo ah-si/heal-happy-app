@@ -23,11 +23,11 @@ class FadePageRoute extends PageRouteBuilder {
           },
           transitionsBuilder: (context, anim1, anim2, child) {
             return FadeTransition(
-              child: child,
               opacity: Tween<double>(
                 begin: 0,
                 end: 1,
               ).animate(anim1),
+              child: child,
             );
           },
           settings: settings,
@@ -51,11 +51,11 @@ class FromBottomPageRoute extends PageRouteBuilder {
                 end: Offset.zero,
               ).animate(anim1),
               child: FadeTransition(
-                child: child,
                 opacity: Tween<double>(
                   begin: 0,
                   end: 1,
                 ).animate(anim1),
+                child: child,
               ),
             );
           },

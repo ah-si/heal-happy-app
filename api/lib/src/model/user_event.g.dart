@@ -45,7 +45,7 @@ class _$UserEvent extends UserEvent {
   final String link;
 
   factory _$UserEvent([void Function(UserEventBuilder)? updates]) =>
-      (new UserEventBuilder()..update(updates)).build();
+      (new UserEventBuilder()..update(updates))._build();
 
   _$UserEvent._(
       {required this.id,
@@ -67,22 +67,22 @@ class _$UserEvent extends UserEvent {
       this.cancelledDescription,
       required this.link})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, 'UserEvent', 'id');
-    BuiltValueNullFieldError.checkNotNull(patient, 'UserEvent', 'patient');
-    BuiltValueNullFieldError.checkNotNull(healer, 'UserEvent', 'healer');
-    BuiltValueNullFieldError.checkNotNull(isUrgent, 'UserEvent', 'isUrgent');
+    BuiltValueNullFieldError.checkNotNull(id, r'UserEvent', 'id');
+    BuiltValueNullFieldError.checkNotNull(patient, r'UserEvent', 'patient');
+    BuiltValueNullFieldError.checkNotNull(healer, r'UserEvent', 'healer');
+    BuiltValueNullFieldError.checkNotNull(isUrgent, r'UserEvent', 'isUrgent');
     BuiltValueNullFieldError.checkNotNull(
-        isHealerPresent, 'UserEvent', 'isHealerPresent');
+        isHealerPresent, r'UserEvent', 'isHealerPresent');
     BuiltValueNullFieldError.checkNotNull(
-        isPatientPresent, 'UserEvent', 'isPatientPresent');
+        isPatientPresent, r'UserEvent', 'isPatientPresent');
     BuiltValueNullFieldError.checkNotNull(
-        isCancelled, 'UserEvent', 'isCancelled');
-    BuiltValueNullFieldError.checkNotNull(type, 'UserEvent', 'type');
-    BuiltValueNullFieldError.checkNotNull(createdAt, 'UserEvent', 'createdAt');
-    BuiltValueNullFieldError.checkNotNull(start, 'UserEvent', 'start');
-    BuiltValueNullFieldError.checkNotNull(end, 'UserEvent', 'end');
-    BuiltValueNullFieldError.checkNotNull(name, 'UserEvent', 'name');
-    BuiltValueNullFieldError.checkNotNull(link, 'UserEvent', 'link');
+        isCancelled, r'UserEvent', 'isCancelled');
+    BuiltValueNullFieldError.checkNotNull(type, r'UserEvent', 'type');
+    BuiltValueNullFieldError.checkNotNull(createdAt, r'UserEvent', 'createdAt');
+    BuiltValueNullFieldError.checkNotNull(start, r'UserEvent', 'start');
+    BuiltValueNullFieldError.checkNotNull(end, r'UserEvent', 'end');
+    BuiltValueNullFieldError.checkNotNull(name, r'UserEvent', 'name');
+    BuiltValueNullFieldError.checkNotNull(link, r'UserEvent', 'link');
   }
 
   @override
@@ -163,7 +163,7 @@ class _$UserEvent extends UserEvent {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('UserEvent')
+    return (newBuiltValueToStringHelper(r'UserEvent')
           ..add('id', id)
           ..add('patientToken', patientToken)
           ..add('patient', patient)
@@ -307,38 +307,40 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   }
 
   @override
-  _$UserEvent build() {
+  UserEvent build() => _build();
+
+  _$UserEvent _build() {
     _$UserEvent _$result;
     try {
       _$result = _$v ??
           new _$UserEvent._(
-              id: BuiltValueNullFieldError.checkNotNull(id, 'UserEvent', 'id'),
+              id: BuiltValueNullFieldError.checkNotNull(id, r'UserEvent', 'id'),
               patientToken: patientToken,
               patient: patient.build(),
               healer: healer.build(),
               room: _room?.build(),
               office: _office?.build(),
               isUrgent: BuiltValueNullFieldError.checkNotNull(
-                  isUrgent, 'UserEvent', 'isUrgent'),
+                  isUrgent, r'UserEvent', 'isUrgent'),
               isHealerPresent: BuiltValueNullFieldError.checkNotNull(
-                  isHealerPresent, 'UserEvent', 'isHealerPresent'),
+                  isHealerPresent, r'UserEvent', 'isHealerPresent'),
               isPatientPresent: BuiltValueNullFieldError.checkNotNull(
-                  isPatientPresent, 'UserEvent', 'isPatientPresent'),
+                  isPatientPresent, r'UserEvent', 'isPatientPresent'),
               isCancelled: BuiltValueNullFieldError.checkNotNull(
-                  isCancelled, 'UserEvent', 'isCancelled'),
+                  isCancelled, r'UserEvent', 'isCancelled'),
               type: BuiltValueNullFieldError.checkNotNull(
-                  type, 'UserEvent', 'type'),
+                  type, r'UserEvent', 'type'),
               createdAt: BuiltValueNullFieldError.checkNotNull(
-                  createdAt, 'UserEvent', 'createdAt'),
+                  createdAt, r'UserEvent', 'createdAt'),
               start: BuiltValueNullFieldError.checkNotNull(
-                  start, 'UserEvent', 'start'),
+                  start, r'UserEvent', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(
-                  end, 'UserEvent', 'end'),
+                  end, r'UserEvent', 'end'),
               name:
-                  BuiltValueNullFieldError.checkNotNull(name, 'UserEvent', 'name'),
+                  BuiltValueNullFieldError.checkNotNull(name, r'UserEvent', 'name'),
               description: description,
               cancelledDescription: cancelledDescription,
-              link: BuiltValueNullFieldError.checkNotNull(link, 'UserEvent', 'link'));
+              link: BuiltValueNullFieldError.checkNotNull(link, r'UserEvent', 'link'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -352,7 +354,7 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
         _office?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'UserEvent', _$failedField, e.toString());
+            r'UserEvent', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -361,4 +363,4 @@ class UserEventBuilder implements Builder<UserEvent, UserEventBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

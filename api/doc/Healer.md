@@ -11,6 +11,8 @@ Name | Type | Description | Notes
 **id** | **String** |  | [optional] 
 **isVerified** | **bool** |  | 
 **isSuspended** | **bool** |  | 
+**isSubscriptionValid** | **bool** |  | 
+**dateSubscription** | [**DateTime**](DateTime.md) |  | [optional] 
 **isBlocked** | **bool** |  | 
 **isActivated** | **bool** |  | 
 **canDoFaceToFace** | **bool** |  | [optional] 

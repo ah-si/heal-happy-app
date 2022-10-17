@@ -25,7 +25,8 @@ class DonationsStore extends ChangeNotifier {
   DonateMode _donateMode = DonateMode.oneTime;
   late String sessionId;
 
-  DonationsStore({DonationsApi? donationsApi}) : _donationsApi = donationsApi ?? BackendApiProvider().api.getDonationsApi();
+  DonationsStore({DonationsApi? donationsApi})
+      : _donationsApi = donationsApi ?? BackendApiProvider().api.getDonationsApi();
 
   DonateMode get donateMode => _donateMode;
 
@@ -38,14 +39,21 @@ class DonationsStore extends ChangeNotifier {
     }
   }
 
-  Future<void> loadPaymentSessionId(Product product, String? email) async {
-    final results = await _donationsApi.getSessionInfo(id: product.id, email: email, mode: product.isRecurrent ? 'subscription' : 'payment');
+  Future<void> loadPaymentSessionId(Product product, bool isDonation, String? email) async {
+    final results = await _donationsApi.getSessionInfo(
+        id: product.id,
+        type: isDonation ? 'donation' : 'payment',
+        email: email,
+        mode: product.isRecurrent ? 'subscription' : 'payment');
     sessionId = results.data!.id;
   }
 
-  void loadPaymentProducts() async {
+  void loadPaymentProducts(bool isDonation) async {
     try {
-      final results = await _donationsApi.getProducts();
+      _products = [];
+      productsResults = null;
+      notifyListeners();
+      final results = await _donationsApi.getProducts(type: isDonation ? 'donation' : 'payment');
       _products = results.data!.toList(growable: false);
       _filterProducts();
     } catch (error, stackTrace) {
@@ -56,10 +64,12 @@ class DonationsStore extends ChangeNotifier {
 
   void _filterProducts() {
     productsResults ??= ProductsResults(
-        _products.where((element) => _donateMode == DonateMode.oneTime ? !element.isRecurrent : element.isRecurrent).toList(growable: false)
-          ..sort((p1, p2) {
-            return p1.price.compareTo(p2.price);
-          }),
-      );
+      _products
+          .where((element) => _donateMode == DonateMode.oneTime ? !element.isRecurrent : element.isRecurrent)
+          .toList(growable: false)
+        ..sort((p1, p2) {
+          return p1.price.compareTo(p2.price);
+        }),
+    );
   }
 }

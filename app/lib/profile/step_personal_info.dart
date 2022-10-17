@@ -10,7 +10,7 @@ import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:heal_happy_sdk/heal_happy_sdk.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class StepPersonalInfo extends HookConsumerWidget {
   final VoidCallback? onContinue;
@@ -157,7 +157,7 @@ class StepPersonalInfo extends HookConsumerWidget {
                     ),
                     Center(
                       child: Image.network(
-                        Config().baseUrl + "/captcha",
+                        "${Config().baseUrl}/captcha",
                         width: 150,
                       ),
                     ),
@@ -205,7 +205,7 @@ class StepPersonalInfo extends HookConsumerWidget {
           if ((!headless || !(userStore.user?.isTermsAccepted ?? false)) && showTerms)
             TextButton(
               onPressed: () {
-                launch('${Config().baseUrl}/terms');
+                launchUrlString('${Config().baseUrl}/terms');
               },
               child: Text(
                 context.l10n.goToTerms,

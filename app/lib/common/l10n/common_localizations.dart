@@ -100,6 +100,9 @@ class CommonLocalizations {
 
   String get userVerified => Intl.message('L\'utilisateur est vérifié', name: 'userVerified');
 
+  String userValid(String date) => Intl.message('L\'utilisateur est valide jusqu\'au $date', args:[date], name: 'userValid');
+  String subscriptionValid(String date) => Intl.message('Votre abonnement Soignez Heureux est valide jusqu\'au $date', args:[date], name: 'subscriptionValid');
+
   String get userUnVerified => Intl.message('L\'utilisateur n\'a pas été vérifié et donc n\'est pas visible pour les patients', name: 'userUnVerified');
 
   String get userRgpdKo => Intl.message(
@@ -131,11 +134,13 @@ class CommonLocalizations {
   String get acceptButton => Intl.message('Accepter', name: 'acceptButton');
 
   String get donateSuccess => Intl.message('Votre don a bien été accepté, merci beaucoup pour votre soutien!\n\nSoyez Heureux!', name: 'donateSuccess');
+  String get paymentSuccess => Intl.message('Votre paiement a bien été accepté, votre abonnement a été renouvelé pour 3 mois!\n\nSoyez Heureux!', name: 'paymentSuccess');
 
   String get askToDonate => Intl.message('Nous avons besoin de vous!', name: 'askToDonate');
   String get askToDonateDesc => Intl.message('Soignez Heureux ne fonctionne que grace aux dons que vous nous faites, et ces dons sont rétrocédé aux soignants. Si vous le pouvez et voulez aider l\'ONG et les soignants, merci de nous faire un dons.', name: 'askToDonateDesc');
 
   String get donateCancelled => Intl.message('Vous avez annulé votre don ou une erreur est survenue, un souci ou besoin d\'aide? N\'hésitez pas à nous contacter à contact@ah-si.org.\n\nSoyez Heureux!', name: 'donateCancelled');
+  String get paymentCancelled => Intl.message('Vous avez annulé votre paiement ou une erreur est survenue, un souci ou besoin d\'aide? N\'hésitez pas à nous contacter à contact@ah-si.org.\n\nSoyez Heureux!', name: 'paymentCancelled');
 
   String get allowFaceToFace => Intl.message('Activer le présentiel', name: 'allowFaceToFace');
 
@@ -540,6 +545,8 @@ class CommonLocalizations {
 
   String get resendActivationLink => Intl.message('Renvoyer le lien', name: 'resendActivationLink');
 
+  String get renewSubscription => Intl.message('Renouveler mon abonnement', name: 'renewSubscription');
+
   String get eventsDescription =>
       Intl.message('Vos consultations à venir sont affichées ici, pour voir vos anciennes consultations, consultez votre historique.',
           name: 'eventsDescription');
@@ -551,12 +558,20 @@ class CommonLocalizations {
   String get accountNotVerified =>
       Intl.message('Vous n\'avez pas encore validé votre email, merci de cliquer sur le lien que nous vous avons envoyé.', name: 'accountNotVerified');
 
+  String get subscriptionInvalid =>
+      Intl.message('Votre abonnement n\'est plus valide, renouvelez le pour être de nouveau visible sur Soignez-Heureux.', name: 'subscriptionInvalid');
+
+  String subscriptionSoonFinish(String date) =>
+      Intl.message('Votre abonnement arrive à échéance le $date, renouvelé le dès maintenant pour rester visible sur Soignez-Heureux.', args: [date], name: 'subscriptionSoonFinish');
+
   String get accountPending =>
       Intl.message('Votre compte est en attente de validation. Une fois vérifié, les patients pourront prendre rendez-vous.', name: 'accountPending');
 
+  String get paySubscription => Intl.message('Renouveler mon abonnement', name: 'paySubscription');
   String get donate => Intl.message('Faire un don', name: 'donate');
   String get donateRefused => Intl.message('Je ne peux pas', name: 'donateRefused');
 
+  String get subscriptionRenewal => Intl.message('Pour renouveler votre abonnement, merci de cliquer ci-dessous, celui ci sera renouvelé pour 3 mois.', name: 'subscriptionRenewal');
   String get donateRecurrent => Intl.message('Rendre mon don récurrent tout les mois', name: 'donateRecurrent');
 
   String get donateByCard => Intl.message('Par carte', name: 'donateByCard');

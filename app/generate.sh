@@ -8,4 +8,4 @@ echo "Push sourcemaps for $APP_VERSION"
 sentry-cli releases files "$APP_VERSION" upload-sourcemaps build/web
 rm -R build/web/canvaskit/profiling
 echo "Copy sources to backend project"
-cp -R build/web/ ../../ahSoignezHeureux/assets/public/
+cp -R build/web/ ../../heal-happy-server/assets/public/

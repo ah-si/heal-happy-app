@@ -21,7 +21,7 @@ class _$OfficeInfo extends OfficeInfo {
   final String zipCode;
 
   factory _$OfficeInfo([void Function(OfficeInfoBuilder)? updates]) =>
-      (new OfficeInfoBuilder()..update(updates)).build();
+      (new OfficeInfoBuilder()..update(updates))._build();
 
   _$OfficeInfo._(
       {this.id,
@@ -31,11 +31,11 @@ class _$OfficeInfo extends OfficeInfo {
       required this.city,
       required this.zipCode})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(name, 'OfficeInfo', 'name');
-    BuiltValueNullFieldError.checkNotNull(street, 'OfficeInfo', 'street');
-    BuiltValueNullFieldError.checkNotNull(street2, 'OfficeInfo', 'street2');
-    BuiltValueNullFieldError.checkNotNull(city, 'OfficeInfo', 'city');
-    BuiltValueNullFieldError.checkNotNull(zipCode, 'OfficeInfo', 'zipCode');
+    BuiltValueNullFieldError.checkNotNull(name, r'OfficeInfo', 'name');
+    BuiltValueNullFieldError.checkNotNull(street, r'OfficeInfo', 'street');
+    BuiltValueNullFieldError.checkNotNull(street2, r'OfficeInfo', 'street2');
+    BuiltValueNullFieldError.checkNotNull(city, r'OfficeInfo', 'city');
+    BuiltValueNullFieldError.checkNotNull(zipCode, r'OfficeInfo', 'zipCode');
   }
 
   @override
@@ -69,7 +69,7 @@ class _$OfficeInfo extends OfficeInfo {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('OfficeInfo')
+    return (newBuiltValueToStringHelper(r'OfficeInfo')
           ..add('id', id)
           ..add('name', name)
           ..add('street', street)
@@ -137,23 +137,25 @@ class OfficeInfoBuilder implements Builder<OfficeInfo, OfficeInfoBuilder> {
   }
 
   @override
-  _$OfficeInfo build() {
+  OfficeInfo build() => _build();
+
+  _$OfficeInfo _build() {
     final _$result = _$v ??
         new _$OfficeInfo._(
             id: id,
             name: BuiltValueNullFieldError.checkNotNull(
-                name, 'OfficeInfo', 'name'),
+                name, r'OfficeInfo', 'name'),
             street: BuiltValueNullFieldError.checkNotNull(
-                street, 'OfficeInfo', 'street'),
+                street, r'OfficeInfo', 'street'),
             street2: BuiltValueNullFieldError.checkNotNull(
-                street2, 'OfficeInfo', 'street2'),
+                street2, r'OfficeInfo', 'street2'),
             city: BuiltValueNullFieldError.checkNotNull(
-                city, 'OfficeInfo', 'city'),
+                city, r'OfficeInfo', 'city'),
             zipCode: BuiltValueNullFieldError.checkNotNull(
-                zipCode, 'OfficeInfo', 'zipCode'));
+                zipCode, r'OfficeInfo', 'zipCode'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

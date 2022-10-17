@@ -249,7 +249,7 @@ class StepCalendarInfo extends HookConsumerWidget {
                       .map(
                         (e) => DropdownMenuItem(
                           value: e.room.id,
-                          child: Text(e.room.name + ' (${e.office.name})'),
+                          child: Text('${e.room.name} (${e.office.name})'),
                         ),
                       )
                       .toList(growable: false),

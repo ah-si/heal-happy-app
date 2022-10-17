@@ -9,7 +9,7 @@ class _HealerEvents extends HookConsumerWidget {
     final userStore = ref.watch(userStoreProvider);
     final hideCancelled = useState(true);
     final seeOnlyUrgency = useState(false);
-    final _dataSource = useMemoized(
+    final dataSource = useMemoized(
       () => _ConsultationDataSource(store.eventsResults?.events.where((element) {
             if (seeOnlyUrgency.value) {
               if (hideCancelled.value) {
@@ -33,8 +33,8 @@ class _HealerEvents extends HookConsumerWidget {
     if (store.eventsResults == null || store.isLoading) {
       return Center(
         child: SizedBox(
-          child: const Loading(),
           height: MediaQuery.of(context).size.height,
+          child: const Loading(),
         ),
       );
     }
@@ -109,7 +109,7 @@ class _HealerEvents extends HookConsumerWidget {
                 },
                 showWeekNumber: true,
                 showNavigationArrow: true,
-                dataSource: _dataSource,
+                dataSource: dataSource,
                 monthViewSettings: const MonthViewSettings(showAgenda: true),
                 allowedViews: const [
                   CalendarView.day,
@@ -180,8 +180,8 @@ class _HealerEvents extends HookConsumerWidget {
                 DropdownButtonFormField<HealerEventType>(
                   items: HealerEventType.values
                       .map((e) => DropdownMenuItem(
-                            child: Text(context.l10n.consultationLabel(e)),
                             value: e,
+                            child: Text(context.l10n.consultationLabel(e)),
                           ))
                       .toList(growable: false),
                   decoration: InputDecoration(labelText: context.l10n.consultationType),
@@ -198,8 +198,8 @@ class _HealerEvents extends HookConsumerWidget {
                   items: userStore.rooms
                       .map(
                         (e) => DropdownMenuItem(
-                          child: Text(e.room.name + ' (${e.office.name})'),
                           value: e.room.id,
+                          child: Text('${e.room.name} (${e.office.name})'),
                         ),
                       )
                       .toList(growable: false),
@@ -461,7 +461,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                   ),
                   const SizedBox(height: kSmallPadding),
                   const Divider(),
-                  Text('Type: ' + context.l10n.consultationLabel(event.type), style: context.textTheme.subtitle2),
+                  Text('Type: ${context.l10n.consultationLabel(event.type)}', style: context.textTheme.subtitle2),
                   const SizedBox(height: kSmallPadding),
                   if (event.office != null) Text('Address: ', style: context.textTheme.subtitle2),
                   if (event.office != null) Text(event.office!.address),
@@ -476,7 +476,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: kSmallPadding),
                         child: InkWell(
                           onTap: () {
-                            launch('mailto:${event.patient.email}');
+                            launchUrlString('mailto:${event.patient.email}');
                           },
                           onLongPress: () {
                             Clipboard.setData(ClipboardData(text: event.patient.email));
@@ -496,7 +496,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                       if (!event.patient.mobile.isNullOrEmpty)
                         InkWell(
                           onTap: () {
-                            launch('tel:${event.patient.mobile}');
+                            launchUrlString('tel:${event.patient.mobile}');
                           },
                           onLongPress: () {
                             Clipboard.setData(ClipboardData(text: event.patient.mobile));
@@ -568,7 +568,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                   onPressed: () {
                     ref.read(userStoreProvider).acceptEvent(event.id);
                     if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
-                      launch(event.link);
+                      launchUrlString(event.link);
                     } else {
                       var options = JitsiMeetingOptions(
                         roomNameOrUrl: event.link,

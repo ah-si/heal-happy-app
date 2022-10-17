@@ -37,7 +37,7 @@ class _$HealerStats extends HealerStats {
   final String job;
 
   factory _$HealerStats([void Function(HealerStatsBuilder)? updates]) =>
-      (new HealerStatsBuilder()..update(updates)).build();
+      (new HealerStatsBuilder()..update(updates))._build();
 
   _$HealerStats._(
       {required this.id,
@@ -55,22 +55,22 @@ class _$HealerStats extends HealerStats {
       this.mobile,
       required this.job})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(id, 'HealerStats', 'id');
+    BuiltValueNullFieldError.checkNotNull(id, r'HealerStats', 'id');
     BuiltValueNullFieldError.checkNotNull(
-        totalEvents, 'HealerStats', 'totalEvents');
+        totalEvents, r'HealerStats', 'totalEvents');
     BuiltValueNullFieldError.checkNotNull(
-        totalDuration, 'HealerStats', 'totalDuration');
+        totalDuration, r'HealerStats', 'totalDuration');
     BuiltValueNullFieldError.checkNotNull(
-        totalEventsFaceToFace, 'HealerStats', 'totalEventsFaceToFace');
+        totalEventsFaceToFace, r'HealerStats', 'totalEventsFaceToFace');
     BuiltValueNullFieldError.checkNotNull(
-        totalDurationFaceToFace, 'HealerStats', 'totalDurationFaceToFace');
-    BuiltValueNullFieldError.checkNotNull(city, 'HealerStats', 'city');
-    BuiltValueNullFieldError.checkNotNull(zipCode, 'HealerStats', 'zipCode');
+        totalDurationFaceToFace, r'HealerStats', 'totalDurationFaceToFace');
+    BuiltValueNullFieldError.checkNotNull(city, r'HealerStats', 'city');
+    BuiltValueNullFieldError.checkNotNull(zipCode, r'HealerStats', 'zipCode');
     BuiltValueNullFieldError.checkNotNull(
-        firstName, 'HealerStats', 'firstName');
-    BuiltValueNullFieldError.checkNotNull(lastName, 'HealerStats', 'lastName');
-    BuiltValueNullFieldError.checkNotNull(email, 'HealerStats', 'email');
-    BuiltValueNullFieldError.checkNotNull(job, 'HealerStats', 'job');
+        firstName, r'HealerStats', 'firstName');
+    BuiltValueNullFieldError.checkNotNull(lastName, r'HealerStats', 'lastName');
+    BuiltValueNullFieldError.checkNotNull(email, r'HealerStats', 'email');
+    BuiltValueNullFieldError.checkNotNull(job, r'HealerStats', 'job');
   }
 
   @override
@@ -132,7 +132,7 @@ class _$HealerStats extends HealerStats {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('HealerStats')
+    return (newBuiltValueToStringHelper(r'HealerStats')
           ..add('id', id)
           ..add('totalEvents', totalEvents)
           ..add('totalDuration', totalDuration)
@@ -251,34 +251,36 @@ class HealerStatsBuilder implements Builder<HealerStats, HealerStatsBuilder> {
   }
 
   @override
-  _$HealerStats build() {
+  HealerStats build() => _build();
+
+  _$HealerStats _build() {
     final _$result = _$v ??
         new _$HealerStats._(
-            id: BuiltValueNullFieldError.checkNotNull(id, 'HealerStats', 'id'),
+            id: BuiltValueNullFieldError.checkNotNull(id, r'HealerStats', 'id'),
             totalEvents: BuiltValueNullFieldError.checkNotNull(
-                totalEvents, 'HealerStats', 'totalEvents'),
+                totalEvents, r'HealerStats', 'totalEvents'),
             totalDuration: BuiltValueNullFieldError.checkNotNull(
-                totalDuration, 'HealerStats', 'totalDuration'),
+                totalDuration, r'HealerStats', 'totalDuration'),
             totalEventsFaceToFace: BuiltValueNullFieldError.checkNotNull(
-                totalEventsFaceToFace, 'HealerStats', 'totalEventsFaceToFace'),
+                totalEventsFaceToFace, r'HealerStats', 'totalEventsFaceToFace'),
             totalDurationFaceToFace: BuiltValueNullFieldError.checkNotNull(
-                totalDurationFaceToFace, 'HealerStats', 'totalDurationFaceToFace'),
+                totalDurationFaceToFace, r'HealerStats', 'totalDurationFaceToFace'),
             street: street,
             street2: street2,
             city: BuiltValueNullFieldError.checkNotNull(
-                city, 'HealerStats', 'city'),
+                city, r'HealerStats', 'city'),
             zipCode: BuiltValueNullFieldError.checkNotNull(
-                zipCode, 'HealerStats', 'zipCode'),
+                zipCode, r'HealerStats', 'zipCode'),
             firstName: BuiltValueNullFieldError.checkNotNull(
-                firstName, 'HealerStats', 'firstName'),
+                firstName, r'HealerStats', 'firstName'),
             lastName: BuiltValueNullFieldError.checkNotNull(
-                lastName, 'HealerStats', 'lastName'),
-            email: BuiltValueNullFieldError.checkNotNull(email, 'HealerStats', 'email'),
+                lastName, r'HealerStats', 'lastName'),
+            email: BuiltValueNullFieldError.checkNotNull(email, r'HealerStats', 'email'),
             mobile: mobile,
-            job: BuiltValueNullFieldError.checkNotNull(job, 'HealerStats', 'job'));
+            job: BuiltValueNullFieldError.checkNotNull(job, r'HealerStats', 'job'));
     replace(_$result);
     return _$result;
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

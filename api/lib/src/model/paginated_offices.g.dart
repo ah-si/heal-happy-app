@@ -14,14 +14,14 @@ class _$PaginatedOffices extends PaginatedOffices {
 
   factory _$PaginatedOffices(
           [void Function(PaginatedOfficesBuilder)? updates]) =>
-      (new PaginatedOfficesBuilder()..update(updates)).build();
+      (new PaginatedOfficesBuilder()..update(updates))._build();
 
   _$PaginatedOffices._({required this.totalPages, required this.offices})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        totalPages, 'PaginatedOffices', 'totalPages');
+        totalPages, r'PaginatedOffices', 'totalPages');
     BuiltValueNullFieldError.checkNotNull(
-        offices, 'PaginatedOffices', 'offices');
+        offices, r'PaginatedOffices', 'offices');
   }
 
   @override
@@ -47,7 +47,7 @@ class _$PaginatedOffices extends PaginatedOffices {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('PaginatedOffices')
+    return (newBuiltValueToStringHelper(r'PaginatedOffices')
           ..add('totalPages', totalPages)
           ..add('offices', offices))
         .toString();
@@ -93,13 +93,15 @@ class PaginatedOfficesBuilder
   }
 
   @override
-  _$PaginatedOffices build() {
+  PaginatedOffices build() => _build();
+
+  _$PaginatedOffices _build() {
     _$PaginatedOffices _$result;
     try {
       _$result = _$v ??
           new _$PaginatedOffices._(
               totalPages: BuiltValueNullFieldError.checkNotNull(
-                  totalPages, 'PaginatedOffices', 'totalPages'),
+                  totalPages, r'PaginatedOffices', 'totalPages'),
               offices: offices.build());
     } catch (_) {
       late String _$failedField;
@@ -108,7 +110,7 @@ class PaginatedOfficesBuilder
         offices.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'PaginatedOffices', _$failedField, e.toString());
+            r'PaginatedOffices', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -117,4 +119,4 @@ class PaginatedOfficesBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas

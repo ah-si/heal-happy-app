@@ -67,6 +67,10 @@ class UserProfile extends HookConsumerWidget {
         padding: const EdgeInsets.all(kNormalPadding),
         child: Column(
           children: [
+            if (isHealer && userStore.user?.dateSubscription != null) Padding(
+              padding: const EdgeInsets.only(bottom: kNormalPadding),
+              child: Text(context.l10n.subscriptionValid(kDateFormat.format(userStore.user!.dateSubscription!))),
+            ),
             if (isHealer)
               ExpansionTile(
                 title: Text(context.l10n.calendar),

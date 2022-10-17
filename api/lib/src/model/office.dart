@@ -13,14 +13,14 @@ part 'office.g.dart';
 /// Office
 ///
 /// Properties:
-/// * [rooms]
-/// * [managers]
-/// * [id]
-/// * [name]
-/// * [street]
-/// * [street2]
-/// * [city]
-/// * [zipCode]
+/// * [rooms] 
+/// * [managers] 
+/// * [id] 
+/// * [name] 
+/// * [street] 
+/// * [street2] 
+/// * [city] 
+/// * [zipCode] 
 abstract class Office implements Built<Office, OfficeBuilder> {
     @BuiltValueField(wireName: r'rooms')
     BuiltList<OfficeRoom> get rooms;

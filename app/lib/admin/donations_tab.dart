@@ -37,7 +37,7 @@ class Donations extends HookConsumerWidget {
             _DonationsCard(
               child: ClipRect(
                 child: SfCircularChart(
-                  title: ChartTitle(text: 'Montants pour ' + store.currentMonth),
+                  title: ChartTitle(text: 'Montants pour ${store.currentMonth}'),
                   series: store.currentChart!,
                   legend: Legend(
                     isVisible: true,
@@ -49,7 +49,7 @@ class Donations extends HookConsumerWidget {
             _DonationsCard(
               child: ClipRect(
                 child: SfCircularChart(
-                  title: ChartTitle(text: 'Montants pour ' + store.previousMonth),
+                  title: ChartTitle(text: 'Montants pour ${store.previousMonth}'),
                   series: store.previousChart!,
                   legend: Legend(
                     isVisible: true,

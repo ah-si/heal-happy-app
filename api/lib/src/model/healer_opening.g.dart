@@ -25,7 +25,7 @@ class _$HealerOpening extends HealerOpening {
   final DateTime end;
 
   factory _$HealerOpening([void Function(HealerOpeningBuilder)? updates]) =>
-      (new HealerOpeningBuilder()..update(updates)).build();
+      (new HealerOpeningBuilder()..update(updates))._build();
 
   _$HealerOpening._(
       {this.id,
@@ -37,10 +37,10 @@ class _$HealerOpening extends HealerOpening {
       required this.start,
       required this.end})
       : super._() {
-    BuiltValueNullFieldError.checkNotNull(userId, 'HealerOpening', 'userId');
-    BuiltValueNullFieldError.checkNotNull(type, 'HealerOpening', 'type');
-    BuiltValueNullFieldError.checkNotNull(start, 'HealerOpening', 'start');
-    BuiltValueNullFieldError.checkNotNull(end, 'HealerOpening', 'end');
+    BuiltValueNullFieldError.checkNotNull(userId, r'HealerOpening', 'userId');
+    BuiltValueNullFieldError.checkNotNull(type, r'HealerOpening', 'type');
+    BuiltValueNullFieldError.checkNotNull(start, r'HealerOpening', 'start');
+    BuiltValueNullFieldError.checkNotNull(end, r'HealerOpening', 'end');
   }
 
   @override
@@ -82,7 +82,7 @@ class _$HealerOpening extends HealerOpening {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('HealerOpening')
+    return (newBuiltValueToStringHelper(r'HealerOpening')
           ..add('id', id)
           ..add('userId', userId)
           ..add('roomId', roomId)
@@ -163,23 +163,25 @@ class HealerOpeningBuilder
   }
 
   @override
-  _$HealerOpening build() {
+  HealerOpening build() => _build();
+
+  _$HealerOpening _build() {
     _$HealerOpening _$result;
     try {
       _$result = _$v ??
           new _$HealerOpening._(
               id: id,
               userId: BuiltValueNullFieldError.checkNotNull(
-                  userId, 'HealerOpening', 'userId'),
+                  userId, r'HealerOpening', 'userId'),
               roomId: roomId,
               type: BuiltValueNullFieldError.checkNotNull(
-                  type, 'HealerOpening', 'type'),
+                  type, r'HealerOpening', 'type'),
               user: _user?.build(),
               repeat: repeat,
               start: BuiltValueNullFieldError.checkNotNull(
-                  start, 'HealerOpening', 'start'),
+                  start, r'HealerOpening', 'start'),
               end: BuiltValueNullFieldError.checkNotNull(
-                  end, 'HealerOpening', 'end'));
+                  end, r'HealerOpening', 'end'));
     } catch (_) {
       late String _$failedField;
       try {
@@ -187,7 +189,7 @@ class HealerOpeningBuilder
         _user?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'HealerOpening', _$failedField, e.toString());
+            r'HealerOpening', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -196,4 +198,4 @@ class HealerOpeningBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,deprecated_member_use_from_same_package,lines_longer_than_80_chars,no_leading_underscores_for_local_identifiers,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new,unnecessary_lambdas
