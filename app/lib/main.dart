@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:heal_happy/admin/home_screen.dart' as admin;
 import 'package:heal_happy/common/config.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -65,7 +65,7 @@ void app({Config? config}) async {
 
   await PreferencesProvider().setup();
   if (kIsWeb) {
-    GoRouter.setUrlPathStrategy(UrlPathStrategy.path);
+    usePathUrlStrategy();
   }
   await SentryFlutter.init(
     (options) {
