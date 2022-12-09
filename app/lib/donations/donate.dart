@@ -191,7 +191,9 @@ class PaymentByCard extends HookConsumerWidget {
       if (isDonation) {
         store.donateMode = DonateMode.oneTime;
       }
-      store.loadPaymentProducts(isDonation);
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        store.loadPaymentProducts(isDonation);
+      });
       return null;
     }, const []);
 

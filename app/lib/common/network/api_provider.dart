@@ -53,6 +53,7 @@ class LogoutInterceptor extends Interceptor {
           return handler.resolve(response);
         } catch (err) {
           onLogout();
+          return;
         }
       }
       onLogout();

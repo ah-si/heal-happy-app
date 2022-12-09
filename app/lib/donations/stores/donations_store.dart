@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heal_happy/common/errors.dart';
@@ -56,7 +57,13 @@ class DonationsStore extends ChangeNotifier {
       final results = await _donationsApi.getProducts(type: isDonation ? 'donation' : 'payment');
       _products = results.data!.toList(growable: false);
       _filterProducts();
-    } catch (error, stackTrace) {
+    } on DioError catch (error, stackTrace) {
+      if (error.response?.statusCode == 403) {
+        productsResults = ProductsResults([], error: ErrorResultException(ErrorResult.notLogged));
+      } else {
+        productsResults = ProductsResults([], error: handleError(error, stackTrace));
+      }
+    }catch (error, stackTrace) {
       productsResults = ProductsResults([], error: handleError(error, stackTrace));
     }
     notifyListeners();

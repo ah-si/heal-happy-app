@@ -61,10 +61,7 @@ class UserStore extends ChangeNotifier {
   User get requiredUser => user!;
 
   UserStore(this._apiProvider, this._preferencesProvider) {
-    _apiProvider.onLogout = () {
-      user = null;
-      notifyListeners();
-    };
+    _apiProvider.onLogout = logout;
     init();
   }
 
