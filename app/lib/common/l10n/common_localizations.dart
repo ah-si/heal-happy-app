@@ -572,7 +572,7 @@ class CommonLocalizations {
   String get donateRefused => Intl.message('Je ne peux pas', name: 'donateRefused');
 
   String get subscriptionRenewal => Intl.message('Pour renouveler votre abonnement, merci de cliquer ci-dessous, celui ci sera renouvelé pour 3 mois.', name: 'subscriptionRenewal');
-  String get donateRecurrent => Intl.message('Rendre mon don récurrent tout les mois', name: 'donateRecurrent');
+  String get donateRecurrent => Intl.message('Rendre mon don récurrent tous les mois', name: 'donateRecurrent');
 
   String get donateByCard => Intl.message('Par carte', name: 'donateByCard');
 
