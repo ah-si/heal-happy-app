@@ -23,6 +23,8 @@ class CommonLocalizations {
 
   String get appTitle => Intl.message('Soignez Heureux', name: 'appTitle');
 
+  String get cancel => Intl.message('Annuler', name: 'cancel');
+
   String get home => Intl.message('Accueil', name: 'home');
 
   String get healerToVerify => Intl.message('Soignants à vérifier', name: 'healerToVerify');
@@ -660,6 +662,8 @@ class CommonLocalizations {
 
   String get consultationLimit => Intl.message('Lorsque plusieurs membres d\'une même famille sont malades, merci de créer un compte pour chaque personne et de réserver un rendez-vous par patient.', name: 'consultationLimit');
   String get consultationAMM => Intl.message('Les consultations sont hors AMM, donc vous devrez payer vos médicaments, ils ne seront pas remboursés.', name: 'consultationAMM');
+
+  String get adminHealerSubscription => Intl.message('Date de fin d\'abonnement', name: 'adminHealerSubscription');
 
   String get hintReasonConsultation =>
       Intl.message('Merci de préciser aussi votre age et vos pathologies dans le motif de votre consultation.', name: 'hintReasonConsultation');

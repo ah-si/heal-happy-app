@@ -61,7 +61,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(context.l10n.resetPasswordIntro, style: context.textTheme.subtitle1),
+                        Text(context.l10n.resetPasswordIntro, style: context.textTheme.titleMedium),
                         TextFormField(
                           controller: controllerPass,
                           obscureText: true,

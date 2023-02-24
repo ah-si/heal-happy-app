@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
 import 'package:heal_happy/common/presentation/menu_item.dart';
@@ -139,8 +139,8 @@ class _HealerInfo extends HookConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (!context.isMobile) Text(healer.name, style: context.textTheme.headline6),
-              Text(store.specialities[healer.job] ?? '', style: context.textTheme.subtitle2),
+              if (!context.isMobile) Text(healer.name, style: context.textTheme.titleLarge),
+              Text(store.specialities[healer.job] ?? '', style: context.textTheme.titleSmall),
               const SizedBox(height: kNormalPadding),
               Text(healer.address),
               if (!healer.description.isNullOrEmpty) const SizedBox(height: kNormalPadding),

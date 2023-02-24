@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heal_happy/common/presentation/bg_container.dart';
@@ -42,7 +42,7 @@ class OfficeDetailsScreen extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.result!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -144,7 +144,7 @@ class _OfficePlaning extends HookWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.planingResult!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -247,7 +247,7 @@ class _OfficeDetails extends StatelessWidget {
                       Expanded(
                         child: Text(
                           context.l10n.manageOfficeRooms,
-                          style: context.textTheme.headline6,
+                          style: context.textTheme.titleLarge,
                         ),
                       ),
                       IconButton(
@@ -295,7 +295,7 @@ class _ManagerPanel extends StatelessWidget {
                   Expanded(
                     child: Text(
                       context.l10n.officeManagers,
-                      style: context.textTheme.headline6,
+                      style: context.textTheme.titleLarge,
                     ),
                   ),
                   IconButton(
@@ -367,7 +367,7 @@ class _RoomPanel extends StatelessWidget {
                   Expanded(
                     child: Text(
                       room.name,
-                      style: context.textTheme.headline6,
+                      style: context.textTheme.titleLarge,
                     ),
                   ),
                   IconButton(
@@ -430,7 +430,7 @@ class _HealerPanel extends StatelessWidget {
                   Expanded(
                     child: Text(
                       context.l10n.officeHealers,
-                      style: context.textTheme.headline6,
+                      style: context.textTheme.titleLarge,
                     ),
                   ),
                   IconButton(

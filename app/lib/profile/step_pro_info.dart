@@ -1,8 +1,9 @@
-import 'package:country_code_picker/country_code_picker.dart';
+import 'package:dart_countries/dart_countries.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
+import 'package:heal_happy/common/presentation/country_picker.dart';
 import 'package:heal_happy/common/presentation/job_search_field.dart';
 import 'package:heal_happy/common/utils/constants.dart';
 import 'package:heal_happy/common/utils/extensions.dart';
@@ -10,7 +11,7 @@ import 'package:heal_happy/common/utils/form_validators.dart';
 import 'package:heal_happy/user/user_store.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class _CountryWidget extends StatelessWidget {
+class _CountryWidget extends HookWidget {
   final String country;
   final Function(String country) onSelected;
 
@@ -18,45 +19,14 @@ class _CountryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = context.l10n;
-    return HookBuilder(
-      builder: (context) {
-        final controller = useTextEditingController(text: CountryCode.fromCountryCode(country).name!);
-        return CountryCodePicker(
+    final iso = useState(IsoCode.fromJson(country));
+    return CountryCodePicker(
           showCountryOnly: true,
+          value: iso.value,
           onChanged: (value) {
-            onSelected(value.code!);
-            controller.text = value.name!;
+            iso.value = value;
+            onSelected(value.name);
           },
-          builder: (CountryCode? selectedCountry) {
-            return IgnorePointer(
-              child: TextField(
-                controller: controller,
-                autofocus: false,
-                readOnly: true,
-                decoration: InputDecoration(
-                  prefix: Padding(
-                    padding: const EdgeInsets.only(right: kSmallPadding),
-                    child: selectedCountry != null
-                        ? Image.asset(
-                            selectedCountry.flagUri!,
-                            package: 'country_code_picker',
-                            width: 25,
-                          )
-                        : const SizedBox(height: 0, width: 0),
-                  ),
-                  labelText: localizations.countryField,
-                ),
-                keyboardType: TextInputType.phone,
-              ),
-            );
-          },
-          // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-          initialSelection: country,
-          // Same for favorites
-          favorite: const ['FR', 'CH', 'BE'],
-        );
-      },
     );
   }
 }
@@ -92,7 +62,7 @@ class StepInfoPro extends HookConsumerWidget {
           if (!headless)
             Text(
               context.l10n.proInfoIntro,
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -209,7 +179,7 @@ class StepAddress extends HookConsumerWidget {
           if (!headless)
             Text(
               context.l10n.addressIntro,
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
           if (!headless)
             Padding(

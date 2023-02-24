@@ -1,6 +1,6 @@
-import 'package:country_code_picker/country_code.dart';
+import 'package:dart_countries/dart_countries.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -246,7 +246,7 @@ class _ActivatedBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: context.theme.errorColor.withOpacity(0.8),
+      color: context.theme.colorScheme.error.withOpacity(0.8),
       child: Padding(
         padding: const EdgeInsets.all(kSmallPadding),
         child: Column(
@@ -315,7 +315,7 @@ class _HealerList extends HookConsumerWidget {
           child: Text(
             store.searchResults!.error!.cause.twoLiner(context),
             textAlign: TextAlign.center,
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
           ),
         ),
       );
@@ -514,16 +514,15 @@ class _HealerListItem extends HookConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Image.asset(
-                      CountryCode.fromCountryCode(healer.country).flagUri!,
-                      package: 'country_code_picker',
-                      width: 25,
+                    Text(
+                      countriesFlag[healer.country]!,
+                      style: const TextStyle(fontSize: 30),
                     ),
                     const SizedBox(width: kSmallPadding),
-                    Expanded(child: Text(healer.name, style: context.textTheme.headline6)),
+                    Expanded(child: Text(healer.name, style: context.textTheme.titleLarge)),
                   ],
                 ),
-                Text(store.specialities[healer.job] ?? '', style: context.textTheme.subtitle2),
+                Text(store.specialities[healer.job] ?? '', style: context.textTheme.titleSmall),
                 const SizedBox(height: kNormalPadding),
                 //if (patientStore.lastTypeSearch == HealerEventType.visio) Text(healer.address),
                 if (!healer.description.isNullOrEmpty) const SizedBox(height: kNormalPadding),
@@ -620,7 +619,7 @@ class _PlannedConsultations extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.eventsResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -673,7 +672,7 @@ class _PatientEventDetails extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6),
+                  Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.titleLarge),
                   const SizedBox(height: kSmallPadding),
                   Text(context.l10n.yourHealer),
                   Column(
@@ -757,7 +756,7 @@ class _PatientEventDetails extends HookConsumerWidget {
                         ),
                     ],
                   ),
-                  if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
+                  if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.titleSmall),
                   if (event.isCancelled)
                     Text(
                       event.isCancelled ? event.cancelledDescription ?? 'Aucun' : event.description!,

@@ -49,7 +49,7 @@ class HealerAvailability extends HookConsumerWidget {
             children: [
               Text(
                 store.availabilities!.error!.cause.twoLiner(context),
-                style: TextStyle(color: context.theme.errorColor),
+                style: TextStyle(color: context.theme.colorScheme.error),
                 textAlign: TextAlign.center,
               ),
             ],

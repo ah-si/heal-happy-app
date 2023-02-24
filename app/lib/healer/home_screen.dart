@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart' hide MenuItem;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -292,7 +292,7 @@ class _Banners extends StatelessWidget {
           ),
         if (!(userStore.user?.isSubscriptionValid ?? true))
           ColoredBox(
-            color: context.theme.errorColor.withOpacity(0.8),
+            color: context.theme.colorScheme.error.withOpacity(0.8),
             child: Padding(
               padding: const EdgeInsets.all(kSmallPadding),
               child: Column(
@@ -325,7 +325,7 @@ class _Banners extends StatelessWidget {
           ),
         if (!(userStore.user?.isActivated ?? true))
           ColoredBox(
-            color: context.theme.errorColor.withOpacity(0.8),
+            color: context.theme.colorScheme.error.withOpacity(0.8),
             child: Padding(
               padding: const EdgeInsets.all(kSmallPadding),
               child: Column(
@@ -353,7 +353,7 @@ class _Banners extends StatelessWidget {
           ),
         if (!(userStore.user?.isVerified ?? true))
           ColoredBox(
-            color: context.theme.errorColor.withOpacity(0.8),
+            color: context.theme.colorScheme.error.withOpacity(0.8),
             child: Padding(
               padding: const EdgeInsets.all(kSmallPadding),
               child: Text(

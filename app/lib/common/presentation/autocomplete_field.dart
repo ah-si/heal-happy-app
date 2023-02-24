@@ -214,7 +214,7 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
       _hideOverlay();
     }
     _overlayEntry = _createOverlayEntry();
-    Overlay.of(context)!.insert(_overlayEntry!);
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   void _hideOverlay() {

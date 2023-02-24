@@ -207,7 +207,7 @@ class PaymentByCard extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.productsResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),

@@ -17,7 +17,7 @@ class _Events extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.searchResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -177,7 +177,7 @@ class _EventItem extends HookConsumerWidget {
                       ],
                     ),
                     const SizedBox(width: kSmallPadding),
-                    Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
+                    Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.titleLarge)),
                     IconButton(
                       onPressed: () async {
                         final now = DateTime.now();
@@ -214,7 +214,7 @@ class _EventItem extends HookConsumerWidget {
                 ),
                 Text(context.l10n.eventCreatedAt(_dateFormatCreation.format(event.createdAt.toLocal()))),
                 const SizedBox(height: kSmallPadding),
-                Text(context.l10n.yourHealer, style: context.textTheme.subtitle2),
+                Text(context.l10n.yourHealer, style: context.textTheme.titleSmall),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -260,7 +260,7 @@ class _EventItem extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: kSmallPadding),
-                Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
+                Text(context.l10n.yourPatient, style: context.textTheme.titleSmall),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -307,8 +307,8 @@ class _EventItem extends HookConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: kSmallPadding),
-                if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
-                if (!event.isCancelled && !event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
+                if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.titleSmall),
+                if (!event.isCancelled && !event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.titleSmall),
                 if (!event.description.isNullOrEmpty || !event.cancelledDescription.isNullOrEmpty)
                   InkWell(
                     onTap: () {

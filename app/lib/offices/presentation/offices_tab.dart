@@ -41,7 +41,7 @@ class Offices extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.results!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),

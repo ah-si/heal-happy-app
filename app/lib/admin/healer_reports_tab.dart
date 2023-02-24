@@ -21,7 +21,7 @@ class HealerReports extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.results!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -80,7 +80,7 @@ class _HealerStats extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(stats.name, style: context.textTheme.subtitle1),
+                  Text(stats.name, style: context.textTheme.titleMedium),
                   Text(
                     store.specialities[stats.job] ?? stats.job,
                     style: const TextStyle(fontWeight: FontWeight.bold),

@@ -72,16 +72,16 @@ GoRouter createRouter(UserStore userStore) => router = GoRouter(
             null;
 
         if (currentRoute.startsWith('/admin') && userStore.user?.type != UserTypeEnum.admin) {
-          return state.namedLocation(HomeScreen.name);
+          return router.routeInformationParser.configuration.namedLocation(HomeScreen.name);
         }
 
         if (currentRoute == '/healer' && userStore.user?.type == UserTypeEnum.patient) {
-          return state.namedLocation(HomeScreen.name);
+          return router.routeInformationParser.configuration.namedLocation(HomeScreen.name);
         }
 
         // the user is not logged in and not headed to /login, they need to login
         if (!loggedIn && (!currentScreenAllowAnonymous || currentRoute == HomeScreen.name)) {
-          return state.namedLocation(LoginScreen.name);
+          return router.routeInformationParser.configuration.namedLocation(LoginScreen.name);
         }
 
         // no need to redirect at all
@@ -359,7 +359,7 @@ class PageStatus extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(_message[status]!, style: context.textTheme.headline6),
+            Text(_message[status]!, style: context.textTheme.titleLarge),
             const SizedBox(height: kSmallPadding),
             TextButton(
               onPressed: () {

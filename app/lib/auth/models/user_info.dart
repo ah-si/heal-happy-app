@@ -30,7 +30,7 @@ class UserInfo extends ChangeNotifier {
       b.type = type;
       b.lang = 'fr_FR';
       b.isSubscriptionValid = existingUser?.isSubscriptionValid ?? false;
-      b.dateSubscription = existingUser?.dateSubscription;
+      b.dateSubscription = _dateSubscription?.toUtc() ?? existingUser?.dateSubscription;
       b.consultationDuration = consultationDuration ?? 30;
       b.consultationPrice = consultationPrice == null ? null : consultationPrice! * 100;
 
@@ -70,6 +70,7 @@ class UserInfo extends ChangeNotifier {
     _lastName = user.lastName;
     _email = user.email;
     _mobile = user.mobile;
+    _dateSubscription = user.dateSubscription;
     _consultationTime = user.consultationDuration;
     _consultationPrice = user.consultationPrice == null ? null : user.consultationPrice! ~/ 100;
     _website = user.website;
@@ -137,6 +138,15 @@ class UserInfo extends ChangeNotifier {
 
   set firstName(value) {
     _firstName = value;
+    notifyListeners();
+  }
+
+  DateTime? _dateSubscription;
+
+  DateTime? get dateSubscription => _dateSubscription;
+
+  set dateSubscription(value) {
+    _dateSubscription = value;
     notifyListeners();
   }
 

@@ -75,7 +75,7 @@ class CustomDialog extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: kNormalPadding),
-                        child: DefaultTextStyle(style: context.textTheme.headline5!, child: title),
+                        child: DefaultTextStyle(style: context.textTheme.headlineSmall!, child: title),
                       ),
                     ),
                     const CloseButton(),
@@ -231,8 +231,8 @@ Future<String?> showPrompt<T>(
   );
 }
 
-Future<void> showAlert<T>(BuildContext context, String title, WidgetBuilder content, {bool barrierDismissible = true, String? actionLabel}) {
-  return showAppDialog(context, (_) => Text(title), content, barrierDismissible: barrierDismissible, actions: [
+Future<void> showAlert<T>(BuildContext context, dynamic title, WidgetBuilder content, {bool barrierDismissible = true, String? actionLabel}) {
+  return showAppDialog(context, title is String ? (_) => Text(title): title, content, barrierDismissible: barrierDismissible, actions: [
     DialogAction(
       isDefaultAction: true,
       text: actionLabel ?? MaterialLocalizations.of(context).okButtonLabel,
@@ -327,13 +327,20 @@ Future<T?> showAppDialog<T>(BuildContext context, WidgetBuilder title, WidgetBui
     {bool barrierDismissible = true, List<DialogAction> actions = const [], RouteSettings? settings}) {
   return context.navigator.push(
     ModalPageRoute(
-      builder: (context) => Center(
-        child: Scrollbar(
-          thumbVisibility: true,
-          child: SingleChildScrollView(
-            child: getAppDialog(context, title, content, actions: actions),
-          ),
-        ),
+      builder: (context) => HookBuilder(
+        builder: (context) {
+          final scrollController = useScrollController();
+          return Center(
+            child: Scrollbar(
+              controller: scrollController,
+              thumbVisibility: true,
+              child: SingleChildScrollView(
+                controller: scrollController,
+                child: getAppDialog(context, title, content, actions: actions),
+              ),
+            ),
+          );
+        }
       ),
       settings: settings,
       barrierDismissible: barrierDismissible,

@@ -57,7 +57,7 @@ class StepPersonalInfo extends HookConsumerWidget {
           if (!headless)
             Text(
               context.l10n.personalInfoIntro,
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

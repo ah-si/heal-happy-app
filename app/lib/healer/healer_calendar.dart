@@ -45,7 +45,7 @@ class _HealerEvents extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.eventsResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -414,7 +414,7 @@ class _HealerEventDetails extends HookConsumerWidget {
                         ],
                       ),
                       const SizedBox(width: kSmallPadding),
-                      Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.headline6)),
+                      Expanded(child: Text(_dateFormat.format(event.start.toLocal()), style: context.textTheme.titleLarge)),
                       if (!event.isCancelled && event.start.toLocal().isAfter(DateTime.now()))
                         IconButton(
                           onPressed: () async {
@@ -461,12 +461,12 @@ class _HealerEventDetails extends HookConsumerWidget {
                   ),
                   const SizedBox(height: kSmallPadding),
                   const Divider(),
-                  Text('Type: ${context.l10n.consultationLabel(event.type)}', style: context.textTheme.subtitle2),
+                  Text('Type: ${context.l10n.consultationLabel(event.type)}', style: context.textTheme.titleSmall),
                   const SizedBox(height: kSmallPadding),
-                  if (event.office != null) Text('Address: ', style: context.textTheme.subtitle2),
+                  if (event.office != null) Text('Address: ', style: context.textTheme.titleSmall),
                   if (event.office != null) Text(event.office!.address),
                   const SizedBox(height: kSmallPadding),
-                  Text(context.l10n.yourPatient, style: context.textTheme.subtitle2),
+                  Text(context.l10n.yourPatient, style: context.textTheme.titleSmall),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -513,8 +513,8 @@ class _HealerEventDetails extends HookConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: kSmallPadding),
-                  if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.subtitle2),
-                  if (!event.isCancelled && !event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.subtitle2),
+                  if (event.isCancelled) Text(context.l10n.patientCancelledMessage, style: context.textTheme.titleSmall),
+                  if (!event.isCancelled && !event.description.isNullOrEmpty) Text(context.l10n.patientMessage, style: context.textTheme.titleSmall),
                   if (!event.description.isNullOrEmpty || !event.cancelledDescription.isNullOrEmpty)
                     InkWell(
                       onTap: () {

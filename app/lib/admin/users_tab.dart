@@ -17,7 +17,7 @@ class _Users extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             store.searchResults!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -257,7 +257,7 @@ class _UserItem extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(user.name, style: context.textTheme.subtitle1),
+                Text(user.name, style: context.textTheme.titleMedium),
                 if (user.type == UserTypeEnum.admin)
                   Text(
                     context.l10n.userType(UserTypeEnum.admin),

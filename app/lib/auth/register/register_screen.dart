@@ -181,7 +181,7 @@ class _StepType extends HookConsumerWidget {
             padding: const EdgeInsets.all(kNormalPadding),
             child: Text(
               context.l10n.youAre,
-              style: context.textTheme.headline5,
+              style: context.textTheme.headlineSmall,
             ),
           ),
         ),

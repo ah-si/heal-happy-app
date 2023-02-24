@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:heal_happy/auth/models/user_info.dart';
 import 'package:heal_happy/common/errors.dart';
 import 'package:heal_happy/common/l10n/common_localizations.dart';
+import 'package:heal_happy/common/presentation/date_field.dart';
 import 'package:heal_happy/common/presentation/datetime_button.dart';
 import 'package:heal_happy/common/presentation/dialogs.dart';
 import 'package:heal_happy/common/presentation/loading.dart';
@@ -51,7 +52,7 @@ class StepCalendarInfo extends HookConsumerWidget {
           padding: const EdgeInsets.all(kNormalPadding),
           child: Text(
             openingStore.results!.error!.cause.twoLiner(context),
-            style: TextStyle(color: context.theme.errorColor),
+            style: TextStyle(color: context.theme.colorScheme.error),
             textAlign: TextAlign.center,
           ),
         ),
@@ -61,6 +62,7 @@ class StepCalendarInfo extends HookConsumerWidget {
     final suffixButton = ElevatedButton(
       onPressed: () async {
         if (formKey.currentState!.validate()) {
+          formKey.currentState!.save();
           userInfo.consultationPrice = int.tryParse(controllerPrice.text);
           userInfo.consultationDuration = int.tryParse(controllerConsultation.text);
           onSave();
@@ -76,6 +78,16 @@ class StepCalendarInfo extends HookConsumerWidget {
           key: formKey,
           child: Column(
             children: [
+              if (userStore.requiredUser.type == UserTypeEnum.admin)
+                DateFormField(
+                  minDate: (userInfo.dateSubscription != null && userInfo.dateSubscription!.isBefore(DateTime.now())) ? userInfo.dateSubscription : DateTime.now(),
+                  date: userInfo.dateSubscription,
+                  maxDate: DateTime.now().add(const Duration(days: 360)),
+                  label: context.l10n.adminHealerSubscription,
+                  onSaved: (value) {
+                    userInfo.dateSubscription = value?.add(const Duration(hours: 10));
+                  },
+                ),
               TextFormField(
                 controller: controllerConsultation,
                 validator: (value) {
@@ -113,13 +125,14 @@ class StepCalendarInfo extends HookConsumerWidget {
                     suffix: suffixButton,
                   ),
                 ),
+
             ],
           ),
         ),
         const SizedBox(height: kSmallPadding),
         Text(
           context.l10n.calendarIntro,
-          style: context.textTheme.subtitle2,
+          style: context.textTheme.titleSmall,
         ),
         const SizedBox(height: kSmallPadding),
         if (openingStore.isInMedicalOffice)
