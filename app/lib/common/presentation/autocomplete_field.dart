@@ -203,7 +203,9 @@ class _RawAutocompleteFieldState<T> extends State<_RawAutocompleteField<T>> {
           });
         }
       } else {
-        _hideOverlay();
+        Timer(const Duration(seconds: 1), () {
+          _hideOverlay();
+        });
       }
     });
     super.initState();

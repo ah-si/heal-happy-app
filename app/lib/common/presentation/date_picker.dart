@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide DateUtils;
 import 'package:heal_happy/common/utils/extensions.dart';
 
@@ -11,7 +10,7 @@ Future<TimeOfDay?> showModalTimePicker({
   required BuildContext context,
   TransitionBuilder? transitionBuilder,
 }) {
-  if (Platform.isIOS) {
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
     return showCupertinoModalPopup(
       context: context,
       builder: (context) {
@@ -28,7 +27,7 @@ Future<DateTime?> showModalDatePicker({
   DateTime? maxDate,
   DateTime? minDate,
 }) {
-  if (Platform.isIOS) {
+  if (defaultTargetPlatform == TargetPlatform.iOS) {
     return showCupertinoModalPopup(
       context: context,
       builder: (context) {

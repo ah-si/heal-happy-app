@@ -78,7 +78,7 @@ class StepCalendarInfo extends HookConsumerWidget {
           key: formKey,
           child: Column(
             children: [
-              if (userStore.requiredUser.type == UserTypeEnum.admin)
+              if (userStore.requiredUser.type == UserTypeEnum.admin && !userInfo.isSuspended)
                 DateFormField(
                   minDate: (userInfo.dateSubscription != null && userInfo.dateSubscription!.isBefore(DateTime.now())) ? userInfo.dateSubscription : DateTime.now(),
                   date: userInfo.dateSubscription,

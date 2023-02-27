@@ -515,7 +515,7 @@ class _HealerListItem extends HookConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      countriesFlag[healer.country]!,
+                      countriesFlag[IsoCode.fromJson(healer.country)]!,
                       style: const TextStyle(fontSize: 30),
                     ),
                     const SizedBox(width: kSmallPadding),
